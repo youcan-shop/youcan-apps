@@ -1,0 +1,15 @@
+{% comment %}
+  Renders title element
+
+  Usage:
+  {% render 'component.title' %}
+{% endcomment %}
+
+<h2 data-component="title">{{ block.settings.title }}</h2>
+
+<style>
+  #youcan-block--{{ block.id }} [data-component="title"] {
+    font: var(--font-{{ block.settings.title_size }});
+    color: {{ block.settings.title_color.hex }};
+  }
+</style>

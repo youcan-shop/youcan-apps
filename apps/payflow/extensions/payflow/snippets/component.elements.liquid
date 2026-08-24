@@ -1,0 +1,242 @@
+{% comment %}
+  Renders app core elements
+
+  Accepts:
+  - layout: {String} layout type (modal | drawer)
+
+  Usage:
+  {% render 'component.element' %}
+{% endcomment %}
+
+<div data-slot="{{ layout }}-content" id="form-{{ block.id }}" popover>
+  <div data-slot="{{ layout }}-header">
+    {% if block.settings.show_header_icon %}
+      <div data-slot="drawer-icon">
+        {% render 'component.icon', name: 'hgi-shopping-basket-03', size: 20 %}
+      </div>
+    {% endif %}
+    <div data-slot="{{ layout }}-heading">
+      <h3 data-slot="{{ layout }}-title">{{ block.settings.heading_text }}</h3>
+      <p data-slot="{{ layout }}-description">{{ block.settings.subheading_text }}</p>
+    </div>
+    <button
+      data-slot="button"
+      data-variant="secondary"
+      data-size="sm"
+      popovertarget="form-{{ block.id }}"
+      data-as-icon="true"
+    >
+      {% render 'component.icon', name: 'hgi-cancel-01' %}
+    </button>
+  </div>
+  <div data-slot="{{ layout }}-body">
+    {% render 'component.product' %}
+    {% if block.settings.media_enabled %}
+      {% render 'component.media' %}
+    {% endif %}
+    {% if block.settings.variants_enabled and product.options.size %}
+      {% render 'component.variants' %}
+    {% endif %}
+    {% render 'component.form' %}
+    {% if block.settings.bundles_enabled and product.is_bundle %}
+      {% if block.settings.bundle_display_style == 'cards' %}
+        {% render 'component.bundles-card' %}
+      {% else %}
+        {% render 'component.bundles' %}
+      {% endif %}
+    {% endif %}
+    {% if block.settings.summary_enabled %}
+      {% render 'component.summary' %}
+    {% endif %}
+    {% if block.settings.feature_list_enabled %}
+      {% render 'component.feature-list' %}
+    {% endif %}
+  </div>
+  <div data-slot="{{ layout }}-footer">
+    <button
+      form="cod-form-{{ block.id }}"
+      data-slot="button"
+      data-variant="primary"
+      data-size="lg"
+      type="submit"
+      data-cod-form="submit"
+      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    >
+      {% render 'component.icon', name: 'hgi-shopping-basket-03', size: 16 %}
+      <span>
+        {% if product.selected_or_first_available_variant %}
+          {{ block.settings.cta_button_text }}
+        {% else %}
+          {{ 'general.out_of_stock' | t }}
+        {% endif %}
+      </span>
+      {% if block.settings.show_price_in_cta_button %}
+        -
+        <div class="price">
+          <span class="original" data-cod-form="total">{{ price | money }}</span>
+          {% if compare_at_price %}
+            <span class="compare-at" data-cod-form="subtotal">{{ compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </button>
+  </div>
+</div>
+
+{% if block.settings.after_successful_order == 'message' %}
+  {% render 'component.success-msg' %}
+{% endif %}
+{% if block.settings.abandoned_order_recovery %}
+  {% render 'component.order-recovery' %}
+{% endif %}
+
+{% style %}
+  [data-app='drawer'],
+  [data-app='modal'] {
+    color: var(--color-primary);
+
+    .sticky-bar {
+      z-index: 55;
+      position: fixed;
+      width: calc(100% - var(--spacing-24));
+      inset-block-end: var(--spacing-12);
+      left: var(--spacing-12);
+      background-color: var(--color-surface);
+      border-radius: var(--radius-block);
+      overflow: hidden;
+      box-shadow: 0 0 transparent, 0 0 transparent, 0 0 transparent, 0 2px 4px 0 #0000000a, 0 1px 2px 0 #0000000f,
+        0 0 1px 0 #0000000f;
+
+      .box {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-12);
+        justify-content: space-between;
+        padding: var(--spacing-12);
+        background-color: var(--color-app-container);
+
+        .media {
+          width: 65px;
+          height: 100%;
+          aspect-ratio: 1 / 1;
+          overflow: hidden;
+          border-radius: calc(var(--radius-block) * 0.6);
+          flex-shrink: 0;
+
+          & > img {
+            object-fit: cover;
+          }
+        }
+
+        .info {
+          flex: 1;
+          width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: var(--spacing-6);
+
+          .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .quantity {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+
+            .value {
+              width: 30px;
+              font: var(--font-body-md);
+              text-align: center;
+            }
+          }
+        }
+
+        .price {
+          display: flex;
+          gap: var(--spacing-4);
+
+          .compare-at {
+            opacity: 0.5;
+            text-decoration: line-through;
+          }
+        }
+      }
+    }
+
+    [data-slot='drawer-content'],
+    [data-slot='modal-content'] {
+      [data-slot='drawer-body'],
+      [data-slot='modal-body'] {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-16);
+        padding-block: var(--spacing-16);
+      }
+
+      [data-slot='drawer-footer'],
+      [data-slot='modal-footer'] {
+        [data-slot='button'] {
+          width: 100%;
+
+          .price {
+            display: flex;
+            gap: var(--spacing-4);
+
+            .compare-at {
+              opacity: 0.5;
+              text-decoration: line-through;
+            }
+          }
+        }
+      }
+    }
+
+    @media (width > 769px) {
+      .sticky-bar {
+        &:not([data-width='full-width']) {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        &[data-width='md'] {
+          width: 512px;
+        }
+
+        &[data-width='lg'] {
+          width: 680px;
+        }
+      }
+    }
+
+    @media (width <= 769px) {
+      .sticky-bar {
+        left: var(--spacing-12);
+
+        .box {
+          gap: var(--spacing-8);
+
+          .media {
+            width: 48px;
+
+            & > img {
+              width: inherit;
+              height: inherit;
+            }
+          }
+
+          .info {
+            display: none;
+          }
+
+          .price {
+            flex: 1;
+            font: var(--font-body-md);
+          }
+        }
+      }
+    }
+  }
+{% endstyle %}

@@ -1,0 +1,129 @@
+{% render 'asset.review' %}
+
+{% comment %}
+  Renders a review modal detail
+
+  Accepts:
+  - id: {String}
+  - author: {String} Author
+  - content: {String} Content
+  - rating: {Number} Rating (1..5)
+  - product: {Object} Product information
+  - image: {Object} (Optional) Image information
+  - video: {String} (Optional) Video source
+
+  Usage:
+  {% render 'component.review', review: {} %}
+{% endcomment %}
+
+<div
+  ui-component="review"
+  ui-slot="modal-content"
+  id="{{ id }}"
+  popover
+  style="
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-chroma: {{ block.settings.color.chroma }};
+    --brand-hue: {{ block.settings.color.oklch_hue }};
+  "
+  block-color
+  data-intensity="{{ block.settings.intensity }}"
+>
+  {% if block.settings.widget_carousel_type == 'testimonials' %}
+    <div ui-slot="modal-header">
+      <h3 ui-slot="modal-title">{{ 'general.details' | t }}</h3>
+      <button
+        class="close"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="ghost"
+        data-size="md"
+        data-as-icon
+        aria-label="Close"
+        popovertarget="{{ id }}"
+      >
+        {% render 'component.icon', name: 'hgi-cancel-01' %}
+      </button>
+    </div>
+  {% else %}
+    <div class="media-area">
+      {% if block.settings.widget_layout == 'carousel' and block.settings.widget_carousel_type == 'video-slider' %}
+        {% if video %}
+          {% render 'component.video', source: video %}
+        {% else %}
+          {% render 'component.image-fallback', type: 'video', icon_size: 40 %}
+        {% endif %}
+      {% else %}
+        {% if image %}
+          <img
+            src="{{ image.src }}"
+            alt="Review image "
+            width="100%"
+            height="100%"
+            loading="lazy"
+          >
+        {% else %}
+          {% render 'component.image-fallback', icon_size: 40 %}
+        {% endif %}
+      {% endif %}
+      <button
+        class="close"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="blur"
+        data-size="md"
+        data-as-icon
+        aria-label="Close"
+        popovertarget="{{ id }}"
+      >
+        {% render 'component.icon', name: 'hgi-cancel-01' %}
+      </button>
+    </div>
+  {% endif %}
+
+  <div class="content-area">
+    <div class="info">
+      {% assign default_author = 'general.anonymous' | t %}
+      <span class="author">{{ author | default: default_author }}</span>
+      <div class="stars">
+        {% for star in (1..5) %}
+          {% if star <= rating %}
+            {% render 'svg.star', size: 18 %}
+          {% else %}
+            {% render 'component.icon', name: 'hgi-star', size: 18 %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <article class="detail">{{ content }}</article>
+    </div>
+    <div class="product">
+      <div class="image">
+        {% if product.preview_image %}
+          <img
+            src="{{ product.preview_image.original }}"
+            alt="{{ product.name }}"
+            width="100%"
+            height="100%"
+            loading="lazy"
+          >
+        {% else %}
+          {% render 'component.image-fallback', icon_size: 20 %}
+        {% endif %}
+      </div>
+      <div class="bio">
+        {% assign default_name = 'general.product' | t %}
+        <span class="name">{{ product.name | default: default_name }}</span>
+        <a
+          href="{{ product.url | default: "#" }}"
+          ui-slot="button"
+          data-variant="primary"
+          data-mode="lighter"
+          data-size="md"
+        >
+          {% render 'component.icon', name: 'hgi-shopping-bag-01' %}
+          {{ 'general.view_product' | t }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

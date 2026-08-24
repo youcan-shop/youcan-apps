@@ -1,0 +1,411 @@
+<script
+  defer
+>
+  if (!window.__ycCodFormDefined) {
+    window.__ycCodFormDefined = true;
+
+    class CodForm extends HTMLElement {
+      static observedAttributes = ['variant-id'];
+
+      constructor() {
+        super();
+  
+        this.DRAFT_KEY = "cod-form-draft-{{ block.id }}";
+        this.DRAFT_EXPIRATION = 24 * 60 * 60 * 1000; // 24h
+
+        this.priceElements = this.querySelectorAll('[data-cod-form="price"]');
+        this.comparePriceElements = this.querySelectorAll('[data-cod-form="compare-price"]');
+        this.subtotalElements = this.querySelectorAll('[data-cod-form="subtotal"]');
+        this.totalElements = this.querySelectorAll('[data-cod-form="total"]');
+        this.savedElements = this.querySelectorAll('[data-cod-form="saved"]');
+        this.imageElements = this.querySelectorAll('[data-cod-form="image"]');
+
+        this.variantOptions = this.querySelectorAll('[data-cod-form="variant-option"]');
+
+        this.bundleInputs = this.querySelectorAll('[data-cod-form="bundle-option"]');
+
+        this.qtyIncrease = this.querySelectorAll('[data-cod-form="qty-inc"]');
+        this.qtyDecrease = this.querySelectorAll('[data-cod-form="qty-dec"]');
+        this.quantityDisplayElements = this.querySelectorAll('[data-cod-form="quantity"]');
+
+        this.form = this.querySelector('[data-cod-form="form"]');
+        this.submitButton = this.querySelector('[data-cod-form="submit"]');
+        this.successOrder = this.querySelector('[data-cod-form="success-order"]');
+        this.orderRecovery = this.querySelector('[data-cod-form="order-recovery"]');
+
+        this.quantity = 1;
+        {% unless block.settings.select_default_variant or product.variants.size == 1 %} 
+          this.selectedVariant = null
+        {% else %}
+          this.selectedVariant = {
+            id: "{{ default_variant.id }}",
+            price: {{ price }},
+            {% if compare_at_price %}
+              comparePrice: {{ compare_at_price }},
+            {% else %}
+              comparePrice: null,
+            {% endif %}
+            available: Boolean({{ default_variant.available }})
+          };
+        {% endunless %}
+        this.selectedBundle = null;
+      }
+
+      connectedCallback() {
+        this.bindVariantListeners();
+        this.bindBundleListeners();
+        this.bindQuantityListeners();
+        this.bindSubmitListener();
+
+        if(this.orderRecovery) {
+          this.bindDraftListeners();
+          this.showOrderRecovery();
+        }
+      }
+
+      bindVariantListeners() {
+        this.variantOptions.forEach((input) => {
+          input.addEventListener('change', () => this.onVariantSelected(input));
+        });
+      }
+
+      onVariantSelected(input) {
+        const available = input.dataset.available === 'true';
+        const price = parseFloat(input.dataset.price) || 0;
+        const comparePrice = input.dataset.comparePrice ? parseFloat(input.dataset.comparePrice) : null;
+        const image = input.dataset.image || null;
+
+        this.selectedVariant = {
+          id: input.dataset.variantId,
+          price,
+          comparePrice,
+          available,
+          image,
+        };
+
+        this.clearBundle();
+
+        this.setSubmitAvailable(available);
+        this.syncPrices();
+
+        if (image) {
+          this.imageElements.forEach((element) => {
+            element.querySelector('img').src = image;
+          });
+        }
+      }
+
+      bindBundleListeners() {
+        this.bundleInputs.forEach((input) => {
+          input.addEventListener('change', () => this.onBundleSelected(input));
+        });
+      }
+
+      onBundleSelected(changed) {
+        this.bundleInputs.forEach((input) => {
+          if (input !== changed) input.checked = false;
+        });
+
+        if (!changed.checked) {
+          this.selectedBundle = null;
+          this.setSubmitAvailable(this.selectedVariant?.available ?? false);
+          this.syncPrices();
+          return;
+        }
+
+        this.selectedBundle = changed.dataset.bundleId;
+
+        this.setSubmitAvailable(true);
+        this.syncPrices();
+      }
+
+      clearBundle() {
+        this.selectedBundle = null;
+        this.bundleInputs.forEach((input) => (input.checked = false));
+      }
+
+      bindQuantityListeners() {
+        this.qtyIncrease.forEach((btn) =>
+          btn.addEventListener('click', () => {
+            this.qty = this.quantity + 1;
+          })
+        );
+        this.qtyDecrease.forEach((btn) =>
+          btn.addEventListener('click', () => {
+            if (this.quantity > 1) this.qty = this.quantity - 1;
+          })
+        );
+      }
+
+      get qty() {
+        return this.quantity;
+      }
+
+      set qty(value) {
+        const parsed = parseInt(value, 10);
+        if (isNaN(parsed) || parsed < 1) return;
+        this.quantity = parsed;
+        this.syncQuantityDisplay();
+        this.syncPrices();
+      }
+
+      syncQuantityDisplay() {
+        this.quantityDisplayElements.forEach((element) => {
+          element.tagName === 'INPUT' ? (element.value = this.quantity) : (element.textContent = this.quantity);
+        });
+      }
+
+      syncPrices() {
+        let price, comparePrice;
+
+        if (this.selectedBundle !== null) {
+          const bundleInput = [...this.bundleInputs].find((i) => i.dataset.bundleId === this.selectedBundle);
+          price = parseFloat(bundleInput?.dataset.price) || 0;
+          comparePrice = bundleInput?.dataset.comparePrice ? parseFloat(bundleInput.dataset.comparePrice) : null;
+        } else if (this.selectedVariant) {
+          price = this.selectedVariant.price;
+          comparePrice = this.selectedVariant.comparePrice;
+        } else {
+          return;
+        }
+
+        const qty = this.quantity;
+        const subtotal = comparePrice ? comparePrice * qty : price * qty;
+        const total = price * qty;
+        const saved = comparePrice ? (comparePrice - price) * qty : 0;
+
+        this.setText(this.priceElements, formatCurrency(price));
+
+        this.comparePriceElements.forEach((element) => {
+          if (comparePrice) {
+            element.textContent = formatCurrency(comparePrice);
+            element.hidden = false;
+          } else {
+            element.hidden = true;
+          }
+        });
+
+        this.setText(this.subtotalElements, formatCurrency(subtotal));
+        this.setText(this.totalElements, formatCurrency(total));
+        this.savedElements.forEach((element) => {
+          if (saved > 0) {
+            element.textContent = `-${formatCurrency(saved)}`;
+            element.parentElement.hidden = false;
+          } else {
+            element.parentElement.hidden = true;
+          }
+        });
+      }
+
+      bindSubmitListener() {
+        this.form?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.handleSubmit();
+        });
+
+        this.submitButton?.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.handleSubmit();
+        });
+      }
+
+      handleSubmit() {
+        if (this.submitButton?.getAttribute('aria-disabled') === 'true') return;
+
+        if (!this.selectedVariant && !this.selectedBundle) {
+          toast.show(window.codFormApp.translation.select_variant, 'error');
+          return;
+        }
+
+        this.isLoading(true);
+
+        this.placeOrder(this.selectedVariant?.id ?? null, this.selectedBundle ?? null, null, this.quantity);
+      }
+
+      setSubmitAvailable(available) {
+        if (!this.submitButton) return;
+        this.submitButton.setAttribute('aria-disabled', String(!available));
+        this.submitButton.disabled = !available;
+      }
+
+      isLoading(state = true) {
+        const label = this.submitButton?.querySelector('span');
+
+        if (label) {
+          this.submitButton.toggleAttribute('disabled', state);
+          label.textContent = window.codFormApp.translation[state ? 'loading' : 'orderNow'];
+        }
+      }
+
+      async placeOrder(productVariantId, bundleId, attachedImage, quantity) {
+        const formData = new FormData(this.form);
+        const fields = Object.fromEntries(formData);
+
+        try {
+          const response = await youcanjs.checkout.placeExpressCheckoutOrder({
+            quantity,
+            fields,
+            ...(bundleId ? { bundleId, isBundle: true } : { productVariantId, attachedImage }),
+          });
+
+          response
+            .onSuccess((_, redirectToThankyouPage) => {
+              this.afterSuccessOrder(redirectToThankyouPage);
+            })
+            .onValidationErr((error) => {
+              toast.show(error.message, 'error');
+
+              for (const [field, message] of Object.entries(error.meta.fields)) {
+                const isCustomField = field.includes('extra_fields');
+                const selector = isCustomField ? `input[name="${field.replace('.', '[')}]"]` : `input[name="${field}"]`;
+
+                const errorElement = this.form?.querySelector(`[aria-labelledby="${field.replace('extra_fields.', '')}"]`);                         
+                const errorLabel = errorElement.querySelector('span');
+
+                if (errorLabel) {
+                  errorElement.removeAttribute('hidden');
+                  errorLabel.textContent = message;
+                }
+              }
+
+              this.form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            })
+            .onSkipShippingStep((_, redirect) => this.afterSuccessOrder(redirect))
+            .onSkipPaymentStep((_, redirect) => this.afterSuccessOrder(redirect));
+        } catch (error) {
+          console.error(error);
+          toast.show(error.message, 'error');
+        } finally {
+          this.isLoading(false);
+        }
+      }
+
+      setText(nodeList, value) {
+        nodeList.forEach((element) => (element.textContent = value));
+      }
+
+      afterSuccessOrder(action) {
+        if(this.successOrder) {
+          this.form.reset();
+          this.form.closest('[popover]')?.hidePopover();
+          this.successOrder.showPopover();
+          localStorage.removeItem(this.DRAFT_KEY);
+          
+          this.successOrder.querySelectorAll("button").forEach((btn, i) => {
+            btn.addEventListener('click', () => {
+              this.successOrder.querySelectorAll("button").forEach((b) => b.disabled = true);
+              btn.textContent = window.codFormApp.translation.loading;
+              i === 0 ?  window.location.href = "/" : action();
+            })
+          }) 
+        } else {
+          action();
+        }
+      }
+
+      bindDraftListeners() {
+        if (!this.form) return;
+
+        this.form.addEventListener("input", () => this.saveDraft());
+        this.form.addEventListener("change", () => this.saveDraft());
+
+        this.qtyIncrease.forEach(btn => btn.addEventListener("click", () => this.saveDraft()));
+        this.qtyDecrease.forEach(btn =>btn.addEventListener("click", () => this.saveDraft()));
+        this.variantOptions.forEach(option =>option.addEventListener("change", () => this.saveDraft()));
+        this.bundleInputs.forEach(option => option.addEventListener("change", () => this.saveDraft()));
+      }
+
+      saveDraft() {
+        if (!this.form) return;
+
+        const formData = new FormData(this.form);
+        const fields = {};
+        for (const [key, value] of formData.entries()) {
+          fields[key] = value;
+        }
+
+        const hasContent = [
+          ...this.form.querySelectorAll(
+            'input[type="text"], input[type="number"], input[type="tel"], input[type="email"]'
+          ),
+        ].some(input => input.value.trim() !== "");
+
+        if (!hasContent) return;;
+
+        localStorage.setItem(
+          this.DRAFT_KEY,
+          JSON.stringify({
+            fields,
+            qty: this.qty,
+            variantId: this.selectedVariant?.id ?? null,
+            bundleId: this.selectedBundle,
+            createdAt: Date.now()
+          })
+        );
+      }
+
+      restoreDraft() {
+        const raw = localStorage.getItem(this.DRAFT_KEY);
+        if (!raw) return;
+
+        const draft = JSON.parse(raw);
+
+        if (Date.now() - draft.createdAt > this.DRAFT_EXPIRATION) {
+          localStorage.removeItem(this.DRAFT_KEY);
+          return;
+        }
+
+        Object.entries(draft.fields).forEach(([name, value]) => {
+          const input = this.form.elements[name];
+
+          if (!input) return;
+
+          if (input.type === "checkbox") {
+            input.checked = value === "on";
+          } else {
+            input.value = value;
+          }
+        });
+
+        if (draft.variantId) {
+          const variant = this.querySelector(`[data-cod-form="variant-option"][data-variant-id="${draft.variantId}"]`);
+          variant?.click();
+        }
+
+        if (draft.bundleId) {
+          const bundle = this.querySelector(`[data-bundle-id="${draft.bundleId}"]`);
+          bundle?.click();
+        }
+
+        this.qty = draft.qty || 1;
+      }
+
+      showOrderRecovery() {
+        if (!localStorage.getItem(this.DRAFT_KEY)) return;
+
+        setTimeout(() => {
+          this.orderRecovery.showPopover();
+
+          this.orderRecovery.querySelectorAll("button").forEach((btn, i) => {
+            btn.addEventListener('click', () => {
+              if (i === 0) {
+                localStorage.removeItem(this.DRAFT_KEY);
+              } else {
+                this.restoreDraft();
+                this.form.closest('[popover]')?.showPopover();
+              }
+
+              this.orderRecovery.hidePopover();
+            })
+          })
+        }, 3000);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => customElements.define('app-cod-form', CodForm));
+    } else {
+      customElements.define('app-cod-form', CodForm);
+    } 
+  }
+</script>

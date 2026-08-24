@@ -1,0 +1,760 @@
+{% render 'asset.app' %}
+{% render 'asset.button' %}
+{% render 'asset.carousel' %}
+{% render 'asset.modal' %}
+
+<link rel="stylesheet" href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css">
+
+{% if block.settings.widget_layout == 'carousel' %}
+  {% case block.settings.widget_carousel_type %}
+    {% when 'dynamic' %}
+      {% render 'widget.dynamic' %}
+    {% when 'video-slider' %}
+      {% render 'widget.video' %}
+    {% when 'testimonials' %}
+      {% render 'widget.testimonials' %}
+  {% endcase %}
+{% else %}
+  {% case block.settings.widget_floating_type %}
+    {% when 'pop-up' %}
+      {% render 'widget.pop-up' %}
+    {% when 'sidebar' %}
+      {% render 'widget.sidebar' %}
+  {% endcase %}
+{% endif %}
+
+{% schema %}
+{
+  "label": "t:blocks.reviews.label",
+  "target": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.widget.label"
+    },
+    {
+      "type": "select",
+      "id": "widget_layout",
+      "label": "t:blocks.reviews.settings.widget.layout.label",
+      "options": [
+        {
+          "label": "t:blocks.reviews.settings.widget.layout.options.carousel",
+          "value": "carousel"
+        },
+        {
+          "label": "t:blocks.reviews.settings.widget.layout.options.floating",
+          "value": "floating"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "widget_carousel_type",
+      "label": "t:blocks.reviews.settings.widget.type.label",
+      "options": [
+        {
+          "label": "t:blocks.reviews.settings.widget.type.options.dynamic",
+          "value": "dynamic"
+        },
+        {
+          "label": "t:blocks.reviews.settings.widget.type.options.video",
+          "value": "video-slider"
+        },
+        {
+          "label": "t:blocks.reviews.settings.widget.type.options.testimonials",
+          "value": "testimonials"
+        }
+      ],
+      "default": "dynamic",
+      "visible_if": { "setting_id": "widget_layout", "value": "carousel" }
+    },
+    {
+      "type": "select",
+      "id": "widget_floating_type",
+      "label": "t:blocks.reviews.settings.widget.type.label",
+      "options": [
+        {
+          "label": "t:blocks.reviews.settings.widget.type.options.pop_up",
+          "value": "pop-up"
+        },
+        {
+          "label": "t:blocks.reviews.settings.widget.type.options.sidebar",
+          "value": "sidebar"
+        }
+      ],
+      "default": "pop-up",
+      "visible_if": { "setting_id": "widget_layout", "value": "floating" }
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.appearance.label"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "t:blocks.reviews.settings.appearance.color",
+      "default": "#121212"
+    },
+    {
+      "type": "select",
+      "id": "intensity",
+      "label": "t:blocks.reviews.settings.appearance.intensity.label",
+      "options": [
+        { "label": "t:blocks.reviews.settings.appearance.intensity.options.as_foreground", "value": "as-foreground" },
+        { "label": "t:blocks.reviews.settings.appearance.intensity.options.as_light_bg", "value": "as-light-bg" },
+        { "label": "t:blocks.reviews.settings.appearance.intensity.options.as_solid_bg", "value": "as-solid-bg" }
+      ],
+      "default": "as-foreground"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:blocks.reviews.settings.appearance.font.label",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "t:blocks.reviews.settings.appearance.font.options.inherit"
+        },
+        {
+          "value": "DM+Sans",
+          "label": "DM Sans"
+        },
+        {
+          "value": "Roboto",
+          "label": "Roboto"
+        },
+        {
+          "value": "Open+Sans",
+          "label": "Open Sans"
+        },
+        {
+          "value": "Lato",
+          "label": "Lato"
+        },
+        {
+          "value": "Noto+Sans",
+          "label": "Noto Sans"
+        },
+        {
+          "value": "Noto+Serif",
+          "label": "Noto Serif"
+        },
+        {
+          "value": "Montserrat",
+          "label": "Montserrat"
+        },
+        {
+          "value": "Oswald",
+          "label": "Oswald"
+        },
+        {
+          "value": "Poppins",
+          "label": "Poppins"
+        },
+        {
+          "value": "Raleway",
+          "label": "Raleway"
+        },
+        {
+          "value": "Inter",
+          "label": "Inter"
+        },
+        {
+          "value": "PT+Sans",
+          "label": "PT Sans"
+        },
+        {
+          "value": "PT+Serif",
+          "label": "PT Serif"
+        },
+        {
+          "value": "Lora",
+          "label": "Lora"
+        },
+        {
+          "value": "Rubik",
+          "label": "Rubik"
+        },
+        {
+          "value": "Cairo",
+          "label": "Cairo"
+        },
+        {
+          "value": "Tajawal",
+          "label": "Tajawal"
+        },
+        {
+          "value": "Almarai",
+          "label": "Almarai"
+        },
+        {
+          "value": "Noto+Kufi+Arabic",
+          "label": "Noto Kufi"
+        },
+        {
+          "value": "Changa",
+          "label": "Changa"
+        },
+        {
+          "value": "Beiruti",
+          "label": "Beiruti"
+        }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "select",
+      "id": "corner_radius",
+      "label": "t:blocks.reviews.settings.appearance.corner_radius.label",
+      "options": [
+        { "label": "t:blocks.reviews.settings.appearance.corner_radius.options.flat", "value": "flat" },
+        { "label": "t:blocks.reviews.settings.appearance.corner_radius.options.soft", "value": "soft" },
+        { "label": "t:blocks.reviews.settings.appearance.corner_radius.options.softer", "value": "softer" }
+      ],
+      "default": "softer"
+    },
+    {
+      "type": "range",
+      "id": "dynamic_nbr_columns",
+      "label": "t:blocks.reviews.settings.appearance.nbr_columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "dynamic" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "video_nbr_columns",
+      "label": "t:blocks.reviews.settings.appearance.nbr_columns_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 5,
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "vertical_spacing_desktop",
+      "label": "t:blocks.reviews.settings.appearance.vertical_spacing_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "vertical_spacing_mobile",
+      "label": "t:blocks.reviews.settings.appearance.vertical_spacing_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "horizontal_spacing_desktop",
+      "label": "t:blocks.reviews.settings.appearance.horizontal_spacing_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "horizontal_spacing_mobile",
+      "label": "t:blocks.reviews.settings.appearance.horizontal_spacing_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.trigger.name",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "floating" },
+        { "setting_id": "widget_floating_type", "value": "sidebar" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trigger_label",
+      "label": "t:blocks.reviews.settings.trigger.label.label",
+      "default": "t:blocks.reviews.settings.trigger.label.placeholder",
+      "placeholder": "t:blocks.reviews.settings.trigger.label.placeholder",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "floating" },
+        { "setting_id": "widget_floating_type", "value": "sidebar" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "trigger_position",
+      "label": "t:blocks.reviews.settings.trigger.position.label",
+      "options": [
+        { "label": "t:blocks.reviews.settings.trigger.position.options.left", "value": "left" },
+        { "label": "t:blocks.reviews.settings.trigger.position.options.right", "value": "right" }
+      ],
+      "default": "right",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "floating" },
+        { "setting_id": "widget_floating_type", "value": "sidebar" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "trigger_icon",
+      "label": "t:blocks.reviews.settings.trigger.show_icon.label",
+      "default": true,
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "floating" },
+        { "setting_id": "widget_floating_type", "value": "sidebar" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.hint"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_1"
+    },
+    {
+      "type": "text",
+      "id": "author_review_1",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_1",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_1",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_1",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_1",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_1",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_2"
+    },
+    {
+      "type": "text",
+      "id": "author_review_2",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_2",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_2",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_2",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_2",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_2",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_3"
+    },
+    {
+      "type": "text",
+      "id": "author_review_3",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_3",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_3",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_3",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_3",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_3",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_4"
+    },
+    {
+      "type": "text",
+      "id": "author_review_4",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_4",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_4",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_4",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_4",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_4",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_5"
+    },
+    {
+      "type": "text",
+      "id": "author_review_5",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_5",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_5",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_5",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_5",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_5",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_6"
+    },
+    {
+      "type": "text",
+      "id": "author_review_6",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_6",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_6",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_6",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_6",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_6",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_7"
+    },
+    {
+      "type": "text",
+      "id": "author_review_7",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_7",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_7",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_7",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_7",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_7",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.add_review.review_8"
+    },
+    {
+      "type": "text",
+      "id": "author_review_8",
+      "label": "t:blocks.reviews.settings.add_review.author.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.author.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "content_review_8",
+      "label": "t:blocks.reviews.settings.add_review.content.label",
+      "placeholder": "t:blocks.reviews.settings.add_review.content.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "rating_review_8",
+      "label": "t:blocks.reviews.settings.add_review.rating.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "image_picker",
+      "id": "image_review_8",
+      "label": "t:blocks.reviews.settings.add_review.image.label",
+      "visible_if": [{ "setting_id": "widget_carousel_type", "operator": "!=", "value": "testimonials" }]
+    },
+    {
+      "type": "url",
+      "id": "video_review_8",
+      "label": "t:blocks.reviews.settings.add_review.video.label",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.add_review.video.hint",
+      "visible_if": [
+        { "setting_id": "widget_layout", "value": "carousel" },
+        { "setting_id": "widget_carousel_type", "value": "video-slider" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_review_8",
+      "label": "t:blocks.reviews.settings.add_review.product.label"
+    }
+  ]
+}
+{% endschema %}

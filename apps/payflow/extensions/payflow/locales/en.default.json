@@ -1,0 +1,42 @@
+{
+  "general": {
+    "variants": "Variants",
+    "bundles": "Bundles",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "saved": "You have saved",
+    "save": "Save",
+    "buy_now": " Buy now",
+    "out_of_stock": "Out of stock",
+    "loading": "Loading...",
+    "optional": "Optional",
+    "invalid_phone": "Please enter a valid phone number",
+    "select_variant": "Please select a variant",
+    "select_product": "Please select a product",
+    "fields": {
+      "first_name": "Fist name",
+      "last_name": "Last name",
+      "full_name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "phone_or_email": "Phone or email",
+      "company": "Company",
+      "country": "Country",
+      "region": "Region",
+      "city": "City"
+    },
+    "success_order": {
+      "heading": "Order Placed Successfully!",
+      "subheading": "Thank you for your order. You can view your order details or continue shopping.",
+      "view_order": "View order",
+      "continue_shopping": "Continue shopping"
+    },
+    "order_recovery": {
+      "heading": "Continue your order?",
+      "subheading": "Continue your order and complete your purchase.",
+      "continue": "Continue",
+      "not_now": "Not now"
+    }
+  }
+}

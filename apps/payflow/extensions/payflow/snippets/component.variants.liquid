@@ -1,0 +1,90 @@
+{% comment %}
+  Renders variants element
+
+  Usage:
+  {% render 'component.variants' %}
+{% endcomment %}
+
+<div data-component="variants">
+  <h4 class="title">{{ 'general.variants' | t }}</h4>
+  <ul class="options">
+    {% for opt in product.variants %}
+      {% unless block.settings.hide_unavailable_variants and opt.available == false %}
+        <li class="option-item">
+          <label
+            data-slot="button"
+            data-variant="secondary"
+            data-size="sm"
+            {% unless opt.available %}
+              disabled
+            {% endunless %}
+          >
+            {% for variation in opt.variations %}
+              {{ variation[1] }}
+              {% unless forloop.last %}
+                /
+              {% endunless %}
+            {% endfor %}
+            <input
+              type="radio"
+              name="{{ opt.product_id}}-{{ block.id }}"
+              value="{{ variation[0] }}"
+              data-cod-form="variant-option"
+              data-variant-id="{{ opt.id}}"
+              data-price="{{ opt.price }}"
+              data-compare-price="{{ opt.compare_at_price }}"
+              {% if opt.available %}
+                data-available="true"
+              {% else %}
+                data-available="false"
+              {% endif %}
+              data-inventory="{{ opt.inventory }}"
+              data-image="{{ opt.image }}"
+              {% if block.settings.select_default_variant and opt.is_default %}
+                checked
+              {% endif %}
+            >
+          </label>
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+  [data-component='variants'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    .title {
+      font: var(--font-body-md);
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+
+      .option-item {
+        position: relative;
+
+        [data-slot='button'] {
+          cursor: pointer;
+
+          input[type='radio'] {
+            scale: 0;
+            position: absolute;
+          }
+        }
+
+        &:has(input[type='radio']:checked) {
+          [data-slot='button'][data-variant='secondary'] {
+            --color-button: var(--color-primary);
+            --color-on-button: var(--color-on-primary);
+          }
+        }
+      }
+    }
+  }
+</style>

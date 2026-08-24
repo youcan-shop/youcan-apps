@@ -1,0 +1,167 @@
+{
+  "app": {
+    "settings": {
+      "design": {
+        "label": "التصميم",
+        "style": {
+          "label": "النمط",
+          "options": {
+            "default": "افتراضي",
+            "sticky": "مثبت",
+            "cart_drawer": "سلة جانبية"
+          }
+        },
+        "positioning": {
+          "label": "الموضع",
+          "options": {
+            "top_page": "أعلى الصفحة",
+            "bottom_page": "أسفل الصفحة"
+          }
+        },
+        "sticky_to_top_while_scrolling": "تثبيت في الأعلى أثناء التمرير",
+        "layout": {
+          "label": "التخطيط",
+          "options": {
+            "standard": "قياسي",
+            "balanced": "متوازن",
+            "inline": "ضمن السطر"
+          }
+        },
+        "background": {
+          "label": "الخلفية",
+          "options": {
+            "single_color": "لون واحد",
+            "gradient": "تدرج لوني",
+            "image": "صورة"
+          }
+        },
+        "transparent": "شفاف",
+        "bg_color": "لون الخلفية",
+        "gradient_angle_degree": "زاوية التدرج (بالدرجات)",
+        "gradient_start": "بداية التدرج",
+        "gradient_end": "نهاية التدرج",
+        "background_image": "صورة الخلفية",
+        "border_weight": "سُمك الإطار",
+        "border_style": {
+          "label": "نمط الإطار",
+          "options": {
+            "none": "بدون",
+            "solid": "متصل",
+            "dashed": "متقطع"
+          }
+        },
+        "border_color": "لون الإطار",
+        "timer_style": {
+          "label": "نمط المؤقت",
+          "options": {
+            "plain": "بسيط",
+            "grouped": "مجمع",
+            "boxes": "مربعات"
+          }
+        },
+        "timer_corner_radius": "استدارة زوايا المؤقت",
+        "timer_background": "خلفية المؤقت",
+        "timer_border_weight": "سُمك إطار المؤقت",
+        "timer_border_style": {
+          "label": "نمط إطار المؤقت",
+          "options": {
+            "none": "بدون",
+            "solid": "متصل",
+            "dashed": "متقطع"
+          }
+        },
+        "timer_border_color": "لون إطار المؤقت",
+        "corner_radius": "استدارة الزوايا"
+      },
+      "typography": {
+        "label": "الخطوط",
+        "font": {
+          "label": "الخط",
+          "options": {
+            "inherit": "استخدام خطوط القالب"
+          }
+        },
+        "title_size": "حجم العنوان",
+        "title_color": "لون العنوان",
+        "subheading_size": "حجم العنوان الفرعي",
+        "subheading_color": "لون العنوان الفرعي",
+        "legend_size": "حجم التسمية",
+        "legend_color": "لون التسمية",
+        "timer_size": "حجم المؤقت",
+        "timer_color": "لون المؤقت",
+        "button_corner_radius": "استدارة زوايا الزر",
+        "button_size": "حجم الزر",
+        "button_bg_color": "لون خلفية الزر",
+        "button_text_color": "لون نص الزر"
+      },
+      "spacing": {
+        "label": "التباعد",
+        "outside_block": "خارجي (أعلى | أسفل)",
+        "outside_inline": "خارجي (يسار | يمين)",
+        "inside_block": "داخلي (أعلى | أسفل)",
+        "inside_inline": "داخلي (يسار | يمين)"
+      },
+      "content": {
+        "label": "المحتوى",
+        "title": "العنوان",
+        "subheading": "العنوان الفرعي",
+        "cta": {
+          "label": "دعوة لاتخاذ إجراء",
+          "options": {
+            "none": "بدون دعوة لاتخاذ إجراء",
+            "button": "زر",
+            "clickable": "جعل الشريط بالكامل قابلاً للنقر"
+          }
+        },
+        "button_text": "نص الزر",
+        "link": "الرابط",
+        "close_icon": "أيقونة الإغلاق",
+        "timer_labels": "تسميات المؤقت",
+        "days": "الأيام",
+        "hours": "الساعات",
+        "minutes": "الدقائق",
+        "seconds": "الثواني",
+        "hide_days_when_value_is_zero": "إخفاء الأيام عندما تكون القيمة 00"
+      },
+      "config": {
+        "label": "الإعدادات",
+        "timer_type": {
+          "label": "نوع المؤقت",
+          "options": {
+            "date": "عد تنازلي حتى تاريخ محدد",
+            "fixed_minutes": "دقائق ثابتة",
+            "daily": "مؤقت يومي متكرر"
+          },
+          "date_hint": "ينتهي المؤقت عند التاريخ المحدد.",
+          "minutes_hint": "عد تنازلي بعدد دقائق ثابت لكل جلسة مشتري.",
+          "daily_hint": "مثال: كل يوم عمل من 9 صباحًا إلى 11 صباحًا"
+        },
+        "monday": "الاثنين",
+        "tuesday": "الثلاثاء",
+        "wednesday": "الأربعاء",
+        "thursday": "الخميس",
+        "friday": "الجمعة",
+        "saturday": "السبت",
+        "sunday": "الأحد",
+        "start_date": "تاريخ البدء (DD/MM/YYYY)",
+        "end_date": "تاريخ الانتهاء (DD/MM/YYYY)",
+        "time_format": {
+          "label": "تنسيق الوقت",
+          "options": {
+            "am": "ص",
+            "pm": "م"
+          }
+        },
+        "once_it_ends": {
+          "label": "عند انتهاء المؤقت",
+          "options": {
+            "unpublish": "إلغاء النشر",
+            "do_nothing": "عدم القيام بأي شيء",
+            "hide": "إخفاء المؤقت عن المشتري",
+            "repeat": "إعادة العد التنازلي"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "app": {
+    "settings": {
+      "product": {
+        "label": "Product",
+        "hint": "Use the product on the current page, or select one for other pages"
+      },
+      "layout": {
+        "label": "Layout",
+        "display_style": {
+          "label": "Display style",
+          "options": {
+            "inline": "Inline",
+            "drawer": "Drawer",
+            "modal": "Modal"
+          }
+        },
+        "trigger_button": "Trigger button text",
+        "sticky_bar_desktop_width": {
+          "label": "Stick bar width in desktop",
+          "options": {
+            "md": "Medium",
+            "lg": "Large",
+            "full_width": "Full width"
+          }
+        },
+        "drawer_position": {
+          "label": "Drawer position",
+          "options": {
+            "left": "Left",
+            "right": "Right"
+          }
+        },
+        "desktop_width": {
+          "label": "Width in desktop",
+          "options": {
+            "md": "Medium",
+            "lg": "Large",
+            "full_width": "Full width"
+          }
+        },
+        "alignment": {
+          "label": "Alignment",
+          "options": {
+            "left": "Left",
+            "center": "Center",
+            "right": "Right"
+          }
+        },
+        "space_block": "Block space",
+        "space_inline": "Inline space"
+      },
+      "theme": {
+        "label": "Theme",
+        "corner_style": {
+          "label": "Corner style",
+          "options": {
+            "flat": "Flat",
+            "soft": "Soft",
+            "softer": "Softer",
+            "rounded": "Rounded"
+          }
+        },
+        "font_family": {
+          "label": "Font family",
+          "options": {
+            "inherit": "Inherit"
+          }
+        },
+        "color_scheme": {
+          "label": "Color scheme",
+          "options": {
+            "light": "Light",
+            "soft": "Soft",
+            "bold": "Bold"
+          }
+        },
+        "accent_color": "Accent color"
+      },
+      "header": {
+        "label": "Header",
+        "show_icon": "Show icon",
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "cta_button": "CTA button",
+        "show_price_in_cta_button": "Show price in CTA button"
+      },
+      "form_input": {
+        "label": "Form inputs",
+        "auto_translation": "Auto translation",
+        "show_icons": "Show icons"
+      },
+      "variants": {
+        "label": "Variants",
+        "enable_variants": "Enable variants",
+        "select_default_variant": "Select default variants",
+        "hide_unavailable_variants": "Hide unavailable variants"
+      },
+      "bundles": {
+        "label": "Bundles",
+        "enable_bundles": "Enable bundles",
+        "bundle_display": {
+          "label": "Bundle display",
+          "options": {
+            "list": "List",
+            "cards": "Cards"
+          }
+        },
+        "default_tier": "Default selected tier",
+        "highlight_best_value": "Highlight best value tier",
+        "highlight_label": "Highlight label"
+      },
+      "feature_list": {
+        "label": "Feature list",
+        "show_feature_list": "Show feature list",
+        "orientation": {
+          "label": "Orientation",
+          "options": {
+            "horizontal": "Horizontal",
+            "vertical": "Vertical"
+          }
+        },
+        "feature_item_text_1": "Feature text #1",
+        "feature_item_text_2": "Feature text #2",
+        "feature_item_text_3": "Feature text #3",
+        "feature_item_text_4": "Feature text #4"
+      },
+      "media": {
+        "label": "Media",
+        "show_media": "Show media",
+        "type": {
+          "label": "Type",
+          "options": {
+            "image": "Image",
+            "youtube": "YouTube"
+          }
+        },
+        "image": "Image",
+        "video_id": "Video ID",
+        "aspect_ratio": {
+          "label": "Aspect ratio",
+          "options": {
+            "square": "Square (1:1)",
+            "portrait": "Portrait (3:4)",
+            "landscape": "Landscape (16:9)"
+          }
+        }
+      },
+      "summary": {
+        "label": "Summary",
+        "show_order_summary": "Show order summary"
+      },
+      "product_info": {
+        "label": "Product info",
+        "show_price": "Show price",
+        "show_compare_at_price": "Show compare-at price",
+        "show_rating": "Show rating"
+      },
+      "thankyou": {
+        "label": "Thankyou",
+        "after_successful_order": {
+          "label": "After successful order",
+          "options": {
+            "redirect": "Redirect to order summary",
+            "message": "Show success message"
+          }
+        }
+      },
+      "advanced": {
+        "label": "Advanced",
+        "abandoned_order_recovery": {
+          "label": "Abandoned order recovery",
+          "hint": "Display a reminder to continue an unfinished order"
+        }
+      }
+    }
+  }
+}

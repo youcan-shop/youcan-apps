@@ -1,0 +1,60 @@
+{% comment %}
+  Renders feature list element
+
+  Usage:
+  {% render 'component.feature-list' %}
+{% endcomment %}
+
+<ul data-component="feature-list" aria-orientation="{{ block.settings.feature_list_orientation }}">
+  {% for i in (1..4) %}
+    {% assign text = 'feature_item_text_' | append: i %}
+
+    {% if block.settings[text] != blank %}
+      <li class="feature-item">
+        <div class="icon">
+          {% render 'component.icon', name: 'hgi-invoice-01' %}
+        </div>
+        <span class="text">{{ block.settings[text] }}</span>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<style>
+  [data-component='feature-list'] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-12);
+
+    &[aria-orientation='vertical'] {
+      flex-direction: column;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+
+      .icon {
+        width: var(--spacing-32);
+        height: var(--spacing-32);
+        border-radius: calc(var(--radius-block) * 0.6);
+        color: var(--color-primary);
+        background-color: var(--color-primary-container);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .text {
+        font: var(--font-body-sm);
+      }
+    }
+
+    @media (width <= 769px) {
+      justify-content: start;
+    }
+  }
+</style>

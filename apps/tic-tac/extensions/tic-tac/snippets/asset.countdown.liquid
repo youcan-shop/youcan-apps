@@ -1,0 +1,324 @@
+{% comment %}
+  Handles the countdown timer logic
+
+  Usage:
+  {% render 'asset.countdown' %}
+{% endcomment %}
+
+{% assign days_fallback = 'days' | t %}
+{% assign hrs_fallback = 'hours' | t %}
+{% assign mins_fallback = 'minutes' | t %}
+{% assign secs_fallback = 'seconds' | t %}
+
+<script defer>
+  if (!customElements.get('app-countdown')) {
+    class Countdown extends HTMLElement {
+      static MS_PER_SECOND = 1000;
+      static MS_PER_MINUTE = 60 * Countdown.MS_PER_SECOND;
+      static MS_PER_HOUR = 60 * Countdown.MS_PER_MINUTE;
+      static MS_PER_DAY = 24 * Countdown.MS_PER_HOUR;
+      static DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.type = this.getAttribute('timer-type') || 'date';
+        this.onceEnds = this.getAttribute('once-ends') || 'do-nothing';
+        this.hideDaysWhenZero = this.getAttribute('hide-days-zero') === '1';
+        this.storageKey = this.getAttribute('storage-key') || this.id || 'app-countdown';
+
+        if (this.readFlag('closed') || this.readFlag('hidden')) {
+          this.hideHost();
+          return;
+        }
+
+        this.tick();
+        this.interval = setInterval(() => this.tick(), 1000);
+      }
+
+      disconnectedCallback() {
+        if (this.interval) clearInterval(this.interval);
+      }
+
+      getTarget() {
+        switch (this.type) {
+          case 'fixed-minutes':
+            return this.getFixedMinutesTarget();
+          case 'daily':
+            return this.getDailyTarget();
+          case 'date':
+          default:
+            return this.getDateTarget();
+        }
+      }
+
+      getDateTarget() {
+        const day = this.getAttribute('end-date'); // DD/MM/YYYY
+        const hour = parseInt(this.getAttribute('end-hours'), 10);
+        const minute = parseInt(this.getAttribute('end-minutes'), 10);
+        const ampm = this.getAttribute('end-ampm'); // AM | PM
+
+        return this.buildDateTime(day, hour, minute, ampm);
+      }
+
+      getFixedMinutesTarget() {
+        const stored = this.readFlag('end');
+
+        if (stored) {
+          return new Date(parseInt(stored, 10));
+        }
+
+        const minutes = parseInt(this.getAttribute('fixed-minutes'), 10) || 0;
+        const end = Date.now() + minutes * Countdown.MS_PER_MINUTE;
+        this.writeFlag('end', String(end));
+
+        return new Date(end);
+      }
+
+      getDailyTarget() {
+        const now = new Date();
+
+        const recurrenceStart = this.parseDMY(this.getAttribute('daily-start-date'));
+        if (recurrenceStart && now < recurrenceStart) {
+          return null;
+        }
+
+        const activeDays = (this.getAttribute('daily-days') || '')
+          .split(',')
+          .map((d) => d.trim().toLowerCase())
+          .filter(Boolean);
+
+        const todayName = Countdown.DAY_NAMES[now.getDay()];
+        if (!activeDays.includes(todayName)) {
+          return null;
+        }
+
+        const startDay = this.getAttribute('daily-start-date');
+        const startHour = parseInt(this.getAttribute('daily-start-hours'), 10);
+        const startMinute = parseInt(this.getAttribute('daily-start-minutes'), 10);
+        const startAmpm = this.getAttribute('daily-start-ampm');
+        const windowStart = this.buildDateTime(startDay, startHour, startMinute, startAmpm);
+
+        const endDay = this.getAttribute('end-date');
+        const endHour = parseInt(this.getAttribute('daily-end-hours'), 10);
+        const endMinute = parseInt(this.getAttribute('daily-end-minutes'), 10);
+        const endAmpm = this.getAttribute('daily-end-ampm');
+        const windowEnd = this.buildDateTime(endDay, endHour, endMinute, endAmpm);
+
+        if (windowEnd <= windowStart) {
+          windowEnd.setDate(windowEnd.getDate() + 1);
+        }
+
+        if (now < windowStart || now >= windowEnd) {
+          return null;
+        }
+
+        return windowEnd;
+      }
+
+      tick() {
+        const target = this.getTarget();
+
+        if (!target) {
+          this.hideHost();
+          return;
+        }
+
+        this.showHost();
+
+        const difference = target - new Date();
+
+        if (difference <= 0) {
+          this.onEnd();
+          return;
+        }
+
+        this.updateUI(difference);
+
+        this.closeElement = this.closest('[data-app="tic-tac"]')?.querySelector('[data-component="close"]');
+        if (this.closeElement) {
+          this.closeElement.addEventListener('click', () => this.close());
+        }
+      }
+
+      onEnd() {
+        this.updateUI(0);
+
+        switch (this.type) {
+          case 'date':
+            if (this.onceEnds === 'unpublish') {
+              this.hideHost();
+              clearInterval(this.interval);
+            }
+            break;
+
+          case 'fixed-minutes':
+            if (this.onceEnds === 'hide') {
+              this.writeFlag('hidden', '1');
+              this.hideHost();
+              clearInterval(this.interval);
+            } else if (this.onceEnds === 'repeat') {
+              this.clearFlag('end');
+            }
+            break;
+
+          case 'daily':
+            break;
+        }
+
+        this.dispatchEvent(new CustomEvent('countdown:end', { bubbles: true }));
+      }
+
+      updateUI(difference) {
+        let remaining = Math.max(difference, 0);
+
+        const days = Math.floor(remaining / Countdown.MS_PER_DAY);
+        remaining %= Countdown.MS_PER_DAY;
+
+        const hours = Math.floor(remaining / Countdown.MS_PER_HOUR);
+        remaining %= Countdown.MS_PER_HOUR;
+
+        const minutes = Math.floor(remaining / Countdown.MS_PER_MINUTE);
+        remaining %= Countdown.MS_PER_MINUTE;
+
+        const seconds = Math.floor(remaining / Countdown.MS_PER_SECOND);
+
+        const [d, h, m, s] = this.querySelectorAll('[data-days], [data-hours], [data-minutes], [data-seconds]');
+        this.daysElement = d;
+        this.hoursElement = h;
+        this.minutesElement = m;
+        this.secondsElement = s;
+        this.daysWrapperElement = this.querySelector('[data-days-wrapper]');
+
+        if (this.daysElement) this.daysElement.textContent = this.pad(days);
+        if (this.hoursElement) this.hoursElement.textContent = this.pad(hours);
+        if (this.minutesElement) this.minutesElement.textContent = this.pad(minutes);
+        if (this.secondsElement) this.secondsElement.textContent = this.pad(seconds);
+
+        if (this.daysWrapperElement && this.hideDaysWhenZero) {
+          this.daysWrapperElement.style.display = days === 0 ? 'none' : '';
+          this.daysWrapperElement.nextElementSibling.style.display = days === 0 ? 'none' : '';
+        }
+      }
+
+      buildDateTime(dmy, hour12, minute, ampm) {
+        const parsed = this.parseDMY(dmy);
+        if (!parsed) return null;
+
+        const hour24 = this.to24Hour(hour12, ampm);
+        parsed.setHours(hour24, minute || 0, 0, 0);
+
+        return parsed;
+      }
+
+      parseDMY(str) {
+        if (!str) return null;
+        const [day, month, year] = str.split('/').map((n) => parseInt(n, 10));
+        if (!day || !month || !year) return null;
+
+        return new Date(year, month - 1, day);
+      }
+
+      to24Hour(hour12, ampm) {
+        if (isNaN(hour12)) return 0;
+        let hour = hour12 % 12;
+        if ((ampm || '').toLowerCase() === 'pm') hour += 12;
+
+        return hour;
+      }
+
+      pad(value) {
+        return String(value).padStart(2, '0');
+      }
+
+      hideHost() {
+        this.closest('[data-app="tic-tac"]').style.display = 'none';
+      }
+
+      showHost() {
+        this.closest('[data-app="tic-tac"]').style.display = '';
+      }
+
+      readFlag(name) {
+        try {
+          return window.sessionStorage.getItem(`${this.storageKey}:${name}`);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      writeFlag(name, value) {
+        try {
+          window.sessionStorage.setItem(`${this.storageKey}:${name}`, value);
+        } catch (e) {}
+      }
+
+      clearFlag(name) {
+        try {
+          window.sessionStorage.removeItem(`${this.storageKey}:${name}`);
+        } catch (e) {}
+      }
+
+      close() {
+        this.writeFlag('closed', '1');
+        if (this.interval) clearInterval(this.interval);
+        this.hideHost();
+      }
+    }
+
+    customElements.define('app-countdown', Countdown);
+  }
+</script>
+
+<app-countdown
+  data-component="timer"
+  timer-type="{{ block.settings.timer_type }}"
+  once-ends="{% if block.settings.timer_type == 'date' %}{{ block.settings.once_it_ends_date }}{% elsif block.settings.timer_type == 'fixed-minutes' %}{{ block.settings.once_it_ends_fixed_minutes }}{% endif %}"
+  data-style="{{ block.settings.timer_style }}"
+  {% if block.settings.timer_labels %}
+    hide-days-zero="{{ block.settings.hide_days_when_value_is_zero }}"
+  {% endif %}
+  storage-key="countdown-{{ block.id }}"
+  end-date="{{ block.settings.end_date }}"
+  end-hours="{{ block.settings.hours_end_date }}"
+  end-minutes="{{ block.settings.minutes_end_date }}"
+  end-ampm="{{ block.settings.time_format_end }}"
+  fixed-minutes="{{ block.settings.minutes_end_fixed }}"
+  daily-start-date="{{ block.settings.start_date }}"
+  daily-start-hours="{{ block.settings.hours_start }}"
+  daily-start-minutes="{{ block.settings.minutes_start }}"
+  daily-start-ampm="{{ block.settings.time_format_start }}"
+  daily-end-hours="{{ block.settings.hours_end_date }}"
+  daily-end-minutes="{{ block.settings.minutes_end_date }}"
+  daily-end-ampm="{{ block.settings.time_format_end }}"
+>
+  <div data-days-wrapper>
+    <span data-days>--</span>
+    {% if block.settings.timer_labels %}
+      <span class="label">{{ block.settings.days_label | default: days_fallback }}</span>
+    {% endif %}
+  </div>
+  <span class="colon">:</span>
+  <div>
+    <span data-hours>--</span>
+    {% if block.settings.timer_labels %}
+      <span class="label">{{ block.settings.hours_label | default: hrs_fallback }}</span>
+    {% endif %}
+  </div>
+  <span class="colon">:</span>
+  <div>
+    <span data-minutes>--</span>
+    {% if block.settings.timer_labels %}
+      <span class="label">{{ block.settings.mins_label | default: mins_fallback }}</span>
+    {% endif %}
+  </div>
+  <span class="colon">:</span>
+  <div>
+    <span data-seconds>--</span>
+    {% if block.settings.timer_labels %}
+      <span class="label">{{ block.settings.secs_label | default: secs_fallback }}</span>
+    {% endif %}
+  </div>
+</app-countdown>

@@ -1,0 +1,11 @@
+{% comment %}
+  Renders drawer layout
+
+  Usage:
+  {% render 'layout.drawer' %}
+{% endcomment %}
+
+<app-cod-form data-app="drawer" data-theme="{{ block.settings.color_scheme }}" variant-id="{{ default_variant.id }}">
+  {% render 'component.sticky-bar' %}
+  {% render 'component.elements', layout: 'drawer' %}
+</app-cod-form>

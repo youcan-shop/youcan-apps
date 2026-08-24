@@ -1,0 +1,110 @@
+{
+  "blocks": {
+    "reviews": {
+      "label": "TrustMe",
+      "settings": {
+        "widget": {
+          "label": "الأداة",
+          "layout": {
+            "label": "التخطيط",
+            "options": {
+              "carousel": "دوّار",
+              "floating": "عائم"
+            }
+          },
+          "type": {
+            "label": "النوع",
+            "options": {
+              "dynamic": "ديناميكي",
+              "video": "شريط الفيديو",
+              "testimonials": "الشهادات",
+              "sidebar": "الشريط الجانبي",
+              "pop_up": "نافذة منبثقة"
+            }
+          }
+        },
+        "appearance": {
+          "label": "المظهر",
+          "color": "اللون",
+          "intensity": {
+            "label": "الشدة",
+            "options": {
+              "as_foreground": "كلون للنص",
+              "as_light_bg": "كخلفية فاتحة",
+              "as_solid_bg": "كخلفية بلون موحد"
+            }
+          },
+          "font": {
+            "label": "الخط",
+            "options": {
+              "inherit": "مقتبس"
+            }
+          },
+          "corner_radius": {
+            "label": "انحناء الزوايا",
+            "options": {
+              "flat": "مسطح",
+              "soft": "ناعم",
+              "softer": "أكثر نعومة"
+            }
+          },
+          "vertical_spacing_desktop": "التباعد العمودي (سطح المكتب)",
+          "horizontal_spacing_desktop": "التباعد الأفقي (سطح المكتب)",
+          "vertical_spacing_mobile": "التباعد العمودي (الجوال)",
+          "horizontal_spacing_mobile": "التباعد الأفقي (الجوال)",
+          "nbr_columns_desktop": "عدد الأعمدة على سطح المكتب"
+        },
+        "trigger": {
+          "name": "المشغّل",
+          "label": {
+            "label": "التسمية",
+            "placeholder": "التقييمات"
+          },
+          "position": {
+            "label": "الموضع",
+            "options": {
+              "left": "يسار",
+              "right": "يمين"
+            }
+          },
+          "show_icon": {
+            "label": "إظهار الأيقونة"
+          }
+        },
+        "add_review": {
+          "label": "أضف تقييمًا",
+          "hint": "أضف تقييماتك هنا (بحد أقصى 8)",
+          "author": {
+            "label": "الكاتب",
+            "placeholder": "كريم .ل"
+          },
+          "content": {
+            "label": "المحتوى",
+            "placeholder": "شارك تجربتك.."
+          },
+          "rating": {
+            "label": "التقييم"
+          },
+          "product": {
+            "label": "المنتج"
+          },
+          "image": {
+            "label": "الصورة"
+          },
+          "video": {
+            "label": "الفيديو",
+            "hint": "استخدم هذا [الموقع](https://www.videotourl.com) لإنشاء رابط لفيديوك، ثم الصقه هنا."
+          },
+          "review_1": "تقييم 1",
+          "review_2": "تقييم 2",
+          "review_3": "تقييم 3",
+          "review_4": "تقييم 4",
+          "review_5": "تقييم 5",
+          "review_6": "تقييم 6",
+          "review_7": "تقييم 7",
+          "review_8": "تقييم 8"
+        }
+      }
+    }
+  }
+}

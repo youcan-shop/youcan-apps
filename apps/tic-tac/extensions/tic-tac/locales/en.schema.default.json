@@ -1,0 +1,167 @@
+{
+  "app": {
+    "settings": {
+      "design": {
+        "label": "Design",
+        "style": {
+          "label": "Style",
+          "options": {
+            "default": "Default",
+            "sticky": "Sticky",
+            "cart_drawer": "Cart drawer"
+          }
+        },
+        "positioning": {
+          "label": "Positioning",
+          "options": {
+            "top_page": "Top page",
+            "bottom_page": "Bottom page"
+          }
+        },
+        "sticky_to_top_while_scrolling": "Stick to top while scrolling",
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "standard": "Standard",
+            "balanced": "Balanced",
+            "inline": "Inline"
+          }
+        },
+        "background": {
+          "label": "Background",
+          "options": {
+            "single_color": "Single color",
+            "gradient": "Gradient",
+            "image": "Image"
+          }
+        },
+        "transparent": "Transparent",
+        "bg_color": "Background color",
+        "gradient_angle_degree": "Gradient angle degree",
+        "gradient_start": "Gradient start",
+        "gradient_end": "Gradient end",
+        "background_image": "Background image",
+        "border_weight": "Border weight",
+        "border_style": {
+          "label": "Border style",
+          "options": {
+            "none": "None",
+            "solid": "Solid",
+            "dashed": "Dashed"
+          }
+        },
+        "border_color": "Border color",
+        "timer_style": {
+          "label": "Timer style",
+          "options": {
+            "plain": "Plain",
+            "grouped": "Grouped",
+            "boxes": "Boxes"
+          }
+        },
+        "timer_corner_radius": "Timer corner radius",
+        "timer_background": "Timer background",
+        "timer_border_weight": "Timer border weight",
+        "timer_border_style": {
+          "label": "Timer border style",
+          "options": {
+            "none": "None",
+            "solid": "Solid",
+            "dashed": "Dashed"
+          }
+        },
+        "timer_border_color": "Timer border color",
+        "corner_radius": "Corner radius"
+      },
+      "typography": {
+        "label": "Typography",
+        "font": {
+          "label": "Font",
+          "options": {
+            "inherit": "Use your theme fonts"
+          }
+        },
+        "title_size": "Title size",
+        "title_color": "Title color",
+        "subheading_size": "Subheading size",
+        "subheading_color": "Subheading color",
+        "legend_size": "Legend size",
+        "legend_color": "Legend color",
+        "timer_size": "Timer size",
+        "timer_color": "Timer color",
+        "button_corner_radius": "Button corner radius",
+        "button_size": "Button size",
+        "button_bg_color": "Button background color",
+        "button_text_color": "Button text color"
+      },
+      "spacing": {
+        "label": "Spacing",
+        "outside_block": "Outside (Top | Bottom)",
+        "outside_inline": "Outside (Left | Right)",
+        "inside_block": "Inside (Top | Bottom)",
+        "inside_inline": "Inside (Left | Right)"
+      },
+      "content": {
+        "label": "Content",
+        "title": "Title",
+        "subheading": "Subheading",
+        "cta": {
+          "label": "Call to action",
+          "options": {
+            "none": "No call to action",
+            "button": "Button",
+            "clickable": "Make entire bar clickable"
+          }
+        },
+        "button_text": "Button text",
+        "link": "Link",
+        "close_icon": "Close icon",
+        "timer_labels": "Timer labels",
+        "days": "Days",
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds",
+        "hide_days_when_value_is_zero": "Hide Days when value is 00"
+      },
+      "config": {
+        "label": "Config",
+        "timer_type": {
+          "label": "Timer type",
+          "options": {
+            "date": "Countdown to a date",
+            "fixed_minutes": "Fixed minutes",
+            "daily": "Daily recurring timer"
+          },
+          "date_hint": "Timer that ends at the specific date.",
+          "minutes_hint": "Individual fixed minutes countdown for each buyer session.",
+          "daily_hint": "E.g. every weekday from 9 am to 11 am"
+        },
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "start_date": "Start date (DD/MM/YYYY)",
+        "end_date": "End date (DD/MM/YYYY)",
+        "time_format": {
+          "label": "Time format",
+          "options": {
+            "am": "AM",
+            "pm": "PM"
+          }
+        },
+        "once_it_ends": {
+          "label": "Once it ends",
+          "options": {
+            "unpublish": "Unpublish",
+            "do_nothing": "Do nothing",
+            "hide": "Hide the timer for the buyer",
+            "repeat": "Repeat the countdown"
+          }
+        }
+      }
+    }
+  }
+}

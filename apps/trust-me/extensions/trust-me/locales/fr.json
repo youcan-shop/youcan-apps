@@ -1,0 +1,9 @@
+{
+  "general": {
+    "product": "Nom du produit",
+    "view_product": "Voir le produit",
+    "details": "Détails",
+    "reviews": "Avis",
+    "anonymous": "Anonyme"
+  }
+}

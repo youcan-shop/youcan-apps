@@ -1,0 +1,130 @@
+<style>
+  #youcan-block--{{ block.id }} {
+    [data-app="tic-tac"] {
+      .wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--spacing-12);
+        position: relative;
+        overflow: hidden;
+        border-radius: {{ block.settings.corner_radius }}px;
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+
+        .content {
+          display: inline-flex;
+          flex-direction: column;
+        }
+
+        &[data-layout="standard"] {
+          justify-content: center;
+
+          &[data-style="default"] {
+            text-align: center;
+            flex-direction: column;
+          }
+        }
+
+        &[data-layout="balanced"] {
+          justify-content: space-between;
+
+          @media (width > 769px) {
+            &[data-style="default"] {
+              display: grid;
+              grid-template-columns: repeat(2, auto);
+
+              [data-component="timer"] {
+                order: 2;
+              }
+
+              [data-component="subheading"] {
+                order: 3;
+              }
+            }
+          }
+        }
+
+        &[data-layout="inline"] {
+          justify-content: center;
+
+          .content {
+            gap: var(--spacing-12);
+            flex-direction: row;
+            align-items: center;
+          }
+        }
+
+        &[data-style="sticky"] {
+          padding: var(--spacing-10);
+
+          {% if block.settings.close_icon %}
+            &[data-layout="balanced"] {
+              padding-inline-end: 40px;
+            }
+          {% endif %}
+        }
+
+        &[data-style="default"], &[data-style="cart-drawer"] {
+          margin-block: {{ block.settings.outside_block }}px;
+          margin-inline: {{ block.settings.outside_inline }}px;
+
+          &[data-style="default"] {
+            padding-block: {{ block.settings.inside_block }}px;
+            padding-inline: {{ block.settings.inside_inline }}px;
+
+            {% if block.settings.close_icon %}
+              &[data-layout="balanced"] {
+                padding-inline-end: {{ block.settings.inside_inline | plus: 30 }}px;
+              }
+            {% endif %}
+          }
+        }
+
+        &[data-background="single-color"] {
+          background-color: {{ block.settings.bg_color.hex }};
+
+          &[data-background-transparent="true"] {
+            background-color: transparent;
+          }
+        }
+
+        &[data-background="gradient"] {
+          background-image: linear-gradient(
+            {{ block.settings.gradient_angle_degree }}deg,
+            {{ block.settings.gradient_start.hex }},
+            {{ block.settings.gradient_end.hex }}
+          );
+        }
+
+        &[data-background="image"] {
+          background-image: url('{{ block.settings.background_image.src }}');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+
+        @media (width <= 769px) {
+          flex-direction: column;
+
+          .content {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  section:has(#youcan-block--{{ block.id }} [data-positioning="top-page"]) {
+    order: -1;
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 50;
+  }
+
+  section:has(#youcan-block--{{ block.id }} [data-positioning="bottom-page"]) {
+    order: 1000;
+    position: sticky;
+    inset-block-end: 0;
+    z-index: 50;
+  }
+</style>

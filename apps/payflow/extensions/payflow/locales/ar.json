@@ -1,0 +1,42 @@
+{
+  "general": {
+    "variants": "المتغيرات",
+    "bundles": "الحزم",
+    "summary": "ملخص الطلب",
+    "subtotal": "إجمالي المشتريات",
+    "total": "الإجمالي",
+    "saved": "لقد وفرت",
+    "save": "وفر",
+    "buy_now": "اشتري الآن",
+    "out_of_stock": "نفدت الكمية",
+    "loading": "تحميل...",
+    "optional": "اختياري",
+    "invalid_phone": "الرجاء إدخال رقم هاتف صالح",
+    "select_variant": "يرجى اختيار أحد خيارات المنتج.",
+    "select_product": "الرجاء اختيار منتج",
+    "fields": {
+      "first_name": "الاسم الأول",
+      "last_name": "الاسم العائلي",
+      "full_name": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "phone_or_email": "الهاتف أو البريد الإلكتروني",
+      "company": "الشركة",
+      "country": "البلد",
+      "region": "المنطقة",
+      "city": "المدينة"
+    },
+    "success_order": {
+      "heading": "تم تقديم طلبك بنجاح!",
+      "subheading": "شكرًا لطلبك. يمكنك عرض تفاصيل طلبك أو متابعة التسوق.",
+      "view_order": "عرض تفاصيل الطلب",
+      "continue_shopping": "متابعة التسوق"
+    },
+    "order_recovery": {
+      "heading": "متابعة طلبك؟",
+      "subheading": "أكمل طلبك وأتم عملية الشراء.",
+      "continue": "متابعة",
+      "not_now": "ليس الآن"
+    }
+  }
+}

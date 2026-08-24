@@ -1,0 +1,127 @@
+{% comment %}
+  Renders "review component" CSS styles
+
+  Usage:
+  {% render 'asset.review' %}
+{% endcomment %}
+
+{% case block.settings.corner_radius %}
+  {% when 'flat' %}
+    {% assign image_radius = '0px' %}
+  {% when 'soft' %}
+    {% assign image_radius = '8px' %}
+  {% when 'softer' %}
+    {% assign image_radius = '12px' %}
+{% endcase %}
+
+{% style %}
+  [ui-component='review'][popover] {
+    max-width: 400px;
+    color: var(--color-primary);
+  }
+
+  [ui-component='review'][popover] [ui-slot='modal-header'] {
+    padding-block-end: var(--spacing-0);
+  }
+
+  [ui-component='review'][popover]:has(.media-area) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+  }
+
+  [ui-component='review'][popover] .media-area {
+    position: relative;
+    height: inherit;
+  }
+
+  [ui-component='review'][popover] .media-area > img {
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  [ui-component='review'][popover] .media-area video-player video-minimal-skin {
+    width: 100%;
+    height: 100%;
+  }
+
+  [ui-component='review'][popover] .media-area .close {
+    position: absolute;
+    inset-block-start: var(--spacing-24);
+    inset-inline-start: var(--spacing-24);
+  }
+
+  [ui-component='review'][popover] .content-area {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--spacing-24);
+    gap: var(--spacing-24);
+  }
+
+  [ui-component='review'][popover] .content-area .info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    font: var(--font-body-lg);
+  }
+
+  [ui-component='review'][popover] .content-area .info .stars {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  [ui-component='review'][popover] .content-area .info .detail {
+    margin-block-start: var(--spacing-12);
+  }
+
+  [ui-component='review'][popover] .content-area .product {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    padding-block-start: var(--spacing-24);
+    border-block-start: 1px solid var(--color-surface-variant);
+  }
+
+  [ui-component='review'][popover] .content-area .product .image {
+    width: 70px;
+    height: auto;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    border-radius: {{ image_radius }};
+  }
+
+  [ui-component='review'][popover] .content-area .product .image > img {
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  [ui-component='review'][popover] .content-area .product .bio {
+    display: grid;
+    grid-gap: var(--spacing-12);
+    gap: var(--spacing-12);
+  }
+
+  [ui-component='review'][popover] .content-area .product .bio .name {
+    font: var(--font-body-lg);
+  }
+
+  @media (min-width: 769.02px) {
+    [ui-component='review'][popover] {
+      height: 580px;
+    }
+  }
+
+  @media (max-width: 769px) {
+    [ui-component='review'][popover] {
+      display: flex !important;
+      flex-direction: column;
+    }
+
+    [ui-component='review'][popover] .media-area {
+      height: 65vh;
+    }
+  }
+{% endstyle %}

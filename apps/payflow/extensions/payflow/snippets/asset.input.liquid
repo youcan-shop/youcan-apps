@@ -1,0 +1,69 @@
+{% comment %}
+  Renders input component CSS style
+
+  Usage:
+  {% render 'asset.input' %}
+{% endcomment %}
+
+{% style %}
+  [data-slot='input'] {
+    border: none !important;
+    outline: none !important;
+    height: 48px;
+    width: 100%;
+    padding-inline: var(--spacing-12);
+    transition: var(--transition-standard-fast-spatial);
+    border-radius: calc(var(--radius-block) * 0.6) !important;
+    box-shadow: none;
+    color: var(--color-primary) !important;
+    font: var(--font-body-md);
+
+    &:is(textarea) {
+      height: auto;
+      border-radius: clamp(0px, calc(var(--radius-block) * 0.6), var(--radius-20)) !important;
+    }
+
+    /* Variant */
+    &[data-variant='primary'] {
+      background-color: var(--color-surface-container-lowest) !important;
+    }
+
+    &[data-variant='secondary'] {
+      background-color: var(--color-primary-container) !important;
+    }
+
+    /* Invalid */
+    &[aria-invalid='true'] {
+      --color-primary: var(--color-error);
+    }
+
+    /* Disabled */
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* Focus */
+    &:focus {
+      box-shadow: 0 0 0 2px var(--color-primary);
+    }
+  }
+
+  [data-slot='input-group'] {
+    position: relative;
+
+    [data-slot='input-group-prefix'] {
+      width: fit-content;
+      position: absolute;
+      inset: var(--spacing-0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-inline: var(--spacing-12);
+    }
+
+    [data-slot='input'] {
+      padding-inline-start: 36px !important;
+    }
+  }
+{% endstyle %}

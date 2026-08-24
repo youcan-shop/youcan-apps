@@ -1,0 +1,178 @@
+{
+  "app": {
+    "settings": {
+      "product": {
+        "label": "Produit",
+        "hint": "Utilisez le produit de la page actuelle ou sélectionnez-en un pour les autres pages."
+      },
+      "layout": {
+        "label": "Mise en page",
+        "display_style": {
+          "label": "Style d'affichage",
+          "options": {
+            "inline": "En ligne",
+            "drawer": "Tiroir",
+            "modal": "Modale"
+          }
+        },
+        "trigger_button": "Texte du bouton déclencheur",
+        "sticky_bar_desktop_width": {
+          "label": "Largeur de la barre fixe sur bureau",
+          "options": {
+            "md": "Moyen",
+            "lg": "Grand",
+            "full_width": "Pleine largeur"
+          }
+        },
+        "drawer_position": {
+          "label": "Position du tiroir",
+          "options": {
+            "left": "Gauche",
+            "right": "Droite"
+          }
+        },
+        "desktop_width": {
+          "label": "Largeur sur bureau",
+          "options": {
+            "md": "Moyen",
+            "lg": "Grand",
+            "full_width": "Pleine largeur"
+          }
+        },
+        "alignment": {
+          "label": "Alignement",
+          "options": {
+            "left": "Gauche",
+            "center": "Centre",
+            "right": "Droite"
+          }
+        },
+        "space_block": "Espace de bloc",
+        "space_inline": "Espace en ligne"
+      },
+      "theme": {
+        "label": "Thème",
+        "corner_style": {
+          "label": "Style des coins",
+          "options": {
+            "flat": "Plat",
+            "soft": "Doux",
+            "softer": "Plus doux",
+            "rounded": "Arrondi"
+          }
+        },
+        "font_family": {
+          "label": "Police de caractères",
+          "options": {
+            "inherit": "Hériter"
+          }
+        },
+        "color_scheme": {
+          "label": "Palette de couleurs",
+          "options": {
+            "light": "Claire",
+            "soft": "Douce",
+            "bold": "Vive"
+          }
+        },
+        "accent_color": "Couleur d'accent"
+      },
+      "header": {
+        "label": "En-tête",
+        "show_icon": "Afficher l'icône",
+        "heading": "Titre",
+        "subheading": "Sous-titre",
+        "cta_button": "Bouton d'appel à l'action",
+        "show_price_in_cta_button": "Afficher le prix dans le bouton d'appel à l'action"
+      },
+      "form_input": {
+        "label": "Champs du formulaire",
+        "auto_translation": "Traduction automatique",
+        "show_icons": "Afficher les icônes"
+      },
+      "variants": {
+        "label": "Variantes",
+        "enable_variants": "Activer les variantes",
+        "select_default_variant": "Sélectionner les variantes par défaut",
+        "hide_unavailable_variants": "Masquer les variantes indisponibles"
+      },
+      "bundles": {
+        "label": "Packs",
+        "enable_bundles": "Activer les packs",
+        "bundle_display": {
+          "label": "Affichage les packs",
+          "options": {
+            "list": "Liste",
+            "cards": "Cartes"
+          }
+        },
+        "default_tier": "Palier sélectionné par défaut",
+        "highlight_best_value": "Mettre en avant le meilleur palier",
+        "highlight_label": "Libellé de mise en avant"
+      },
+      "feature_list": {
+        "label": "Liste des fonctionnalités",
+        "show_feature_list": "Afficher la liste des fonctionnalités",
+        "orientation": {
+          "label": "Orientation",
+          "options": {
+            "horizontal": "Horizontale",
+            "vertical": "Verticale"
+          }
+        },
+        "feature_item_text_1": "Texte de la fonctionnalité n°1",
+        "feature_item_text_2": "Texte de la fonctionnalité n°2",
+        "feature_item_text_3": "Texte de la fonctionnalité n°3",
+        "feature_item_text_4": "Texte de la fonctionnalité n°4"
+      },
+      "media": {
+        "label": "Média",
+        "show_media": "Afficher le média",
+        "type": {
+          "label": "Type",
+          "options": {
+            "image": "Image",
+            "youtube": "YouTube"
+          }
+        },
+        "image": "Image",
+        "video_id": "ID de la vidéo",
+        "aspect_ratio": {
+          "label": "Format d'image",
+          "options": {
+            "square": "Carré (1:1)",
+            "portrait": "Portrait (3:4)",
+            "landscape": "Paysage (16:9)"
+          }
+        }
+      },
+      "summary": {
+        "label": "Résumé",
+        "show_order_summary": "Afficher le résumé de la commande"
+      },
+      "product_info": {
+        "label": "Informations sur le produit",
+        "show_price": "Afficher le prix",
+        "show_compare_at_price": "Afficher le prix barré",
+        "show_rating": "Afficher la note"
+      },
+      "thankyou": {
+        "label": "Remerciement",
+        "after_successful_order": {
+          "label": "Après une commande réussie",
+          "options": {
+            "redirect": "Rediriger vers le résumé de la commande",
+            "message": "Afficher un message de confirmation"
+          }
+        }
+      },
+      "advanced": {
+        "label": "Avancé",
+        "abandoned_order_recovery": {
+          "label": "Récupération des commandes abandonnées",
+          "hint": "Afficher un rappel pour continuer une commande inachevée"
+        }
+      }
+    }
+  }
+}

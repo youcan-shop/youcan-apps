@@ -1,0 +1,42 @@
+{
+  "general": {
+    "variants": "Variantes",
+    "bundles": "Packs",
+    "summary": "Résumé",
+    "subtotal": "Sous-total",
+    "total": "Total",
+    "saved": "Vous avez économisé",
+    "save": "Économisé",
+    "buy_now": " Acheter maintenant",
+    "out_of_stock": "En rupture de stock",
+    "loading": "Chargement...",
+    "optional": "Optional",
+    "invalid_phone": "Veuillez entrer un numéro de téléphone valide",
+    "select_variant": "Veuillez sélectionner une variante",
+    "select_product": "Veuillez sélectionner un produit",
+    "fields": {
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "full_name": "Nom complet",
+      "email": "E-Mail",
+      "phone": "Téléphone",
+      "phone_or_email": "Téléphone ou e-mail",
+      "company": "Entreprise",
+      "country": "Pays",
+      "region": "Région",
+      "city": "Ville"
+    },
+    "success_order": {
+      "heading": "Commande passée avec succès !",
+      "subheading": "Merci pour votre commande. Vous pouvez consulter les détails de votre commande ou continuer vos achats.",
+      "view_order": "Voir la commande",
+      "continue_shopping": "Continuer les achats"
+    },
+    "order_recovery": {
+      "heading": "Continuer votre commande ?",
+      "subheading": "Reprenez votre commande et finalisez votre achat.",
+      "continue": "Continuer",
+      "not_now": "Plus tard"
+    }
+  }
+}

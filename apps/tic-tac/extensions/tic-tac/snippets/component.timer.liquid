@@ -1,0 +1,59 @@
+{% comment %}
+  Renders subheading element
+
+  Usage:
+  {% render 'component.timer' %}
+{% endcomment %}
+
+{% render 'asset.countdown' %}
+
+<style>
+  #youcan-block--{{ block.id }} [data-component="timer"] {
+    display: flex;
+    gap: var(--spacing-6);
+
+    {% if block.settings.timer_style == 'grouped' %}
+      padding: var(--spacing-10);
+      border-radius: {{ block.settings.timer_corner_radius }}px;
+      background-color: {{ block.settings.timer_background.hex }};
+      border: {{ block.settings.timer_border_weight | append: 'px' }} {{ block.settings.timer_border_style }} {{ block.settings.timer_border_color.hex }};
+    {% endif %}
+
+    {% if block.settings.timer_style == 'boxes' %}
+      .colon {
+        padding-block: var(--spacing-10);
+      }
+
+      & > div {
+        gap: var(--spacing-4);
+      }
+    {% endif %}
+
+    span {
+      font: var(--font-{{ block.settings.timer_size }});
+      color: {{ block.settings.timer_color.hex }};
+    }
+
+    & > div {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      span {
+        &:first-child {
+          {% if block.settings.timer_style == 'boxes' %}
+            padding: var(--spacing-10);
+            border-radius: {{ block.settings.timer_corner_radius }}px;
+            background-color: {{ block.settings.timer_background.hex }};
+            border: {{ block.settings.timer_border_weight | append: 'px' }} {{ block.settings.timer_border_style }} {{ block.settings.timer_border_color.hex }};
+          {% endif %}
+        }
+
+        &:nth-child(2) {
+          font: var(--font-{{ block.settings.legend_size }});
+          color: {{ block.settings.legend_color.hex }};
+        }
+      }
+    }
+  }
+</style>

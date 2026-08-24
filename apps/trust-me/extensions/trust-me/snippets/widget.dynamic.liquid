@@ -1,0 +1,168 @@
+{% render 'asset.dynamic' %}
+
+{% comment %}
+  Renders "dynamic" reviews
+
+  Accepts:
+  - reviews: {Array} Reviews information
+
+  Usage:
+  {% render 'widget.dynamic', reviews: [] %}
+{% endcomment %}
+
+{% assign total = 0 %}
+{% assign length = block.settings.dynamic_nbr_columns %}
+
+<div
+  ui-widget="dynamic"
+  style="
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-chroma: {{ block.settings.color.chroma }};
+    --brand-hue: {{ block.settings.color.oklch_hue }};
+    --vertical-spacing-desktop: {{ block.settings.vertical_spacing_desktop }}px;
+    --vertical-spacing-mobile: {{ block.settings.vertical_spacing_mobile }}px;
+    --horizontal-spacing-desktop: {{ block.settings.horizontal_spacing_desktop }}px;
+    --horizontal-spacing-mobile: {{ block.settings.horizontal_spacing_mobile }}px;
+  "
+  block-color
+  data-intensity="{{ block.settings.intensity }}"
+  {{ block.youcan_attributes }}
+>
+  <ui-carousel>
+    <div class="content-box">
+      <div class="quote-marks">
+        <svg width="54" height="38" viewBox="0 0 54 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.7097 18.2043C22.3871 20.1936 23.2258 22.5807 23.2258 25.3656C23.2258 28.681 22.0645 31.5323 19.7419 33.9194C17.5484 36.3064 14.8387 37.5 11.6129 37.5C8.3871 37.5 5.6129 36.3728 3.29032 34.1183C1.09677 31.7312 0 28.8136 0 25.3656C0 16.0824 5.35484 7.79391 16.0645 0.5L19.9355 3.88172C18.6452 5.07527 17.4194 6.66667 16.2581 8.65592C15.2258 10.5125 14.5806 12.3029 14.3226 14.0269C16.9032 14.69 19.0323 16.0824 20.7097 18.2043ZM51.4839 18.2043C53.1613 20.1936 54 22.5807 54 25.3656C54 28.681 52.8387 31.5323 50.5161 33.9194C48.1936 36.3064 45.4839 37.5 42.3871 37.5C39.1613 37.5 36.3871 36.3064 34.0645 33.9194C31.7419 31.5323 30.5806 28.681 30.5806 25.3656C30.5806 16.3477 36 8.05914 46.8387 0.5L50.9032 3.88172C49.6129 5.07527 48.3871 6.60036 47.2258 8.45699C46.1935 10.3136 45.4839 12.1703 45.0968 14.0269C47.6774 14.69 49.8064 16.0824 51.4839 18.2043Z" fill="currentColor"></path>
+        </svg>
+      </div>
+      <ul ui-carousel="wrapper" ui-slot="carousel" aria-orientation="vertical">
+        {% for i in (1..8) %}
+          {% assign author = 'author_review_' | append: i %}
+          {% assign content = 'content_review_' | append: i %}
+          {% assign rating = 'rating_review_' | append: i %}
+
+          {% if block.settings[content] != blank %}
+            {% assign total = total | plus: 1 %}
+
+            <li ui-carousel="item" ui-slot="carousel-item">
+              <div class="info">
+                <div class="stars">
+                  {% for star in (1..5) %}
+                    {% if star <= block.settings[rating] %}
+                      {% render 'svg.star', size: 24 %}
+                    {% else %}
+                      {% render 'component.icon', name: 'hgi-star', size: 24 %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <article class="content">{{ block.settings[content] }}</article>
+              </div>
+              <div class="author">
+                {% assign default_author = 'general.anonymous' | t %}
+                <span>{{ block.settings[author] | default: default_author }}</span>
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% if total > 1 %}
+        <div class="markers" ui-slot="carousel">
+          {% for i in (1..8) %}
+            {% assign content = 'content_review_' | append: i %}
+
+            {% if block.settings[content] != blank %}
+              <button
+                class="marker"
+                ui-carousel="marker"
+                aria-label="Slide {{ forloop.index }}"
+                {% if forloop.first %}
+                  aria-selected="true"
+                {% endif %}
+              ></button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div
+      class="media-box"
+      ui-slot="carousel"
+      aria-orientation="vertical"
+      data-align="center"
+      style="--per-page: {{ length }};"
+    >
+      {% for i in (1..8) %}
+        {% assign author = 'author_review_' | append: i %}
+        {% assign content = 'content_review_' | append: i %}
+        {% assign rating = 'rating_review_' | append: i %}
+        {% assign product = 'product_review_' | append: i %}
+        {% assign image = 'image_review_' | append: i %}
+
+        {% if block.settings[content] != blank %}
+          {% assign id = 100 | rand: 2000 %}
+          {% assign id = 'review-' | append: id %}
+
+          <button
+            class="item"
+            ui-carousel="marker"
+            ui-slot="carousel-item"
+            aria-label="Slide {{ forloop.index }}"
+            {% if forloop.first %}
+              aria-selected="true"
+            {% endif %}
+            popovertarget="{{ id }}"
+          >
+            {% if block.settings[image] %}
+              <img
+                src="{{ block.settings[image].src }}"
+                alt="Slide {{ forloop.index }}"
+                height="100%"
+                width="100%"
+                loading="lazy"
+              >
+            {% else %}
+              {% render 'component.image-fallback', icon_size: 40 %}
+            {% endif %}
+          </button>
+          {% render 'component.review',
+            id: id,
+            author: block.settings[author],
+            content: block.settings[content],
+            rating: block.settings[rating],
+            product: block.settings[product],
+            image: block.settings[image]
+          %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if total > length %}
+      <button
+        class="arrow"
+        ui-carousel="arrow-previous"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="filled"
+        data-size="lg"
+        data-as-icon
+        data-flip-icon-in-rtl
+        aria-label="Previous"
+      >
+        {% render 'component.icon', name: 'hgi-arrow-left-01' %}
+      </button>
+      <button
+        class="arrow"
+        ui-carousel="arrow-next"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="filled"
+        data-size="lg"
+        data-as-icon
+        data-flip-icon-in-rtl
+        aria-label="Next"
+      >
+        {% render 'component.icon', name: 'hgi-arrow-right-01' %}
+      </button>
+    {% endif %}
+  </ui-carousel>
+</div>

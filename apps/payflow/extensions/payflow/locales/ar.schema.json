@@ -1,0 +1,178 @@
+{
+  "app": {
+    "settings": {
+      "product": {
+        "label": "المنتج",
+        "hint": "استخدم منتج الصفحة الحالية، أو اختر منتجًا للصفحات الأخرى."
+      },
+      "layout": {
+        "label": "التخطيط",
+        "display_style": {
+          "label": "نمط العرض",
+          "options": {
+            "inline": "مضمّن",
+            "drawer": "درج جانبي",
+            "modal": "نافذة منبثقة"
+          }
+        },
+        "trigger_button": "نص زر التشغيل",
+        "sticky_bar_desktop_width": {
+          "label": "عرض الشريط الثابت على سطح المكتب",
+          "options": {
+            "md": "متوسط",
+            "lg": "كبير",
+            "full_width": "عرض كامل"
+          }
+        },
+        "drawer_position": {
+          "label": "موضع الدرج الجانبي",
+          "options": {
+            "left": "يسار",
+            "right": "يمين"
+          }
+        },
+        "desktop_width": {
+          "label": "العرض على سطح المكتب",
+          "options": {
+            "md": "متوسط",
+            "lg": "كبير",
+            "full_width": "عرض كامل"
+          }
+        },
+        "alignment": {
+          "label": "المحاذاة",
+          "options": {
+            "left": "يسار",
+            "center": "وسط",
+            "right": "يمين"
+          }
+        },
+        "space_block": "المسافة العمودية",
+        "space_inline": "المسافة الأفقية"
+      },
+      "theme": {
+        "label": "المظهر",
+        "corner_style": {
+          "label": "نمط الزوايا",
+          "options": {
+            "flat": "مستوٍ",
+            "soft": "ناعم",
+            "softer": "أكثر نعومة",
+            "rounded": "مستدير"
+          }
+        },
+        "font_family": {
+          "label": "نوع الخط",
+          "options": {
+            "inherit": "مقتبس"
+          }
+        },
+        "color_scheme": {
+          "label": "نظام الألوان",
+          "options": {
+            "light": "فاتح",
+            "soft": "ناعم",
+            "bold": "داكن"
+          }
+        },
+        "accent_color": "اللون"
+      },
+      "header": {
+        "label": "الترويسة",
+        "show_icon": "إظهار الأيقونة",
+        "heading": "العنوان الرئيسي",
+        "subheading": "العنوان الفرعي",
+        "cta_button": "الزر",
+        "show_price_in_cta_button": "إظهار السعر في الزر"
+      },
+      "form_input": {
+        "label": "حقول النموذج",
+        "auto_translation": "الترجمة التلقائية",
+        "show_icons": "إظهار الأيقونات"
+      },
+      "variants": {
+        "label": "المتغيرات",
+        "enable_variants": "تفعيل المتغيرات",
+        "select_default_variant": "اختيار المتغيرات الافتراضية",
+        "hide_unavailable_variants": "إخفاء المتغيرات غير المتوفرة"
+      },
+      "bundles": {
+        "label": "الباقات",
+        "enable_bundles": "تفعيل الباقات",
+        "bundle_display": {
+          "label": "عرض الباقات",
+          "options": {
+            "list": "قائمة",
+            "cards": "بطاقات"
+          }
+        },
+        "default_tier": "المستوى المحدد افتراضيًا",
+        "highlight_best_value": "تمييز أفضل قيمة",
+        "highlight_label": "نص التمييز"
+      },
+      "feature_list": {
+        "label": "قائمة الميزات",
+        "show_feature_list": "إظهار قائمة الميزات",
+        "orientation": {
+          "label": "الاتجاه",
+          "options": {
+            "horizontal": "أفقي",
+            "vertical": "عمودي"
+          }
+        },
+        "feature_item_text_1": "نص الميزة رقم 1",
+        "feature_item_text_2": "نص الميزة رقم 2",
+        "feature_item_text_3": "نص الميزة رقم 3",
+        "feature_item_text_4": "نص الميزة رقم 4"
+      },
+      "media": {
+        "label": "الوسائط",
+        "show_media": "إظهار الوسائط",
+        "type": {
+          "label": "النوع",
+          "options": {
+            "image": "صورة",
+            "youtube": "يوتيوب"
+          }
+        },
+        "image": "صورة",
+        "video_id": "معرّف الفيديو",
+        "aspect_ratio": {
+          "label": "نسبة الصورة",
+          "options": {
+            "square": "مربع (1:1)",
+            "portrait": "طولي (3:4)",
+            "landscape": "عرضي (16:9)"
+          }
+        }
+      },
+      "summary": {
+        "label": "الملخص",
+        "show_order_summary": "إظهار ملخص الطلب"
+      },
+      "product_info": {
+        "label": "معلومات المنتج",
+        "show_price": "إظهار السعر",
+        "show_compare_at_price": "إظهار السعر قبل الخصم",
+        "show_rating": "إظهار التقييم"
+      },
+      "thankyou": {
+        "label": "الشكر",
+        "after_successful_order": {
+          "label": "بعد نجاح الطلب",
+          "options": {
+            "redirect": "إعادة التوجيه إلى ملخص الطلب",
+            "message": "إظهار رسالة نجاح"
+          }
+        }
+      },
+      "advanced": {
+        "label": "متقدم",
+        "abandoned_order_recovery": {
+          "label": "استرجاع الطلبات المتروكة",
+          "hint": "عرض تذكير لمتابعة طلب غير مكتمل"
+        }
+      }
+    }
+  }
+}

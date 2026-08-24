@@ -1,0 +1,71 @@
+{% comment %}
+  Renders summary element
+
+  Usage:
+  {% render 'component.summary' %}
+{% endcomment %}
+
+<div data-component="summary">
+  <h4 class="title">{{ 'general.summary' | t }}</h4>
+  <ul class="items">
+    <li class="item">
+      <span class="label">{{ 'general.subtotal' | t }}</span>
+      <span class="value" data-cod-form="subtotal">{{ compare_at_price | default: price | money }}</span>
+    </li>
+    <li
+      class="item"
+      {% unless compare_at_price %}
+        hidden
+      {% endunless %}
+    >
+      <span class="label highlighted">{{ 'general.saved' | t }}</span>
+      <span class="value highlighted" data-cod-form="saved">
+        {% if compare_at_price %}
+          -{{ compare_at_price | minus: price | money }}
+        {% else %}
+          -
+        {% endif %}
+      </span>
+    </li>
+    <li class="item">
+      <span class="label">{{ 'general.total' | t }}</span>
+      <span class="value" data-cod-form="total">{{ price | money }}</span>
+    </li>
+  </ul>
+</div>
+
+<style>
+  [data-component='summary'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    .title {
+      font: var(--font-body-md);
+    }
+
+    .items {
+      padding: var(--spacing-16);
+      border-radius: clamp(0px, var(--radius-block), var(--radius-28));
+      background-color: var(--color-surface-container);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-8);
+
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font: var(--font-body-md);
+
+        .highlighted {
+          color: #3f823c;
+        }
+
+        &:last-child {
+          font: var(--font-body-lg);
+        }
+      }
+    }
+  }
+</style>

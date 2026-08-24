@@ -1,0 +1,91 @@
+{% render 'asset.pop-up' %}
+{{ 'component.widget.js' | asset_url | script_tag_deferred }}
+
+{% comment %}
+  Renders "pop-up" reviews
+
+  Accepts:
+  - reviews: {Array} Reviews information
+
+  Usage:
+  {% render 'widget.pop-up', reviews: [] %}
+{% endcomment %}
+
+{% for i in (1..8) %}
+  {% assign author = 'author_review_' | append: i %}
+  {% assign content = 'content_review_' | append: i %}
+  {% assign rating = 'rating_review_' | append: i %}
+  {% assign image = 'image_review_' | append: i %}
+  {% assign product = 'product_review_' | append: i %}
+
+  {% if block.settings[content] != blank %}
+    {% assign id = 100 | rand: 2000 %}
+    {% assign id = 'review-' | append: id %}
+
+    <ui-widget
+      ui-widget="pop-up"
+      popover="manual"
+      style="
+        --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+        --brand-chroma: {{ block.settings.color.chroma }};
+        --brand-hue: {{ block.settings.color.oklch_hue }};
+      "
+      block-color
+      data-intensity="{{ block.settings.intensity }}"
+      {{ block.youcan_attributes }}
+    >
+      <button class="pop-up-card" popovertarget="{{ id }}">
+        <div class="media">
+          {% if block.settings[image] %}
+            <img
+              src="{{ block.settings[image].src }}"
+              alt="{{ block.settings[author] }}"
+              height="100%"
+              width="100%"
+              loading="lazy"
+            >
+          {% else %}
+            {% render 'component.image-fallback' %}
+          {% endif %}
+        </div>
+        <div class="content">
+          <div class="info">
+            {% assign default_author = 'general.anonymous' | t %}
+            <span class="author">{{ block.settings[author] | default: default_author }}</span>
+            <div class="stars">
+              {% for star in (1..5) %}
+                {% if star <= block.settings[rating] %}
+                  {% render 'svg.star' %}
+                {% else %}
+                  {% render 'component.icon', name: 'hgi-star' %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <article class="detail">{{ block.settings[content] }}</article>
+        </div>
+      </button>
+      <button
+        ui-widget="close"
+        class="close"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="ghost"
+        data-size="xs"
+        data-as-icon
+        aria-label="Close"
+      >
+        {% render 'component.icon', name: 'hgi-cancel-01' %}
+      </button>
+    </ui-widget>
+
+    {% render 'component.review',
+      id: id,
+      author: block.settings[author],
+      content: block.settings[content],
+      rating: block.settings[rating],
+      product: block.settings[product],
+      image: block.settings[image]
+    %}
+  {% endif %}
+{% endfor %}

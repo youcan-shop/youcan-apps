@@ -1,0 +1,15 @@
+{
+    "name": "payflow",
+    "id": "app_FApyPs4JrxupyWuiXtBCQFT1ASG",
+    "app_url": null,
+    "redirect_urls": [],
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "2894"
+    },
+    "extension_ids": {
+        "payflow": "ext_FApyPy5wQtQXDYDG2hWcFXsyyAQ"
+    }
+}

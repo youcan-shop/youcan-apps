@@ -1,0 +1,23 @@
+{% comment %}
+  Renders CTA element
+
+  Usage:
+  {% render 'component.cta' %}
+{% endcomment %}
+
+<a data-component="cta" href="{{ block.settings.link | default: '#' }}">
+  {{ block.settings.button_text }}
+</a>
+
+<style>
+  #youcan-block--{{ block.id }} [data-component="cta"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-6) var(--spacing-10);
+    border-radius: {{ block.settings.button_corner_radius }}px;
+    font: var(--font-{{ block.settings.button_size }});
+    color: {{ block.settings.button_text_color.hex }} !important;
+    background-color: {{ block.settings.button_bg_color.hex }};
+  }
+</style>

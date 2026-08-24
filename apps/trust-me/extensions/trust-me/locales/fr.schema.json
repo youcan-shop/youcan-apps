@@ -1,0 +1,110 @@
+{
+  "blocks": {
+    "reviews": {
+      "label": "TrustMe",
+      "settings": {
+        "widget": {
+          "label": "Widget",
+          "layout": {
+            "label": "Disposition",
+            "options": {
+              "carousel": "Carrousel",
+              "floating": "Flottant"
+            }
+          },
+          "type": {
+            "label": "Type",
+            "options": {
+              "dynamic": "Dynamique",
+              "video": "Curseur vidéo",
+              "testimonials": "Témoignages",
+              "sidebar": "Barre latérale",
+              "pop_up": "Pop-up"
+            }
+          }
+        },
+        "appearance": {
+          "label": "Apparence",
+          "color": "Couleur",
+          "intensity": {
+            "label": "Intensité",
+            "options": {
+              "as_foreground": "Comme premier plan",
+              "as_solid_bg": "Comme arrière-plan uni",
+              "as_light_bg": "Comme arrière-plan clair"
+            }
+          },
+          "font": {
+            "label": "Police",
+            "options": {
+              "inherit": "Hériter"
+            }
+          },
+          "corner_radius": {
+            "label": "Rayon des coins",
+            "options": {
+              "flat": "Plat",
+              "soft": "Doux",
+              "softer": "Plus doux"
+            }
+          },
+          "vertical_spacing_desktop": "Espacement vertical (bureau)",
+          "horizontal_spacing_desktop": "Espacement horizontal (bureau)",
+          "vertical_spacing_mobile": "Espacement spacing (mobile)",
+          "horizontal_spacing_mobile": "Espacement spacing (mobile)",
+          "nbr_columns_desktop": "Nombre de colonnes sur ordinateur"
+        },
+        "trigger": {
+          "name": "Déclencheur",
+          "label": {
+            "label": "Étiquette",
+            "placeholder": "Avis"
+          },
+          "position": {
+            "label": "Position",
+            "options": {
+              "left": "Gauche",
+              "right": "Droite"
+            }
+          },
+          "show_icon": {
+            "label": "Afficher l'icône"
+          }
+        },
+        "add_review": {
+          "label": "Ajouter un avis",
+          "hint": "Ajoutez vos avis ici (8 maximum)",
+          "author": {
+            "label": "Auteur",
+            "placeholder": "Karim .L"
+          },
+          "content": {
+            "label": "Contenu",
+            "placeholder": "Partagez votre expérience.."
+          },
+          "rating": {
+            "label": "Note"
+          },
+          "product": {
+            "label": "Produit"
+          },
+          "image": {
+            "label": "Image"
+          },
+          "video": {
+            "label": "Vidéo",
+            "hint": "Utilisez ce [site](https://www.videotourl.com) pour générer une URL pour votre vidéo, puis collez-la ici."
+          },
+          "review_1": "Avis 1",
+          "review_2": "Avis 2",
+          "review_3": "Avis 3",
+          "review_4": "Avis 4",
+          "review_5": "Avis 5",
+          "review_6": "Avis 6",
+          "review_7": "Avis 7",
+          "review_8": "Avis 8"
+        }
+      }
+    }
+  }
+}

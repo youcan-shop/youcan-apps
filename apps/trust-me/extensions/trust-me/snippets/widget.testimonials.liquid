@@ -1,0 +1,104 @@
+{% render 'asset.testimonials' %}
+
+{% comment %}
+  Renders "testimonials" reviews
+
+  Accepts:
+  - reviews: {Array} Reviews information
+
+  Usage:
+  {% render 'widget.testimonials', reviews: [] %}
+{% endcomment %}
+
+{% assign total = 0 %}
+
+<ui-carousel
+  ui-widget="testimonials"
+  style="
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-chroma: {{ block.settings.color.chroma }};
+    --brand-hue: {{ block.settings.color.oklch_hue }};
+    --vertical-spacing-desktop: {{ block.settings.vertical_spacing_desktop }}px;
+    --vertical-spacing-mobile: {{ block.settings.vertical_spacing_mobile }}px;
+    --horizontal-spacing-desktop: {{ block.settings.horizontal_spacing_desktop }}px;
+    --horizontal-spacing-mobile: {{ block.settings.horizontal_spacing_mobile }}px;
+  "
+  block-color
+  data-intensity="{{ block.settings.intensity }}"
+  {{ block.youcan_attributes }}
+>
+  <ul ui-carousel="wrapper" ui-slot="carousel" aria-orientation="vertical" data-align="center">
+    {% for i in (1..8) %}
+      {% assign author = 'author_review_' | append: i %}
+      {% assign content = 'content_review_' | append: i %}
+      {% assign rating = 'rating_review_' | append: i %}
+      {% assign product = 'product_review_' | append: i %}
+
+      {% if block.settings[content] != blank %}
+        {% assign total = total | plus: 1 %}
+        {% assign id = 100 | rand: 2000 %}
+        {% assign id = 'review-' | append: id %}
+
+        <li ui-carousel="item" ui-slot="carousel-item">
+          <button class="testimonial-card" popovertarget="{{ id }}">
+            <div class="quote-marks">
+              <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 123 85">
+                <path d="M53.704 32.96c0 9.02-1.386 16.768-4.157 23.244-2.772 6.708-6.353 12.143-10.741 16.306-4.39 4.395-9.355 7.517-14.899 9.367C18.132 83.96 12.473 85 6.93 85V72.857c6.005 0 11.664-2.082 16.977-6.245 5.082-3.932 8.084-9.367 9.009-16.306-.694.231-1.502.463-2.426.694a33.25 33.25 0 0 1-2.425.694c-1.155.231-2.426.347-3.812.347-6.93 0-12.704-2.66-17.323-7.98C2.31 38.973 0 32.96 0 26.021c0-6.94 2.425-13.069 7.276-18.388C11.896 2.544 18.132 0 25.986 0c8.777 0 15.591 3.238 20.442 9.714 4.85 6.708 7.276 14.456 7.276 23.245Zm69.296 0c0 9.02-1.386 16.768-4.158 23.244-2.772 6.708-6.352 12.143-10.741 16.306-4.388 4.395-9.355 7.517-14.898 9.367C87.428 83.96 81.769 85 76.225 85V72.857c6.006 0 11.665-2.082 16.978-6.245 5.081-3.932 8.084-9.367 9.008-16.306-.693.231-1.501.463-2.425.694a33.25 33.25 0 0 1-2.425.694c-1.155.231-2.426.347-3.812.347-6.93 0-12.704-2.66-17.324-7.98-4.62-5.088-6.93-11.102-6.93-18.04 0-6.94 2.426-13.069 7.277-18.388C81.192 2.544 87.428 0 95.282 0c8.777 0 15.591 3.238 20.442 9.714C120.575 16.422 123 24.17 123 32.96Z" fill="currentColor"></path>
+              </svg>
+            </div>
+            <article class="content">{{ block.settings[content] }}</article>
+            <div class="stars">
+              {% for star in (1..5) %}
+                {% if star <= block.settings[rating] %}
+                  {% render 'svg.star', size: 24 %}
+                {% else %}
+                  {% render 'component.icon', name: 'hgi-star', size: 24 %}
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="author">
+              {% assign default_author = 'general.anonymous' | t %}
+              <span>{{ block.settings[author] | default: default_author }}</span>
+            </div>
+          </button>
+
+          {% render 'component.review',
+            id: id,
+            author: block.settings[author],
+            content: block.settings[content],
+            rating: block.settings[rating],
+            product: block.settings[product]
+          %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+  {% if total > 1 %}
+    <button
+      class="arrow"
+      ui-carousel="arrow-previous"
+      ui-slot="button"
+      data-variant="primary"
+      data-mode="ghost"
+      data-size="md"
+      data-as-icon
+      data-flip-icon-in-rtl
+      aria-label="Previous"
+    >
+      {% render 'component.icon', name: 'hgi-arrow-left-01' %}
+    </button>
+    <button
+      class="arrow"
+      ui-carousel="arrow-next"
+      ui-slot="button"
+      data-variant="primary"
+      data-mode="ghost"
+      data-size="md"
+      data-as-icon
+      data-flip-icon-in-rtl
+      aria-label="Next"
+    >
+      {% render 'component.icon', name: 'hgi-arrow-right-01' %}
+    </button>
+  {% endif %}
+</ui-carousel>

@@ -1,0 +1,157 @@
+{
+  "app": {
+    "settings": {
+      "design": {
+        "label": "Design",
+        "style": {
+          "label": "Style",
+          "options": {
+            "default": "Par défaut",
+            "sticky": "Fixe",
+            "cart_drawer": "Panier latéral"
+          }
+        },
+        "positioning": {
+          "label": "Positionnement",
+          "options": {
+            "top_page": "Haut de la page",
+            "bottom_page": "Bas de la page"
+          }
+        },
+        "sticky_to_top_while_scrolling": "Rester fixé en haut lors du défilement",
+        "layout": {
+          "label": "Disposition",
+          "options": {
+            "standard": "Standard",
+            "balanced": "Équilibré",
+            "inline": "En ligne"
+          }
+        },
+        "background": {
+          "label": "Arrière-plan",
+          "options": {
+            "single_color": "Couleur unie",
+            "gradient": "Dégradé",
+            "image": "Image"
+          }
+        },
+        "transparent": "Transparent",
+        "bg_color": "Couleur de l'arrière-plan",
+        "gradient_angle_degree": "Angle du dégradé (degrés)",
+        "gradient_start": "Début du dégradé",
+        "gradient_end": "Fin du dégradé",
+        "background_image": "Image d'arrière-plan",
+        "border_weight": "Épaisseur de la bordure",
+        "border_style": {
+          "label": "Style de la bordure",
+          "options": {
+            "none": "Aucune",
+            "solid": "Pleine",
+            "dashed": "Pointillée"
+          }
+        },
+        "border_color": "Couleur de la bordure",
+        "timer_style": {
+          "label": "Style du minuteur",
+          "options": {
+            "plain": "Simple",
+            "grouped": "Groupé",
+            "boxes": "Cases"
+          }
+        },
+        "timer_corner_radius": "Rayon des coins du minuteur",
+        "timer_background": "Arrière-plan du minuteur",
+        "corner_radius": "Rayon des coins"
+      },
+      "typography": {
+        "label": "Typographie",
+        "font": {
+          "label": "Police",
+          "options": {
+            "inherit": "Utiliser les polices du thème"
+          }
+        },
+        "title_size": "Taille du titre",
+        "title_color": "Couleur du titre",
+        "subheading_size": "Taille du sous-titre",
+        "subheading_color": "Couleur du sous-titre",
+        "legend_size": "Taille de la légende",
+        "legend_color": "Couleur de la légende",
+        "timer_size": "Taille du minuteur",
+        "timer_color": "Couleur du minuteur",
+        "button_corner_radius": "Rayon des coins du bouton",
+        "button_size": "Taille du bouton",
+        "button_bg_color": "Couleur d'arrière-plan du bouton",
+        "button_text_color": "Couleur du texte du bouton"
+      },
+      "spacing": {
+        "label": "Espacement",
+        "outside_block": "Extérieur (Haut | Bas)",
+        "outside_inline": "Extérieur (Gauche | Droite)",
+        "inside_block": "Intérieur (Haut | Bas)",
+        "inside_inline": "Intérieur (Gauche | Droite)"
+      },
+      "content": {
+        "label": "Contenu",
+        "title": "Titre",
+        "subheading": "Sous-titre",
+        "cta": {
+          "label": "Appel à l'action",
+          "options": {
+            "none": "Aucun appel à l'action",
+            "button": "Bouton",
+            "clickable": "Rendre toute la barre cliquable"
+          }
+        },
+        "button_text": "Texte du bouton",
+        "link": "Lien",
+        "close_icon": "Icône de fermeture",
+        "timer_labels": "Libellés du minuteur",
+        "days": "Jours",
+        "hours": "Heures",
+        "minutes": "Minutes",
+        "seconds": "Secondes",
+        "hide_days_when_value_is_zero": "Masquer les jours lorsque la valeur est 00"
+      },
+      "config": {
+        "label": "Configuration",
+        "timer_type": {
+          "label": "Type de minuteur",
+          "options": {
+            "date": "Compte à rebours jusqu'à une date",
+            "fixed_minutes": "Minutes fixes",
+            "daily": "Minuteur récurrent quotidien"
+          },
+          "date_hint": "Le minuteur se termine à la date spécifiée.",
+          "minutes_hint": "Compte à rebours individuel en minutes fixes pour chaque session d'acheteur.",
+          "daily_hint": "Ex. : chaque jour ouvrable de 9 h à 11 h"
+        },
+        "monday": "Lundi",
+        "tuesday": "Mardi",
+        "wednesday": "Mercredi",
+        "thursday": "Jeudi",
+        "friday": "Vendredi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche",
+        "start_date": "Date de début (JJ/MM/AAAA)",
+        "end_date": "Date de fin (JJ/MM/AAAA)",
+        "time_format": {
+          "label": "Format de l'heure",
+          "options": {
+            "am": "AM",
+            "pm": "PM"
+          }
+        },
+        "once_it_ends": {
+          "label": "Une fois terminé",
+          "options": {
+            "unpublish": "Dépublier",
+            "do_nothing": "Ne rien faire",
+            "hide": "Masquer le minuteur pour l'acheteur",
+            "repeat": "Répéter le compte à rebours"
+          }
+        }
+      }
+    }
+  }
+}

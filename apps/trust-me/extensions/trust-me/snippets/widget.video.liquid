@@ -1,0 +1,121 @@
+<script type="module" src="https://cdn.jsdelivr.net/npm/@videojs/html/cdn/video-minimal-ui.js"></script>
+{% render 'asset.video' %}
+
+{% comment %}
+  Renders "video" reviews
+
+  Accepts:
+  - reviews: {Array} Reviews information
+
+  Usage:
+  {% render 'widget.video', reviews: [] %}
+{% endcomment %}
+
+{% assign total = 0 %}
+{% assign length = block.settings.video_nbr_columns %}
+
+<div
+  ui-widget="video"
+  style="
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-chroma: {{ block.settings.color.chroma }};
+    --brand-hue: {{ block.settings.color.oklch_hue }};
+    --vertical-spacing-desktop: {{ block.settings.vertical_spacing_desktop }}px;
+    --vertical-spacing-mobile: {{ block.settings.vertical_spacing_mobile }}px;
+    --horizontal-spacing-desktop: {{ block.settings.horizontal_spacing_desktop }}px;
+    --horizontal-spacing-mobile: {{ block.settings.horizontal_spacing_mobile }}px;
+    --per-page: {{ length }};
+  "
+  block-color
+  data-intensity="{{ block.settings.intensity }}"
+  {{ block.youcan_attributes }}
+>
+  <ui-carousel>
+    <ul ui-carousel="wrapper" ui-slot="carousel" aria-orientation="vertical" data-align="center">
+      {% for i in (1..8) %}
+        {% assign author = 'author_review_' | append: i %}
+        {% assign content = 'content_review_' | append: i %}
+        {% assign rating = 'rating_review_' | append: i %}
+        {% assign video = 'video_review_' | append: i %}
+        {% assign image = 'image_review_' | append: i %}
+        {% assign product = 'product_review_' | append: i %}
+
+        {% if block.settings[content] != blank %}
+          {% assign total = total | plus: 1 %}
+          {% assign id = 100 | rand: 2000 %}
+          {% assign id = 'review-' | append: id %}
+
+          <li ui-carousel="item" ui-slot="carousel-item">
+            <button popovertarget="{{ id }}">
+              <div class="media">
+                {% if block.settings[image] %}
+                  <img
+                    src="{{ block.settings[image].src }}"
+                    alt="Slide {{ forloop.index }}"
+                    height="100%"
+                    width="100%"
+                    loading="lazy"
+                  >
+                {% else %}
+                  {% render 'component.image-fallback', icon_size: 40 %}
+                {% endif %}
+              </div>
+              <div class="author">
+                {% assign default_author = 'general.anonymous' | t %}
+                <span>{{ block.settings[author] | default: default_author }}</span>
+              </div>
+              <div class="stars">
+                {% for star in (1..5) %}
+                  {% if star <= block.settings[rating] %}
+                    {% render 'svg.star', size: 20 %}
+                  {% else %}
+                    {% render 'component.icon', name: 'hgi-star', size: 20 %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="play-icon">
+                {% render 'svg.play', size: 32 %}
+              </div>
+            </button>
+          </li>
+          {% render 'component.review',
+            id: id,
+            author: block.settings[author],
+            content: block.settings[content],
+            rating: block.settings[rating],
+            product: block.settings[product],
+            video: block.settings[video]
+          %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+    {% if total > length %}
+      <button
+        class="arrow"
+        ui-carousel="arrow-previous"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="filled"
+        data-size="lg"
+        data-as-icon
+        data-flip-icon-in-rtl
+        aria-label="Previous"
+      >
+        {% render 'component.icon', name: 'hgi-arrow-left-01' %}
+      </button>
+      <button
+        class="arrow"
+        ui-carousel="arrow-next"
+        ui-slot="button"
+        data-variant="primary"
+        data-mode="filled"
+        data-size="lg"
+        data-as-icon
+        data-flip-icon-in-rtl
+        aria-label="Next"
+      >
+        {% render 'component.icon', name: 'hgi-arrow-right-01' %}
+      </button>
+    {% endif %}
+  </ui-carousel>
+</div>

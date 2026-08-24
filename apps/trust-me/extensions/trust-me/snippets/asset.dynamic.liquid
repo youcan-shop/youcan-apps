@@ -1,0 +1,249 @@
+{% comment %}
+  Renders "dynamic widget" CSS styles
+
+  Usage:
+  {% render 'asset.dynamic' %}
+{% endcomment %}
+
+{% case block.settings.corner_radius %}
+  {% when 'flat' %}
+    {% assign carousel_radius = '0px' %}
+    {% assign marker_radius = '0px' %}
+  {% when 'soft' %}
+    {% assign carousel_radius = '12px' %}
+    {% assign marker_radius = 'calc(1px * infinity)' %}
+  {% when 'softer' %}
+    {% assign carousel_radius = '20px' %}
+    {% assign marker_radius = 'calc(1px * infinity)' %}
+{% endcase %}
+
+{% style %}
+  [ui-widget='dynamic'] {
+    padding: var(--vertical-spacing-desktop) var(--horizontal-spacing-desktop);
+
+    &[data-intensity='as-light-bg'] {
+      background-color: var(--color-surface-container) !important;
+    }
+
+    ui-carousel {
+      display: grid;
+      position: relative;
+      grid-template-columns: 400px auto;
+      grid-template-rows: 400px;
+      gap: var(--spacing-16);
+
+      /* Content */
+      .content-box {
+        --per-page: 1;
+
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        gap: var(--spacing-8);
+
+        .quote-marks {
+          position: absolute;
+          inset-block-start: calc(var(--spacing-8) * -1);
+          inset-inline-start: calc(var(--spacing-8) * -1);
+        }
+
+        [ui-carousel='wrapper'] {
+          flex: 1;
+          width: 100%;
+          height: auto;
+          border-radius: {{ carousel_radius  }};
+          color: var(--color-primary);
+          background-color: var(--color-primary-container);
+          aspect-ratio: 1 / 1;
+
+          [ui-carousel='item'] {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: var(--spacing-48);
+            gap: var(--spacing-16);
+
+            .info {
+              display: grid;
+              gap: var(--spacing-16);
+
+              .stars {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-4);
+              }
+
+              .content {
+                display: -webkit-box;
+                overflow: hidden;
+                font: var(--font-title-lg);
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 7;
+              }
+            }
+
+            .author {
+              display: flex;
+              justify-content: flex-end;
+              font: var(--font-title-md);
+            }
+          }
+        }
+
+        .markers {
+          justify-content: center;
+
+          .marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: var(--transition-standard-default-spatial);
+            border: none;
+            background-color: transparent;
+            color: var(--color-primary);
+            cursor: pointer;
+
+            &::before {
+              content: '';
+              display: flex;
+              width: var(--spacing-8);
+              height: var(--spacing-8);
+              transition: var(--transition-standard-default-spatial);
+              border-radius: {{ marker_radius }};
+              background-color: color-mix(in srgb, currentcolor 38%, transparent);
+            }
+
+            &[aria-selected='true'] {
+              width: var(--spacing-24);
+
+              &::before {
+                width: inherit;
+                background-color: currentcolor;
+              }
+            }
+          }
+        }
+      }
+
+      /* Media */
+      .media-box {
+        --gap: var(--spacing-8);
+
+        .item {
+          overflow: hidden;
+          border-radius: {{ carousel_radius  }};
+
+          & > img {
+            object-fit: cover;
+          }
+        }
+      }
+
+      /* Arrows */
+      .arrow {
+        position: absolute;
+        inset-block-start: 50%;
+        transform: translateY(-50%);
+
+        &:first-of-type {
+          inset-inline-start: -18px;
+        }
+
+        &:last-of-type {
+          inset-inline-end: -18px;
+        }
+      }
+
+      @media (width > 1024px) {
+        &:has(.markers) {
+          .media-box {
+            margin-block-end: 28px;
+          }
+        }
+      }
+
+      @media (width <= 1024px) {
+        display: flex;
+        flex-direction: column-reverse;
+
+        .content-box {
+          height: 200px;
+
+          .quote-marks {
+            inset: unset;
+            left: 50%;
+            transform: translateX(-50%);
+            inset-block-end: calc(var(--spacing-16) * -1);
+
+            svg {
+              width: 36px;
+              height: 24px;
+            }
+          }
+
+          [ui-carousel='wrapper'] {
+            aspect-ratio: unset;
+
+            [ui-carousel='item'] {
+              align-items: center;
+              gap: var(--spacing-8);
+              padding: var(--spacing-24);
+
+              .info {
+                text-align: center;
+                gap: var(--spacing-8);
+
+                .stars {
+                  justify-content: center;
+
+                  i {
+                    font-size: var(--spacing-16) !important;
+                  }
+
+                  svg {
+                    width: var(--spacing-16);
+                    height: var(--spacing-16);
+                  }
+                }
+
+                .content {
+                  font: var(--font-title-md);
+                  -webkit-line-clamp: 3;
+                }
+              }
+
+              .author {
+                font: var(--font-title-sm);
+              }
+            }
+          }
+        }
+
+        .media-box {
+          --per-page: 2 !important;
+
+          height: 300px;
+        }
+
+        .arrow {
+          display: none;
+        }
+
+        &:has(.markers) {
+          .content-box {
+            .quote-marks {
+              inset-block-end: var(--spacing-16);
+            }
+          }
+        }
+      }
+    }
+
+    @media (width <= 769px) {
+      padding: var(--vertical-spacing-mobile) var(--horizontal-spacing-mobile);
+    }
+  }
+{% endstyle %}

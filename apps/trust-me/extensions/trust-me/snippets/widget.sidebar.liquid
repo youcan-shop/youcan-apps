@@ -1,0 +1,37 @@
+{% render 'asset.sidebar' %}
+
+{% comment %}
+  Renders "sidebar" reviews
+
+  Accepts:
+  - reviews: {Array} Reviews information
+
+  Usage:
+  {% render 'widget.sidebar', reviews: [] %}
+{% endcomment %}
+
+{% assign id = 100 | rand: 2000 %}
+{% assign id = 'reviews-' | append: id %}
+
+{% render 'component.reviews', id: id %}
+
+<button
+  ui-widget="sidebar"
+  popovertarget="{{ id }}"
+  data-position="{{ block.settings.trigger_position }}"
+  style="
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-chroma: {{ block.settings.color.chroma }};
+    --brand-hue: {{ block.settings.color.oklch_hue }};
+  "
+  block-color
+  data-intensity="{{ block.settings.intensity }}"
+  {{ block.youcan_attributes }}
+>
+  <span>
+    {% if block.settings.trigger_icon %}
+      {% render 'svg.star' %}
+    {% endif %}
+    {{ block.settings.trigger_label | default: 'Reviews' }}
+  </span>
+</button>

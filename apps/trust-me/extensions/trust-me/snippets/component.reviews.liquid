@@ -1,0 +1,114 @@
+{% comment %}
+  Renders a modal reviews list
+
+  Accepts:
+  - id: {String}
+  - reviews: {Array} Reviews
+
+  Usage:
+  {% render 'component.reviews', reviews: [] %}
+{% endcomment %}
+
+<div
+  ui-component="reviews"
+  ui-slot="modal-content"
+  id="{{ id}}"
+  popover
+  style="
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-chroma: {{ block.settings.color.chroma }};
+    --brand-hue: {{ block.settings.color.oklch_hue }};
+  "
+  block-color
+  data-intensity="{{ block.settings.intensity }}"
+>
+  <div ui-slot="modal-header">
+    <h3 ui-slot="modal-title">{{ 'general.reviews' | t }}</h3>
+    <button
+      ui-slot="button"
+      data-variant="primary"
+      data-mode="ghost"
+      data-size="md"
+      data-as-icon
+      aria-label="Close"
+      popovertarget="{{ id }}"
+    >
+      {% render 'component.icon', name: 'hgi-cancel-01' %}
+    </button>
+  </div>
+  <ul ui-slot="modal-body">
+    {% for i in (1..8) %}
+      {% assign author = 'author_review_' | append: i %}
+      {% assign content = 'content_review_' | append: i %}
+      {% assign rating = 'rating_review_' | append: i %}
+      {% assign product = 'product_review_' | append: i %}
+      {% assign image = 'image_review_' | append: i %}
+
+      {% if block.settings[content] != blank %}
+        {% assign review_id = 100 | rand: 2000 %}
+        {% assign review_id = 'review-' | append: review_id %}
+
+        <li>
+          <button class="review-card" popovertarget="{{ review_id }}">
+            <div class="media">
+              {% if block.settings[image] %}
+                <img
+                  src="{{ block.settings[image].src }}"
+                  alt="Review {{ forloop.index }}"
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                >
+              {% else %}
+                {% render 'component.image-fallback', icon_size: 40 %}
+              {% endif %}
+            </div>
+            <div class="content">
+              <div class="info">
+                {% assign default_author = 'general.anonymous' | t %}
+                <span class="author">{{ block.settings[author] | default: default_author }}</span>
+                <div class="stars">
+                  {% for star in (1..5) %}
+                    {% if star <= block.settings[rating] %}
+                      {% render 'svg.star' %}
+                    {% else %}
+                      {% render 'component.icon', name: 'hgi-star' %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <article class="detail">{{ block.settings[content] }}</article>
+              </div>
+              <div class="product">
+                <div class="image">
+                  {% if block.settings[product].preview_image %}
+                    <img
+                      src="{{ block.settings[product].preview_image.original }}"
+                      alt="{{ block.settings[product].name }}"
+                      width="100%"
+                      height="100%"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    {% render 'component.image-fallback', icon_size: 20 %}
+                  {% endif %}
+                </div>
+                <div class="bio">
+                  {% assign default_name = 'general.product' | t %}
+                  <span class="name">{{ block.settings[product].name | default: default_name }}</span>
+                </div>
+              </div>
+            </div>
+          </button>
+          {% render 'component.review',
+            id: review_id,
+            author: block.settings[author],
+            content: block.settings[content],
+            rating: block.settings[rating],
+            product: block.settings[product],
+            image: block.settings[image]
+          %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>

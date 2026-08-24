@@ -1,0 +1,693 @@
+{% render 'asset.global' %}
+{% render 'asset.app' %}
+
+{% if block.settings.cta == 'clickable' %}
+  <a data-app="tic-tac" href="{{ block.settings.link | default: '#' }}">
+{% else %}
+  <div data-app="tic-tac">
+{% endif %}
+<div
+  class="wrapper"
+  {% if block.settings.style == 'sticky' %}
+    data-positioning="{{ block.settings.positioning }}"
+    {% if block.settings.positioning == 'top-page' %}
+      data-sticky-top-top-while-scrolling="{{ block.settings.sticky_to_top_while_scrolling }}"
+    {% endif %}
+  {% endif %}
+  data-style="{{ block.settings.style }}"
+  data-layout="{{ block.settings.layout }}"
+  data-background="{{ block.settings.background }}"
+  {% if block.settings.background == 'single-color' and block.settings.bg_transparent %}
+    data-background-transparent="true"
+  {% endif %}
+>
+  {% if block.settings.title or block.settings.subheading %}
+    <div class="content">
+      {% if block.settings.title %}
+        {% render 'component.title' %}
+      {% endif %}
+      {% if block.settings.subheading %}
+        {% render 'component.subheading' %}
+      {% endif %}
+    </div>
+  {% endif %}
+  {% render 'component.timer' %}
+  {% if block.settings.cta == 'button' and block.settings.button_text %}
+    {% render 'component.cta' %}
+  {% endif %}
+  {% if block.settings.close_icon %}
+    {% render 'component.close' %}
+  {% endif %}
+</div>
+{% if block.settings.cta == 'clickable' %}
+  </a>
+{% else %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "label": "TicTac",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "t:app.settings.design.label" },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "t:app.settings.design.style.label",
+      "options": [
+        { "label": "t:app.settings.design.style.options.default", "value": "default" },
+        { "label": "t:app.settings.design.style.options.sticky", "value": "sticky" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "select",
+      "id": "positioning",
+      "label": "t:app.settings.design.positioning.label",
+      "options": [
+        { "label": "t:app.settings.design.positioning.options.top_page", "value": "top-page" },
+        { "label": "t:app.settings.design.positioning.options.bottom_page", "value": "bottom-page" }
+      ],
+      "default": "top-page",
+      "visible_if": { "setting_id": "style", "value": "sticky" }
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_to_top_while_scrolling",
+      "label": "t:app.settings.design.sticky_to_top_while_scrolling",
+      "default": false,
+      "visible_if": [
+        { "setting_id": "style", "value": "sticky" },
+        { "setting_id": "positioning", "value": "top-page" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "t:app.settings.design.layout.label",
+      "options": [
+        { "label": "t:app.settings.design.layout.options.standard", "value": "standard" },
+        { "label": "t:app.settings.design.layout.options.balanced", "value": "balanced" },
+        { "label": "t:app.settings.design.layout.options.inline", "value": "inline" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "t:app.settings.design.background.label",
+      "options": [
+        { "label": "t:app.settings.design.background.options.single_color", "value": "single-color" },
+        { "label": "t:app.settings.design.background.options.gradient", "value": "gradient" },
+        { "label": "t:app.settings.design.background.options.image", "value": "image" }
+      ],
+      "default": "single-color"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "t:app.settings.design.transparent",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:app.settings.design.bg_color",
+      "default": "#FEEDA3",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "t:app.settings.design.gradient_angle_degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "t:app.settings.design.gradient_start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "t:app.settings.design.gradient_end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:app.settings.design.background_image",
+      "visible_if": { "setting_id": "background", "value": "image" }
+    },
+
+    {
+      "type": "number",
+      "id": "border_weight",
+      "label": "t:app.settings.design.border_weight",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "t:app.settings.design.border_style.label",
+      "options": [
+        { "label": "t:app.settings.design.border_style.options.none", "value": "none" },
+        { "label": "t:app.settings.design.border_style.options.solid", "value": "solid" },
+        { "label": "t:app.settings.design.border_style.options.dashed", "value": "dashed" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:app.settings.design.border_color",
+      "default": "#493C02"
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "corner_radius",
+      "label": "t:app.settings.design.corner_radius",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "timer_style",
+      "label": "t:app.settings.design.timer_style.label",
+      "options": [
+        { "label": "t:app.settings.design.timer_style.options.plain", "value": "plain" },
+        { "label": "t:app.settings.design.timer_style.options.grouped", "value": "grouped" },
+        { "label": "t:app.settings.design.timer_style.options.boxes", "value": "boxes" }
+      ],
+      "default": "boxes"
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "timer_corner_radius",
+      "label": "t:app.settings.design.timer_corner_radius",
+      "default": 8,
+      "visible_if": { "setting_id": "timer_style", "operator": "!=", "value": "plain" }
+    },
+    {
+      "type": "color",
+      "id": "timer_background",
+      "label": "t:app.settings.design.timer_background",
+      "default": "#FFE472",
+      "visible_if": { "setting_id": "timer_style", "operator": "!=", "value": "plain" }
+    },
+    {
+      "type": "number",
+      "id": "timer_border_weight",
+      "label": "t:app.settings.design.timer_border_weight",
+      "default": 1,
+      "visible_if": { "setting_id": "timer_style", "operator": "!=", "value": "plain" }
+    },
+    {
+      "type": "select",
+      "id": "timer_border_style",
+      "label": "t:app.settings.design.timer_border_style.label",
+      "options": [
+        { "label": "t:app.settings.design.timer_border_style.options.none", "value": "none" },
+        { "label": "t:app.settings.design.timer_border_style.options.solid", "value": "solid" },
+        { "label": "t:app.settings.design.timer_border_style.options.dashed", "value": "dashed" }
+      ],
+      "default": "solid",
+      "visible_if": { "setting_id": "timer_style", "operator": "!=", "value": "plain" }
+    },
+    {
+      "type": "color",
+      "id": "timer_border_color",
+      "label": "t:app.settings.design.timer_border_color",
+      "default": "#493C02",
+      "visible_if": { "setting_id": "timer_style", "operator": "!=", "value": "plain" }
+    },
+    { "type": "header", "content": "t:app.settings.typography.label" },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:app.settings.typography.font.label",
+      "options": [
+        { "label": "t:app.settings.typography.font.options.inherit", "value": "inherit" },
+        { "value": "DM+Sans", "label": "DM Sans" },
+        { "value": "Inter", "label": "Inter" },
+        { "value": "Poppins", "label": "Poppins" },
+        { "value": "Cairo", "label": "Cairo" },
+        { "value": "Tajawal", "label": "Tajawal" },
+        { "value": "Almarai", "label": "Almarai" },
+        { "value": "IBM+Plex+Sans+Arabic", "label": "IBM Plex Sans Arabic" },
+        { "value": "Noto+Kufi+Arabic", "label": "Noto Kufi Arabic" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "t:app.settings.typography.title_size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "28"
+    },
+    { "type": "color", "id": "title_color", "label": "t:app.settings.typography.title_color", "default": "#493C02" },
+    {
+      "type": "select",
+      "id": "subheading_size",
+      "label": "t:app.settings.typography.subheading_size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "16"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "t:app.settings.typography.subheading_color",
+      "default": "#8F7718"
+    },
+    {
+      "type": "select",
+      "id": "timer_size",
+      "label": "t:app.settings.typography.timer_size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "22"
+    },
+    { "type": "color", "id": "timer_color", "label": "t:app.settings.typography.timer_color", "default": "#493C02" },
+    {
+      "type": "select",
+      "id": "legend_size",
+      "label": "t:app.settings.typography.legend_size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "12"
+    },
+    { "type": "color", "id": "legend_color", "label": "t:app.settings.typography.legend_color", "default": "#8F7718" },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "button_corner_radius",
+      "label": "t:app.settings.typography.button_corner_radius",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "t:app.settings.typography.button_size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "14"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "t:app.settings.typography.button_bg_color",
+      "default": "#493C02"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:app.settings.typography.button_text_color",
+      "default": "#FFE472"
+    },
+    {
+      "type": "header",
+      "content": "t:app.settings.spacing.label",
+      "visible_if": { "setting_id": "style", "operator": "!=", "value": "sticky" }
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "outside_block",
+      "label": "t:app.settings.spacing.outside_block",
+      "default": 0,
+      "visible_if": { "setting_id": "style", "operator": "!=", "value": "sticky" }
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "outside_inline",
+      "label": "t:app.settings.spacing.outside_inline",
+      "default": 0,
+      "visible_if": { "setting_id": "style", "operator": "!=", "value": "sticky" }
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "inside_block",
+      "label": "t:app.settings.spacing.inside_block",
+      "default": 32,
+      "visible_if": { "setting_id": "style", "value": "default" }
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "id": "inside_inline",
+      "label": "t:app.settings.spacing.inside_inline",
+      "default": 16,
+      "visible_if": { "setting_id": "style", "value": "default" }
+    },
+    { "type": "header", "content": "t:app.settings.content.label" },
+    { "type": "text", "id": "title", "label": "t:app.settings.content.title", "default": "LImited Time Deal" },
+    { "type": "text", "id": "subheading", "label": "t:app.settings.content.subheading", "default": "Sale ends in:" },
+    {
+      "type": "select",
+      "id": "cta",
+      "label": "t:app.settings.content.cta.label",
+      "options": [
+        { "label": "t:app.settings.content.cta.options.none", "value": "none" },
+        { "label": "t:app.settings.content.cta.options.button", "value": "button" },
+        { "label": "t:app.settings.content.cta.options.clickable", "value": "clickable" }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "t:app.settings.content.button_text",
+      "default": "Shop now!",
+      "visible_if": { "setting_id": "cta", "value": "button" }
+    },
+    {
+      "type": "text",
+      "id": "link",
+      "label": "t:app.settings.content.link",
+      "default": "https://youcan.shop",
+      "placeholder": "https://youcan.shop",
+      "visible_if": { "setting_id": "cta", "operator": "!=", "value": "none" }
+    },
+    {
+      "type": "checkbox",
+      "id": "close_icon",
+      "label": "t:app.settings.content.close_icon",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "timer_labels",
+      "label": "t:app.settings.content.timer_labels",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "days_label",
+      "label": "t:app.settings.content.days",
+      "default": "Days",
+      "visible_if": { "setting_id": "timer_labels", "value": true }
+    },
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "t:app.settings.content.hours",
+      "default": "Hrs",
+      "visible_if": { "setting_id": "timer_labels", "value": true }
+    },
+    {
+      "type": "text",
+      "id": "mins_label",
+      "label": "Minutes",
+      "default": "t:app.settings.content.minutes",
+      "visible_if": { "setting_id": "timer_labels", "value": true }
+    },
+    {
+      "type": "text",
+      "id": "secs_label",
+      "label": "t:app.settings.content.seconds",
+      "default": "Secs",
+      "visible_if": { "setting_id": "timer_labels", "value": true }
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_days_when_value_is_zero",
+      "label": "t:app.settings.content.hide_days_when_value_is_zero",
+      "default": false,
+      "visible_if": { "setting_id": "timer_labels", "value": true }
+    },
+    { "type": "header", "content": "t:app.settings.config.label" },
+    {
+      "type": "select",
+      "id": "timer_type",
+      "label": "t:app.settings.config.timer_type.label",
+      "options": [
+        { "label": "t:app.settings.config.timer_type.options.date", "value": "date" },
+        { "label": "t:app.settings.config.timer_type.options.fixed_minutes", "value": "fixed-minutes" },
+        { "label": "t:app.settings.config.timer_type.options.daily", "value": "daily" }
+      ],
+      "default": "date"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:app.settings.config.timer_type.date_hint",
+      "visible_if": { "setting_id": "timer_type", "value": "date" }
+    },
+    {
+      "type": "paragraph",
+      "content": "t:app.settings.config.timer_type.minutes_hint",
+      "visible_if": { "setting_id": "timer_type", "value": "fixed-minutes" }
+    },
+    {
+      "type": "paragraph",
+      "content": "t:app.settings.config.timer_type.daily_hint",
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "monday",
+      "label": "t:app.settings.config.monday",
+      "default": true,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "tuesday",
+      "label": "t:app.settings.config.tuesday",
+      "default": true,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "wednesday",
+      "label": "t:app.settings.config.wednesday",
+      "default": true,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "thursday",
+      "label": "t:app.settings.config.thursday",
+      "default": true,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "friday",
+      "label": "t:app.settings.config.friday",
+      "default": true,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "saturday",
+      "label": "t:app.settings.config.saturday",
+      "default": false,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "checkbox",
+      "id": "sunday",
+      "label": "t:app.settings.config.sunday",
+      "default": false,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "text",
+      "id": "start_date",
+      "label": "t:app.settings.config.start_date",
+      "default": "01/01/2026",
+      "placeholder": "DD/MM/YYYY",
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "range",
+      "id": "hours_start",
+      "label": "t:app.settings.content.hours",
+      "min": 0,
+      "step": 1,
+      "max": 12,
+      "unit": "H",
+      "default": 12,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "range",
+      "id": "minutes_start",
+      "label": "t:app.settings.content.minutes",
+      "min": 0,
+      "step": 1,
+      "max": 59,
+      "unit": "M",
+      "default": 33,
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "select",
+      "id": "time_format_start",
+      "label": "t:app.settings.config.time_format.label",
+      "options": [
+        { "label": "t:app.settings.config.time_format.options.am", "value": "am" },
+        { "label": "t:app.settings.config.time_format.options.pm", "value": "pm" }
+      ],
+      "default": "pm",
+      "visible_if": { "setting_id": "timer_type", "value": "daily" }
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "t:app.settings.config.end_date",
+      "default": "01/01/2049",
+      "placeholder": "DD/MM/YYYY",
+      "visible_if": { "setting_id": "timer_type", "operator": "!=", "value": "fixed-minutes" }
+    },
+    {
+      "type": "range",
+      "id": "hours_end_date",
+      "label": "t:app.settings.content.hours",
+      "min": 0,
+      "step": 1,
+      "max": 12,
+      "unit": "H",
+      "default": 12,
+      "visible_if": { "setting_id": "timer_type", "operator": "!=", "value": "fixed-minutes" }
+    },
+    {
+      "type": "range",
+      "id": "minutes_end_date",
+      "label": "t:app.settings.content.minutes",
+      "min": 0,
+      "step": 1,
+      "max": 59,
+      "unit": "M",
+      "default": 33,
+      "visible_if": { "setting_id": "timer_type", "operator": "!=", "value": "fixed-minutes" }
+    },
+    {
+      "type": "number",
+      "id": "minutes_end_fixed",
+      "label": "t:app.settings.content.minutes",
+      "default": 120,
+      "visible_if": { "setting_id": "timer_type", "value": "fixed-minutes" }
+    },
+    {
+      "type": "select",
+      "id": "time_format_end",
+      "label": "t:app.settings.config.time_format.label",
+      "options": [
+        { "label": "t:app.settings.config.time_format.options.am", "value": "am" },
+        { "label": "t:app.settings.config.time_format.options.pm", "value": "pm" }
+      ],
+      "default": "pm",
+      "visible_if": { "setting_id": "timer_type", "operator": "!=", "value": "fixed-minutes" }
+    },
+    {
+      "type": "select",
+      "id": "once_it_ends_date",
+      "label": "t:app.settings.config.once_it_ends.label",
+      "options": [
+        { "label": "t:app.settings.config.once_it_ends.options.unpublish", "value": "unpublish" },
+        { "label": "t:app.settings.config.once_it_ends.options.do_nothing", "value": "do-nothing" }
+      ],
+      "default": "unpublish",
+      "visible_if": { "setting_id": "timer_type", "value": "date" }
+    },
+    {
+      "type": "select",
+      "id": "once_it_ends_fixed_minutes",
+      "label": "t:app.settings.config.once_it_ends.label",
+      "options": [
+        { "label": "t:app.settings.config.once_it_ends.options.hide", "value": "hide" },
+        { "label": "t:app.settings.config.once_it_ends.options.repeat", "value": "repeat" },
+        { "label": "t:app.settings.config.once_it_ends.options.do_nothing", "value": "do-nothing" }
+      ],
+      "default": "repeat",
+      "visible_if": { "setting_id": "timer_type", "value": "fixed-minutes" }
+    }
+  ]
+}
+{% endschema %}

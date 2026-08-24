@@ -1,0 +1,209 @@
+{% comment %}
+  Renders bundles element
+
+  Usage:
+  {% render 'component.bundles-card' %}
+{% endcomment %}
+
+{% assign best_bundle_id = '' %}
+{% assign best_discount = 0 %}
+
+{% assign types = 'single,multi,buyxgety' | split: ',' %}
+
+{% for type in types %}
+  {% assign bundle_type = product.bundles[type] %}
+
+  {% for bundle in bundle_type %}
+    {% if bundle.compare_price and bundle.compare_price > bundle.total_price %}
+      {% assign discount = bundle.compare_price
+        | minus: bundle.total_price
+        | times: 100
+        | divided_by: bundle.compare_price
+      %}
+
+      {% if discount > best_discount %}
+        {% assign best_discount = discount %}
+        {% assign best_bundle_id = bundle.id %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+<div data-component="card-bundles">
+  <h4 class="title">{{ 'general.bundles' | t }}</h4>
+  <ul class="items single">
+    {% assign current_index = 0 %}
+
+    {% for type in types %}
+      {% assign bundle_type = product.bundles[type] %}
+
+      {% for bundle in bundle_type %}
+        {% assign current_index = current_index | plus: 1 %}
+        <li>
+          <label class="item">
+            <input
+              type="checkbox"
+              name="bundle"
+              data-cod-form="bundle-option"
+              data-bundle-id="{{ bundle.id }}"
+              data-price="{{ bundle.total_price }}"
+              data-compare-price="{{ bundle.compare_price }}"
+              value="{{ bundle.id }}"
+              {% if block.settings.bundle_default_tier == current_index %}
+                checked
+              {% endif %}
+            >
+            <div class="media" data-total="{{ bundle.bundle_products.size }}">
+              {% for item in bundle.bundle_products %}
+                <div class="image">
+                  {% unless item.thumbnail == null or item.thumbnail contains '/store-front/images/product-default' %}
+                    <img
+                      src="{{ item.thumbnail }}"
+                      alt="{{ item.product.name }}"
+                      height="100%"
+                      width="100%"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    {% render 'component.fallback' %}
+                  {% endunless %}
+                </div>
+              {% endfor %}
+              <span class="total">x{{ bundle.bundle_products.size }}</span>
+            </div>
+            <span class="name">{{ bundle.title }}</span>
+            {% if bundle.saving_percentage %}
+              <span class="save">
+                {{ 'general.save' | t }}
+                {{ bundle.saving_percentage }}%
+              </span>
+            {% else %}
+              <span class="save">{{ 'general.buy_now' | t }}</span>
+            {% endif %}
+
+            {% if bundle.id == best_bundle_id %}
+              <span class="badge">{{ block.settings.bundle_highlight_label }}</span>
+            {% endif %}
+          </label>
+        </li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+  [data-component='card-bundles'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    .title {
+      font: var(--font-body-md);
+    }
+
+    .items {
+      display: grid;
+      gap: var(--spacing-12);
+      grid-template-columns: repeat(3, 1fr);
+
+      @media (width <= 769px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .item {
+        padding: var(--spacing-12);
+        border-radius: clamp(0px, var(--radius-block), var(--radius-12));
+        background-color: var(--color-surface-container);
+        border: 1px solid transparent;
+        display: flex;
+        gap: var(--spacing-8);
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+
+        input[type='checkbox'] {
+          scale: 0;
+          opacity: 0;
+          position: absolute;
+        }
+
+        .media {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          aspect-ratio: 1 / 1;
+          border-radius: clamp(0px, calc(var(--radius-block) * 0.6), var(--radius-12));
+          display: grid;
+          position: relative;
+          background-color: var(--color-surface-container-highest);
+
+          &:not([data-total='1']) {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .image {
+            min-width: 0;
+            min-height: 0;
+
+            & > img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              display: block;
+            }
+          }
+
+          .total {
+            inset: 0;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-on-primary);
+            background-color: color-mix(in oklch, var(--color-primary) 30%, transparent);
+          }
+
+          &:not(:has(.image:nth-of-type(4))) .image:nth-of-type(3) {
+            grid-column: 1 / 3;
+          }
+        }
+
+        .name {
+          font: var(--font-body-md);
+        }
+
+        .badge,
+        .save {
+          width: fit-content;
+          padding: var(--spacing-2) var(--spacing-8);
+          color: var(--color-on-primary);
+          background-color: var(--color-primary);
+          border-radius: var(--radius-8);
+          font: var(--font-label-md);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: calc(100% - var(--spacing-24));
+
+          &.badge {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            inset-block-start: var(--spacing-12);
+            color: var(--color-on-primary-container);
+            background-color: var(--color-primary-container);
+            border-start-end-radius: 0;
+            border-start-start-radius: 0;
+          }
+        }
+
+        &:has(input[type='checkbox']:checked) {
+          background-color: var(--color-primary-container);
+          border-color: var(--color-primary);
+        }
+      }
+    }
+  }
+</style>

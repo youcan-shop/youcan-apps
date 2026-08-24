@@ -1,0 +1,11 @@
+{% comment %}
+  Renders modal layout
+
+  Usage:
+  {% render 'layout.modal' %}
+{% endcomment %}
+
+<app-cod-form data-app="modal" data-theme="{{ block.settings.color_scheme }}" variant-id="{{ default_variant.id }}">
+  {% render 'component.sticky-bar' %}
+  {% render 'component.elements', layout: 'modal' %}
+</app-cod-form>

@@ -1,0 +1,65 @@
+{% render 'asset.modal' %}
+
+{% comment %}
+  Renders a success message modal (If the order is submitted successfully)
+
+  Usage:
+  {% render 'component.success-msg' %}
+{% endcomment %}
+
+<div
+  data-component="success-order-msg"
+  data-slot="modal-content"
+  id="success-order-msg"
+  popover="manual"
+  data-cod-form="success-order"
+>
+  <div data-slot="modal-header">
+    <div data-slot="modal-icon">
+      {% render 'component.icon', name: 'hgi-tick-03', size: 32 %}
+    </div>
+    <div data-slot="modal-heading">
+      <h3 data-slot="modal-title">{{ 'general.success_order.heading' | t }}</h3>
+      <p data-slot="modal-description">{{ 'general.success_order.subheading' | t }}</p>
+    </div>
+  </div>
+  <div data-slot="modal-footer">
+    <button data-slot="button" data-variant="secondary" data-size="lg">
+      {{ 'general.success_order.continue_shopping' | t }}
+    </button>
+    <button data-slot="button" data-variant="success" data-size="lg">
+      {{ 'general.success_order.view_order' | t }}
+    </button>
+  </div>
+</div>
+
+<style>
+  [data-component='success-order-msg'] {
+    [data-slot='modal-header'] {
+      text-align: center;
+      align-items: center;
+      flex-direction: column;
+
+      [data-slot='modal-icon'] {
+        width: var(--spacing-64) !important;
+        height: var(--spacing-64) !important;
+        color: var(--color-success) !important;
+        background-color: var(--color-success-container) !important;
+      }
+
+      [data-slot='modal-title'] {
+        color: var(--color-success);
+      }
+    }
+
+    [data-slot='modal-footer'] {
+      display: grid;
+      gap: var(--spacing-12);
+      grid-template-columns: repeat(2, 1fr);
+
+      [data-slot='button'] {
+        width: 100%;
+      }
+    }
+  }
+</style>

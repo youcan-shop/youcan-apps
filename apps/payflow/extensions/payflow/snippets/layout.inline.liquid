@@ -1,0 +1,213 @@
+{% comment %}
+  Renders inline layout
+
+  Usage:
+  {% render 'layout.inline' %}
+{% endcomment %}
+
+<app-cod-form
+  data-app="inline"
+  data-theme="{{ block.settings.color_scheme }}"
+  variant-id="{{ default_variant.id }}"
+  {{ block.youcan_attributes }}
+>
+  <div
+    class="wrapper"
+    data-alignment="{{ block.settings.inline_alignment }}"
+    style="
+      padding-block: {{ block.settings.inline_space_block }}px;
+      padding-inline: {{ block.settings.inline_space_inline }}px;
+    "
+  >
+    <div
+      class="box"
+      data-width="{{ block.settings.inline_desktop_width }}"
+    >
+      <div class="header">
+        {% if block.settings.show_header_icon %}
+          <div class="icon">
+            {% render 'component.icon', name: 'hgi-shopping-basket-03', size: 20 %}
+          </div>
+        {% endif %}
+        <div class="heading">
+          <h3 class="title">{{ block.settings.heading_text }}</h3>
+          <p class="description">{{ block.settings.subheading_text }}</p>
+        </div>
+      </div>
+      <div class="body">
+        {% render 'component.product' %}
+        {% if block.settings.media_enabled %}
+          {% render 'component.media' %}
+        {% endif %}
+        {% if block.settings.variants_enabled and product.options.size %}
+          {% render 'component.variants' %}
+        {% endif %}
+        {% render 'component.form' %}
+        {% if block.settings.bundles_enabled and product.is_bundle %}
+          {% if block.settings.bundle_display_style == 'cards' %}
+            {% render 'component.bundles-card' %}
+          {% else %}
+            {% render 'component.bundles' %}
+          {% endif %}
+        {% endif %}
+        {% if block.settings.summary_enabled %}
+          {% render 'component.summary' %}
+        {% endif %}
+        {% if block.settings.feature_list_enabled %}
+          {% render 'component.feature-list' %}
+        {% endif %}
+      </div>
+      <div class="footer">
+        <button
+          data-slot="button"
+          data-variant="primary"
+          data-size="lg"
+          type="submit"
+          data-cod-form="submit"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          {% unless product.selected_or_first_available_variant %}
+            disabled
+          {% endunless %}
+        >
+          {% render 'component.icon', name: 'hgi-shopping-basket-03', size: 16 %}
+          <span>
+            {% if product.selected_or_first_available_variant %}
+              {{ block.settings.cta_button_text }}
+            {% else %}
+              {{ 'general.out_of_stock' | t }}
+            {% endif %}
+          </span>
+          {% if block.settings.show_price_in_cta_button %}
+            -
+            <div class="price">
+              <span class="original" data-cod-form="total">{{ price | money }}</span>
+              {% if compare_at_price %}
+                <span class="compare-at" data-cod-form="subtotal">{{ compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        </button>
+      </div>
+    </div>
+  </div>
+  {% if block.settings.after_successful_order == 'message' %}
+    {% render 'component.success-msg' %}
+  {% endif %}
+  {% if block.settings.abandoned_order_recovery %}
+    {% render 'component.order-recovery' %}
+  {% endif %}
+</app-cod-form>
+
+{% style %}
+  [data-app='inline'] {
+    display: block;
+    color: var(--color-primary);
+    background-color: var(--color-surface);
+
+    .wrapper {
+      display: flex;
+      background-color: var(--color-app-container);
+
+      &:has([data-alignment='center']) {
+        padding-inline: var(--spacing-0) !important;
+
+        .box {
+          margin: 0 auto;
+        }
+      }
+
+      &[data-alignment='left'] {
+        justify-content: start;
+      }
+
+      &[data-alignment='center'] {
+        justify-content: center;
+      }
+
+      &[data-alignment='right'] {
+        justify-content: end;
+      }
+
+      .box {
+        display: flex;
+        gap: var(--spacing-32);
+        flex-direction: column;
+        color: var(--color-primary);
+
+        &[data-width='md'] {
+          width: 512px;
+        }
+
+        &[data-width='lg'] {
+          width: 680px;
+        }
+
+        &[data-width='full-width'] {
+          width: 100%;
+        }
+
+        .header {
+          display: flex;
+          gap: var(--spacing-12);
+
+          .heading {
+            flex: 1;
+            display: flex;
+            gap: var(--spacing-8);
+            flex-direction: column;
+
+            .title {
+              font: var(--font-body-lg);
+            }
+
+            .description {
+              opacity: 0.8;
+              font: var(--font-body-md);
+            }
+          }
+
+          .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: calc(var(--spacing-32) + var(--spacing-8));
+            height: calc(var(--spacing-32) + var(--spacing-8));
+            border-radius: var(--radius-rounded);
+            background-color: var(--color-primary-container);
+            color: var(--color-primary);
+          }
+        }
+
+        .body {
+          display: flex;
+          flex-direction: column;
+          gap: var(--spacing-16);
+        }
+
+        .footer {
+          [data-slot='button'] {
+            width: 100%;
+
+            .price {
+              display: flex;
+              gap: var(--spacing-4);
+
+              .compare-at {
+                opacity: 0.5;
+                text-decoration: line-through;
+              }
+            }
+          }
+        }
+      }
+
+      @media (width <= 1024px) {
+        padding-inline: var(--spacing-24) !important;
+
+        .box {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+{% endstyle %}

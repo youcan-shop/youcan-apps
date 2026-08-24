@@ -1,0 +1,15 @@
+{% comment %}
+  Renders subheading element
+
+  Usage:
+  {% render 'component.subheading' %}
+{% endcomment %}
+
+<p data-component="subheading">{{ block.settings.subheading }}</p>
+
+<style>
+  #youcan-block--{{ block.id }} [data-component="subheading"] {
+    font: var(--font-{{ block.settings.subheading_size }});
+    color: {{ block.settings.subheading_color.hex }};
+  }
+</style>

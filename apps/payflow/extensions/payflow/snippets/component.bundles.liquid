@@ -1,0 +1,256 @@
+{% comment %}
+  Renders bundles element
+
+  Usage:
+  {% render 'component.bundles' %}
+{% endcomment %}
+
+{% assign best_bundle_id = '' %}
+{% assign best_discount = 0 %}
+
+{% assign types = 'single,multi,buyxgety' | split: ',' %}
+
+{% for type in types %}
+  {% assign bundle_type = product.bundles[type] %}
+
+  {% for bundle in bundle_type %}
+    {% if bundle.compare_price and bundle.compare_price > bundle.total_price %}
+      {% assign discount = bundle.compare_price
+        | minus: bundle.total_price
+        | times: 100
+        | divided_by: bundle.compare_price
+      %}
+
+      {% if discount > best_discount %}
+        {% assign best_discount = discount %}
+        {% assign best_bundle_id = bundle.id %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+<div data-component="bundles">
+  <h4 class="title">{{ 'general.bundles' | t }}</h4>
+  <ul class="items single">
+    {% assign current_index = 0 %}
+    {% assign best_discount = 0 %}
+
+    {% for type in types %}
+      {% assign bundle_type = product.bundles[type] %}
+
+      {% for bundle in bundle_type %}
+        {% assign current_index = current_index | plus: 1 %}
+
+        <li>
+          <label class="item">
+            <input
+              type="checkbox"
+              name="bundle"
+              data-cod-form="bundle-option"
+              data-bundle-id="{{ bundle.id }}"
+              data-price="{{ bundle.total_price }}"
+              data-compare-price="{{ bundle.compare_price }}"
+              value="{{ bundle.id }}"
+              {% if block.settings.bundle_default_tier == current_index %}
+                checked
+              {% endif %}
+            >
+            <div class="media">
+              <span class="total">x{{ bundle.bundle_products.size }}</span>
+            </div>
+            <div class="content">
+              <div class="info">
+                <div class="name">{{ bundle.title }}</div>
+                {% for item in bundle.bundle_products %}
+                  {% assign per_unit = item.price %}
+                {% endfor %}
+                {% if type == 'single' %}
+                  <span class="per-unit">{{ per_unit | money }} per unit</span>
+                {% else %}
+                  {% for item in bundle.bundle_products %}
+                    <div class="product">
+                      <div class="image">
+                        {% unless item.thumbnail == null
+                          or item.thumbnail contains '/store-front/images/product-default'
+                        %}
+                          <img
+                            src="{{ item.thumbnail }}"
+                            alt="{{ item.product.name }}"
+                            height="32"
+                            width="32"
+                            loading="lazy"
+                          >
+                        {% else %}
+                          {% render 'component.fallback', size: 12 %}
+                        {% endunless %}
+                      </div>
+                      <span class="name">{{ item.product.name }}</span>
+                      <span
+                        {% unless item.price %}
+                          class="free"
+                        {% endunless %}
+                      >
+                        {% if item.price %}
+                          ({{ item.price | money }})
+                        {% else %}
+                          (Free)
+                        {% endif %}
+                      </span>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="price">
+                <span class="original">{{ bundle.total_price | money }}</span>
+                {% if bundle.compare_price %}
+                  <span class="compare-at">{{ bundle.compare_price | money }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            {% if bundle.id == best_bundle_id %}
+              <span class="badge">{{ block.settings.bundle_highlight_label }}</span>
+            {% endif %}
+          </label>
+        </li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+  [data-component='bundles'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    .title {
+      font: var(--font-body-md);
+    }
+
+    .items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+
+      .item {
+        padding: var(--spacing-12);
+        border-radius: clamp(0px, var(--radius-block), var(--radius-28));
+        background-color: var(--color-surface-container);
+        border: 1px solid transparent;
+        display: flex;
+        gap: var(--spacing-12);
+        position: relative;
+        cursor: pointer;
+
+        input[type='checkbox'] {
+          scale: 0;
+          opacity: 0;
+          position: absolute;
+        }
+
+        .media {
+          width: 65px;
+          height: 100%;
+          aspect-ratio: 1 / 1;
+          overflow: hidden;
+          border-radius: clamp(0px, calc(var(--radius-block) * 0.6), var(--radius-20));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--color-surface-container-highest);
+
+          & > img {
+            object-fit: cover;
+          }
+        }
+
+        .content {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font: var(--font-body-md);
+
+          @media (width <= 769px) {
+            &:has(.product) {
+              align-items: flex-start;
+              gap: var(--spacing-12);
+              flex-direction: column;
+            }
+          }
+
+          .info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-6);
+
+            .per-unit {
+              opacity: 0.8;
+            }
+
+            .product {
+              display: flex;
+              align-items: center;
+              gap: var(--spacing-4);
+
+              .image {
+                flex-shrink: 0;
+                width: var(--spacing-32);
+                height: var(--spacing-32);
+                overflow: hidden;
+                border-radius: clamp(0px, calc(var(--radius-block) * 0.2), var(--radius-8));
+
+                & > img {
+                  object-fit: cover;
+                }
+              }
+
+              .name {
+                opacity: 0.8;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+
+              .free {
+                color: var(--color-success);
+              }
+            }
+          }
+
+          .price {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-6);
+
+            .compare-at {
+              opacity: 0.5;
+              text-decoration: line-through;
+            }
+          }
+        }
+
+        .badge {
+          position: absolute;
+          inset-inline-end: var(--spacing-12);
+          inset-block-start: calc(var(--spacing-6) * -1);
+          padding: var(--spacing-2) var(--spacing-8);
+          color: var(--color-on-primary);
+          background-color: var(--color-primary);
+          border-radius: var(--radius-8);
+          font: var(--font-label-md);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: calc(100% - var(--spacing-24));
+        }
+
+        &:has(input[type='checkbox']:checked) {
+          background-color: var(--color-primary-container);
+          border-color: var(--color-primary);
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,337 @@
+{% comment %}
+  Renders form element
+
+  Usage:
+  {% render 'component.form' %}
+{% endcomment %}
+
+{% assign has_linked_fields = checkout.linked_fields %}
+{% assign has_phone_validation = checkout.phone_validation %}
+
+<app-linked-fields>
+  <app-phone-validation>
+    <form data-component="form" id="cod-form-{{ block.id }}" data-cod-form="form">
+      {% for field in checkout.fields %}
+        {% assign field_name = field.name %}
+
+        {% if field.custom %}
+          {% assign field_name = 'extra_fields[' | append: field.name | append: ']' %}
+        {% endif %}
+
+        <div class="field-item">
+          <label for="{{ field_name }}-{{ block.id }}">
+            {% if block.settings.auto_translation and field.custom != true %}
+              {% assign translated_label = 'general.fields.' | append: field.name %}
+
+              {{ translated_label | t }}
+            {% else %}
+              {{ field.display_name }}
+            {% endif %}
+            {% if field.required %}
+              <span class="required">*</span>
+            {% else %}
+              <span class="optional">({{ 'general.optional' | t }})</span>
+            {% endif %}
+          </label>
+          {% if field.name != 'country'
+            and field.name != 'city'
+            and field.name != 'region'
+            and has_phone_validation != true
+          %}
+            {% case field.type %}
+              {% when 'text', 'number', 'hidden' %}
+                {% if block.settings.show_icons %}
+                  <div data-slot="input-group" role="presentation">
+                    {% case field_name %}
+                      {% when 'first_name', 'last_name', 'full_name' %}
+                        {% assign input_icon = 'hgi-user' %}
+                      {% when 'email' %}
+                        {% assign input_icon = 'hgi-mail-02' %}
+                      {% when 'company' %}
+                        {% assign input_icon = 'hgi-tie' %}
+                      {% when 'phone' %}
+                        {% assign input_icon = 'hgi-call-02' %}
+                      {% else %}
+                        {% assign input_icon = 'hgi-note' %}
+                    {% endcase %}
+                    <div data-slot="input-group-prefix">
+                      {% render 'component.icon', name: input_icon %}
+                    </div>
+                {% endif %}
+                <input
+                  data-slot="input"
+                  data-variant="secondary"
+                  type="{{ field.type }}"
+                  name="{{ field_name }}"
+                  id="{{ field_name }}-{{ block.id }}"
+                  value="{{ field.default_value }}"
+                  {% if translated_label and field.custom != true %}
+                    placeholder="{{ translated_label | t }}"
+                  {% else %}
+                    placeholder="{{ field.placeholder }}"
+                  {% endif %}
+                  {% if field.required %}
+                    required
+                  {% endif %}
+                >
+                {% if block.settings.show_icons %}
+                  </div>
+                {% endif %}
+              {% when 'textarea' %}
+                {% if block.settings.show_icons %}
+                  <div data-slot="input-group" role="presentation">
+                    {% case field_name %}
+                      {% when 'first_name', 'last_name', 'full_name' %}
+                        {% assign input_icon = 'hgi-user' %}
+                      {% when 'email' %}
+                        {% assign input_icon = 'hgi-mail-02' %}
+                      {% when 'company' %}
+                        {% assign input_icon = 'hgi-tie' %}
+                      {% else %}
+                        {% assign input_icon = 'hgi-note' %}
+                    {% endcase %}
+                    <div data-slot="input-group-prefix">
+                      {% render 'component.icon', name: input_icon %}
+                    </div>
+                {% endif %}
+                <textarea
+                  data-slot="input"
+                  data-variant="secondary"
+                  name="{{ field_name }}"
+                  {% if translated_label and field.custom != true %}
+                    placeholder="{{ translated_label | t }}"
+                  {% else %}
+                    placeholder="{{ field.placeholder }}"
+                  {% endif %}
+                  {% if field.required %}
+                    required
+                  {% endif %}
+                ></textarea>
+                {% if block.settings.show_icons %}
+                  </div>
+                {% endif %}
+              {% when 'select' %}
+                {% if block.settings.show_icons %}
+                  <div data-slot="input-group" role="presentation">
+                    {% case field_name %}
+                      {% when 'first_name', 'last_name', 'full_name' %}
+                        {% assign input_icon = 'hgi-user' %}
+                      {% when 'email' %}
+                        {% assign input_icon = 'hgi-mail-02' %}
+                      {% when 'company' %}
+                        {% assign input_icon = 'hgi-tie' %}
+                      {% else %}
+                        {% assign input_icon = 'hgi-note' %}
+                    {% endcase %}
+                    <div data-slot="input-group-prefix">
+                      {% render 'component.icon', name: input_icon %}
+                    </div>
+                {% endif %}
+                <select
+                  data-slot="input"
+                  name="{{ field_name }}"
+                  {% if field.required %}
+                    required
+                  {% endif %}
+                >
+                  {% for opt in field.options %}
+                    <option
+                      value="{{ opt }}"
+                      {% if option == field.default_value %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ opt }}
+                    </option>
+                  {% endfor %}
+                </select>
+                {% if block.settings.show_icons %}
+                  </div>
+                {% endif %}
+            {% endcase %}
+          {% endif %}
+
+          {% if field.name == 'country' or field.name == 'city' or field.name == 'region' %}
+            {% if block.settings.show_icons %}
+              <div data-slot="input-group" role="presentation">
+                <div data-slot="input-group-prefix">
+                  {% render 'component.icon', name: 'hgi-location-01' %}
+                </div>
+            {% endif %}
+            {% if has_linked_fields %}
+              <select
+                data-slot="input"
+                data-variant="secondary"
+                name="{{ field.name }}"
+                {% if field.required %}
+                  required
+                {% endif %}
+              ></select>
+            {% else %}
+              <input
+                data-slot="input"
+                data-variant="secondary"
+                type="{{ field.type }}"
+                name="{{ field_name }}"
+                id="{{ field_name }}-{{ block.id }}"
+                value="{{ field.default_value }}"
+                {% if translated_label and field.custom != true %}
+                  placeholder="{{ translated_label | t }}"
+                {% else %}
+                  placeholder="{{ field.placeholder }}"
+                {% endif %}
+                {% if field.required %}
+                  required
+                {% endif %}
+              >
+            {% endif %}
+            {% if block.settings.show_icons %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if field.name == 'phone' and has_phone_validation %}
+            <div class="group" dir="ltr">
+              {% if block.settings.show_icons %}
+                <div data-slot="input-group" role="presentation">
+                  <div data-slot="input-group-prefix">
+                    {% render 'component.icon', name: 'hgi-earth' %}
+                  </div>
+              {% endif %}
+              <input type="hidden" name="{{ field.name }}" data-phone="hidden-input">
+              <select
+                data-slot="input"
+                data-variant="secondary"
+                name="phone_country_code"
+                autocomplete="tel-country-code"
+                data-phone="selector"
+              ></select>
+              <span data-phone="country-code">-</span>
+              {% if block.settings.show_icons %}
+                </div>
+              {% endif %}
+              {% if block.settings.show_icons %}
+                <div data-slot="input-group" role="presentation">
+                  <div data-slot="input-group-prefix">
+                    {% render 'component.icon', name: 'hgi-call-02' %}
+                  </div>
+              {% endif %}
+              <input
+                data-slot="input"
+                data-variant="secondary"
+                type="{{ field.type }}"
+                inputmode="tel"
+                name="phone_number"
+                id="{{ field_name }}-{{ block.id }}"
+                {% if translated_label and field.custom != true %}
+                  placeholder="{{ translated_label | t }}"
+                {% else %}
+                  placeholder="{{ field.placeholder }}"
+                {% endif %}
+                autocomplete="tel-national"
+                data-phone="number"
+                {% if field.required %}
+                  required
+                {% endif %}
+              >
+              {% if block.settings.show_icons %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="error-message" aria-invalid="true" aria-labelledby="{{ field.name }}" hidden>
+            <svg
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+            >
+              <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z"></path>
+            </svg>
+            <span>
+              {% if field.name == 'phone' %}
+                {{ 'general.invalid_phone' | t }}
+              {% else %}
+                -
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    </form>
+  </app-phone-validation>
+</app-linked-fields>
+
+<style>
+  [data-component='form'] {
+    display: grid;
+    gap: var(--spacing-12);
+
+    .field-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-4);
+
+      label {
+        font: var(--font-body-md);
+      }
+
+      .required {
+        color: #ff383c;
+      }
+
+      .optional {
+        opacity: 0.7;
+      }
+
+      .error-message {
+        color: #fb3748;
+        font: var(--font-body-sm);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-4);
+      }
+    }
+
+    [data-slot='input-group-prefix'] {
+      pointer-events: none;
+
+      &:has(+ textarea) {
+        align-items: flex-start;
+        padding-block-start: var(--spacing-12);
+      }
+    }
+
+    .group {
+      display: flex;
+      gap: var(--spacing-8);
+      position: relative;
+
+      select {
+        width: 120px;
+        color: transparent !important;
+      }
+
+      [data-phone='country-code'] {
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: var(--spacing-12);
+        transform: translateY(-50%);
+        font: var(--font-body-md);
+        pointer-events: none;
+      }
+
+      [data-slot='input-group']:last-child {
+        flex: 1;
+      }
+
+      &:has([data-slot='input-group-prefix']) {
+        [data-phone='country-code'] {
+          inset-inline-start: 36px;
+        }
+      }
+    }
+  }
+</style>

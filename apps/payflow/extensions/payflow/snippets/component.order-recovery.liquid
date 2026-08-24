@@ -1,0 +1,59 @@
+{% render 'asset.modal' %}
+
+{% comment %}
+  Renders a recovery message modal
+
+  Usage:
+  {% render 'component.order-recovery' %}
+{% endcomment %}
+
+<div
+  data-component="order-recovery"
+  data-slot="modal-content"
+  id="order-recovery"
+  popover="manual"
+  data-cod-form="order-recovery"
+>
+  <div data-slot="modal-header">
+    <div data-slot="modal-icon">
+      {% render 'component.icon', name: 'hgi-link-forward', size: 32 %}
+    </div>
+    <div data-slot="modal-heading">
+      <h3 data-slot="modal-title">{{ 'general.order_recovery.heading' | t }}</h3>
+      <p data-slot="modal-description">{{ 'general.order_recovery.subheading' | t }}</p>
+    </div>
+  </div>
+  <div data-slot="modal-footer">
+    <button data-slot="button" data-variant="secondary" data-size="lg">
+      {{ 'general.order_recovery.not_now' | t }}
+    </button>
+    <button data-slot="button" data-variant="primary" data-size="lg">
+      {{ 'general.order_recovery.continue' | t }}
+    </button>
+  </div>
+</div>
+
+<style>
+  [data-component='order-recovery'] {
+    [data-slot='modal-header'] {
+      text-align: center;
+      align-items: center;
+      flex-direction: column;
+
+      [data-slot='modal-icon'] {
+        width: var(--spacing-64) !important;
+        height: var(--spacing-64) !important;
+      }
+    }
+
+    [data-slot='modal-footer'] {
+      display: grid;
+      gap: var(--spacing-12);
+      grid-template-columns: repeat(2, 1fr);
+
+      [data-slot='button'] {
+        width: 100%;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,73 @@
+{% comment %}
+  Renders sticky bar element
+
+  Usage:
+  {% render 'component.sticky-bar' %}
+{% endcomment %}
+
+<div class="sticky-bar" data-width="{{ block.settings.sticky_bar_desktop_width }}" {{ block.youcan_attributes }}>
+  <div class="box">
+    <div class="media" data-cod-form="image">
+      {% if product.preview_image %}
+        <img
+          src="{{ product.preview_image.original }}"
+          alt="{{ product.name }}"
+          height="65"
+          width="65"
+          loading="eager"
+        >
+      {% else %}
+        {% render 'component.fallback' %}
+      {% endif %}
+    </div>
+    <div class="info">
+      <a href="{{ product.url | default: '#' }}" class="name">{{ product.name }}</a>
+      <div class="quantity">
+        <button
+          data-slot="button"
+          data-variant="secondary"
+          data-size="sm"
+          data-as-icon="true"
+          name="minus"
+          aria-label="decrease"
+          data-cod-form="qty-dec"
+        >
+          {% render 'component.icon', name: 'hgi-minus-sign' %}
+        </button>
+        <span class="value" data-cod-form="quantity">1</span>
+        <button
+          data-slot="button"
+          data-variant="secondary"
+          data-size="sm"
+          data-as-icon="true"
+          name="plus"
+          aria-label="increase"
+          data-cod-form="qty-inc"
+        >
+          {% render 'component.icon', name: 'hgi-plus-sign' %}
+        </button>
+      </div>
+    </div>
+    <div class="price">
+      <span class="original" data-cod-form="price">{{ price | money }}</span>
+      {% if compare_at_price %}
+        <span class="compare-at" data-cod-form="compare-price">{{ compare_at_price | money }}</span>
+      {% endif %}
+    </div>
+    <button
+      data-slot="button"
+      data-variant="primary"
+      data-size="md"
+      popovertarget="form-{{ block.id }}"
+      {% unless product.selected_or_first_available_variant %}
+        disabled
+      {% endunless %}
+    >
+      {% if product.selected_or_first_available_variant %}
+        {{ block.settings.trigger_label }}
+      {% else %}
+        Out of stock
+      {% endif %}
+    </button>
+  </div>
+</div>
