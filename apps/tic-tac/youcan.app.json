@@ -1,0 +1,16 @@
+{
+    "name": "tictac",
+    "id": "app_FBmr7gN550g3z3p9IgJQyme1LMC",
+    "app_url": null,
+    "redirect_urls": [],
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "2894"
+    },
+    "extension_ids": {
+        "payflow": "ext_FApyPy5wQtQXDYDG2hWcFXsyyAQ",
+        "tic-tac": "ext_FBmu7XMUPYRONKg5L3iSYBreiNP"
+    }
+}

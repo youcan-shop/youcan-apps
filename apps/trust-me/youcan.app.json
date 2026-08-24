@@ -6,5 +6,8 @@
     "oauth": {
         "scopes": [],
         "client_id": "2750"
+    },
+    "extension_ids": {
+        "trust-me": "ext_F96Bhm3rkLSAjnOU8GqiTIdiWmB"
     }
 }
