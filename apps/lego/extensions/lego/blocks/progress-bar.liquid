@@ -1,0 +1,243 @@
+Progress bar
+
+{% schema %}
+{
+  "label": "Progress bar",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Progress source",
+      "options": [
+        { "label": "Cart total", "value": "cart_total" },
+        { "label": "Cart quantity", "value": "cart_quantity" },
+        { "label": "Product inventory", "value": "product_inventory" },
+        { "label": "Product metafield", "value": "product_metafield" },
+        { "label": "Collection metafield", "value": "collection_metafield" },
+        { "label": "Custom value", "value": "custom_value" }
+      ],
+      "default": "cart_total"
+    },
+    {
+      "type": "select",
+      "id": "cart_scope",
+      "label": "Cart scope",
+      "options": [
+        { "label": "Current cart", "value": "current_cart" },
+        { "label": "Current product", "value": "current_product" }
+      ],
+      "default": "current_cart",
+      "visible_if": { "setting_id": "source", "value": "cart_total" }
+    },
+    { "type": "number", "id": "max_inventory", "label": "Max inventory", "default": 100 },
+    { "type": "number", "id": "low_stock_threshold", "label": "Low stock threshold", "default": 10 },
+    { "type": "text", "id": "low_stock_message", "label": "Low stock message", "default": "Only [[current]] left!" },
+    { "type": "text", "id": "sold_out_message", "label": "Sold out message", "default": "Sold out" },
+    {
+      "type": "select",
+      "id": "goal_type",
+      "label": "Goal type",
+      "options": [
+        { "label": "Amount", "value": "amount" },
+        { "label": "Quality", "value": "quality" },
+        { "label": "Percentage", "value": "percentage" },
+        { "label": "Units", "value": "units" }
+      ],
+      "default": "amount"
+    },
+    { "type": "number", "id": "goal_value", "label": "Goal", "default": 100 },
+    { "type": "text", "id": "label", "label": "Label", "default": "You're [[remaining]] away!" },
+    { "type": "text", "id": "completed_label", "label": "Completed label", "default": "You've unlocked the reward!" },
+    { "type": "checkbox", "id": "show_value", "label": "Show current Value", "default": false },
+    { "type": "checkbox", "id": "show_percentage", "label": "Show percentage", "default": false },
+    { "type": "checkbox", "id": "show_remaining", "label": "Show remaining", "default": true },
+    {
+      "type": "select",
+      "id": "completed_state",
+      "label": "Completed state",
+      "options": [
+        { "label": "Message", "value": "Message" },
+        { "label": "Hide bar", "value": "hide_bar" },
+        { "label": "100%", "value": "100%" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "message"
+    },
+    { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Font size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "14"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Font weight",
+      "options": [
+        { "label": "300", "value": "300" },
+        { "label": "400", "value": "400" },
+        { "label": "500", "value": "500" },
+        { "label": "600", "value": "600" },
+        { "label": "700", "value": "700" },
+        { "label": "800", "value": "800" },
+        { "label": "900", "value": "900" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "transform",
+      "label": "Text transform",
+      "options": [
+        { "label": "Normal", "value": "none" },
+        { "label": "Capitalize", "value": "capitalize" },
+        { "label": "Uppercase", "value": "uppercase" },
+        { "label": "Lowercase", "value": "lowercase" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "color", "label": "Color", "default": "#121212" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "single-color"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Background image",
+      "visible_if": { "setting_id": "background", "value": "image" }
+    },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius", "label": "Border radius", "default": 0 },
+    { "type": "range", "min": 2, "max": 40, "step": 1, "id": "bar_height", "label": "Bar height", "default": 8 },
+    {
+      "type": "range",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "id": "mobile_bar_height",
+      "label": "Mobile bar height",
+      "default": 8
+    },
+    { "type": "number", "id": "bar_radius", "label": "Bar radius", "default": 999 },
+    { "type": "color", "id": "track_color", "label": "Track color", "default": "#EEEEEE" },
+    { "type": "color", "id": "progress_color", "label": "Progress color", "default": "#121212" },
+    { "type": "checkbox", "id": "animated", "label": "Animated", "default": false },
+    {
+      "type": "range",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "id": "animation_speed",
+      "label": "Animation speed",
+      "default": 2
+    },
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "769px and smaller" },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "Opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "placeholder": "my-progress-bar"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "placeholder": "transform: scale(2);\nbackdrop-filter: filter(2px);"
+    }
+  ]
+}
+{% endschema %}

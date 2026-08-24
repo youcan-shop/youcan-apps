@@ -1,0 +1,112 @@
+<hr data-lego="divider">
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="divider"] {
+    border: none;
+    background-color: {{ block.settings.color.hex }};
+    height: {{ block.settings.thickness | append: 'px' }};
+    padding: {{ block.settings.padding | append: 'px' }};
+    margin: {{ block.settings.margin | append: 'px' }};
+    opacity: {{ block.settings.opacity }};
+
+    {% if block.settings.width == 'custom' %}
+      max-width: 100%;
+      width: {{ block.settings.custom_width | append: 'px' }};
+    {% endif %}
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px)  {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  {% if block.settings.custom_css != 'blank' %}
+    #youcan-block--{{ block.id }} [data-lego="divider"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Divider",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Design" },
+    { "type": "number", "id": "thickness", "label": "Thickness", "default": 2 },
+    { "type": "color", "id": "color", "label": "Color", "default": "#121212" },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 1200,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin", "label": "Margin", "default": 0 },
+    { "type": "number", "id": "padding", "label": "Padding", "default": 0 },
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "769px and smaller" },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "Opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "placeholder": "my-divider"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "placeholder": "transform: scale(2);\nbackdrop-filter: filter(2px);"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,362 @@
+{% if block.settings.icon %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,{% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},0&icon_names={{ block.settings.icon }}"
+  />
+{% endif %}
+
+<div
+  data-lego="announcement-bar"
+  {% if block.settings.anchor %}
+    id="{{ block.settings.anchor }}"
+  {% endif %}
+>
+  <ul>
+    <li>
+      <a
+        href="{{ block.settings.link | default: '#' }}"
+        {% if block.settings.new_window %}
+          target="_blank"
+        {% endif %}
+      >
+        {% if block.settings.icon and block.settings.icon_position == 'left' %}
+          <span class="material-symbols-outlined">
+            {{ block.settings.icon }}
+          </span>
+        {% endif %}
+        {{ block.settings.message }}
+        {% if block.settings.icon and block.settings.icon_position == 'right' %}
+          <span class="material-symbols-outlined">
+            {{ block.settings.icon }}
+          </span>
+        {% endif %}
+      </a>
+    </li>
+  </ul>
+</div>
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="announcement-bar"] {
+    color: {{ block.settings.color.hex }};
+    text-transform: {{ block.settings.transform }};
+    font-size: {{ block.settings.size | append: 'px' }};
+    font-weight: {{ block.settings.weight }};
+    padding: {{ block.settings.padding | append: 'px' }};
+    margin: {{ block.settings.margin | append: 'px' }};
+    border-radius: {{ block.settings.border_radius | append: 'px' }};
+    border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    opacity: {{ block.settings.opacity }};
+
+    ul {
+      display: flex;
+      justify-content: {{ block.settings.align }};
+
+      li {
+        a {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .material-symbols-outlined {
+            font-size: {{ block.settings.icon_size | append: 'px' }};
+            margin-inline: -4px;
+            font-variation-settings:
+              "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
+              "wght" 400,
+              "GRAD" 0,
+              "opsz" 20;
+          }
+        }
+      }
+    }
+
+    {% if block.settings.width == 'custom' %}
+      max-width: 100%;
+      width: {{ block.settings.custom_width | append: 'px' }};
+    {% endif %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}
+          background-color: {{ block.settings.bg_color.hex }};
+        {% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% when 'image' %}
+        background-image: url({{ block.settings.bg_img.src }});
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    {% endcase %}
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px)  {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  {% if block.settings.custom_css != 'blank' %}
+    #youcan-block--{{ block.id }} [data-lego="announcement-bar"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Announcement bar",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "message", "label": "Message", "default": "Add your message here" },
+    { "type": "text", "id": "icon", "label": "Icon", "placeholder": "favorite", "default": "favorite" },
+    { "type": "paragraph", "content": "Feel free to use [Google Icons](https://fonts.google.com/icons)" },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "options": [
+        { "label": "Left", "value": "left" },
+        { "label": "Right", "value": "right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "icon_sharp",
+      "label": "Icon sharp",
+      "options": [
+        { "label": "Stroke", "value": "stroke" },
+        { "label": "Solid", "value": "solid" }
+      ],
+      "default": "stroke"
+    },
+    {
+      "type": "range",
+      "max": 80,
+      "min": 16,
+      "step": 2,
+      "unit": "px",
+      "id": "icon_size",
+      "label": "Icon size",
+      "default": 20
+    },
+    { "type": "text", "id": "link", "label": "Link", "default": "https://youcan.shop" },
+    {
+      "type": "checkbox",
+      "id": "new_window",
+      "label": "Open in new window",
+      "default": false
+    },
+    { "type": "checkbox", "id": "scrolling", "label": "Marquee", "default": false },
+    {
+      "type": "range",
+      "max": 10,
+      "min": 1,
+      "step": 1,
+      "unit": "s",
+      "id": "speed",
+      "label": "Scroll speed",
+      "default": 3,
+      "visible_if": { "setting_id": "scrolling", "value": true }
+    },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "label": "Left", "value": "flex-start" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "flex-end" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 1200,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin", "label": "Margin", "default": 0 },
+    { "type": "number", "id": "padding", "label": "Padding", "default": 20 },
+    { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Font size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" }
+      ],
+      "default": "14"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Font weight",
+      "options": [
+        { "label": "300", "value": "300" },
+        { "label": "400", "value": "400" },
+        { "label": "500", "value": "500" },
+        { "label": "600", "value": "f600" },
+        { "label": "700", "value": "700" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "transform",
+      "label": "Text transform",
+      "options": [
+        { "label": "Normal", "value": "none" },
+        { "label": "Capitalize", "value": "capitalize" },
+        { "label": "Uppercase", "value": "uppercase" },
+        { "label": "Lowercase", "value": "lowercase" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "color", "label": "Color", "default": "#121212" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "single-color"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Background image",
+      "visible_if": { "setting_id": "background", "value": "image" }
+    },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius", "label": "Border radius", "default": 0 },
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "769px and smaller" },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "Opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "placeholder": "my-announcement-bar"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "placeholder": "transform: scale(2);\nbackdrop-filter: filter(2px);"
+    }
+  ]
+}
+{% endschema %}

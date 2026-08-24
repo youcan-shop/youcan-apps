@@ -1,0 +1,305 @@
+<div
+  data-lego="heading"
+  {% if block.settings.anchor %}
+    id="{{ block.settings.anchor }}"
+  {% endif %}
+>
+  {% if block.settings.source == 'static' %}
+    {{ block.settings.text }}
+  {% else %}
+    {% case block.settings.dynamic_source %}
+      {% when 'product-title' %}
+        {{ product.title | default: 'Product title' }}
+      {% when 'collection-title' %}
+        {{ product.categories[0].name | default: category.name | default: 'Collection title' }}
+      {% else %}
+        {{ store.name }}
+    {% endcase %}
+  {% endif %}
+</div>
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="heading"] {
+    color: {{ block.settings.color.hex }};
+    text-align: {{ block.settings.align }};
+    text-transform: {{ block.settings.transform }};
+    font-size: {{ block.settings.size | append: 'px' }};
+    font-weight: {{ block.settings.weight }};
+    padding: {{ block.settings.padding | append: 'px' }};
+    margin: {{ block.settings.margin | append: 'px' }};
+    border-radius: {{ block.settings.border_radius | append: 'px' }};
+    border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    opacity: {{ block.settings.opacity }};
+
+    {% if block.settings.width == 'custom' %}
+      max-width: 100%;
+      width: {{ block.settings.custom_width | append: 'px' }};
+    {% endif %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}
+          background-color: {{ block.settings.bg_color.hex }};
+        {% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% when 'image' %}
+        background-image: url({{ block.settings.bg_img.src }});
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    {% endcase %}
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px)  {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  {% if block.settings.custom_css != 'blank' %}
+    #youcan-block--{{ block.id }} [data-lego="heading"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Heading",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source",
+      "options": [
+        { "label": "Static", "value": "static" },
+        { "label": "Dynamic", "value": "dynamic" }
+      ],
+      "default": "static"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Add your heading here",
+      "visible_if": { "setting_id": "source", "value": "static" }
+    },
+    {
+      "type": "select",
+      "id": "dynamic_source",
+      "label": "Text source",
+      "options": [
+        { "label": "Product title", "value": "product-title" },
+        { "label": "Collection title", "value": "collection-title" },
+        { "label": "Store name", "value": "store-name" }
+      ],
+      "default": "product-title",
+      "visible_if": { "setting_id": "source", "value": "dynamic" }
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "label": "Left", "value": "left" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 1200,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin", "label": "Margin", "default": 0 },
+    { "type": "number", "id": "padding", "label": "Padding", "default": 0 },
+    { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Font size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" },
+        { "label": "28px", "value": "28" },
+        { "label": "36px", "value": "36" },
+        { "label": "44px", "value": "44" },
+        { "label": "56px", "value": "56" }
+      ],
+      "default": "28"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Font weight",
+      "options": [
+        { "label": "300", "value": "300" },
+        { "label": "400", "value": "400" },
+        { "label": "500", "value": "500" },
+        { "label": "600", "value": "600" },
+        { "label": "700", "value": "700" },
+        { "label": "800", "value": "800" },
+        { "label": "900", "value": "900" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "transform",
+      "label": "Text transform",
+      "options": [
+        { "label": "Normal", "value": "none" },
+        { "label": "Capitalize", "value": "capitalize" },
+        { "label": "Uppercase", "value": "uppercase" },
+        { "label": "Lowercase", "value": "lowercase" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "color", "label": "Color", "default": "#121212" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "single-color"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Background image",
+      "visible_if": { "setting_id": "background", "value": "image" }
+    },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius", "label": "Border radius", "default": 0 },
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "769px and smaller" },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "Opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "placeholder": "my-heading"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "placeholder": "transform: scale(2);\nbackdrop-filter: filter(2px);"
+    }
+  ]
+}
+{% endschema %}

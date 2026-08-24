@@ -1,0 +1,763 @@
+{% assign icons = '' %}
+
+{% for i in (1..8) %}
+  {% assign icon = 'icon_' | append: i %}
+
+  {% if block.settings[icon] %}
+    {% assign icons = icons | append: block.settings[icon] | append: ',' %}
+  {% endif %}
+{% endfor %}
+
+{% assign icons_list = icons | split: ',' %}
+
+{% if icons_list.size %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,{% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},0&icon_names={{ icons }}"
+  />
+{% endif %}
+
+<div data-lego="trust-badges">
+  <ul>
+    {% for i in (1..8) %}
+      {% assign icon = 'icon_' | append: i %}
+      {% assign icon_color = 'icon_color_' | append: i %}
+      {% assign is_custom_img = 'is_custom_img_' | append: i %}
+      {% assign custom_img = 'custom_img_' | append: i %}
+      {% assign title = 'title_' | append: i %}
+      {% assign subtitle = 'subtitle_' | append: i %}
+      {% assign link = 'link_' | append: i %}
+      {% assign new_window = 'new_window_' | append: i %}
+
+      {% if block.settings[title] != blank %}
+        <li>
+          {% if block.settings.clickable %}
+            <a
+              class="badge"
+              href="{{ block.settings[link] }}"
+              {% if block.settings[new_window] %}
+                target="_blank"
+              {% endif %}
+            >
+          {% else %}
+            <div class="badge">
+          {% endif %}
+          {% if block.settings.icon_position == 'left' %}
+            {% if block.settings[is_custom_img] %}
+              {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
+              <img
+                src="{{ block.settings[custom_img].src | default: fallback_image_url }}"
+                alt="{{ block.settings[title] }}"
+                width="{{ block.settings.icon_size | append: 'px' }}"
+                height="{{ block.settings.icon_size | append: 'px' }}"
+                loading="lazy"
+              >
+            {% else %}
+              <span class="material-symbols-outlined" style="color: {{ block.settings[icon_color].hex }};">
+                {{ block.settings[icon] }}
+              </span>
+            {% endif %}
+          {% endif %}
+          {% unless block.settings.clickable %}
+            <a
+              class="content"
+              href="{{ block.settings[link] }}"
+              {% if block.settings[new_window] %}
+                target="_blank"
+              {% endif %}
+            >
+          {% else %}
+            <div class="content">
+          {% endunless %}
+          <span class="title">{{ block.settings[title] }}</span>
+          <p class="subtitle">{{ block.settings[subtitle] }}</p>
+          {% unless block.settings.clickable %}
+            </a>
+          {% else %}
+            </div>
+          {% endunless %}
+          {% if block.settings.icon_position == 'right' %}
+            {% if block.settings[is_custom_img] %}
+              {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
+              <img
+                src="{{ block.settings[custom_img].src | default: fallback_image_url }}"
+                alt="{{ block.settings[title] }}"
+                width="{{ block.settings.icon_size | append: 'px' }}"
+                height="{{ block.settings.icon_size | append: 'px' }}"
+                loading="lazy"
+              >
+            {% else %}
+              <span class="material-symbols-outlined" style="color: {{ block.settings[icon_color].hex }};">
+                {{ block.settings[icon] }}
+              </span>
+            {% endif %}
+          {% endif %}
+          {% if block.settings.clickable %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="trust-badges"] {
+    padding: {{ block.settings.padding | append: 'px' }};
+    margin: {{ block.settings.margin | append: 'px' }};
+    border-radius: {{ block.settings.border_radius | append: 'px' }};
+    border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    opacity: {{ block.settings.opacity }};
+
+    ul {
+      gap: {{ block.settings.gap | append: 'px' }};
+      justify-content: {{ block.settings.align }};
+
+      {% case block.settings.layout %}
+        {% when 'grid' %}
+          display: grid;
+          grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
+
+          @media (width <= 769px) {
+            grid-template-columns: 1fr;
+          }
+
+        {% when 'list' %}
+          display: flex;
+          flex-direction: column;
+
+        {% when 'slide' %}
+          display: flex;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+          overflow: scroll hidden;
+          scroll-snap-type: x mandatory;
+          justify-content: flex-start;
+
+          li {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            width: calc((100% - ({{ block.settings.gap | append: 'px' }} * ({{ block.settings.columns }} - 1))) / {{ block.settings.columns }});
+            min-width: calc((100% - ({{ block.settings.gap | append: 'px' }} * ({{ block.settings.columns }} - 1))) / {{ block.settings.columns }});
+          }
+
+          @media (width <= 769px) {
+            li {
+              width: calc(100% - {{ block.settings.gap | append: 'px' }});
+              min-width: calc(100% - {{ block.settings.gap | append: 'px' }});
+            }
+          }
+
+      {% endcase %}
+
+      li {
+        .badge {
+          display: flex;
+          gap: 12px;
+          justify-content: {{ block.settings.align }};
+
+          .content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            .title {
+              color: {{ block.settings.title_color.hex }};
+              text-transform: {{ block.settings.title_transform }};
+              font-size: {{ block.settings.title_size | append: 'px' }};
+              font-weight: {{ block.settings.title_weight }};
+            }
+
+            .subtitle {
+              color: {{ block.settings.subtitle_color.hex }};
+              text-transform: {{ block.settings.subtitle_transform }};
+              font-size: {{ block.settings.subtitle_size | append: 'px' }};
+              font-weight: {{ block.settings.subtitle_weight }};
+            }
+          }
+
+          .material-symbols-outlined {
+            font-size: {{ block.settings.icon_size | append: 'px' }};
+            margin-inline: -4px;
+            font-variation-settings:
+              "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
+              "wght" 400,
+              "GRAD" 0,
+              "opsz" 20;
+          }
+
+          img {
+            object-fit: cover;
+          }
+        }
+      }
+    }
+
+    {% if block.settings.width == 'custom' %}
+      max-width: 100%;
+      width: {{ block.settings.custom_width | append: 'px' }};
+    {% endif %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}
+          background-color: {{ block.settings.bg_color.hex }};
+        {% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% when 'image' %}
+        background-image: url({{ block.settings.bg_img.src }});
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    {% endcase %}
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px)  {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  {% if block.settings.custom_css != 'blank' %}
+    #youcan-block--{{ block.id }} [data-lego="trust-badges"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Trust badges",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "label": "Grid", "value": "grid" },
+        { "label": "List", "value": "list" },
+        { "label": "Slide", "value": "slide" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "max": 6,
+      "min": 2,
+      "step": 1,
+      "id": "columns",
+      "label": "Columns",
+      "default": 4,
+      "visible_if": { "setting_id": "layout", "operator": "!=", "value": "list" }
+    },
+    { "type": "range", "max": 80, "min": 0, "step": 2, "unit": "px", "id": "gap", "label": "Gap", "default": 24 },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "options": [
+        { "label": "Left", "value": "left" },
+        { "label": "Right", "value": "right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "icon_sharp",
+      "label": "Icon sharp",
+      "options": [
+        { "label": "Stroke", "value": "stroke" },
+        { "label": "Solid", "value": "solid" }
+      ],
+      "default": "stroke"
+    },
+    {
+      "type": "range",
+      "max": 80,
+      "min": 16,
+      "step": 2,
+      "unit": "px",
+      "id": "icon_size",
+      "label": "Icon size",
+      "default": 40
+    },
+    { "type": "checkbox", "id": "clickable", "label": "Entire element clickable", "default": false },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "label": "Left", "value": "flex-start" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "flex-end" }
+      ],
+      "default": "flex-start"
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin", "label": "Margin", "default": 0 },
+    { "type": "number", "id": "padding", "label": "Padding", "default": 20 },
+    { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Title size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" }
+      ],
+      "default": "16"
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title font weight",
+      "options": [
+        { "label": "300", "value": "300" },
+        { "label": "400", "value": "400" },
+        { "label": "500", "value": "500" },
+        { "label": "600", "value": "f600" },
+        { "label": "700", "value": "700" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Title text transform",
+      "options": [
+        { "label": "Normal", "value": "none" },
+        { "label": "Capitalize", "value": "capitalize" },
+        { "label": "Uppercase", "value": "uppercase" },
+        { "label": "Lowercase", "value": "lowercase" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#121212" },
+    {
+      "type": "select",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" }
+      ],
+      "default": "14"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle font weight",
+      "options": [
+        { "label": "300", "value": "300" },
+        { "label": "400", "value": "400" },
+        { "label": "500", "value": "500" },
+        { "label": "600", "value": "f600" },
+        { "label": "700", "value": "700" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_transform",
+      "label": "Subtitle text transform",
+      "options": [
+        { "label": "Normal", "value": "none" },
+        { "label": "Capitalize", "value": "capitalize" },
+        { "label": "Uppercase", "value": "uppercase" },
+        { "label": "Lowercase", "value": "lowercase" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#5c5c5c" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "single-color"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Background image",
+      "visible_if": { "setting_id": "background", "value": "image" }
+    },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius", "label": "Border radius", "default": 0 },
+    { "type": "header", "content": "Badge #1" },
+    {
+      "type": "text",
+      "id": "icon_1",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_1", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_1",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_1", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_1", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_1",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_1", "value": true }
+    },
+    { "type": "text", "id": "title_1", "label": "Title", "default": "Add your badge #1 title here" },
+    { "type": "textarea", "id": "subtitle_1", "label": "Subtitle", "default": "Add your badge #1 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_1",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_1", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #2" },
+    {
+      "type": "text",
+      "id": "icon_2",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_2", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_2",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_2", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_2", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_2",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_2", "value": true }
+    },
+    { "type": "text", "id": "title_2", "label": "Title", "default": "Add your badge #2 title here" },
+    { "type": "textarea", "id": "subtitle_2", "label": "Subtitle", "default": "Add your badge #2 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_2",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_2", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #3" },
+    {
+      "type": "text",
+      "id": "icon_3",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_3", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_3",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_3", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_3", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_3",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_3", "value": true }
+    },
+    { "type": "text", "id": "title_3", "label": "Title", "default": "Add your badge #3 title here" },
+    { "type": "textarea", "id": "subtitle_3", "label": "Subtitle", "default": "Add your badge #3 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_3",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_3", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #4" },
+    {
+      "type": "text",
+      "id": "icon_4",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_4", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_4",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_4", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_4", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_4",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_4", "value": true }
+    },
+    { "type": "text", "id": "title_4", "label": "Title", "default": "Add your badge #4 title here" },
+    { "type": "textarea", "id": "subtitle_4", "label": "Subtitle", "default": "Add your badge #4 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_4",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_4", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #5" },
+    {
+      "type": "text",
+      "id": "icon_5",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_5", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_5",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_5", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_5", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_5",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_5", "value": true }
+    },
+    { "type": "text", "id": "title_5", "label": "Title", "default": "Add your badge #5 title here" },
+    { "type": "textarea", "id": "subtitle_5", "label": "Subtitle", "default": "Add your badge #5 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_5",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_5", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #6" },
+    {
+      "type": "text",
+      "id": "icon_6",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_6", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_6",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_6", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_6", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_6",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_6", "value": true }
+    },
+    { "type": "text", "id": "title_6", "label": "Title", "default": "Add your badge #6 title here" },
+    { "type": "textarea", "id": "subtitle_6", "label": "Subtitle", "default": "Add your badge #6 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_6",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_6", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #7" },
+    {
+      "type": "text",
+      "id": "icon_7",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_7", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_7",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_7", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_7", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "custom_img_7",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_7", "value": true }
+    },
+    { "type": "text", "id": "title_7", "label": "Title", "default": "Add your badge #7 title here" },
+    { "type": "textarea", "id": "subtitle_7", "label": "Subtitle", "default": "Add your badge #7 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_7",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_7", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Badge #8" },
+    {
+      "type": "text",
+      "id": "icon_8",
+      "label": "Icon",
+      "default": "favorite",
+      "visible_if": { "setting_id": "is_custom_img_8", "value": false }
+    },
+    {
+      "type": "color",
+      "id": "icon_color_8",
+      "label": "Icon color",
+      "default": "#121212",
+      "visible_if": { "setting_id": "is_custom_img_8", "value": false }
+    },
+    { "type": "checkbox", "id": "is_custom_img_8", "label": "Use custom image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "is_custom_img_8",
+      "label": "Custom image",
+      "visible_if": { "setting_id": "is_custom_img_8", "value": true }
+    },
+    { "type": "text", "id": "title_8", "label": "Title", "default": "Add your badge #8 title here" },
+    { "type": "textarea", "id": "subtitle_8", "label": "Subtitle", "default": "Add your badge #8 subtitle here" },
+    {
+      "type": "text",
+      "id": "link_8",
+      "label": "Link",
+      "placeholder": "https://youcan.shop",
+      "default": "https://youcan.shop"
+    },
+    { "type": "checkbox", "id": "new_window_8", "label": "Open in new window", "default": false },
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "769px and smaller" },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "Opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "placeholder": "my-trust-badges"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "placeholder": "transform: scale(2);\nbackdrop-filter: filter(2px);"
+    }
+  ]
+}
+{% endschema %}

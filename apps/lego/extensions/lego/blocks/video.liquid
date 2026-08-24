@@ -1,0 +1,276 @@
+{% case block.settings.source %}
+  {% when 'url' %}
+    <video
+      data-lego="video"
+      width="100%"
+      height="100%"
+      {% if block.settings.loop %}
+        loop
+      {% endif %}
+      {% if block.settings.autoplay %}
+        autoplay
+      {% endif %}
+      {% if block.settings.mute %}
+        muted
+      {% endif %}
+      {% if block.settings.controls %}
+        controls
+      {% endif %}
+      {% if block.settings.loading %}
+        loading="{{ block.settings.loading }}"
+      {% endif %}
+    >
+      <source src="{{ block.settings.url }}" type="video/mp4" />
+    </video>
+
+  {% when 'youtube' %}
+    {% capture youtube_params %}
+      {% if block.settings.autoplay %}autoplay=1&{% endif %}
+      {% if block.settings.mute %}mute=1&{% endif %}
+      {% unless block.settings.controls %}controls=0&{% endunless %}
+      {% if block.settings.loop %}loop=1&playlist={{ block.settings.youtube_id }}&{% endif %}
+      {% if block.settings.start_video_at != blank %}start={{ block.settings.start_video_at }}&{% endif %}
+      {% if block.settings.end_video_at != blank %}end={{ block.settings.end_video_at }}&{% endif %}
+      rel={% if block.settings.related_videos %}1{% else %}0{% endif %}
+    {% endcapture %}
+
+    <iframe
+      data-lego="video"
+      width="100%"
+      height="100%"
+      src="https://www.youtube.com/embed/{{ block.settings.youtube_id }}?{{ youtube_params | strip | replace: ' ', '' | replace: '', '' }}"
+      title="YouTube video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      {% if block.settings.loading %}
+        loading="{{ block.settings.loading }}"
+      {% endif %}
+    ></iframe>
+  {% when 'vimeo' %}
+    {% capture vimeo_params %}
+      {% if block.settings.autoplay %}autoplay=1&{% endif %}
+      {% if block.settings.loop %}loop=1&{% endif %}
+      {% if block.settings.mute %}muted=1&{% endif %}
+      {% unless block.settings.controls %}controls=0&{% endunless %}
+      {% if block.settings.start_video_at != blank %}
+        #t={{ block.settings.start_video_at }}s
+      {% endif %}
+    {% endcapture %}
+
+    <iframe
+      data-lego="video"
+      width="100%"
+      height="100%"
+      src="https://player.vimeo.com/video/{{ block.settings.vimeo_id }}?{{ vimeo_params | strip | replace: ' ', '' | replace: '', '' }}"
+      title="Vimeo video"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      {% if block.settings.loading %}
+        loading="{{ block.settings.loading }}"
+      {% endif %}
+    ></iframe>
+{% endcase %}
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="video"] {
+    max-width: 100%;
+    padding: {{ block.settings.padding | append: 'px' }};
+    margin: {{ block.settings.margin | append: 'px' }};
+    border-radius: {{ block.settings.border_radius | append: 'px' }};
+    border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    opacity: {{ block.settings.opacity }};
+    aspect-ratio: {{ block.settings.aspect_ratio }};
+
+    {% if block.settings.width == 'custom' %}
+      width: {{ block.settings.custom_width | append: 'px' }};
+    {% endif %}
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px)  {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  {% if block.settings.custom_css != 'blank' %}
+    #youcan-block--{{ block.id }} [data-lego="video"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Video",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source",
+      "options": [
+        { "label": "URL", "value": "url" },
+        { "label": "YouTube", "value": "youtube" },
+        { "label": "Vimeo", "value": "vimeo" }
+      ],
+      "default": "url"
+    },
+    {
+      "type": "text",
+      "id": "url",
+      "label": "URL",
+      "placeholder": "https://example.com/video.mp4",
+      "visible_if": { "setting_id": "source", "value": "url" }
+    },
+    {
+      "type": "text",
+      "id": "youtube_id",
+      "label": "Video ID",
+      "placeholder": "dQw4w9WgXcQ",
+      "visible_if": { "setting_id": "source", "value": "youtube" }
+    },
+    {
+      "type": "text",
+      "id": "vimeo_id",
+      "label": "Vimeo ID",
+      "placeholder": "783455878",
+      "visible_if": { "setting_id": "source", "value": "vimeo" }
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "label": "Widescreen (16:9)", "value": "16 / 9" },
+        { "label": "Landscape (4:3)", "value": "4 / 3" }
+      ],
+      "default": "16 / 9"
+    },
+    { "type": "checkbox", "id": "loop", "label": "Loop", "default": false },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
+    { "type": "checkbox", "id": "mute", "label": "Mute audio", "default": false },
+    { "type": "checkbox", "id": "controls", "label": "Controls", "default": true },
+    {
+      "type": "checkbox",
+      "id": "related_videos",
+      "label": "Related video from other channels",
+      "default": true,
+      "visible_if": { "setting_id": "source", "value": "youtube" }
+    },
+    {
+      "type": "text",
+      "id": "start_video_at",
+      "label": "Start video at (seconds)",
+      "placeholder": "90",
+      "visible_if": { "setting_id": "source", "operator": "!=", "value": "url" }
+    },
+    {
+      "type": "text",
+      "id": "end_video_at",
+      "label": "End video at (seconds)",
+      "placeholder": "150",
+      "visible_if": { "setting_id": "source", "value": "youtube" }
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 1200,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin", "label": "Margin", "default": 0 },
+    { "type": "number", "id": "padding", "label": "Padding", "default": 0 },
+    { "type": "header", "content": "Design" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius", "label": "Border radius", "default": 0 },
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "769px and smaller" },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "Opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "select",
+      "id": "loading",
+      "label": "Loading",
+      "options": [
+        { "label": "Eager", "value": "eager" },
+        { "label": "Lazy", "value": "lazy" },
+        { "label": "Auto", "value": "" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "placeholder": "my-video"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "placeholder": "transform: scale(2);\nbackdrop-filter: filter(2px);"
+    }
+  ]
+}
+{% endschema %}
