@@ -1,0 +1,17 @@
+{
+  "name": "youcan-apps",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "changeset": "changeset",
+    "version": "changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

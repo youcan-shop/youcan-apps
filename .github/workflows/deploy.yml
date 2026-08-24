@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "*@*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: resolve app from tag
+        id: tag
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          echo "app=${TAG%@*}" >> "$GITHUB_OUTPUT"
+
+      - name: deploy
+        working-directory: apps/${{ steps.tag.outputs.app }}
+        run: youcan app deploy -m "$COMMIT_MESSAGE"
+        env:
+          YC_CLI_ACCESS_TOKEN: ${{ secrets.YC_CLI_ACCESS_TOKEN }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
