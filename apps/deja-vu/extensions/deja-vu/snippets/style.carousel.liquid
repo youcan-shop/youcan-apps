@@ -1,0 +1,65 @@
+<style>
+  dv-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--controls-top-spacing, 16px);
+
+    [dv-carousel="list"] {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      gap: var(--cards-gap, 0px);
+      display: flex;
+      overflow: scroll hidden;
+      scroll-snap-type: x mandatory;
+      padding-inline-end: 2px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      [dv-carousel="item"] {
+        width: calc((var(--item-size, 100%) - (var(--cards-gap, 0px) * (var(--per-page) - 1))) / var(--per-page));
+        min-width: calc((var(--item-size, 100%) - (var(--cards-gap, 0px) * (var(--per-page) - 1))) / var(--per-page));
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+    }
+
+    .dv-controls {
+      display: none;
+    }
+
+    &[data-enabled] .dv-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: var(--controls-alignment, flex-end);
+    }
+
+    .dv-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      transition: opacity 200ms ease-out;
+      border: 1px solid var(--card-border-color);
+      border-radius: var(--pagination-radius, 20px);
+      background-color: transparent;
+      color: inherit;
+      cursor: pointer;
+
+      &[disabled] {
+        opacity: 0.35;
+        cursor: default;
+      }
+    }
+  }
+
+  :dir(rtl) dv-carousel .dv-control svg,
+  [dir="rtl"] dv-carousel .dv-control svg {
+    transform: scaleX(-1);
+  }
+</style>

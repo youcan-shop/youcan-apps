@@ -1,0 +1,14 @@
+{
+  "star_rating": {
+    "label": "تقييم العملاء"
+  },
+  "announcement_bar": {
+    "dismiss": "إغلاق"
+  },
+  "recently_viewed": {
+    "carousel": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  }
+}

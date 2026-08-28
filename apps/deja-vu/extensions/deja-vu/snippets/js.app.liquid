@@ -1,0 +1,238 @@
+{% if template.name == 'product' %}
+  <script defer>
+    if (!customElements.get('deja-vu')) {
+      class DejaVu extends HTMLElement {
+        static observedAttributes = ["hide-current-product"];
+
+        constructor() {
+          super();
+  
+          this.STORAGE_KEY = 'dv_products'
+          
+          this.currentProduct = null
+          this.viewedProducts = new Map()
+
+          this.productCardTemplate = this.querySelector('template[dv-product="card"]');
+        }
+  
+        connectedCallback() {
+          this.viewedProducts = this.getViewedProducts()
+          this.currentProduct = this.initCurrentProduct()
+
+          this.persist()
+
+          if (this.isPreview) {
+            this.renderPreview()
+
+            return
+          }
+
+          this.render(this.getProductsToRender())
+        }
+
+        get isPreview() {
+          try {
+            return window.self !== window.top
+          } catch {
+            return true
+          }
+        }
+
+        get perPage() {
+          return Number(getComputedStyle(this).getPropertyValue('--per-page')) || 1
+        }
+
+        get moneyFormat() {
+          const locale = window.Dotshop?.customer_locale || document.documentElement.lang || 'en-US'
+
+          const parts = new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'symbol',
+          }).formatToParts(1)
+
+          return {
+            locale,
+            symbol: window.Dotshop?.currency ?? '',
+            symbolFirst: parts.findIndex(part => part.type === 'currency') === 0,
+          }
+        }
+
+        initCurrentProduct() {
+          const product = {}
+          
+          product.slug = "{{ product.slug }}";
+          product.name = "{{ product.name }}";
+          product.images = JSON.parse({{ product.images | slice: 0, 2 | json }});
+          product.url = "{{ product.url }}";
+          product.price = Number("{{ product.price }}");
+
+          {% if product.compare_at_price %}
+            product.compareAtPrice = Number("{{ product.compare_at_price }}");
+          {% else %}
+            product.compareAtPrice = null;
+          {% endif %}
+
+          return product;
+        }
+
+        getViewedProducts() {
+          return new Map(JSON.parse(localStorage.getItem(this.STORAGE_KEY)));
+        }
+
+        getProductsToRender() {
+          const products = [...this.viewedProducts.values()].reverse()
+
+          if (!this.hasAttribute('hide-current-product') || !this.currentProduct) {
+            return products
+          }
+
+          return products.filter(product => product.slug !== this.currentProduct.slug)
+        }
+
+        createProductCard(product) {
+          const card = this.productCardTemplate.content.cloneNode(true)
+          
+          if (!card) return
+          
+          const images = card.querySelector('[dv-product="images"]')
+          const name = card.querySelector('[dv-product="name"]')
+          const price = card.querySelector('[dv-product="price"]')
+          const compareAt = card.querySelector('[dv-product="compare-at"]')
+
+          if (images) this.updateItemImages(images, product.url, product.images)
+          if (name) this.updateItemName(name, product.url, product.name)
+          if (price) this.updateItemPrice(price, product.price)
+          if (compareAt) this.updateItemCompareAt(compareAt, product.compareAtPrice)
+
+          return card
+        }
+
+        createPlaceholderCard() {
+          const card = this.productCardTemplate.content.cloneNode(true)
+
+          if (!card) return
+
+          card.querySelector('[dv-product="image-placeholder"]')?.removeAttribute('hidden')
+
+          return card
+        }
+
+        updateItemImages(element, url, images) {
+          element.href = url
+
+          if (!images.length) {
+            element.querySelector('[dv-product="image-placeholder"]').removeAttribute('hidden');
+
+            return
+          }
+
+          if(!element.hasAttribute('data-show-second-image')) {
+            element.append(this.createProductImage(images[0]))
+
+            return
+          }
+          
+          images.forEach(image => {
+            const img = this.createProductImage(image)
+
+            element.append(img)
+          })
+        }
+
+        updateItemName(element, url, name) {
+          element.href = url
+          element.textContent = name
+        }
+
+        updateItemPrice(element, price) {
+          element.textContent = this.formatCurrency(price)
+        }
+
+        updateItemCompareAt(element, compareAt) {
+          if (!Number.isFinite(compareAt)) {
+            element.hidden = true
+
+            return
+          }
+
+          element.textContent = this.formatCurrency(compareAt)
+        }
+
+        shouldUsePrecision(amount) {
+          const settings = window.Dotshop?.store?.multicurrency_settings
+
+          if (!settings?.isMulticurrencyActive) {
+            return !Number.isInteger(amount)
+          }
+
+          return Boolean(settings.usePrecision)
+        }
+
+        formatCurrency(amount) {
+          if (!Number.isFinite(amount)) return ''
+
+          const { locale, symbol, symbolFirst } = this.moneyFormat
+          const withPrecision = this.shouldUsePrecision(amount)
+
+          const value = new Intl.NumberFormat(locale, {
+            style: 'decimal',
+            roundingMode: 'floor',
+            maximumFractionDigits: withPrecision ? 2 : 0,
+            minimumFractionDigits: withPrecision ? 2 : 0,
+          }).format(amount)
+
+          return symbolFirst ? `${symbol} ${value}` : `${value} ${symbol}`
+        }
+
+        createProductImage(url) {
+          const img = document.createElement('img');
+            
+          img.src = url
+          img.style.width = "100%"
+          img.style.height = "100%"
+
+          return img
+        }
+
+        persist() {
+          if (!this.currentProduct) {
+            return
+          }
+
+          this.viewedProducts.delete(this.currentProduct.slug);
+          this.viewedProducts.set(this.currentProduct.slug, this.currentProduct);
+
+          localStorage.setItem(this.STORAGE_KEY, JSON.stringify([...this.viewedProducts]));
+        }
+
+        render(products) {
+          if (!products.length) {
+            return
+          }
+
+          this.mount(products.map(product => this.createProductCard(product)))
+        }
+
+        renderPreview() {
+          const count = Math.max(this.perPage + 2, 4)
+
+          this.mount(Array.from({ length: count }, () => this.createPlaceholderCard()))
+        }
+
+        mount(cards) {
+          const fragment = new DocumentFragment();
+
+          fragment.append(...cards)
+
+          this.querySelector('[dv-product="list"]').replaceChildren(fragment)
+
+          this.removeAttribute('hidden')
+          this.querySelector('dv-carousel')?.updateLayout?.()
+        }
+      }
+  
+      customElements.define('deja-vu', DejaVu);
+    }
+  </script>
+{% endif %}

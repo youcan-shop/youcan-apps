@@ -1,0 +1,14 @@
+{
+  "star_rating": {
+    "label": "Customer rating"
+  },
+  "announcement_bar": {
+    "dismiss": "Dismiss"
+  },
+  "recently_viewed": {
+    "carousel": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  }
+}

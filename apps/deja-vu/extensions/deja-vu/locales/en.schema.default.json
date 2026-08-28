@@ -1,0 +1,66 @@
+{
+  "recently_viewed": {
+    "label": "Recently viewed products",
+    "settings": {
+      "spacing": {
+        "label": "Spacing",
+        "spacing_unit": "Spacing unit",
+        "vertical": "Vertical spacing",
+        "horizontal": "Horizontal spacing",
+        "heading_bottom_spacing": "Heading bottom spacing",
+        "subheading_top_spacing": "Subheading top spacing"
+      },
+      "colors": {
+        "label": "Colors",
+        "text_color": "Text color",
+        "background_color": "Background color"
+      },
+      "layout": {
+        "label": "Layout",
+        "heading_alignment": {
+          "label": "Heading alignment",
+          "start": "Start",
+          "center": "Center"
+        },
+        "cards_gap": "Cards gap",
+        "hide_current_product": "Hide current product"
+      },
+      "typography": {
+        "label": "Typography",
+        "title_size": "Title Size",
+        "subheading_size": "Subheading Size",
+        "body_size": "Body Size",
+        "title_font_family": "Title font family",
+        "body_font_family": "Body font family",
+        "inherit_from_theme": "Inherit from theme"
+      },
+      "product_cards": {
+        "label": "Product Cards",
+        "style": {
+          "label": "Card Style",
+          "classic": "Classic",
+          "modern": "Modern",
+          "minimal": "Minimal",
+          "polaroid": "Polaroid"
+        },
+        "border_radius": "Border radius",
+        "image_ratio": "Image ratio",
+        "show_product_price": "Show product price",
+        "show_compare_at_price": "Show compare at price",
+        "show_second_image_on_hover": "Show second image on hover"
+      },
+      "carousel": {
+        "label": "Carousel",
+        "show_pagination": "Show pagination",
+        "pagination_border_radius": "Pagination border radius",
+        "per_page": "Per page",
+        "per_page_mobile": "Per page mobile"
+      },
+      "content": {
+        "label": "Content",
+        "title": "Title",
+        "subheading": "Subheading"
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<style>
+  deja-vu {
+    --bg-color: {{ block.settings.background_color.hex }};
+    --text-color: {{ block.settings.text_color.hex }};
+
+    --heading-alignment: {{ block.settings.heading_alignment }};
+
+    --cards-gap: {{ block.settings.cards_gap }}px;
+
+    {% unless block.settings.title_font_family == 'inherit' %}
+      --title-font: {{ block.settings.title_font_family }};
+    {% endunless %}
+    {% unless block.settings.body_font_family == 'inherit' %}
+      --body-font: {{ block.settings.body_font_family }};
+    {% endunless %}
+    {% unless block.settings.body_size == 'inherit' %}
+      --body-size: {{ block.settings.body_size }};
+    {% endunless %}
+    {% unless block.settings.title_size == 'inherit' %}
+      --title-size: {{ block.settings.title_size }};
+    {% endunless %}
+    {% unless block.settings.subheading_size == 'inherit' %}
+      --subheading-size: {{ block.settings.subheading_size }};
+    {% endunless %}
+
+    --per-page: {{ block.settings.per_page_desktop }};
+    --per-page-mobile: {{ block.settings.per_page_mobile }};
+    --pagination-radius: {{ block.settings.pagination_border_radius }}px;
+
+    --product-card-radius: {{ block.settings.product_card_border_radius }}px;
+    --product-card-ratio: {{ block.settings.product_card_image_ratio }};
+
+    --heading-bottom-spacing: {{ block.settings.heading_bottom_spacing }}px;
+    --subheading-top-spacing: {{ block.settings.subheading_top_spacing }}px;
+    
+    {% if block.settings.spacing_unit == 'px' %}
+      --vertical-spacing: {{ block.settings.vertical_spacing_px }}{{ block.settings.spacing_unit }};
+      --horizontal-spacing: {{ block.settings.horizontal_spacing_px }}{{ block.settings.spacing_unit }}
+    {% endif %}
+
+    {% if block.settings.spacing_unit == '%' %}
+      --vertical-spacing: {{ block.settings.vertical_spacing_percent }}{{ block.settings.spacing_unit }};
+      --horizontal-spacing: {{ block.settings.horizontal_spacing_percent }}{{ block.settings.spacing_unit }}
+    {% endif %}
+  }
+
+  @media (width <= 768px) {
+    deja-vu {
+      --per-page: var(--per-page-mobile);
+    }
+  }
+</style>
