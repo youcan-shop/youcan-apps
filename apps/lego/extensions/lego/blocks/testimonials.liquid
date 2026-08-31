@@ -1,0 +1,758 @@
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=star,format_quote,verified,chevron_left,chevron_right"
+/>
+
+<lego-testimonials
+  data-lego="testimonials"
+  data-layout="{{ block.settings.layout }}"
+  data-autoplay="{{ block.settings.autoplay }}"
+  data-interval="{{ block.settings.autoplay_interval }}"
+  data-entrance="{{ block.settings.entrance }}"
+  {% if block.settings.anchor %}
+    id="{{ block.settings.anchor }}"
+  {% endif %}
+>
+  {% if block.settings.eyebrow != blank or block.settings.heading != blank %}
+    <div class="section-head">
+      {% if block.settings.eyebrow != blank -%}
+        <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+      {%- endif %}
+      {% if block.settings.heading != blank %}
+        <h2 class="heading">{{ block.settings.heading }}</h2>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="wrap" data-slot="wrap">
+    <div class="list" data-slot="list">
+      {% assign slot = 0 %}
+      {% for i in (1..6) %}
+        {% assign quote_key = 'quote_' | append: i %}
+        {% assign author_key = 'author_' | append: i %}
+        {% assign role_key = 'role_' | append: i %}
+        {% assign avatar_key = 'avatar_' | append: i %}
+        {% assign rating_key = 'rating_' | append: i %}
+        {% assign verified_key = 'verified_' | append: i %}
+        {% if block.settings[quote_key] != blank %}
+          <div
+            class="card"
+            data-slot="card"
+            data-index="{{ slot }}"
+            {% if block.settings.entrance != 'none' %}
+              data-reveal="true" style="--lego-slot: {{ slot }};"
+            {% endif %}
+          >
+            {% if block.settings.show_quote_icon -%}
+              <span class="material-symbols-rounded quote-icon">format_quote</span>
+            {%- endif %}
+            {% if block.settings[rating_key] > 0 %}
+              <div class="rating">
+                {% for s in (1..5) %}
+                  <span class="material-symbols-rounded star" data-filled="{% if s <= block.settings[rating_key] %}true{% else %}false{% endif %}"
+                    >star</span
+                  >
+                {% endfor %}
+              </div>
+            {% endif %}
+            <p class="quote">{{ block.settings[quote_key] }}</p>
+            <div class="author-row">
+              {% if block.settings[avatar_key] %}
+                <img
+                  src="{{ block.settings[avatar_key].src }}"
+                  alt="{{ block.settings[author_key] }}"
+                  width="100"
+                  height="100"
+                  class="avatar"
+                  loading="lazy"
+                >
+              {% endif %}
+              <div class="author-info">
+                <span class="name">
+                  {{ block.settings[author_key] }}
+                  {% if block.settings[verified_key] -%}
+                    <span class="material-symbols-rounded verified">verified</span>
+                  {%- endif %}
+                </span>
+                {% if block.settings[role_key] != blank -%}
+                  <span class="role">{{ block.settings[role_key] }}</span>
+                {%- endif %}
+              </div>
+            </div>
+          </div>
+          {% assign slot = slot | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if block.settings.layout == 'slider' %}
+      {% if block.settings.show_dots %}<div class="dots" data-slot="dots"></div>{% endif %}
+      {% if block.settings.show_arrows %}
+        <button type="button" class="arrow prev" data-slot="prev" aria-label="Previous">
+          <span class="material-symbols-rounded">chevron_left</span>
+        </button>
+        <button type="button" class="arrow next" data-slot="next" aria-label="Next">
+          <span class="material-symbols-rounded">chevron_right</span>
+        </button>
+      {% endif %}
+    {% endif %}
+
+    {% if block.settings.layout == 'carousel' and block.settings.show_arrows %}
+      <button type="button" class="arrow prev" data-slot="prev" aria-label="Previous">
+        <span class="material-symbols-rounded">chevron_left</span>
+      </button>
+      <button type="button" class="arrow next" data-slot="next" aria-label="Next"><span class="material-symbols-rounded">chevron_right</span></button>
+    {% endif %}
+  </div>
+</lego-testimonials>
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="testimonials"] {
+    display: block;
+    opacity: {{ block.settings.opacity }};
+
+    margin-top: {{ block.settings.margin_top | append: 'px' }};
+    margin-right: {{ block.settings.margin_right | append: 'px' }};
+    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+    margin-left: {{ block.settings.margin_left | append: 'px' }};
+    padding-top: {{ block.settings.padding_top | append: 'px' }};
+    padding-right: {{ block.settings.padding_right | append: 'px' }};
+    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+    padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+    {% if block.settings.border_style != 'none' %}
+      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    {% endif %}
+
+    {% case block.settings.box_shadow %}
+      {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+    {% endcase %}
+
+    {% if block.settings.width == 'custom' %}
+      max-width: 100%;
+      width: {{ block.settings.custom_width | append: 'px' }};
+      margin-inline: auto;
+    {% endif %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% when 'image' %}
+        background-image: url({{ block.settings.bg_img.src }});
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    {% endcase %}
+
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 32px;
+
+      .eyebrow { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: {{ block.settings.eyebrow_color.hex }}; }
+      .heading { margin: 0; font-size: {{ block.settings.heading_size }}px; font-weight: 700; color: {{ block.settings.heading_color.hex }}; }
+    }
+
+    .wrap { position: relative; }
+
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: {{ block.settings.card_padding }}px;
+      border-radius: {{ block.settings.card_radius }}px;
+      background-color: {{ block.settings.card_bg_color.hex }};
+      {% if block.settings.card_border_weight > 0 %}border: {{ block.settings.card_border_weight }}px solid {{ block.settings.card_border_color.hex }};{% endif %}
+
+      .quote-icon {
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        font-size: 32px;
+        color: {{ block.settings.quote_icon_color.hex }};
+        opacity: 0.5;
+      }
+
+      .rating {
+        display: flex;
+        gap: 2px;
+
+        .star {
+          font-size: 16px;
+          color: {{ block.settings.star_color.hex }};
+          opacity: 0.25;
+          &[data-filled="true"] { opacity: 1; }
+        }
+      }
+
+      .quote {
+        margin: 0;
+        font-size: {{ block.settings.quote_size }}px;
+        color: {{ block.settings.quote_color.hex }};
+        line-height: 1.6;
+      }
+
+      .author-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          object-fit: cover;
+          {% if block.settings.avatar_shape == 'circle' %}border-radius: 50%;{% else %}border-radius: 8px;{% endif %}
+        }
+
+        .author-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .name {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 14px;
+          font-weight: 600;
+          color: {{ block.settings.author_color.hex }};
+
+          .verified { font-size: 15px; color: {{ block.settings.verified_color.hex }}; }
+        }
+
+        .role { font-size: 12px; color: {{ block.settings.role_color.hex }}; }
+      }
+
+      &[data-reveal="true"] {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+        transition-delay: calc(var(--lego-slot) * 80ms);
+      }
+      &[data-revealed="true"] { opacity: 1; transform: none; }
+    }
+
+    .list[data-layout-mode="grid"] {
+      display: grid;
+      gap: {{ block.settings.gap }}px;
+      grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
+
+      @media (width <= 768px) { grid-template-columns: 1fr; }
+    }
+
+    .list[data-layout-mode="carousel"] {
+      display: flex;
+      gap: {{ block.settings.gap }}px;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+
+      .card { flex: 0 0 min(360px, 88%); scroll-snap-align: start; }
+    }
+
+    .list[data-layout-mode="slider"] {
+      position: relative;
+      min-height: 1px;
+
+      .card {
+        display: none;
+        max-width: {{ block.settings.slider_max_width }}px;
+        margin-inline: auto;
+        text-align: center;
+
+        .author-row { justify-content: center; margin-top: 12px; }
+        .rating { justify-content: center; }
+
+        &[data-active="true"] { display: flex; }
+      }
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: {{ block.settings.dot_color.hex }};
+        opacity: 0.3;
+        border: 0;
+        cursor: pointer;
+        padding: 0;
+        transition: opacity 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+        &[data-active="true"] { opacity: 1; transform: scale(1.3); }
+      }
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid #E5E5E5;
+      background-color: #FFFFFF;
+      cursor: pointer;
+      transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+      &:active { transform: translateY(-50%) scale(0.92); }
+      &.prev { left: -14px; }
+      &.next { right: -14px; }
+
+      @media (width <= 640px) { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card[data-reveal="true"] { transform: none; }
+    }
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) { display: none; }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px) { display: none; }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) { display: none; }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) { display: none; }
+    {% endunless %}
+  }
+
+  {% if block.settings.custom_css != blank %}
+    #youcan-block--{{ block.id }} [data-lego="testimonials"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+<script defer>
+  if (!customElements.get('lego-testimonials')) {
+    class LegoTestimonials extends HTMLElement {
+      connectedCallback() {
+        this.layout = this.getAttribute('data-layout');
+        const list = this.querySelector('[data-slot="list"]');
+        if (list) list.setAttribute('data-layout-mode', this.layout);
+
+        this.cards = Array.from(this.querySelectorAll('[data-slot="card"]'));
+        this.setupReveal();
+
+        if (this.layout === 'slider') this.setupSlider();
+        if (this.layout === 'carousel') this.setupCarouselArrows();
+      }
+
+      setupReveal() {
+        if (this.getAttribute('data-entrance') === 'none' || !('IntersectionObserver' in window)) {
+          this.cards.forEach((c) => c.setAttribute('data-revealed', 'true'));
+          return;
+        }
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.setAttribute('data-revealed', 'true');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15 }
+        );
+        this.cards.forEach((c) => observer.observe(c));
+      }
+
+      setupCarouselArrows() {
+        const list = this.querySelector('[data-slot="list"]');
+        const prev = this.querySelector('[data-slot="prev"]');
+        const next = this.querySelector('[data-slot="next"]');
+        if (!list || !prev || !next) return;
+
+        const scrollByOne = (dir) => {
+          const card = list.querySelector('[data-slot="card"]');
+          const step = card ? card.getBoundingClientRect().width + 20 : list.clientWidth;
+          list.scrollBy({ left: dir * step, behavior: 'smooth' });
+        };
+        prev.addEventListener('click', () => scrollByOne(-1));
+        next.addEventListener('click', () => scrollByOne(1));
+      }
+
+      setupSlider() {
+        this.activeIndex = 0;
+        this.cards.forEach((c, i) => c.setAttribute('data-active', i === 0 ? 'true' : 'false'));
+
+        const dotsWrap = this.querySelector('[data-slot="dots"]');
+        if (dotsWrap) {
+          this.cards.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'dot';
+            dot.dataset.active = i === 0 ? 'true' : 'false';
+            dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+            dot.addEventListener('click', () => this.goTo(i));
+            dotsWrap.appendChild(dot);
+          });
+          this.dots = Array.from(dotsWrap.children);
+        }
+
+        const prev = this.querySelector('[data-slot="prev"]');
+        const next = this.querySelector('[data-slot="next"]');
+        if (prev) prev.addEventListener('click', () => this.goTo(this.activeIndex - 1));
+        if (next) next.addEventListener('click', () => this.goTo(this.activeIndex + 1));
+
+        if (this.getAttribute('data-autoplay') === '1') {
+          this.interval = Number(this.getAttribute('data-interval')) || 5000;
+          this.startAutoplay();
+          this.addEventListener('pointerdown', () => this.stopAutoplay(), { once: true });
+        }
+      }
+
+      goTo(index) {
+        const count = this.cards.length;
+        this.activeIndex = (index + count) % count;
+        this.cards.forEach((c, i) => c.setAttribute('data-active', i === this.activeIndex ? 'true' : 'false'));
+        if (this.dots) this.dots.forEach((d, i) => (d.dataset.active = i === this.activeIndex ? 'true' : 'false'));
+      }
+
+      startAutoplay() {
+        this.timer = setInterval(() => this.goTo(this.activeIndex + 1), this.interval);
+      }
+
+      stopAutoplay() {
+        if (this.timer) clearInterval(this.timer);
+      }
+    }
+
+    customElements.define('lego-testimonials', LegoTestimonials);
+  }
+</script>
+
+{% schema %}
+{
+  "label": "Testimonials",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "placeholder": "Testimonials" },
+    { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "What our customers say" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "label": "Grid", "value": "grid" },
+        { "label": "Carousel (swipe)", "value": "carousel" },
+        { "label": "Slider (one at a time)", "value": "slider" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns (grid)",
+      "options": [
+        { "label": "2", "value": "2" },
+        { "label": "3", "value": "3" }
+      ],
+      "default": "3",
+      "visible_if": { "setting_id": "layout", "value": "grid" }
+    },
+    {
+      "type": "range",
+      "id": "slider_max_width",
+      "label": "Slider max width",
+      "min": 320,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 600,
+      "visible_if": { "setting_id": "layout", "value": "slider" }
+    },
+    { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": true, "visible_if": { "setting_id": "layout", "value": "slider" } },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true,
+      "visible_if": { "setting_id": "layout", "operator": "!=", "value": "grid" }
+    },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true, "visible_if": { "setting_id": "layout", "value": "slider" } },
+    {
+      "type": "range",
+      "id": "autoplay_interval",
+      "label": "Autoplay interval",
+      "min": 2000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "default": 5000,
+      "visible_if": { "setting_id": "autoplay", "value": true }
+    },
+    { "type": "checkbox", "id": "show_quote_icon", "label": "Show quote mark icon", "default": true },
+    {
+      "type": "select",
+      "id": "avatar_shape",
+      "label": "Avatar shape",
+      "options": [
+        { "label": "Circle", "value": "circle" },
+        { "label": "Square", "value": "square" }
+      ],
+      "default": "circle"
+    },
+
+    { "type": "header", "content": "Style" },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
+    { "type": "number", "id": "card_padding", "label": "Card padding", "default": 24 },
+    { "type": "number", "id": "card_radius", "label": "Card corner radius", "default": 12 },
+    { "type": "number", "id": "card_border_weight", "label": "Card border weight", "default": 0 },
+    { "type": "color", "id": "card_border_color", "label": "Card border color", "default": "#EEEEEE" },
+    { "type": "color", "id": "card_bg_color", "label": "Card background", "default": "#F5F5F5" },
+    { "type": "color", "id": "quote_icon_color", "label": "Quote icon color", "default": "#D1D5DB" },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
+    { "type": "range", "id": "quote_size", "label": "Quote text size", "min": 13, "max": 22, "step": 1, "unit": "px", "default": 15 },
+    { "type": "color", "id": "quote_color", "label": "Quote text color", "default": "#121212" },
+    { "type": "color", "id": "author_color", "label": "Author name color", "default": "#121212" },
+    { "type": "color", "id": "role_color", "label": "Author role color", "default": "#6B7280" },
+    { "type": "color", "id": "verified_color", "label": "Verified badge color", "default": "#3B82F6" },
+    { "type": "color", "id": "dot_color", "label": "Dot color", "default": "#121212" },
+
+    { "type": "header", "content": "Typography" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6B7280" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 30 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#121212" },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+    {
+      "type": "select",
+      "id": "entrance",
+      "label": "Reveal animation",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Fade up", "value": "fade-up" }
+      ],
+      "default": "fade-up"
+    },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 1000,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 40 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 20 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 40 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 20 },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    { "type": "image_picker", "id": "bg_img", "label": "Background image", "visible_if": { "setting_id": "background", "value": "image" } },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Testimonial #1" },
+    { "type": "textarea", "id": "quote_1", "label": "Quote", "default": "This changed how I run my store. Setup took minutes." },
+    { "type": "text", "id": "author_1", "label": "Author", "default": "Sara M." },
+    { "type": "text", "id": "role_1", "label": "Role / company", "default": "Founder, Studio Wren" },
+    { "type": "image_picker", "id": "avatar_1", "label": "Avatar" },
+    { "type": "range", "id": "rating_1", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "verified_1", "label": "Verified badge", "default": true },
+
+    { "type": "header", "content": "Testimonial #2" },
+    { "type": "textarea", "id": "quote_2", "label": "Quote", "default": "Support answered in minutes and fixed everything." },
+    { "type": "text", "id": "author_2", "label": "Author", "default": "Yassine B." },
+    { "type": "text", "id": "role_2", "label": "Role / company", "default": "Owner, Atlas Goods" },
+    { "type": "image_picker", "id": "avatar_2", "label": "Avatar" },
+    { "type": "range", "id": "rating_2", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "verified_2", "label": "Verified badge", "default": true },
+
+    { "type": "header", "content": "Testimonial #3" },
+    { "type": "textarea", "id": "quote_3", "label": "Quote" },
+    { "type": "text", "id": "author_3", "label": "Author" },
+    { "type": "text", "id": "role_3", "label": "Role / company" },
+    { "type": "image_picker", "id": "avatar_3", "label": "Avatar" },
+    { "type": "range", "id": "rating_3", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "verified_3", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Testimonial #4" },
+    { "type": "textarea", "id": "quote_4", "label": "Quote" },
+    { "type": "text", "id": "author_4", "label": "Author" },
+    { "type": "text", "id": "role_4", "label": "Role / company" },
+    { "type": "image_picker", "id": "avatar_4", "label": "Avatar" },
+    { "type": "range", "id": "rating_4", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "verified_4", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Testimonial #5" },
+    { "type": "textarea", "id": "quote_5", "label": "Quote" },
+    { "type": "text", "id": "author_5", "label": "Author" },
+    { "type": "text", "id": "role_5", "label": "Role / company" },
+    { "type": "image_picker", "id": "avatar_5", "label": "Avatar" },
+    { "type": "range", "id": "rating_5", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "verified_5", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Testimonial #6" },
+    { "type": "textarea", "id": "quote_6", "label": "Quote" },
+    { "type": "text", "id": "author_6", "label": "Author" },
+    { "type": "text", "id": "role_6", "label": "Role / company" },
+    { "type": "image_picker", "id": "avatar_6", "label": "Avatar" },
+    { "type": "range", "id": "rating_6", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "verified_6", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-testimonials" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}
