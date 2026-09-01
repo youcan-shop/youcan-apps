@@ -2,9 +2,6 @@
   "recently_viewed": {
     "label": "Recently viewed products",
     "settings": {
-      "info": {
-        "product_page_only": "Deja vu app is only visible on the product page."
-      },
       "spacing": {
         "label": "Spacing",
         "spacing_unit": "Spacing unit",

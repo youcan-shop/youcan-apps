@@ -2,9 +2,6 @@
   "recently_viewed": {
     "label": "المنتجات التي شاهدتها مؤخرًا",
     "settings": {
-      "info": {
-        "product_page_only": "تطبيق Deja vu يظهر فقط في صفحة المنتج."
-      },
       "spacing": {
         "label": "المسافات",
         "spacing_unit": "وحدة المسافات",
