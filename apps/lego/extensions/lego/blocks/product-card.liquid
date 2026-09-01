@@ -1,0 +1,491 @@
+{% comment %}
+  Standalone single-product card — bound to one picked product, not a loop
+  item. (Collection Grid renders its own cards internally for the same
+  reason a "Product Card" block can't usefully exist inside a repeater
+  under the no-nesting constraint — but pinned to one product via the
+  picker, like "Featured item" on a homepage, it's a real standalone use.)
+
+  Quick-add only fires directly for single-variant products
+  (product.has_only_default_variant) — if it has real options, one-click
+  can't safely guess a variant, so it links to the product page instead of
+  faking a decision for the seller's customer.
+{% endcomment %}
+{% assign product = block.settings.product | default: product %}
+
+{% if product %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=shopping_cart,star,check"
+  />
+
+  {% assign default_variant = product.selected_or_first_available_variant %}
+  {% assign price = default_variant.price | default: product.price %}
+  {% assign compare_at_price = default_variant.compare_at_price | default: product.compare_at_price %}
+  {% assign on_sale = false %}
+  {% if compare_at_price > price %}{% assign on_sale = true %}{% endif %}
+  {% assign discount_pct = 0 %}
+  {% if on_sale and compare_at_price > 0 -%}
+    {%- assign discount_pct = compare_at_price | minus: price | times: 100 | divided_by: compare_at_price | round -%}
+  {%- endif %}
+
+  <lego-product-card
+    data-lego="product-card"
+    data-product-id="{{ product.id }}"
+    data-variant-id="{{ default_variant.id }}"
+    data-single-variant="{{ product.has_only_default_variant }}"
+    data-success-message="{{ block.settings.success_message }}"
+    data-error-message="{{ block.settings.error_message }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    <div class="media">
+      <a class="media-link" href="{{ product.url }}" aria-label="{{ product.name }}">
+        {% if product.preview_image %}
+          <img src="{{ product.preview_image.medium | default: product.preview_image.original }}" alt="{{ product.name }}" loading="lazy">
+        {% endif %}
+      </a>
+      {% unless product.available -%}
+        <span class="sold-out-overlay">{{ block.settings.sold_out_text }}</span>
+      {%- endunless %}
+      {% if on_sale and block.settings.show_badge and product.available -%}
+        <span class="badge">-{{ discount_pct }}%</span>
+      {%- endif %}
+      {% if block.settings.show_quick_add and product.available %}
+        <button type="button" class="quick-add" data-slot="quick-add" aria-label="{{ block.settings.quick_add_text }}">
+          <span class="material-symbols-rounded icon" data-slot="icon">shopping_cart</span>
+        </button>
+      {% endif %}
+    </div>
+
+    <a class="info" href="{{ product.url }}">
+      <span class="title">{{ product.name }}</span>
+
+      {% if block.settings.show_rating and product.averageRating > 0 %}
+        <div class="rating">
+          {% for s in (1..5) %}
+            <span class="material-symbols-rounded star" data-filled="{% if s <= product.averageRating %}true{% else %}false{% endif %}">star</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_price %}
+        <div class="price-row">
+          <span class="price">{{ price | money }}</span>
+          {% if on_sale -%}
+            <span class="compare">{{ compare_at_price | money }}</span>
+          {%- endif %}
+        </div>
+      {% endif %}
+    </a>
+
+    <div class="status" data-slot="status" role="status" hidden></div>
+  </lego-product-card>
+{% endif %}
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="product-card"] {
+    display: block;
+    max-width: {{ block.settings.card_width }}px;
+    opacity: {{ block.settings.opacity }};
+
+    margin-top: {{ block.settings.margin_top | append: 'px' }};
+    margin-right: {{ block.settings.margin_right | append: 'px' }};
+    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+    margin-left: {{ block.settings.margin_left | append: 'px' }};
+    padding-top: {{ block.settings.padding_top | append: 'px' }};
+    padding-right: {{ block.settings.padding_right | append: 'px' }};
+    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+    padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+    {% if block.settings.border_style != 'none' %}
+      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    {% endif %}
+
+    {% case block.settings.box_shadow %}
+      {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+    {% endcase %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+    {% endcase %}
+
+    .media {
+      position: relative;
+      display: block;
+      aspect-ratio: {{ block.settings.aspect_ratio }};
+      border-radius: {{ block.settings.media_radius }}px;
+      overflow: hidden;
+      background-color: {{ block.settings.media_bg_color.hex }};
+
+      .media-link {
+        position: absolute;
+        inset: 0;
+        display: block;
+      }
+
+      img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+      .sold-out-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+        font-weight: 700;
+        color: #121212;
+      }
+
+      .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 3px 9px;
+        border-radius: 6px;
+        background-color: {{ block.settings.badge_bg_color.hex }};
+        color: {{ block.settings.badge_text_color.hex }};
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .quick-add {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 0;
+        padding: 0;
+        background-color: {{ block.settings.quick_add_bg_color.hex }};
+        color: {{ block.settings.quick_add_icon_color.hex }};
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+
+        .icon { font-size: 18px; transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+        &.bounce .icon { transform: scale(1.3) rotate(-8deg); }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover img { transform: scale(1.05); }
+        &:hover .quick-add { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (width <= 768px) {
+        .quick-add { opacity: 1; transform: translateY(0); }
+      }
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 10px;
+      text-decoration: none;
+      color: inherit;
+
+      .title { font-size: {{ block.settings.title_size }}px; font-weight: 500; color: {{ block.settings.title_color.hex }}; }
+
+      .rating {
+        display: flex;
+        gap: 1px;
+
+        .star { font-size: 13px; color: {{ block.settings.star_color.hex }}; opacity: 0.25; }
+        .star[data-filled="true"] { opacity: 1; }
+      }
+
+      .price-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .price { font-size: {{ block.settings.price_size }}px; font-weight: 700; color: {{ block.settings.price_color.hex }}; }
+        .compare { font-size: 12px; color: {{ block.settings.compare_color.hex }}; text-decoration: line-through; }
+      }
+    }
+
+    .status {
+      margin-top: 6px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+
+      &[data-state="success"] { background-color: #DCFCE7; color: #166534; }
+      &[data-state="error"] { background-color: #FEE2E2; color: #991B1B; }
+    }
+
+    {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+    {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+    {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+    {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
+  }
+
+  {% if block.settings.custom_css != blank %}
+    #youcan-block--{{ block.id }} [data-lego="product-card"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% dump product %}
+
+<script defer>
+  if (!customElements.get('lego-product-card')) {
+    class LegoProductCard extends HTMLElement {
+      connectedCallback() {
+        this.productId = this.getAttribute('data-product-id');
+        this.variantId = this.getAttribute('data-variant-id');
+        this.isSingleVariant = this.getAttribute('data-single-variant') === '1';
+
+        this.quickAddBtn = this.querySelector('[data-slot="quick-add"]');
+        this.icon = this.querySelector('[data-slot="icon"]');
+        this.status = this.querySelector('[data-slot="status"]');
+
+        if (this.quickAddBtn) {
+          this.quickAddBtn.addEventListener('click', () => {
+            if (!this.isSingleVariant) {
+              window.location.href = this.querySelector('.media-link')?.href || '';
+              return;
+            }
+            this.quickAdd();
+          });
+        }
+      }
+
+      quickAdd() {
+        const payload = { quantity: 1, productVariantId: this.variantId };
+
+        const finish = (ok) => {
+          if (ok) {
+            if (this.icon) {
+              this.icon.classList.add('bounce');
+              setTimeout(() => this.icon.classList.remove('bounce'), 300);
+            }
+            this.showStatus('success', this.getAttribute('data-success-message'));
+          } else {
+            this.showStatus('error', this.getAttribute('data-error-message'));
+          }
+        };
+
+        if (window.youcanjs && window.youcanjs.cart && typeof window.youcanjs.cart.addItem === 'function') {
+          window.youcanjs.cart
+            .addItem(payload)
+            .then(() => finish(true))
+            .catch(() => finish(false));
+          return;
+        }
+      }
+
+      showStatus(state, message) {
+        if (!this.status) return;
+        this.status.hidden = false;
+        this.status.dataset.state = state;
+        this.status.textContent = message || '';
+        setTimeout(() => {
+          this.status.hidden = true;
+        }, 2500);
+      }
+    }
+
+    customElements.define('lego-product-card', LegoProductCard);
+  }
+</script>
+
+{% schema %}
+{
+  "label": "Product card",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Product" },
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "paragraph",
+      "content": "Bound to one specific product, for a \"Featured item\" spot, not a repeating grid. For a list of many products, use Collection Grid instead."
+    },
+
+    { "type": "header", "content": "Content" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": true },
+    { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true },
+    { "type": "checkbox", "id": "show_badge", "label": "Show sale badge", "default": true },
+    { "type": "text", "id": "sold_out_text", "label": "Sold-out overlay text", "default": "Sold out" },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show quick-add button", "default": true },
+    { "type": "text", "id": "quick_add_text", "label": "Quick-add label (accessibility)", "default": "Add to cart" },
+    {
+      "type": "paragraph",
+      "content": "Quick-add only adds directly for single-variant products, otherwise it opens the product page instead of guessing a variant"
+    },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Added to cart" },
+    { "type": "text", "id": "error_message", "label": "Error message", "default": "Couldn't add to cart" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "number", "id": "card_width", "label": "Max card width", "default": 280 },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "label": "Square (1:1)", "value": "1 / 1" },
+        { "label": "Portrait (4:5)", "value": "4 / 5" },
+        { "label": "Landscape (16:9)", "value": "16 / 9" }
+      ],
+      "default": "1 / 1"
+    },
+    { "type": "range", "id": "media_radius", "label": "Image corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
+    { "type": "color", "id": "media_bg_color", "label": "Image placeholder background", "default": "#F5F5F5" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#121212" },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
+    { "type": "range", "id": "price_size", "label": "Price size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 15 },
+    { "type": "color", "id": "price_color", "label": "Price color", "default": "#121212" },
+    { "type": "color", "id": "compare_color", "label": "Compare price color", "default": "#9CA3AF" },
+    { "type": "color", "id": "badge_bg_color", "label": "Badge background", "default": "#DC2626" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge text color", "default": "#FFFFFF" },
+    { "type": "color", "id": "quick_add_bg_color", "label": "Quick-add button background", "default": "#FFFFFF" },
+    { "type": "color", "id": "quick_add_icon_color", "label": "Quick-add icon color", "default": "#111827" },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#F3F4F6",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#E5E7EB" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-product-card" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}
