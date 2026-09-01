@@ -2,6 +2,9 @@
   "recently_viewed": {
     "label": "Produits consultés récemment",
     "settings": {
+      "info": {
+        "product_page_only": "L'application Deja vu est visible uniquement sur la page produit."
+      },
       "spacing": {
         "label": "Espacement",
         "spacing_unit": "Unité d'espacement",
