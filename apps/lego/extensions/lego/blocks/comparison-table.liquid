@@ -1,300 +1,345 @@
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=check,close,remove"
-/>
-
-{% assign columns = block.settings.columns %}
-
-<lego-comparison-table
-  data-lego="comparison-table"
-  data-entrance="{{ block.settings.entrance }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.heading != blank %}
-    <h2 class="heading">{{ block.settings.heading }}</h2>
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
   {% endif %}
 
-  <div class="scroller" data-slot="scroller">
-    <div class="table" style="--lego-columns: {{ columns }};" data-reveal="true">
-      <div class="row header-row">
-        <div class="cell feature-cell sticky"></div>
-        {% for c in (1..columns) %}
-          {% assign label_key = 'col_label_' | append: c %}
-          {% assign subtitle_key = 'col_subtitle_' | append: c %}
-          {% assign badge_key = 'col_badge_' | append: c %}
-          {% assign highlight_key = 'col_highlight_' | append: c %}
-          {% assign cta_text_key = 'col_cta_text_' | append: c %}
-          {% assign cta_link_key = 'col_cta_link_' | append: c %}
-          <div class="cell col-cell header" data-highlight="{{ block.settings[highlight_key] }}">
-            {% if block.settings[badge_key] != blank -%}
-              <span class="badge">{{ block.settings[badge_key] }}</span>
-            {%- endif %}
-            <span class="col-label">{{ block.settings[label_key] }}</span>
-            {% if block.settings[subtitle_key] != blank -%}
-              <span class="col-subtitle">{{ block.settings[subtitle_key] }}</span>
-            {%- endif %}
-            {% if block.settings[cta_text_key] != blank %}
-              <a class="cta" href="{{ block.settings[cta_link_key] | default: '#' }}">{{ block.settings[cta_text_key] }}</a>
-            {% endif %}
-          </div>
+  {% assign columns = block.settings.columns %}
+
+  <lego-comparison-table
+    data-lego="comparison-table"
+    data-entrance="{{ block.settings.entrance }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.heading != blank %}
+      <h2 class="heading">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="scroller" data-slot="scroller">
+      <div class="table" style="--lego-columns: {{ columns }};" data-reveal="true">
+        <div class="row header-row">
+          <div class="cell feature-cell sticky"></div>
+          {% for c in (1..columns) %}
+            {% assign label_key = 'col_label_' | append: c %}
+            {% assign subtitle_key = 'col_subtitle_' | append: c %}
+            {% assign badge_key = 'col_badge_' | append: c %}
+            {% assign highlight_key = 'col_highlight_' | append: c %}
+            {% assign cta_text_key = 'col_cta_text_' | append: c %}
+            {% assign cta_link_key = 'col_cta_link_' | append: c %}
+            <div class="cell col-cell header" data-highlight="{{ block.settings[highlight_key] }}">
+              {% if block.settings[badge_key] != blank -%}
+                <span class="badge">{{ block.settings[badge_key] }}</span>
+              {%- endif %}
+              <span class="col-label">{{ block.settings[label_key] }}</span>
+              {% if block.settings[subtitle_key] != blank -%}
+                <span class="col-subtitle">{{ block.settings[subtitle_key] }}</span>
+              {%- endif %}
+              {% if block.settings[cta_text_key] != blank %}
+                <a class="cta" href="{{ block.settings[cta_link_key] | default: '#' }}">{{ block.settings[cta_text_key] }}</a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        {% for i in (1..10) %}
+          {% assign row_label_key = 'row_label_' | append: i %}
+          {% assign row_label = block.settings[row_label_key] %}
+          {% if row_label != blank %}
+            <div class="row">
+              <div class="cell feature-cell sticky">{{ row_label }}</div>
+              {% for c in (1..columns) %}
+                {% assign cell_key = 'row_col' | append: c | append: '_' | append: i %}
+                {% assign highlight_key = 'col_highlight_' | append: c %}
+                {% assign cell_value = block.settings[cell_key] %}
+                {% assign cell_value_lower = cell_value | downcase | strip %}
+                <div
+                  class="cell col-cell"
+                  {% if block.settings[highlight_key] %}
+                    data-highlight="true"
+                  {% endif %}
+                >
+                  {% if cell_value_lower == 'yes' or cell_value_lower == 'true' or cell_value_lower == '1' %}
+                    <span class="material-symbols-rounded check">check</span>
+                  {% elsif cell_value == blank or cell_value_lower == 'no' or cell_value_lower == 'false' or cell_value_lower == '0' %}
+                    <span class="material-symbols-rounded cross">close</span>
+                  {% else %}
+                    <span class="cell-text">{{ cell_value }}</span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
-
-      {% for i in (1..10) %}
-        {% assign row_label_key = 'row_label_' | append: i %}
-        {% assign row_label = block.settings[row_label_key] %}
-        {% if row_label != blank %}
-          <div class="row">
-            <div class="cell feature-cell sticky">{{ row_label }}</div>
-            {% for c in (1..columns) %}
-              {% assign cell_key = 'row_col' | append: c | append: '_' | append: i %}
-              {% assign highlight_key = 'col_highlight_' | append: c %}
-              {% assign cell_value = block.settings[cell_key] %}
-              {% assign cell_value_lower = cell_value | downcase | strip %}
-              <div class="cell col-cell" data-highlight="{{ block.settings[highlight_key] }}">
-                {% if cell_value_lower == 'yes' or cell_value_lower == 'true' or cell_value_lower == '1' %}
-                  <span class="material-symbols-rounded check">check</span>
-                {% elsif cell_value == blank or cell_value_lower == 'no' or cell_value_lower == 'false' or cell_value_lower == '0' %}
-                  <span class="material-symbols-rounded cross">close</span>
-                {% else %}
-                  <span class="cell-text">{{ cell_value }}</span>
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endfor %}
     </div>
-  </div>
-</lego-comparison-table>
+  </lego-comparison-table>
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="comparison-table"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="comparison-table"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
 
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
 
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-      margin-inline: auto;
-    {% endif %}
-
-    .heading {
-      margin: 0 0 20px;
-      text-align: center;
-      font-size: {{ block.settings.heading_size }}px;
-      font-weight: 600;
-      color: {{ block.settings.heading_color.hex }};
-    }
-
-    .scroller {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: {{ block.settings.table_radius }}px;
-      {% if block.settings.border_weight > 0 %}
-        border: {{ block.settings.border_weight }}px solid {{ block.settings.border_color.hex }};
+      {% if block.settings.font_family == 'custom' %}
+        font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+      {% elsif block.settings.font_family != 'inherit' %}
+        font-family: {{ block.settings.font_family }};
       {% endif %}
 
-      {% case block.settings.box_shadow %}
-        {% when 'sm' %}
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-        {% when 'md' %}
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        {% when 'lg' %}
-          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% endcase %}
-    }
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
+      {% endif %}
 
-    .table {
-      min-width: 560px;
-      background-color: {{ block.settings.table_bg_color.hex }};
-
-      &[data-reveal="true"] {
-        opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+      .heading {
+        margin: 0 0 20px;
+        text-align: center;
+        font-size: {{ block.settings.heading_size }}px;
+        font-weight: 500;
+        font-family: inherit;
+        color: {{ block.settings.heading_color.hex }};
       }
-      &[data-revealed="true"] { opacity: 1; transform: none; }
-    }
 
-    .row {
-      display: grid;
-      grid-template-columns: minmax(160px, 1.4fr) repeat(var(--lego-columns), 1fr);
+      .scroller {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: {{ block.settings.table_radius }}px;
+        {% if block.settings.border_weight > 0 %}
+          border: {{ block.settings.border_weight }}px solid {{ block.settings.border_color.hex }};
+        {% endif %}
 
-      &:not(:last-child) { border-bottom: 1px solid {{ block.settings.divider_color.hex }}; }
-    }
-
-    .row:not(.header-row):nth-child(odd) {
-      {% if block.settings.zebra_striping %}background-color: {{ block.settings.zebra_color.hex }};{% endif %}
-    }
-
-    {% if block.settings.hover_enabled %}
-      .row:not(.header-row) {
-        transition: background-color 160ms ease;
+        {% case block.settings.box_shadow %}
+          {% when 'sm' %}
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+          {% when 'md' %}
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          {% when 'lg' %}
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% endcase %}
       }
-      @media (hover: hover) and (pointer: fine) {
-        .row:not(.header-row):hover { background-color: {{ block.settings.hover_color.hex }}; }
-      }
-    {% endif %}
 
-    .cell {
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: {{ block.settings.cell_size }}px;
-      color: {{ block.settings.cell_color.hex }};
-      text-align: center;
-    }
-
-    .feature-cell {
-      justify-content: flex-start;
-      text-align: left;
-      font-weight: 500;
-
-      &.sticky {
-        position: sticky;
-        left: 0;
-        background-color: inherit;
+      .table {
+        min-width: 560px;
         background-color: {{ block.settings.table_bg_color.hex }};
-        z-index: 1;
-      }
-    }
 
-    .header-row .feature-cell.sticky { background-color: {{ block.settings.header_bg_color.hex }}; }
-
-    .header-row .cell {
-      background-color: {{ block.settings.header_bg_color.hex }};
-      flex-direction: column;
-      gap: 4px;
-      padding-block: 20px;
-    }
-
-    .col-cell.header {
-      .col-label {
-        font-size: {{ block.settings.cell_size | plus: 2 }}px;
-        font-weight: 600;
-        color: {{ block.settings.header_text_color.hex }};
+        &[data-reveal="true"] {
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        &[data-revealed="true"] { opacity: 1; transform: none; }
       }
 
-      .col-subtitle {
-        font-size: 13px;
-        color: {{ block.settings.header_text_color.hex }};
-        opacity: 0.7;
+      .row {
+        display: grid;
+        grid-template-columns: minmax(160px, 1.4fr) repeat(var(--lego-columns), 1fr);
+
+        &:not(:last-child) { border-bottom: 1px solid {{ block.settings.divider_color.hex }}; }
       }
 
-      .badge {
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 3px 10px;
-        border-radius: 999px;
-        background-color: {{ block.settings.badge_bg_color.hex }};
-        color: {{ block.settings.badge_text_color.hex }};
+      .row:not(.header-row):nth-child(odd) {
+        {% if block.settings.zebra_striping %}background-color: {{ block.settings.zebra_color.hex }};{% endif %}
       }
 
-      .cta {
-        margin-top: 8px;
-        padding: 8px 20px;
-        border-radius: 8px;
-        background-color: {{ block.settings.cta_bg_color.hex }};
-        color: {{ block.settings.cta_text_color.hex }};
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms ease;
-
-        &:active { transform: scale(0.96); }
-
+      {% if block.settings.hover_enabled %}
+        .row:not(.header-row) {
+          transition: background-color 160ms ease;
+        }
         @media (hover: hover) and (pointer: fine) {
-          &:hover { opacity: 0.9; }
+          .row:not(.header-row):hover { background-color: {{ block.settings.hover_color.hex }}; }
+        }
+      {% endif %}
+
+      .cell {
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: {{ block.settings.cell_size }}px;
+        color: {{ block.settings.cell_color.hex }};
+        text-align: center;
+      }
+
+      .feature-cell {
+        justify-content: flex-start;
+        text-align: left;
+        font-weight: 400;
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        &.sticky {
+          position: sticky;
+          left: 0;
+          background-color: inherit;
+          background-color: {{ block.settings.table_bg_color.hex }};
+          z-index: 1;
         }
       }
+
+      .header-row .feature-cell.sticky { background-color: {{ block.settings.header_bg_color.hex }}; }
+
+      .header-row .cell {
+        background-color: {{ block.settings.header_bg_color.hex }};
+        flex-direction: column;
+        gap: 4px;
+        padding-block: 20px;
+      }
+
+      .col-cell.header {
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        .col-label {
+          font-size: {{ block.settings.cell_size | plus: 2 }}px;
+          font-weight: 500;
+          font-family: inherit;
+          color: {{ block.settings.header_text_color.hex }};
+        }
+
+        .col-subtitle {
+          font-size: 13px;
+          font-family: inherit;
+          color: {{ block.settings.header_text_color.hex }};
+          opacity: 0.7;
+        }
+
+        .badge {
+          font-size: 11px;
+          font-weight: 500;
+          font-family: inherit;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          padding: 3px 10px;
+          border-radius: 999px;
+          background-color: {{ block.settings.badge_bg_color.hex }};
+          color: {{ block.settings.badge_text_color.hex }};
+        }
+
+        .cta {
+          margin-top: 8px;
+          padding: 8px 20px;
+          border-radius: 8px;
+          background-color: {{ block.settings.cta_bg_color.hex }};
+          color: {{ block.settings.cta_text_color.hex }};
+          font-size: 13px;
+          font-weight: 500;
+          font-family: inherit;
+          text-decoration: none;
+          transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms ease;
+
+          &:active { transform: scale(0.96); }
+
+          @media (hover: hover) and (pointer: fine) {
+            &:hover { opacity: 0.9; }
+          }
+        }
+      }
+
+      .col-cell[data-highlight="true"] {
+        background-color: {{ block.settings.highlight_bg_color.hex }};
+      }
+
+      .check { color: {{ block.settings.check_color.hex }}; font-size: 20px; }
+      .cross { color: {{ block.settings.cross_color.hex }}; font-size: 20px; opacity: 0.5; }
+      .cell-text { 
+        font-weight: 500;
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+      }
+
+      {% if block.settings.entrance != 'none' %}
+        animation: lego-comparison-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+      {% endif %}
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) { display: none; }
+      {% endunless %}
     }
 
-    .col-cell[data-highlight="true"] {
-      background-color: {{ block.settings.highlight_bg_color.hex }};
-    }
+    @keyframes lego-comparison-fade { from { opacity: 0; } }
+    @keyframes lego-comparison-fade_up { from { opacity: 0; transform: translateY(16px); } }
+    @keyframes lego-comparison-zoom { from { opacity: 0; transform: scale(0.94); } }
 
-    .check { color: {{ block.settings.check_color.hex }}; font-size: 20px; }
-    .cross { color: {{ block.settings.cross_color.hex }}; font-size: 20px; opacity: 0.5; }
-    .cell-text { font-weight: 500; }
-
-    {% if block.settings.entrance != 'none' %}
-      animation: lego-comparison-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="comparison-table"] {
+        {{ block.settings.custom_css }}
+      }
     {% endif %}
+  </style>
 
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) { display: none; }
-    {% endunless %}
-  }
+  <script defer>
+    if (!customElements.get('lego-comparison-table')) {
+      class LegoComparisonTable extends HTMLElement {
+        connectedCallback() {
+          const table = this.querySelector('[data-reveal="true"]');
+          if (!table || this.getAttribute('data-entrance') === 'none') {
+            if (table) table.removeAttribute('data-reveal');
+            return;
+          }
 
-  @keyframes lego-comparison-fade { from { opacity: 0; } }
-  @keyframes lego-comparison-fade_up { from { opacity: 0; transform: translateY(16px); } }
-  @keyframes lego-comparison-zoom { from { opacity: 0; transform: scale(0.94); } }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="comparison-table"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
-
-<script defer>
-  if (!customElements.get('lego-comparison-table')) {
-    class LegoComparisonTable extends HTMLElement {
-      connectedCallback() {
-        const table = this.querySelector('[data-reveal="true"]');
-        if (!table || this.getAttribute('data-entrance') === 'none') {
-          if (table) table.removeAttribute('data-reveal');
-          return;
-        }
-
-        if ('IntersectionObserver' in window) {
-          const observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  entry.target.setAttribute('data-revealed', 'true');
-                  observer.unobserve(entry.target);
-                }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          observer.observe(table);
-        } else {
-          table.setAttribute('data-revealed', 'true');
+          if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.setAttribute('data-revealed', 'true');
+                    observer.unobserve(entry.target);
+                  }
+                });
+              },
+              { threshold: 0.15 }
+            );
+            observer.observe(table);
+          } else {
+            table.setAttribute('data-revealed', 'true');
+          }
         }
       }
-    }
 
-    customElements.define('lego-comparison-table', LegoComparisonTable);
-  }
-</script>
+      customElements.define('lego-comparison-table', LegoComparisonTable);
+    }
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Comparison table",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "Compare plans" },
     { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 28 },
@@ -415,6 +460,26 @@
       "label": "Hover color",
       "default": "#F5F5F5",
       "visible_if": { "setting_id": "hover_enabled", "value": true }
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
     },
     { "type": "range", "id": "cell_size", "label": "Cell text size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
     { "type": "color", "id": "cell_color", "label": "Cell text color", "default": "#374151" },
