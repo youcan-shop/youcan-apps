@@ -1,433 +1,452 @@
-{% assign icons = '' %}
-{% if block.settings.marker_type == 'icon' %}
-  {% for i in (1..6) %}
-    {% assign icon = 'icon_' | append: i %}
-    {% if block.settings[icon] %}
-      {% assign icons = icons | append: block.settings[icon] | append: ',' %}
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
+  <lego-timeline
+    data-lego="timeline"
+    data-entrance="{{ block.settings.entrance }}"
+    {% if block.settings.animate_line %}
+      data-animate-line="true"
     {% endif %}
-  {% endfor %}
-{% endif %}
-
-{% if icons != blank %}
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,{% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},0&icon_names={{ icons }}"
-  />
-{% endif %}
-
-<lego-timeline
-  data-lego="timeline"
-  data-entrance="{{ block.settings.entrance }}"
-  data-animate-line="{{ block.settings.animate_line }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.eyebrow != blank or block.settings.heading != blank %}
-    <div class="section-head">
-      {% if block.settings.eyebrow != blank -%}
-        <span class="eyebrow">{{ block.settings.eyebrow }}</span>
-      {%- endif %}
-      {% if block.settings.heading != blank %}
-        <h2 class="heading">{{ block.settings.heading }}</h2>
-      {% endif %}
-    </div>
-  {% endif %}
-
-  <div
-    class="steps"
-    data-orientation="{{ block.settings.orientation }}"
-    data-alternate="{{ block.settings.alternate }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
   >
-    {% if block.settings.orientation == 'vertical' %}
-      <div class="line-track" data-slot="line-track">
-        <div class="line-fill" data-slot="line-fill"></div>
-      </div>
-    {% else %}
-      <div class="line-track horizontal" data-slot="line-track">
-        <div class="line-fill" data-slot="line-fill"></div>
+    {% if block.settings.eyebrow or block.settings.heading %}
+      <div class="section-head">
+        {% if block.settings.eyebrow %}
+          <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+        {% endif %}
+        {% if block.settings.heading %}
+          <h2 class="heading">{{ block.settings.heading }}</h2>
+        {% endif %}
       </div>
     {% endif %}
 
-    {% assign slot = 0 %}
-    {% for i in (1..6) %}
-      {% assign icon = 'icon_' | append: i %}
-      {% assign is_custom_img = 'is_custom_img_' | append: i %}
-      {% assign custom_img = 'custom_img_' | append: i %}
-      {% assign date = 'date_' | append: i %}
-      {% assign title = 'title_' | append: i %}
-      {% assign description = 'description_' | append: i %}
-      {% assign link = 'link_' | append: i %}
-      {% assign new_window = 'new_window_' | append: i %}
-      {% assign has_link = false %}
-      {% if block.settings[link] != blank %}{% assign has_link = true %}{% endif %}
+    <div
+      class="steps"
+      data-orientation="{{ block.settings.orientation }}"
+      {% if block.settings.alternate %}
+        data-alternate="true"
+      {% endif %}
+    >
+      {% if block.settings.orientation == 'vertical' %}
+        <div class="line-track" data-slot="line-track">
+          <div class="line-fill" data-slot="line-fill"></div>
+        </div>
+      {% else %}
+        <div class="line-track horizontal" data-slot="line-track">
+          <div class="line-fill" data-slot="line-fill"></div>
+        </div>
+      {% endif %}
 
-      {% if block.settings[title] != blank %}
-        <div
-          class="step"
-          {% if block.settings.entrance != 'none' %}
-            data-reveal="true" style="--lego-slot: {{ slot }};"
-          {% endif %}
-        >
-          <div class="marker">
-            {% if block.settings.marker_type == 'number' %}
-              <span class="number">{{ slot | plus: 1 }}</span>
-            {% elsif block.settings[is_custom_img] %}
-              {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
-              <img src="{{ block.settings[custom_img].src | default: fallback_image_url }}" alt="{{ block.settings[title] }}" loading="lazy">
-            {% elsif block.settings[icon] != blank %}
-              <span class="material-symbols-rounded">{{ block.settings[icon] }}</span>
+      {% assign slot = 0 %}
+      {% for i in (1..6) %}
+        {% assign icon = 'icon_' | append: i %}
+        {% assign is_custom_img = 'is_custom_img_' | append: i %}
+        {% assign custom_img = 'custom_img_' | append: i %}
+        {% assign date = 'date_' | append: i %}
+        {% assign title = 'title_' | append: i %}
+        {% assign description = 'description_' | append: i %}
+        {% assign link = 'link_' | append: i %}
+        {% assign new_window = 'new_window_' | append: i %}
+        {% assign has_link = false %}
+        {% if block.settings[link] != blank %}{% assign has_link = true %}{% endif %}
+
+        {% if block.settings[title] != blank %}
+          <div
+            class="step"
+            {% if block.settings.entrance != 'none' %}
+              data-reveal="true" style="--lego-slot: {{ slot }};"
+            {% endif %}
+          >
+            <div class="marker">
+              {% if block.settings.marker_type == 'number' %}
+                <span class="number">{{ slot | plus: 1 }}</span>
+              {% elsif block.settings[is_custom_img] %}
+                {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
+                <img src="{{ block.settings[custom_img].src | default: fallback_image_url }}" alt="{{ block.settings[title] }}" loading="lazy">
+              {% elsif block.settings[icon] != blank %}
+                <span class="material-symbols-rounded">{{ block.settings[icon] }}</span>
+              {% else %}
+                <span class="number">{{ slot | plus: 1 }}</span>
+              {% endif %}
+            </div>
+
+            {% if has_link %}
+              <a
+                class="content"
+                href="{{ block.settings[link] }}"
+                {% if block.settings[new_window] %}
+                  target="_blank"
+                {% endif %}
+              >
             {% else %}
-              <span class="number">{{ slot | plus: 1 }}</span>
+              <div class="content">
+            {% endif %}
+            {% if block.settings[date] != blank -%}
+              <span class="date">{{ block.settings[date] }}</span>
+            {%- endif %}
+            <h3 class="title">{{ block.settings[title] }}</h3>
+            {% if block.settings[description] != blank %}
+              <p class="description">{{ block.settings[description] }}</p>
+            {% endif %}
+            {% if has_link %}
+              </a>
+            {% else %}
+              </div>
             {% endif %}
           </div>
+          {% assign slot = slot | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </lego-timeline>
 
-          {% if has_link %}
-            <a
-              class="content"
-              href="{{ block.settings[link] }}"
-              {% if block.settings[new_window] %}
-                target="_blank"
-              {% endif %}
-            >
-          {% else %}
-            <div class="content">
-          {% endif %}
-          {% if block.settings[date] != blank -%}
-            <span class="date">{{ block.settings[date] }}</span>
-          {%- endif %}
-          <h3 class="title">{{ block.settings[title] }}</h3>
-          {% if block.settings[description] != blank %}
-            <p class="description">{{ block.settings[description] }}</p>
-          {% endif %}
-          {% if has_link %}
-            </a>
-          {% else %}
-            </div>
-          {% endif %}
-        </div>
-        {% assign slot = slot | plus: 1 %}
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="timeline"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
       {% endif %}
-    {% endfor %}
-  </div>
-</lego-timeline>
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="timeline"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
 
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
+      {% endif %}
 
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
 
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
-
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-      margin-inline: auto;
-    {% endif %}
-
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-      {% when 'image' %}
-        background-image: url({{ block.settings.bg_img.src }});
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    {% endcase %}
-
-    .section-head {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: center;
-      margin-bottom: 40px;
-
-      .eyebrow {
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: {{ block.settings.eyebrow_color.hex }};
-      }
-
-      .heading {
-        margin: 0;
-        font-size: {{ block.settings.heading_size }}px;
-        font-weight: 600;
-        color: {{ block.settings.heading_color.hex }};
-      }
-    }
-
-    .steps {
-      position: relative;
-
-      &[data-orientation="vertical"] {
+      .section-head {
         display: flex;
         flex-direction: column;
-        gap: {{ block.settings.gap }}px;
-        padding-left: {{ block.settings.marker_size | plus: 16 }}px;
+        gap: 8px;
+        text-align: center;
+        margin-bottom: 40px;
 
-        .line-track {
-          position: absolute;
-          top: {{ block.settings.marker_size | divided_by: 2 }}px;
-          left: {{ block.settings.marker_size | divided_by: 2 }}px;
-          bottom: {{ block.settings.marker_size | divided_by: 2 }}px;
-          width: 2px;
-          background-color: {{ block.settings.line_color.hex }};
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        .eyebrow {
+          font-size: 13px;
+          font-weight: 400;
+          font-family: inherit;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: {{ block.settings.eyebrow_color.hex }};
         }
 
-        .line-fill {
-          width: 100%;
-          height: 0%;
-          background-color: {{ block.settings.line_fill_color.hex }};
-          transition: height 1200ms cubic-bezier(0.23, 1, 0.32, 1);
+        .heading {
+          margin: 0;
+          font-family: inherit;
+          font-size: {{ block.settings.heading_size }}px;
+          font-weight: 500;
+          color: {{ block.settings.heading_color.hex }};
         }
+      }
 
-        .step {
-          position: relative;
+      .steps {
+        position: relative;
+
+        &[data-orientation="vertical"] {
           display: flex;
-          gap: 16px;
+          flex-direction: column;
+          gap: {{ block.settings.gap }}px;
+          padding-left: {{ block.settings.marker_size | plus: 16 }}px;
 
-          .marker {
+          .line-track {
             position: absolute;
-            left: {{ block.settings.marker_size | plus: 16 | times: -1 }}px;
+            top: {{ block.settings.marker_size | divided_by: 2 }}px;
+            left: {{ block.settings.marker_size | divided_by: 2 }}px;
+            bottom: {{ block.settings.marker_size | divided_by: 2 }}px;
+            width: 2px;
+            background-color: {{ block.settings.line_color.hex }};
           }
 
-          .content { margin-left: 0; }
-        }
-
-        &[data-alternate="true"] {
-          padding-left: 0;
-
-          .line-track { left: 50%; transform: translateX(-1px); }
+          .line-fill {
+            width: 100%;
+            height: 0%;
+            background-color: {{ block.settings.line_fill_color.hex }};
+            transition: height 1200ms cubic-bezier(0.23, 1, 0.32, 1);
+          }
 
           .step {
-            width: calc(50% - {{ block.settings.marker_size | divided_by: 2 | plus: 24 }}px);
+            position: relative;
+            display: flex;
+            gap: 16px;
 
-            .marker { left: auto; }
+            .marker {
+              position: absolute;
+              left: {{ block.settings.marker_size | plus: 16 | times: -1 }}px;
+            }
 
-            &:nth-child(odd) {
-              margin-left: auto;
-              .marker { left: -{{ block.settings.marker_size | plus: 16 }}px; }
+            .content { margin-left: 0; }
+          }
+
+          &[data-alternate="true"] {
+            padding-left: 0;
+
+            .line-track { left: 50%; transform: translateX(-1px); }
+
+            .step {
+              width: calc(50% - {{ block.settings.marker_size | divided_by: 2 | plus: 24 }}px);
+
+              .marker { left: auto; }
+
+              &:nth-child(odd) {
+                margin-left: auto;
+                .marker { left: -{{ block.settings.marker_size | plus: 24 }}px; }
+              }
+              &:nth-child(even) {
+                .marker { right: -{{ block.settings.marker_size | plus: 24 }}px; left: auto; }
+                text-align: right;
+              }
             }
-            &:nth-child(even) {
-              .marker { right: -{{ block.settings.marker_size | plus: 16 }}px; left: auto; }
-              text-align: right;
+
+            @media (width <= 768px) {
+              padding-left: {{ block.settings.marker_size | plus: 16 }}px;
+              .line-track { left: {{ block.settings.marker_size | divided_by: 2 }}px; }
+              .step {
+                width: 100%;
+                margin-left: 0 !important;
+                text-align: left !important;
+                .marker { left: -{{ block.settings.marker_size | plus: 16 }}px !important; right: auto !important; }
+              }
             }
+          }
+        }
+
+        &[data-orientation="horizontal"] {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: {{ block.settings.gap }}px;
+          padding-top: {{ block.settings.marker_size | plus: 16 }}px;
+
+          .line-track.horizontal {
+            position: absolute;
+            top: {{ block.settings.marker_size | divided_by: 2 }}px;
+            left: {{ block.settings.marker_size | divided_by: 2 }}px;
+            right: {{ block.settings.marker_size | divided_by: 2 }}px;
+            height: 2px;
+            background-color: {{ block.settings.line_color.hex }};
+          }
+
+          .line-fill { height: 100%; width: 0%; background-color: {{ block.settings.line_fill_color.hex }}; transition: width 1200ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+          .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            .marker {
+              position: absolute;
+              top: 0;
+            }
+
+            .content { margin-top: {{ block.settings.marker_size | plus: 16 }}px; }
           }
 
           @media (width <= 768px) {
-            padding-left: {{ block.settings.marker_size | plus: 16 }}px;
-            .line-track { left: {{ block.settings.marker_size | divided_by: 2 }}px; }
-            .step {
-              width: 100%;
-              margin-left: 0 !important;
-              text-align: left !important;
-              .marker { left: -{{ block.settings.marker_size | plus: 16 }}px !important; right: auto !important; }
+            grid-template-columns: 1fr;
+          }
+        }
+      }
+
+      .marker {
+        flex-shrink: 0;
+        width: {{ block.settings.marker_size }}px;
+        height: {{ block.settings.marker_size }}px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: {{ block.settings.marker_color.hex }};
+        color: {{ block.settings.marker_icon_color.hex }};
+        z-index: 1;
+
+        .material-symbols-rounded {
+          font-size: {{ block.settings.marker_size | times: 0.45 | round }}px;
+          font-variation-settings: "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %}, "wght" 400, "GRAD" 0, "opsz" 20;
+        }
+
+        .number {
+          font-size: {{ block.settings.marker_size | times: 0.4 | round }}px;
+          font-weight: 500;
+        }
+
+        img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        color: inherit;
+        text-decoration: none;
+        width: 100%;
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        .date {
+          font-size: 12px;
+          font-weight: 400;
+          font-family: inherit;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: {{ block.settings.date_color.hex }};
+        }
+
+        .title {
+          margin: 0;
+          font-family: inherit;
+          font-size: {{ block.settings.title_size }}px;
+          font-weight: 400;
+          color: {{ block.settings.title_color.hex }};
+        }
+
+        .description {
+          margin: 0;
+          font-family: inherit;
+          font-size: {{ block.settings.description_size }}px;
+          line-height: 1.6;
+          color: {{ block.settings.description_color.hex }};
+        }
+      }
+
+      .step[data-reveal="true"] {
+        opacity: 0;
+        {% if block.settings.entrance == 'fade-up' %}transform: translateY(16px);{% endif %}
+        {% if block.settings.entrance == 'zoom' %}transform: scale(0.9);{% endif %}
+        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+        transition-delay: calc(var(--lego-slot) * 100ms);
+      }
+      .step[data-revealed="true"] { opacity: 1; transform: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .step[data-reveal="true"] { transform: none; }
+      }
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) { display: none; }
+      {% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="timeline"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-timeline')) {
+      class LegoTimeline extends HTMLElement {
+        connectedCallback() {
+          const lineFill = this.querySelector('[data-slot="line-fill"]');
+          const animateLine = this.getAttribute('data-animate-line') === 'true';
+          const entrance = this.getAttribute('data-entrance');
+          const items = this.querySelectorAll('[data-reveal="true"]');
+          const isHorizontal = this.querySelector('.steps').dataset.orientation === 'horizontal';
+
+          const reveal = () => {
+            if (lineFill && animateLine) {
+              lineFill.style[isHorizontal ? 'width' : 'height'] = '100%';
             }
-          }
-        }
-      }
-
-      &[data-orientation="horizontal"] {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: {{ block.settings.gap }}px;
-        padding-top: {{ block.settings.marker_size | plus: 16 }}px;
-
-        .line-track.horizontal {
-          position: absolute;
-          top: {{ block.settings.marker_size | divided_by: 2 }}px;
-          left: {{ block.settings.marker_size | divided_by: 2 }}px;
-          right: {{ block.settings.marker_size | divided_by: 2 }}px;
-          height: 2px;
-          background-color: {{ block.settings.line_color.hex }};
-        }
-
-        .line-fill { height: 100%; width: 0%; background-color: {{ block.settings.line_fill_color.hex }}; transition: width 1200ms cubic-bezier(0.23, 1, 0.32, 1); }
-
-        .step {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-
-          .marker {
-            position: absolute;
-            top: 0;
-          }
-
-          .content { margin-top: {{ block.settings.marker_size | plus: 16 }}px; }
-        }
-
-        @media (width <= 768px) {
-          grid-template-columns: 1fr;
-        }
-      }
-    }
-
-    .marker {
-      flex-shrink: 0;
-      width: {{ block.settings.marker_size }}px;
-      height: {{ block.settings.marker_size }}px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: {{ block.settings.marker_color.hex }};
-      color: {{ block.settings.marker_icon_color.hex }};
-      z-index: 1;
-
-      .material-symbols-rounded {
-        font-size: {{ block.settings.marker_size | times: 0.45 | round }}px;
-        font-variation-settings: "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %}, "wght" 400, "GRAD" 0, "opsz" 20;
-      }
-
-      .number {
-        font-size: {{ block.settings.marker_size | times: 0.4 | round }}px;
-        font-weight: 600;
-      }
-
-      img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    }
-
-    .content {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      color: inherit;
-      text-decoration: none;
-
-      .date {
-        font-size: 12px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: {{ block.settings.date_color.hex }};
-      }
-
-      .title {
-        margin: 0;
-        font-size: {{ block.settings.title_size }}px;
-        font-weight: 500;
-        color: {{ block.settings.title_color.hex }};
-      }
-
-      .description {
-        margin: 0;
-        font-size: {{ block.settings.description_size }}px;
-        line-height: 1.6;
-        color: {{ block.settings.description_color.hex }};
-      }
-    }
-
-    .step[data-reveal="true"] {
-      opacity: 0;
-      {% if block.settings.entrance == 'fade-up' %}transform: translateY(16px);{% endif %}
-      {% if block.settings.entrance == 'zoom' %}transform: scale(0.9);{% endif %}
-      transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
-      transition-delay: calc(var(--lego-slot) * 100ms);
-    }
-    .step[data-revealed="true"] { opacity: 1; transform: none; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .step[data-reveal="true"] { transform: none; }
-    }
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) { display: none; }
-    {% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="timeline"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
-
-<script defer>
-  if (!customElements.get('lego-timeline')) {
-    class LegoTimeline extends HTMLElement {
-      connectedCallback() {
-        const lineFill = this.querySelector('[data-slot="line-fill"]');
-        const animateLine = this.getAttribute('data-animate-line') === '1';
-        const entrance = this.getAttribute('data-entrance');
-        const items = this.querySelectorAll('[data-reveal="true"]');
-        const isHorizontal = this.querySelector('.steps').dataset.orientation === 'horizontal';
-
-        const reveal = () => {
-          if (lineFill && animateLine) {
-            lineFill.style[isHorizontal ? 'width' : 'height'] = '100%';
-          }
-          items.forEach((item, i) => {
-            setTimeout(() => item.setAttribute('data-revealed', 'true'), i * 60);
-          });
-        };
-
-        if ((entrance === 'none' && !animateLine) || !('IntersectionObserver' in window)) {
-          if (lineFill) lineFill.style[isHorizontal ? 'width' : 'height'] = '100%';
-          items.forEach((item) => item.setAttribute('data-revealed', 'true'));
-          return;
-        }
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                reveal();
-                observer.unobserve(entry.target);
-              }
+            items.forEach((item, i) => {
+              setTimeout(() => item.setAttribute('data-revealed', 'true'), i * 60);
             });
-          },
-          { threshold: 0.15 }
-        );
-        observer.observe(this);
-      }
-    }
+          };
 
-    customElements.define('lego-timeline', LegoTimeline);
-  }
-</script>
+          if ((entrance === 'none' && !animateLine) || !('IntersectionObserver' in window)) {
+            if (lineFill) lineFill.style[isHorizontal ? 'width' : 'height'] = '100%';
+            items.forEach((item) => item.setAttribute('data-revealed', 'true'));
+            return;
+          }
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  reveal();
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15 }
+          );
+          observer.observe(this);
+        }
+      }
+
+      customElements.define('lego-timeline', LegoTimeline);
+    }
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Timeline",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "placeholder": "How it works" },
     { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "From order to doorstep" },
@@ -521,6 +540,26 @@
     { "type": "number", "id": "padding_left", "label": "Padding left", "default": 20 },
 
     { "type": "header", "content": "Typography" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
     { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6B7280" },
     { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#121212" },
