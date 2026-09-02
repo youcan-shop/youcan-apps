@@ -1,0 +1,391 @@
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=star,verified"
+/>
+
+{% assign total_score = 0 %}
+{% assign review_count = 0 %}
+{% for i in (1..8) %}
+  {% assign text_key = 'text_' | append: i %}
+  {% assign rating_key = 'rating_' | append: i %}
+  {% if block.settings[text_key] != blank %}
+    {% assign total_score = total_score | plus: block.settings[rating_key] %}
+    {% assign review_count = review_count | plus: 1 %}
+  {% endif %}
+{% endfor %}
+{% if review_count > 0 %}
+  {% assign average_score = total_score | divided_by: review_count | divided_by: 1.0 %}
+{% endif %}
+
+<lego-reviews
+  data-lego="reviews"
+  {% if block.settings.anchor %}
+    id="{{ block.settings.anchor }}"
+  {% endif %}
+>
+  {% if block.settings.show_summary and review_count > 0 %}
+    <div class="summary">
+      <span class="score">{{ average_score | round: 1 }}</span>
+      <div class="stars">
+        {% for s in (1..5) -%}
+          <span class="material-symbols-rounded star" data-filled="{% if s <= average_score %}true{% else %}false{% endif %}">star</span>
+        {%- endfor %}
+      </div>
+      <span class="count">
+        {{- review_count }}
+        {{ block.settings.reviews_label -}}
+      </span>
+    </div>
+  {% endif %}
+
+  <div class="list" data-layout="{{ block.settings.layout }}">
+    {% for i in (1..8) %}
+      {% assign text_key = 'text_' | append: i %}
+      {% assign author_key = 'author_' | append: i %}
+      {% assign date_key = 'date_' | append: i %}
+      {% assign rating_key = 'rating_' | append: i %}
+      {% assign verified_key = 'verified_' | append: i %}
+      {% if block.settings[text_key] != blank %}
+        <div class="review">
+          <div class="stars">
+            {% for s in (1..5) -%}
+              <span class="material-symbols-rounded star" data-filled="{% if s <= block.settings[rating_key] %}true{% else %}false{% endif %}"
+                >star</span
+              >
+            {%- endfor %}
+          </div>
+          <p class="text">{{ block.settings[text_key] }}</p>
+          <div class="meta">
+            {% if block.settings[author_key] != blank %}
+              <span class="author">
+                {{ block.settings[author_key] }}
+                {% if block.settings[verified_key] -%}
+                  <span class="material-symbols-rounded verified">verified</span>
+                {%- endif %}
+              </span>
+            {% endif %}
+            {% if block.settings[date_key] != blank -%}
+              <span class="date">{{ block.settings[date_key] }}</span>
+            {%- endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</lego-reviews>
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="reviews"] {
+    display: block;
+    opacity: {{ block.settings.opacity }};
+
+    margin-top: {{ block.settings.margin_top | append: 'px' }};
+    margin-right: {{ block.settings.margin_right | append: 'px' }};
+    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+    margin-left: {{ block.settings.margin_left | append: 'px' }};
+    padding-top: {{ block.settings.padding_top | append: 'px' }};
+    padding-right: {{ block.settings.padding_right | append: 'px' }};
+    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+    padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+    {% if block.settings.border_style != 'none' %}
+      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    {% endif %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+    {% endcase %}
+
+    .summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid {{ block.settings.divider_color.hex }};
+
+      .score { font-size: {{ block.settings.score_size }}px; font-weight: 700; color: {{ block.settings.text_color.hex }}; }
+      .count { font-size: 13px; color: {{ block.settings.meta_color.hex }}; }
+    }
+
+    .stars {
+      display: flex;
+      gap: 2px;
+
+      .star { font-size: 16px; color: {{ block.settings.star_color.hex }}; opacity: 0.25; }
+      .star[data-filled="true"] { opacity: 1; }
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      &[data-layout="grid"] {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: {{ block.settings.gap }}px;
+
+        @media (width <= 640px) { grid-template-columns: 1fr; }
+      }
+    }
+
+    .review {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid {{ block.settings.item_divider_color.hex }};
+
+      .list[data-layout="grid"] & {
+        border: 1px solid {{ block.settings.item_divider_color.hex }};
+        border-radius: {{ block.settings.card_radius }}px;
+        padding: 16px;
+      }
+
+      .text { margin: 0; font-size: {{ block.settings.text_size }}px; color: {{ block.settings.text_color.hex }}; line-height: 1.6; }
+
+      .meta {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: {{ block.settings.meta_color.hex }};
+
+        .author { display: inline-flex; align-items: center; gap: 3px; font-weight: 600; }
+        .verified { font-size: 13px; color: {{ block.settings.verified_color.hex }}; }
+      }
+    }
+
+    {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+    {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+    {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+    {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
+  }
+
+  {% if block.settings.custom_css != blank %}
+    #youcan-block--{{ block.id }} [data-lego="reviews"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Reviews",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Summary" },
+    { "type": "checkbox", "id": "show_summary", "label": "Show summary", "default": true },
+    { "type": "text", "id": "reviews_label", "label": "Count label", "default": "reviews" },
+    { "type": "range", "id": "score_size", "label": "Score number size", "min": 20, "max": 40, "step": 1, "unit": "px", "default": 26 },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Review list layout",
+      "options": [
+        { "label": "List", "value": "list" },
+        { "label": "Grid", "value": "grid" }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Grid gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "visible_if": { "setting_id": "layout", "value": "grid" }
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Grid card corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 10,
+      "visible_if": { "setting_id": "layout", "value": "grid" }
+    },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
+    { "type": "range", "id": "text_size", "label": "Review text size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#121212" },
+    { "type": "color", "id": "meta_color", "label": "Meta text color", "default": "#9CA3AF" },
+    { "type": "color", "id": "verified_color", "label": "Verified badge color", "default": "#3B82F6" },
+    { "type": "color", "id": "divider_color", "label": "Summary divider color", "default": "#E5E5E5" },
+    { "type": "color", "id": "item_divider_color", "label": "Review divider color", "default": "#F0F0F0" },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#F3F4F6",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
+
+    { "type": "header", "content": "Review #1" },
+    { "type": "range", "id": "rating_1", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_1", "label": "Text", "default": "Exactly as described, arrived fast." },
+    { "type": "text", "id": "author_1", "label": "Author", "default": "Nadia K." },
+    { "type": "text", "id": "date_1", "label": "Date", "default": "2 weeks ago" },
+    { "type": "checkbox", "id": "verified_1", "label": "Verified badge", "default": true },
+
+    { "type": "header", "content": "Review #2" },
+    { "type": "range", "id": "rating_2", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 4 },
+    { "type": "textarea", "id": "text_2", "label": "Text", "default": "Great quality for the price." },
+    { "type": "text", "id": "author_2", "label": "Author", "default": "Karim T." },
+    { "type": "text", "id": "date_2", "label": "Date", "default": "1 month ago" },
+    { "type": "checkbox", "id": "verified_2", "label": "Verified badge", "default": true },
+
+    { "type": "header", "content": "Review #3" },
+    { "type": "range", "id": "rating_3", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_3", "label": "Text" },
+    { "type": "text", "id": "author_3", "label": "Author" },
+    { "type": "text", "id": "date_3", "label": "Date" },
+    { "type": "checkbox", "id": "verified_3", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Review #4" },
+    { "type": "range", "id": "rating_4", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_4", "label": "Text" },
+    { "type": "text", "id": "author_4", "label": "Author" },
+    { "type": "text", "id": "date_4", "label": "Date" },
+    { "type": "checkbox", "id": "verified_4", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Review #5" },
+    { "type": "range", "id": "rating_5", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_5", "label": "Text" },
+    { "type": "text", "id": "author_5", "label": "Author" },
+    { "type": "text", "id": "date_5", "label": "Date" },
+    { "type": "checkbox", "id": "verified_5", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Review #6" },
+    { "type": "range", "id": "rating_6", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_6", "label": "Text" },
+    { "type": "text", "id": "author_6", "label": "Author" },
+    { "type": "text", "id": "date_6", "label": "Date" },
+    { "type": "checkbox", "id": "verified_6", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Review #7" },
+    { "type": "range", "id": "rating_7", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_7", "label": "Text" },
+    { "type": "text", "id": "author_7", "label": "Author" },
+    { "type": "text", "id": "date_7", "label": "Date" },
+    { "type": "checkbox", "id": "verified_7", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Review #8" },
+    { "type": "range", "id": "rating_8", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "text_8", "label": "Text" },
+    { "type": "text", "id": "author_8", "label": "Author" },
+    { "type": "text", "id": "date_8", "label": "Date" },
+    { "type": "checkbox", "id": "verified_8", "label": "Verified badge", "default": false },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-reviews" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}
