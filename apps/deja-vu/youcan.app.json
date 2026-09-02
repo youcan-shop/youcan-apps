@@ -1,0 +1,14 @@
+{
+    "name": "Deja vu",
+    "id": "app_FCjvAmbNlrIXZOB4eI3dgmZNPKG",
+    "handle": "deja-vu-2",
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "3137"
+    },
+    "extension_ids": {
+        "deja-vu": "ext_FCjvAldJbDYh2JioujUebZlhd0s"
+    }
+}

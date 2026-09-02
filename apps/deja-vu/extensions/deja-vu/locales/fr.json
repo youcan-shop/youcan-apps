@@ -1,0 +1,14 @@
+{
+  "star_rating": {
+    "label": "Avis clients"
+  },
+  "announcement_bar": {
+    "dismiss": "Fermer"
+  },
+  "recently_viewed": {
+    "carousel": {
+      "previous": "Précédent",
+      "next": "Suivant"
+    }
+  }
+}

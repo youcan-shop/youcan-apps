@@ -1,0 +1,32 @@
+<template dv-product="card">
+  <div class="dv-product" dv-carousel="item">
+    <a 
+      class="dv-product__images" 
+      dv-product="images"
+      {% if block.settings.show_second_image_on_hover %}
+        data-show-second-image
+      {% endif %}
+    >
+      <div class="dv-product__image-placeholder" dv-product="image-placeholder" hidden>
+        {% render 'snippet.placeholder', size: 48 %}
+      </div>
+    </a>
+    <div class="dv-product__info">
+      <a class="dv-product__name" dv-product="name">Product name</a>
+      {% if block.settings.show_product_price %}
+        <div class="dv-product__price">
+          {% if block.settings.show_compare_at_price %}
+            <span class="dv-product__compare-at" dv-product="compare-at">
+              {{ 49.99 | money}}
+            </span>
+          {% endif %}
+          {% if block.settings.show_product_price %}
+            <span class="dv-product__current-price" dv-product="price">
+              {{ 39.99 | money }}
+            </span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</template>

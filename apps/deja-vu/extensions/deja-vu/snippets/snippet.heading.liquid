@@ -1,0 +1,10 @@
+{% if title or subheading %}
+  <div class="dv-heading">
+    {% if title %}
+      <h2 class="dv-heading__title">{{ title }}</h2>
+    {% endif %}
+    {% if subheading %}
+      <p class="dv-heading__subheading">{{ subheading }}</p>
+    {% endif %}
+  </div>
+{% endif %}

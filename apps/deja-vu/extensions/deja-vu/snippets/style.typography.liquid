@@ -1,0 +1,16 @@
+{% unless block.settings.title_font_family == 'inherit' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family={{ block.settings.title_font_family }}"
+  >
+{% endunless %}
+{% unless block.settings.body_font_family == 'inherit' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family={{ block.settings.body_font_family }}"
+  >
+{% endunless %}

@@ -1,0 +1,66 @@
+{
+  "recently_viewed": {
+    "label": "المنتجات التي شاهدتها مؤخرًا",
+    "settings": {
+      "spacing": {
+        "label": "المسافات",
+        "spacing_unit": "وحدة المسافات",
+        "vertical": "المسافة العمودية",
+        "horizontal": "المسافة الأفقية",
+        "heading_bottom_spacing": "المسافة أسفل العنوان",
+        "subheading_top_spacing": "المسافة أعلى العنوان الفرعي"
+      },
+      "colors": {
+        "label": "الألوان",
+        "text_color": "لون النص",
+        "background_color": "لون الخلفية"
+      },
+      "layout": {
+        "label": "التخطيط",
+        "heading_alignment": {
+          "label": "محاذاة العنوان",
+          "start": "البداية",
+          "center": "الوسط"
+        },
+        "cards_gap": "المسافة بين البطاقات",
+        "hide_current_product": "إخفاء المنتج الحالي"
+      },
+      "typography": {
+        "label": "تصميم الخط",
+        "title_size": "حجم العنوان",
+        "subheading_size": "حجم العنوان الفرعي",
+        "body_size": "حجم النص",
+        "title_font_family": "خط العنوان",
+        "body_font_family": "خط النص",
+        "inherit_from_theme": "خط القالب الافتراضي"
+      },
+      "product_cards": {
+        "label": "بطاقات المنتجات",
+        "style": {
+          "label": "نمط البطاقة",
+          "classic": "كلاسيكي",
+          "modern": "عصري",
+          "minimal": "بسيط",
+          "polaroid": "بولارويد"
+        },
+        "border_radius": "استدارة الحواف",
+        "image_ratio": "نسبة الصورة",
+        "show_product_price": "إظهار سعر المنتج",
+        "show_compare_at_price": "إظهار السعر قبل التخفيض",
+        "show_second_image_on_hover": "إظهار الصورة الثانية عند التمرير"
+      },
+      "carousel": {
+        "label": "سلايدر",
+        "show_pagination": "إظهار أزرار التنقل",
+        "pagination_border_radius": "استدارة حواف أزرار التنقل",
+        "per_page": "عدد العناصر في الصفحة",
+        "per_page_mobile": "عدد العناصر في الصفحة على الهاتف"
+      },
+      "content": {
+        "label": "المحتوى",
+        "title": "العنوان",
+        "subheading": "العنوان الفرعي"
+      }
+    }
+  }
+}

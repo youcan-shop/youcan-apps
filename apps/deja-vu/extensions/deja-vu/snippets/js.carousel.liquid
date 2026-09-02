@@ -1,0 +1,121 @@
+<script defer>
+  if (!customElements.get('dv-carousel')) {
+    class DejaVuCarousel extends HTMLElement {
+      connectedCallback() {
+        this.list = this.querySelector('[dv-carousel="list"]');
+
+        if (!this.list) return;
+
+        this.index = 0;
+        this.targetIndex = 0;
+        this.perPage = 1;
+        this.items = [];
+        this.isAnimating = false;
+
+        this.arrows = {
+          previous: this.querySelector('[dv-carousel="arrow-previous"]'),
+          next: this.querySelector('[dv-carousel="arrow-next"]'),
+        };
+
+        this.controller = new AbortController();
+
+        const { signal } = this.controller;
+
+        this.arrows.previous?.addEventListener('click', () => this.goTo(this.targetIndex - 1), { signal });
+        this.arrows.next?.addEventListener('click', () => this.goTo(this.targetIndex + 1), { signal });
+
+        this.list.addEventListener('scroll', () => this.onScroll(), { signal, passive: true });
+        this.list.addEventListener('scrollend', () => (this.isAnimating = false), { signal });
+        window.addEventListener('resize', () => this.updateLayout(), { signal });
+
+        this.updateLayout();
+      }
+
+      disconnectedCallback() {
+        this.controller?.abort();
+        clearTimeout(this.settleFallback);
+      }
+
+      updateLayout() {
+        this.items = [...this.list.querySelectorAll('[dv-carousel="item"]')];
+        this.perPage = Number(getComputedStyle(this).getPropertyValue('--per-page')) || 1;
+
+        const enabled = this.items.length > this.perPage;
+
+        this.toggleAttribute('data-enabled', enabled);
+
+        if (!enabled) {
+          this.index = 0;
+          this.targetIndex = 0;
+
+          return;
+        }
+
+        this.setIndex(Math.min(this.index, this.maxIndex));
+      }
+
+      get maxIndex() {
+        return Math.max(0, this.items.length - this.perPage);
+      }
+
+      get isRTL() {
+        return getComputedStyle(this).direction === 'rtl';
+      }
+
+      get stride() {
+        if (!this.items.length) return 0;
+
+        const first = this.items[0].getBoundingClientRect();
+
+        if (this.items.length < 2) return first.width;
+
+        return Math.abs(this.items[1].getBoundingClientRect().left - first.left);
+      }
+
+      goTo(index) {
+        index = Math.min(Math.max(index, 0), this.maxIndex);
+
+        if (!this.items[index]) return;
+
+        this.targetIndex = index;
+        this.setIndex(index);
+
+        this.isAnimating = true;
+        this.list.scrollTo({
+          left: index * this.stride * (this.isRTL ? -1 : 1),
+          behavior: 'smooth',
+        });
+
+        clearTimeout(this.settleFallback);
+        this.settleFallback = setTimeout(() => (this.isAnimating = false), 700);
+      }
+
+      setIndex(index) {
+        this.index = index;
+
+        if (this.arrows.previous) this.arrows.previous.disabled = index <= 0;
+        if (this.arrows.next) this.arrows.next.disabled = index >= this.maxIndex;
+      }
+
+      onScroll() {
+        if (this.isAnimating) return;
+
+        cancelAnimationFrame(this.scrollFrame);
+
+        this.scrollFrame = requestAnimationFrame(() => {
+          const stride = this.stride;
+
+          if (!stride) return;
+
+          const index = Math.min(Math.round(Math.abs(this.list.scrollLeft) / stride), this.maxIndex);
+
+          this.targetIndex = index;
+
+          if (index !== this.index) this.setIndex(index);
+        });
+      }
+    }
+
+    customElements.define('dv-carousel', DejaVuCarousel);
+  }
+</script>

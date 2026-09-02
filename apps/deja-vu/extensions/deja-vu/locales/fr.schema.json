@@ -1,0 +1,66 @@
+{
+  "recently_viewed": {
+    "label": "Produits consultés récemment",
+    "settings": {
+      "spacing": {
+        "label": "Espacement",
+        "spacing_unit": "Unité d'espacement",
+        "vertical": "Espacement vertical",
+        "horizontal": "Espacement horizontal",
+        "heading_bottom_spacing": "Espacement sous le titre",
+        "subheading_top_spacing": "Espacement au-dessus du sous-titre"
+      },
+      "colors": {
+        "label": "Couleurs",
+        "text_color": "Couleur du texte",
+        "background_color": "Couleur de fond"
+      },
+      "layout": {
+        "label": "Mise en page",
+        "heading_alignment": {
+          "label": "Alignement du titre",
+          "start": "Début",
+          "center": "Centre"
+        },
+        "cards_gap": "Espace entre les cartes",
+        "hide_current_product": "Masquer le produit actuel"
+      },
+      "typography": {
+        "label": "Style de police",
+        "title_size": "Taille du titre",
+        "subheading_size": "Taille du sous-titre",
+        "body_size": "Taille du texte",
+        "title_font_family": "Police du titre",
+        "body_font_family": "Police du texte",
+        "inherit_from_theme": "Hériter du thème"
+      },
+      "product_cards": {
+        "label": "Cartes produits",
+        "style": {
+          "label": "Style de carte",
+          "classic": "Classique",
+          "modern": "Moderne",
+          "minimal": "Minimal",
+          "polaroid": "Polaroid"
+        },
+        "border_radius": "Arrondi des coins",
+        "image_ratio": "Format de l'image",
+        "show_product_price": "Afficher le prix du produit",
+        "show_compare_at_price": "Afficher le prix barré",
+        "show_second_image_on_hover": "Afficher la deuxième image au survol"
+      },
+      "carousel": {
+        "label": "Carrousel",
+        "show_pagination": "Afficher la pagination",
+        "pagination_border_radius": "Rayon des bords de la pagination",
+        "per_page": "Éléments par page",
+        "per_page_mobile": "Éléments par page sur mobile"
+      },
+      "content": {
+        "label": "Contenu",
+        "title": "Titre",
+        "subheading": "Sous-titre"
+      }
+    }
+  }
+}
