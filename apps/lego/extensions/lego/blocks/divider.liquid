@@ -1,111 +1,116 @@
-{% if block.settings.label != blank %}
-  <div
-    data-lego="divider"
-    data-has-label="true"
-    {% if block.settings.anchor %}
-      id="{{ block.settings.anchor }}"
-    {% endif %}
-  >
-    <span data-lego="divider-label">{{ block.settings.label }}</span>
-  </div>
-{% else %}
-  <hr
-    data-lego="divider"
-    {% if block.settings.anchor %}
-      id="{{ block.settings.anchor }}"
-    {% endif %}
-  >
-{% endif %}
-
-<style>
-  #youcan-block--{{ block.id }} [data-lego="divider"] {
-    border: none;
-    opacity: {{ block.settings.opacity }};
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-
-    {% if block.settings.orientation == 'horizontal' %}
-      border-top: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color.hex }};
-      {% if block.settings.width == 'custom' %}
-        max-width: 100%;
-        width: {{ block.settings.custom_width | append: 'px' }};
-      {% else %}
-        width: 100%;
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.label != blank %}
+    <div
+      data-lego="divider"
+      data-has-label="true"
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
       {% endif %}
-      {% if block.settings.width == 'custom' %}
-        {% if block.settings.align == 'center' %}margin-inline: auto;{% endif %}
-        {% if block.settings.align == 'right' %}margin-inline-start: auto;{% endif %}
+    >
+      <span data-lego="divider-label">{{ block.settings.label }}</span>
+    </div>
+  {% else %}
+    <hr
+      data-lego="divider"
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
       {% endif %}
-    {% else %}
-      display: inline-block;
-      border-left: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color.hex }};
-      height: {{ block.settings.vertical_length }}px;
-    {% endif %}
-
-    {% if block.settings.fade_edges %}
-      -webkit-mask-image: linear-gradient(
-        {% if block.settings.orientation == 'horizontal' %}to right{% else %}to bottom{% endif %},
-        transparent, black 20%, black 80%, transparent
-      );
-      mask-image: linear-gradient(
-        {% if block.settings.orientation == 'horizontal' %}to right{% else %}to bottom{% endif %},
-        transparent, black 20%, black 80%, transparent
-      );
-    {% endif %}
-
-    &[data-has-label="true"] {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border: none;
-      color: {{ block.settings.label_color.hex }};
-      font-size: {{ block.settings.label_size }}px;
-
-      &::before,
-      &::after {
-        content: "";
-        flex: 1;
-        border-top: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color.hex }};
-      }
-    }
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) {
-        display: none;
-      }
-    {% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="divider"] {
-      {{ block.settings.custom_css }}
-    }
+    >
   {% endif %}
-</style>
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="divider"] {
+      border: none;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+
+      {% if block.settings.orientation == 'horizontal' %}
+        border-top: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color.hex }};
+        {% if block.settings.width == 'custom' %}
+          max-width: 100%;
+          width: {{ block.settings.custom_width | append: 'px' }};
+        {% else %}
+          width: 100%;
+        {% endif %}
+        {% if block.settings.width == 'custom' %}
+          {% if block.settings.align == 'center' %}margin-inline: auto;{% endif %}
+          {% if block.settings.align == 'right' %}margin-inline-start: auto;{% endif %}
+        {% endif %}
+      {% else %}
+        display: inline-block;
+        border-left: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color.hex }};
+        height: {{ block.settings.vertical_length }}px;
+      {% endif %}
+
+      {% if block.settings.fade_edges %}
+        -webkit-mask-image: linear-gradient(
+          {% if block.settings.orientation == 'horizontal' %}to right{% else %}to bottom{% endif %},
+          transparent, black 20%, black 80%, transparent
+        );
+        mask-image: linear-gradient(
+          {% if block.settings.orientation == 'horizontal' %}to right{% else %}to bottom{% endif %},
+          transparent, black 20%, black 80%, transparent
+        );
+      {% endif %}
+
+      &[data-has-label="true"] {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: none;
+        color: {{ block.settings.label_color.hex }};
+        font-size: {{ block.settings.label_size }}px;
+
+        &::before,
+        &::after {
+          content: "";
+          flex: 1;
+          border-top: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color.hex }};
+        }
+      }
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) {
+          display: none;
+        }
+      {% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="divider"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+{% endif %}
 
 {% schema %}
 {
   "label": "Divider",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "label", "label": "Center label (optional)", "placeholder": "OR" },
     {
