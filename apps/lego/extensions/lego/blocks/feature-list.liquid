@@ -1,400 +1,425 @@
-{% assign icons = '' %}
-{% for i in (1..6) %}
-  {% assign icon = 'icon_' | append: i %}
-  {% if block.settings[icon] %}
-    {% assign icons = icons | append: block.settings[icon] | append: ',' %}
-  {% endif %}
-{% endfor %}
-
-{% if icons != blank %}
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,{% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},0&icon_names={{ icons }}"
-  />
-{% endif %}
-
-{% assign icon_box_size = block.settings.icon_padding | times: 2 | plus: block.settings.icon_size %}
-
-<lego-feature-list
-  data-lego="feature-list"
-  data-entrance="{{ block.settings.entrance }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.eyebrow != blank or block.settings.heading != blank %}
-    <div class="section-head">
-      {% if block.settings.eyebrow != blank -%}
-        <span class="eyebrow">{{ block.settings.eyebrow }}</span>
-      {%- endif %}
-      {% if block.settings.heading != blank %}
-        <h2 class="heading">{{ block.settings.heading }}</h2>
-      {% endif %}
-    </div>
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
   {% endif %}
 
-  <ul>
-    {% assign slot = 0 %}
-    {% for i in (1..6) %}
-      {% assign icon = 'icon_' | append: i %}
-      {% assign icon_color = 'icon_color_' | append: i %}
-      {% assign is_custom_img = 'is_custom_img_' | append: i %}
-      {% assign custom_img = 'custom_img_' | append: i %}
-      {% assign title = 'title_' | append: i %}
-      {% assign description = 'description_' | append: i %}
-      {% assign link = 'link_' | append: i %}
-      {% assign new_window = 'new_window_' | append: i %}
-      {% assign has_link = false %}
-      {% if block.settings[link] != blank %}{% assign has_link = true %}{% endif %}
+  {% assign icon_box_size = block.settings.icon_padding | times: 2 | plus: block.settings.icon_size %}
 
-      {% if block.settings[title] != blank %}
-        <li
-          class="feature"
-          data-style="{{ block.settings.card_style }}"
-          data-icon-align="{{ block.settings.icon_alignment }}"
-          {% if block.settings.entrance != 'none' %}
-            data-reveal="true" style="--lego-slot: {{ slot }};"
-          {% endif %}
-        >
-          {% if has_link %}
-            <a
-              class="inner"
-              href="{{ block.settings[link] }}"
-              {% if block.settings[new_window] %}
-                target="_blank"
-              {% endif %}
-            >
-          {% else %}
-            <div class="inner">
-          {% endif %}
-
-          {% if block.settings[icon] != blank or block.settings[is_custom_img] %}
-            <div class="icon-wrap" data-shape="{{ block.settings.icon_shape }}">
-              {% if block.settings[is_custom_img] %}
-                {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
-                <img
-                  src="{{ block.settings[custom_img].src | default: fallback_image_url }}"
-                  alt="{{ block.settings[title] }}"
-                  width="{{ block.settings.icon_size }}"
-                  height="{{ block.settings.icon_size }}"
-                  loading="lazy"
-                >
-              {% else %}
-                <span class="material-symbols-rounded" style="color: {{ block.settings[icon_color].hex }};">{{ block.settings[icon] }}</span>
-              {% endif %}
-            </div>
-          {% endif %}
-
-          <div class="content">
-            <h3 class="title">{{ block.settings[title] }}</h3>
-            {% if block.settings[description] != blank %}
-              <p class="description">{{ block.settings[description] }}</p>
-            {% endif %}
-            {% if has_link and block.settings.show_link_text %}
-              <span class="link-text">
-                {{ block.settings.link_text }}
-                <span class="material-symbols-rounded">arrow_forward</span>
-              </span>
-            {% endif %}
-          </div>
-
-          {% if has_link %}
-            </a>
-          {% else %}
-            </div>
-          {% endif %}
-        </li>
-        {% assign slot = slot | plus: 1 %}
-      {% endif %}
-    {% endfor %}
-  </ul>
-</lego-feature-list>
-
-<style>
-  #youcan-block--{{ block.id }} [data-lego="feature-list"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
-
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+  <lego-feature-list
+    data-lego="feature-list"
+    data-entrance="{{ block.settings.entrance }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.eyebrow != blank or block.settings.heading != blank %}
+      <div class="section-head">
+        {% if block.settings.eyebrow != blank -%}
+          <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+        {%- endif %}
+        {% if block.settings.heading != blank %}
+          <h2 class="heading">{{ block.settings.heading }}</h2>
+        {% endif %}
+      </div>
     {% endif %}
 
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %}
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %}
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %}
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %}
-        box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
+    <ul>
+      {% assign slot = 0 %}
+      {% for i in (1..6) %}
+        {% assign icon = 'icon_' | append: i %}
+        {% assign icon_color = 'icon_color_' | append: i %}
+        {% assign is_custom_img = 'is_custom_img_' | append: i %}
+        {% assign custom_img = 'custom_img_' | append: i %}
+        {% assign title = 'title_' | append: i %}
+        {% assign description = 'description_' | append: i %}
+        {% assign link = 'link_' | append: i %}
+        {% assign new_window = 'new_window_' | append: i %}
+        {% assign has_link = false %}
+        {% if block.settings[link] != blank %}{% assign has_link = true %}{% endif %}
 
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-      margin-inline: auto;
-    {% endif %}
+        {% if block.settings[title] != blank %}
+          <li
+            class="feature"
+            data-style="{{ block.settings.card_style }}"
+            data-icon-align="{{ block.settings.icon_alignment }}"
+            {% if block.settings.entrance != 'none' %}
+              data-reveal="true" style="--lego-slot: {{ slot }};"
+            {% endif %}
+          >
+            {% if has_link %}
+              <a
+                class="inner"
+                href="{{ block.settings[link] }}"
+                {% if block.settings[new_window] %}
+                  target="_blank"
+                {% endif %}
+              >
+            {% else %}
+              <div class="inner">
+            {% endif %}
 
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}
-          background-color: {{ block.settings.bg_color.hex }};
-        {% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-      {% when 'image' %}
-        background-image: url({{ block.settings.bg_img.src }});
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    {% endcase %}
+            {% if block.settings[icon] != blank or block.settings[is_custom_img] %}
+              <div class="icon-wrap" data-shape="{{ block.settings.icon_shape }}">
+                {% if block.settings[is_custom_img] %}
+                  {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
+                  <img
+                    src="{{ block.settings[custom_img].src | default: fallback_image_url }}"
+                    alt="{{ block.settings[title] }}"
+                    width="{{ block.settings.icon_size }}"
+                    height="{{ block.settings.icon_size }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <span class="material-symbols-rounded" style="color: {{ block.settings[icon_color].hex }};">{{ block.settings[icon] }}</span>
+                {% endif %}
+              </div>
+            {% endif %}
 
-    .section-head {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: {{ block.settings.align }};
-      margin-bottom: {{ block.settings.gap | times: 1.5 | round }}px;
+            <div class="content">
+              <h3 class="title">{{ block.settings[title] }}</h3>
+              {% if block.settings[description] != blank %}
+                <p class="description">{{ block.settings[description] }}</p>
+              {% endif %}
+              {% if has_link and block.settings.show_link_text %}
+                <span class="link-text">
+                  {{ block.settings.link_text }}
+                  <span class="material-symbols-rounded">arrow_forward</span>
+                </span>
+              {% endif %}
+            </div>
 
-      .eyebrow {
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: {{ block.settings.eyebrow_color.hex }};
-      }
+            {% if has_link %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </li>
+          {% assign slot = slot | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </lego-feature-list>
 
-      .heading {
-        margin: 0;
-        font-size: {{ block.settings.heading_size }}px;
-        font-weight: 700;
-        color: {{ block.settings.heading_color.hex }};
-      }
-    }
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="feature-list"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
 
-    ul {
-      display: grid;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      gap: {{ block.settings.gap | append: 'px' }};
-      grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
 
-      @media (width <= 992px) {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      @media (width <= 640px) {
-        grid-template-columns: 1fr;
-      }
-    }
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
 
-    .feature {
-      &[data-style="card"] {
-        background-color: {{ block.settings.card_bg_color.hex }};
-        border: {{ block.settings.card_border_weight }}px solid {{ block.settings.card_border_color.hex }};
-        border-radius: {{ block.settings.card_radius }}px;
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %}
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %}
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %}
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %}
+          box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
 
-        .inner { padding: {{ block.settings.card_padding }}px; }
-      }
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
+      {% endif %}
 
-      .inner {
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}
+            background-color: {{ block.settings.bg_color.hex }};
+          {% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
+
+      .section-head {
         display: flex;
-        gap: 14px;
-        height: 100%;
-        color: inherit;
-        text-decoration: none;
-        transition: opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
-      }
-
-      &[data-icon-align="top"] .inner {
         flex-direction: column;
+        gap: 8px;
         text-align: {{ block.settings.align }};
-        align-items: {% if block.settings.align == 'center' %}center{% elsif block.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %};
-      }
+        margin-bottom: {{ block.settings.gap | times: 1.5 | round }}px;
 
-      &[data-icon-align="left"] .inner {
-        flex-direction: row;
-        text-align: left;
-      }
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
 
-      .icon-wrap {
-        flex-shrink: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-
-        &[data-shape="circle"],
-        &[data-shape="square"] {
-          width: {{ icon_box_size }}px;
-          height: {{ icon_box_size }}px;
-          background-color: {{ block.settings.icon_bg_color.hex }};
+        .eyebrow {
+          font-size: 13px;
+          font-weight: 400;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: {{ block.settings.eyebrow_color.hex }};
+          font-family: inherit;
         }
 
-        &[data-shape="circle"] { border-radius: 50%; }
-        &[data-shape="square"] { border-radius: {{ block.settings.icon_radius }}px; }
-
-        .material-symbols-rounded {
-          font-size: {{ block.settings.icon_size }}px;
-          font-variation-settings:
-            "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
-            "wght" 400,
-            "GRAD" 0,
-            "opsz" 20;
-        }
-
-        img {
-          width: {{ block.settings.icon_size }}px;
-          height: {{ block.settings.icon_size }}px;
-          object-fit: cover;
-          border-radius: {% if block.settings.icon_shape == 'circle' %}50%{% else %}{{ block.settings.icon_radius }}px{% endif %};
-        }
-      }
-
-      .content {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-
-        .title {
+        .heading {
           margin: 0;
-          font-size: {{ block.settings.title_size }}px;
-          font-weight: {{ block.settings.title_weight }};
-          color: {{ block.settings.title_color.hex }};
+          font-size: {{ block.settings.heading_size }}px;
+          font-weight: 500;
+          color: {{ block.settings.heading_color.hex }};
+          font-family: inherit;
+        }
+      }
+
+      ul {
+        display: grid;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: {{ block.settings.gap | append: 'px' }};
+        grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
+
+        @media (width <= 992px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        @media (width <= 640px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .feature {
+        &[data-style="card"] {
+          background-color: {{ block.settings.card_bg_color.hex }};
+          border: {{ block.settings.card_border_weight }}px solid {{ block.settings.card_border_color.hex }};
+          border-radius: {{ block.settings.card_radius }}px;
+
+          .inner { padding: {{ block.settings.card_padding }}px; }
         }
 
-        .description {
-          margin: 0;
-          font-size: {{ block.settings.description_size }}px;
-          line-height: 1.6;
-          color: {{ block.settings.description_color.hex }};
+        .inner {
+          display: flex;
+          gap: 14px;
+          height: 100%;
+          color: inherit;
+          text-decoration: none;
+          transition: opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .link-text {
+        &[data-icon-align="top"] .inner {
+          flex-direction: column;
+          text-align: {{ block.settings.align }};
+          align-items: {% if block.settings.align == 'center' %}center{% elsif block.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %};
+        }
+
+        &[data-icon-align="left"] .inner {
+          flex-direction: row;
+          text-align: left;
+        }
+
+        .icon-wrap {
+          flex-shrink: 0;
           display: inline-flex;
           align-items: center;
-          gap: 4px;
-          margin-top: 4px;
-          font-size: 14px;
-          font-weight: 600;
-          color: {{ block.settings.link_color.hex }};
+          justify-content: center;
+
+          &[data-shape="circle"],
+          &[data-shape="square"] {
+            width: {{ icon_box_size }}px;
+            height: {{ icon_box_size }}px;
+            background-color: {{ block.settings.icon_bg_color.hex }};
+          }
+
+          &[data-shape="circle"] { border-radius: 50%; }
+          &[data-shape="square"] { border-radius: {{ block.settings.icon_radius }}px; }
 
           .material-symbols-rounded {
-            font-size: 16px;
-            transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+            font-size: {{ block.settings.icon_size }}px;
+            font-variation-settings:
+              "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
+              "wght" 400,
+              "GRAD" 0,
+              "opsz" 20;
+          }
+
+          img {
+            width: {{ block.settings.icon_size }}px;
+            height: {{ block.settings.icon_size }}px;
+            object-fit: cover;
+            border-radius: {% if block.settings.icon_shape == 'circle' %}50%{% else %}{{ block.settings.icon_radius }}px{% endif %};
+          }
+        }
+
+        .content {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+
+          .title {
+            margin: 0;
+            font-size: {{ block.settings.title_size }}px;
+            font-weight: {{ block.settings.title_weight }};
+            color: {{ block.settings.title_color.hex }};
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+          }
+
+          .description {
+            margin: 0;
+            font-size: {{ block.settings.description_size }}px;
+            line-height: 1.6;
+            color: {{ block.settings.description_color.hex }};
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+          }
+
+          .link-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            font-size: 14px;
+            font-weight: 400;
+            color: {{ block.settings.link_color.hex }};
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+
+            .material-symbols-rounded {
+              font-size: 16px;
+              transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+            }
+          }
+        }
+
+        {% if block.settings.hover_enabled %}
+          @media (hover: hover) and (pointer: fine) {
+            &:hover .inner {
+              opacity: {{ block.settings.hover_opacity }};
+              transform: translateY({{ block.settings.hover_lift | times: -1 }}px);
+            }
+            &:hover .link-text .material-symbols-rounded {
+              transform: translateX(4px);
+            }
+          }
+        {% endif %}
+
+        &[data-reveal="true"] {
+          opacity: 0;
+          {% if block.settings.entrance == 'fade-up' %}transform: translateY(16px);{% endif %}
+          {% if block.settings.entrance == 'zoom' %}transform: scale(0.92);{% endif %}
+          transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+          transition-delay: calc(var(--lego-slot) * 80ms);
+        }
+
+        &[data-revealed="true"] {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .feature[data-reveal="true"] { transform: none; }
+      }
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) {
+          display: none;
+        }
+      {% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="feature-list"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-feature-list')) {
+      class LegoFeatureList extends HTMLElement {
+        connectedCallback() {
+          if (this.getAttribute('data-entrance') === 'none') return;
+
+          const items = this.querySelectorAll('[data-reveal="true"]');
+          if (!items.length) return;
+
+          if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.setAttribute('data-revealed', 'true');
+                    observer.unobserve(entry.target);
+                  }
+                });
+              },
+              { threshold: 0.2 }
+            );
+            items.forEach((item) => observer.observe(item));
+          } else {
+            items.forEach((item) => item.setAttribute('data-revealed', 'true'));
           }
         }
       }
 
-      {% if block.settings.hover_enabled %}
-        @media (hover: hover) and (pointer: fine) {
-          &:hover .inner {
-            opacity: {{ block.settings.hover_opacity }};
-            transform: translateY({{ block.settings.hover_lift | times: -1 }}px);
-          }
-          &:hover .link-text .material-symbols-rounded {
-            transform: translateX(4px);
-          }
-        }
-      {% endif %}
-
-      &[data-reveal="true"] {
-        opacity: 0;
-        {% if block.settings.entrance == 'fade-up' %}transform: translateY(16px);{% endif %}
-        {% if block.settings.entrance == 'zoom' %}transform: scale(0.92);{% endif %}
-        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
-        transition-delay: calc(var(--lego-slot) * 80ms);
-      }
-
-      &[data-revealed="true"] {
-        opacity: 1;
-        transform: none;
-      }
+      customElements.define('lego-feature-list', LegoFeatureList);
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      .feature[data-reveal="true"] { transform: none; }
-    }
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) {
-        display: none;
-      }
-    {% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="feature-list"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
-
-<script defer>
-  if (!customElements.get('lego-feature-list')) {
-    class LegoFeatureList extends HTMLElement {
-      connectedCallback() {
-        if (this.getAttribute('data-entrance') === 'none') return;
-
-        const items = this.querySelectorAll('[data-reveal="true"]');
-        if (!items.length) return;
-
-        if ('IntersectionObserver' in window) {
-          const observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  entry.target.setAttribute('data-revealed', 'true');
-                  observer.unobserve(entry.target);
-                }
-              });
-            },
-            { threshold: 0.2 }
-          );
-          items.forEach((item) => observer.observe(item));
-        } else {
-          items.forEach((item) => item.setAttribute('data-revealed', 'true'));
-        }
-      }
-    }
-
-    customElements.define('lego-feature-list', LegoFeatureList);
-  }
-</script>
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Feature list",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "placeholder": "Why choose us" },
     { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "Everything you need" },
@@ -589,6 +614,26 @@
     { "type": "number", "id": "padding_left", "label": "Padding left", "default": 20 },
 
     { "type": "header", "content": "Typography" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
     { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6B7280" },
     { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#121212" },
@@ -602,7 +647,7 @@
         { "label": "600", "value": "600" },
         { "label": "700", "value": "700" }
       ],
-      "default": "600"
+      "default": "500"
     },
     { "type": "color", "id": "title_color", "label": "Item title color", "default": "#121212" },
     { "type": "range", "id": "description_size", "label": "Description size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 14 },
