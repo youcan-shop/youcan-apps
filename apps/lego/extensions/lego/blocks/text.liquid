@@ -1,3 +1,12 @@
+{% if block.settings.font_family == 'custom' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+  >
+{% endif %}
+
 {% if block.settings.source == 'static' %}
   {% assign text_content = block.settings.text %}
 {% else %}
@@ -51,7 +60,7 @@
     {% endif %}
 
     {% if block.settings.font_family == 'custom' %}
-      font-family: {{ block.settings.custom_font_family }};
+      font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
     {% elsif block.settings.font_family != 'inherit' %}
       font-family: {{ block.settings.font_family }};
     {% endif %}
@@ -287,7 +296,7 @@
       "type": "text",
       "id": "custom_font_family",
       "label": "Custom font family",
-      "placeholder": "'Poppins', sans-serif",
+      "placeholder": "DM+Sans",
       "visible_if": { "setting_id": "font_family", "value": "custom" }
     },
     {
@@ -332,7 +341,7 @@
         { "label": "800", "value": "800" },
         { "label": "900", "value": "900" }
       ],
-      "default": "500"
+      "default": "400"
     },
     { "type": "range", "id": "line_height", "label": "Line height", "min": 0.8, "max": 2.5, "step": 0.1, "default": 1.5 },
     { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": -4, "max": 12, "step": 0.5, "unit": "px", "default": 0 },
