@@ -1,187 +1,192 @@
-{% if block.settings.font_family == 'custom' %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
-  >
-{% endif %}
-
-{% if block.settings.source == 'static' %}
-  {% assign text_content = block.settings.text %}
-{% else %}
-  {% case block.settings.dynamic_source %}
-    {% when 'product-title' %}
-      {% assign text_content = block.settings.product.name | default: 'Product title' %}
-    {% when 'product-description' %}
-      {% assign text_content = block.settings.product.description | strip_html | default: 'Product description' %}
-    {% when 'collection-title' %}
-      {% assign text_content = block.settings.collection.name | default: 'Collection title' %}
-    {% else %}
-      {% assign text_content = store.name %}
-  {% endcase %}
-{% endif %}
-
-<div
-  data-lego="text"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
   {% endif %}
->
-  {% if block.settings.link %}
-    <a href="{{ block.settings.link | default: '#' }}">{{ text_content }}</a>
+
+  {% if block.settings.source == 'static' %}
+    {% assign text_content = block.settings.text %}
   {% else %}
-    {{ text_content }}
+    {% case block.settings.dynamic_source %}
+      {% when 'product-title' %}
+        {% assign text_content = block.settings.product.name | default: 'Product title' %}
+      {% when 'product-description' %}
+        {% assign text_content = block.settings.product.description | strip_html | default: 'Product description' %}
+      {% when 'collection-title' %}
+        {% assign text_content = block.settings.collection.name | default: 'Collection title' %}
+      {% else %}
+        {% assign text_content = store.name %}
+    {% endcase %}
   {% endif %}
-</div>
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="text"] {
-    color: {{ block.settings.color.hex }};
-    text-align: {{ block.settings.align }};
-    text-transform: {{ block.settings.transform }};
-    text-decoration: {{ block.settings.decoration }};
-    font-weight: {{ block.settings.weight }};
-    line-height: {{ block.settings.line_height }};
-    letter-spacing: {{ block.settings.letter_spacing | append: 'px' }};
-    opacity: {{ block.settings.opacity }};
-    transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.scale }});
-
-    a {
-      color: inherit;
-      text-decoration: inherit;
-      font: inherit;
-    }
-
-    {% if block.settings.size == 'custom' %}
-      font-size: {{ block.settings.custom_size | append: 'px' }};
+  <div
+    data-lego="text"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.link %}
+      <a href="{{ block.settings.link | default: '#' }}">{{ text_content }}</a>
     {% else %}
-      font-size: {{ block.settings.size | append: 'px' }};
+      {{ text_content }}
     {% endif %}
+  </div>
 
-    {% if block.settings.font_family == 'custom' %}
-      font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
-    {% elsif block.settings.font_family != 'inherit' %}
-      font-family: {{ block.settings.font_family }};
-    {% endif %}
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
-
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-    {% endif %}
-
-    {% if block.settings.truncate_lines > 0 %}
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: {{ block.settings.truncate_lines }};
-      overflow: hidden;
-    {% endif %}
-
-    {% if block.settings.text_shadow_enabled %}
-      text-shadow: {{ block.settings.text_shadow_offset_x }}px {{ block.settings.text_shadow_offset_y }}px {{ block.settings.text_shadow_blur }}px {{ block.settings.text_shadow_color.hex }};
-    {% endif %}
-
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %}
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %}
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %}
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %}
-        box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
-
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}
-          background-color: {{ block.settings.bg_color.hex }};
-        {% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-      {% when 'image' %}
-        background-image: url({{ block.settings.bg_img.src }});
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    {% endcase %}
-
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-
-    {% if block.settings.entrance != 'none' %}
-      animation: lego-text-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
-    {% endif %}
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) {
-        display: none;
-      }
-    {% endunless %}
-  }
-
-  {% if block.settings.hover_enabled %}
+  <style>
     #youcan-block--{{ block.id }} [data-lego="text"] {
-      transition: color 200ms ease, opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    #youcan-block--{{ block.id }} [data-lego="text"]:hover {
-      {% if block.settings.hover_color != blank %}color: {{ block.settings.hover_color.hex }};{% endif %}
-      opacity: {{ block.settings.hover_opacity }};
-      transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.hover_scale }});
-    }
-  {% endif %}
+      color: {{ block.settings.color.hex }};
+      text-align: {{ block.settings.align }};
+      text-transform: {{ block.settings.transform }};
+      text-decoration: {{ block.settings.decoration }};
+      font-weight: {{ block.settings.weight }};
+      line-height: {{ block.settings.line_height }};
+      letter-spacing: {{ block.settings.letter_spacing | append: 'px' }};
+      opacity: {{ block.settings.opacity }};
+      transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.scale }});
 
-  @keyframes lego-text-fade {
-    from { opacity: 0; }
-  }
-  @keyframes lego-text-fade_up {
-    from { opacity: 0; transform: translateY(12px); }
-  }
-  @keyframes lego-text-zoom {
-    from { opacity: 0; transform: scale(0.92); }
-  }
+      a {
+        color: inherit;
+        text-decoration: inherit;
+        font: inherit;
+      }
 
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="text"] {
-      {{ block.settings.custom_css }}
+      {% if block.settings.size == 'custom' %}
+        font-size: {{ block.settings.custom_size | append: 'px' }};
+      {% else %}
+        font-size: {{ block.settings.size | append: 'px' }};
+      {% endif %}
+
+      {% if block.settings.font_family == 'custom' %}
+        font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+      {% elsif block.settings.font_family != 'inherit' %}
+        font-family: {{ block.settings.font_family }};
+      {% endif %}
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+      {% endif %}
+
+      {% if block.settings.truncate_lines > 0 %}
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: {{ block.settings.truncate_lines }};
+        overflow: hidden;
+      {% endif %}
+
+      {% if block.settings.text_shadow_enabled %}
+        text-shadow: {{ block.settings.text_shadow_offset_x }}px {{ block.settings.text_shadow_offset_y }}px {{ block.settings.text_shadow_blur }}px {{ block.settings.text_shadow_color.hex }};
+      {% endif %}
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %}
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %}
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %}
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %}
+          box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}
+            background-color: {{ block.settings.bg_color.hex }};
+          {% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
+
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+
+      {% if block.settings.entrance != 'none' %}
+        animation: lego-text-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+      {% endif %}
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) {
+          display: none;
+        }
+      {% endunless %}
     }
-  {% endif %}
-</style>
+
+    {% if block.settings.hover_enabled %}
+      #youcan-block--{{ block.id }} [data-lego="text"] {
+        transition: color 200ms ease, opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      #youcan-block--{{ block.id }} [data-lego="text"]:hover {
+        {% if block.settings.hover_color != blank %}color: {{ block.settings.hover_color.hex }};{% endif %}
+        opacity: {{ block.settings.hover_opacity }};
+        transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.hover_scale }});
+      }
+    {% endif %}
+
+    @keyframes lego-text-fade {
+      from { opacity: 0; }
+    }
+    @keyframes lego-text-fade_up {
+      from { opacity: 0; transform: translateY(12px); }
+    }
+    @keyframes lego-text-zoom {
+      from { opacity: 0; transform: scale(0.92); }
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="text"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+{% endif %}
 
 {% schema %}
 {
   "label": "Text",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     {
       "type": "select",
