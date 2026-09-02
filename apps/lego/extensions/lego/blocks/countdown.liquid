@@ -1,175 +1,177 @@
-<script defer>
-  if (!customElements.get('lego-countdown')) {
-    class LegoCountdown extends HTMLElement {
-      static MS = { second: 1000, minute: 60000, hour: 3600000, day: 86400000 };
+{% if block.settings.page.slug == page.slug %}
+  <lego-countdown
+    data-lego="countdown"
+    data-block-id="{{ block.id }}"
+    data-mode="{{ block.settings.mode }}"
+    data-target="{{ block.settings.target_date }}T{{ block.settings.target_time }}{{ block.settings.utc_offset }}"
+    data-evergreen-hours="{{ block.settings.evergreen_hours }}"
+    data-expire-behavior="{{ block.settings.expire_behavior }}"
+    data-redirect-url="{{ block.settings.expire_redirect_url }}"
+    data-urgency-threshold="{{ block.settings.urgency_threshold_minutes }}"
+    data-style="{{ block.settings.style }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    <div data-lego="countdown-timer" data-slot="timer">
+      {% if block.settings.show_days %}
+        <div class="unit" data-unit="days">
+          <span class="value" data-slot="days">00</span>
+          {% if block.settings.show_labels -%}
+            <span class="label">{{ block.settings.label_days }}</span>
+          {%- endif %}
+        </div>
+        <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
+      {% endif %}
+      <div class="unit" data-unit="hours">
+        <span class="value" data-slot="hours">00</span>
+        {% if block.settings.show_labels -%}
+          <span class="label">{{ block.settings.label_hours }}</span>
+        {%- endif %}
+      </div>
+      <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
+      <div class="unit" data-unit="minutes">
+        <span class="value" data-slot="minutes">00</span>
+        {% if block.settings.show_labels -%}
+          <span class="label">{{ block.settings.label_minutes }}</span>
+        {%- endif %}
+      </div>
+      <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
+      <div class="unit" data-unit="seconds">
+        <span class="value" data-slot="seconds">00</span>
+        {% if block.settings.show_labels -%}
+          <span class="label">{{ block.settings.label_seconds }}</span>
+        {%- endif %}
+      </div>
+    </div>
 
-      connectedCallback() {
-        this.mode = this.getAttribute('data-mode');
-        this.expireBehavior = this.getAttribute('data-expire-behavior');
-        this.redirectUrl = this.getAttribute('data-redirect-url');
-        this.urgencyThreshold = Number(this.getAttribute('data-urgency-threshold')) * LegoCountdown.MS.minute;
-        this.isFlip = this.getAttribute('data-style') === 'flip';
-        this.prevValues = {};
+    {% if block.settings.expire_behavior == 'message' %}
+      <div data-lego="countdown-expired" data-slot="expired" hidden>{{ block.settings.expire_message }}</div>
+    {% endif %}
+  </lego-countdown>
 
-        this.timerElement = this.querySelector('[data-slot="timer"]');
-        this.expiredElement = this.querySelector('[data-slot="expired"]');
+  <script defer>
+    if (!customElements.get('lego-countdown')) {
+      class LegoCountdown extends HTMLElement {
+        static MS = { second: 1000, minute: 60000, hour: 3600000, day: 86400000 };
 
-        this.targetTime = this.resolveTarget();
+        connectedCallback() {
+          this.mode = this.getAttribute('data-mode');
+          this.expireBehavior = this.getAttribute('data-expire-behavior');
+          this.redirectUrl = this.getAttribute('data-redirect-url');
+          this.urgencyThreshold = Number(this.getAttribute('data-urgency-threshold')) * LegoCountdown.MS.minute;
+          this.isFlip = this.getAttribute('data-style') === 'flip';
+          this.prevValues = {};
 
-        this.tick();
-        this.interval = setInterval(() => this.tick(), 1000);
-      }
+          this.timerElement = this.querySelector('[data-slot="timer"]');
+          this.expiredElement = this.querySelector('[data-slot="expired"]');
 
-      disconnectedCallback() {
-        if (this.interval) clearInterval(this.interval);
-      }
+          this.targetTime = this.resolveTarget();
 
-      resolveTarget() {
-        if (this.mode === 'evergreen') {
-          const storageKey = 'lego-countdown-' + (this.id || this.getAttribute('data-block-id'));
-          let startedAt = localStorage.getItem(storageKey);
-          if (!startedAt) {
-            startedAt = Date.now();
-            localStorage.setItem(storageKey, startedAt);
+          this.tick();
+          this.interval = setInterval(() => this.tick(), 1000);
+        }
+
+        disconnectedCallback() {
+          if (this.interval) clearInterval(this.interval);
+        }
+
+        resolveTarget() {
+          if (this.mode === 'evergreen') {
+            const storageKey = 'lego-countdown-' + (this.id || this.getAttribute('data-block-id'));
+            let startedAt = localStorage.getItem(storageKey);
+            if (!startedAt) {
+              startedAt = Date.now();
+              localStorage.setItem(storageKey, startedAt);
+            }
+            return Number(startedAt) + Number(this.getAttribute('data-evergreen-hours')) * LegoCountdown.MS.hour;
           }
-          return Number(startedAt) + Number(this.getAttribute('data-evergreen-hours')) * LegoCountdown.MS.hour;
-        }
-        return new Date(this.getAttribute('data-target')).getTime();
-      }
-
-      inEditor() {
-        try {
-          return window.self !== window.top;
-        } catch (e) {
-          return true;
-        }
-      }
-
-      pad(value) {
-        return String(value).padStart(2, '0');
-      }
-
-      setUnit(name, value) {
-        const target = this.querySelector('[data-slot="' + name + '"]');
-        if (!target) return;
-        const padded = this.pad(value);
-        if (this.isFlip && this.prevValues[name] !== undefined && this.prevValues[name] !== padded) {
-          target.classList.remove('flipping');
-          void target.offsetWidth;
-          target.classList.add('flipping');
-        }
-        this.prevValues[name] = padded;
-        target.textContent = padded;
-      }
-
-      tick() {
-        const diff = this.targetTime - Date.now();
-
-        if (diff <= 0) {
-          clearInterval(this.interval);
-          this.onEnd();
-          return;
+          return new Date(this.getAttribute('data-target')).getTime();
         }
 
-        if (this.urgencyThreshold > 0) {
-          this.setAttribute('data-urgency', diff <= this.urgencyThreshold ? 'true' : 'false');
+        inEditor() {
+          try {
+            return window.self !== window.top;
+          } catch (e) {
+            return true;
+          }
         }
 
-        let remaining = diff;
-        const days = Math.floor(remaining / LegoCountdown.MS.day);
-        remaining %= LegoCountdown.MS.day;
-        const hours = Math.floor(remaining / LegoCountdown.MS.hour);
-        remaining %= LegoCountdown.MS.hour;
-        const minutes = Math.floor(remaining / LegoCountdown.MS.minute);
-        remaining %= LegoCountdown.MS.minute;
-        const seconds = Math.floor(remaining / LegoCountdown.MS.second);
+        pad(value) {
+          return String(value).padStart(2, '0');
+        }
 
-        this.setUnit('days', days);
-        this.setUnit('hours', hours);
-        this.setUnit('minutes', minutes);
-        this.setUnit('seconds', seconds);
-      }
+        setUnit(name, value) {
+          const target = this.querySelector('[data-slot="' + name + '"]');
+          if (!target) return;
+          const padded = this.pad(value);
+          if (this.isFlip && this.prevValues[name] !== undefined && this.prevValues[name] !== padded) {
+            target.classList.remove('flipping');
+            void target.offsetWidth;
+            target.classList.add('flipping');
+          }
+          this.prevValues[name] = padded;
+          target.textContent = padded;
+        }
 
-      onEnd() {
-        if (this.expireBehavior === 'hide') {
-          this.hidden = true;
-        } else if (this.expireBehavior === 'redirect' && this.redirectUrl) {
-          if (this.inEditor()) {
+        tick() {
+          const diff = this.targetTime - Date.now();
+
+          if (diff <= 0) {
+            clearInterval(this.interval);
+            this.onEnd();
+            return;
+          }
+
+          if (this.urgencyThreshold > 0) {
+            this.setAttribute('data-urgency', diff <= this.urgencyThreshold ? 'true' : 'false');
+          }
+
+          let remaining = diff;
+          const days = Math.floor(remaining / LegoCountdown.MS.day);
+          remaining %= LegoCountdown.MS.day;
+          const hours = Math.floor(remaining / LegoCountdown.MS.hour);
+          remaining %= LegoCountdown.MS.hour;
+          const minutes = Math.floor(remaining / LegoCountdown.MS.minute);
+          remaining %= LegoCountdown.MS.minute;
+          const seconds = Math.floor(remaining / LegoCountdown.MS.second);
+
+          this.setUnit('days', days);
+          this.setUnit('hours', hours);
+          this.setUnit('minutes', minutes);
+          this.setUnit('seconds', seconds);
+        }
+
+        onEnd() {
+          if (this.expireBehavior === 'hide') {
+            this.hidden = true;
+          } else if (this.expireBehavior === 'redirect' && this.redirectUrl) {
+            if (this.inEditor()) {
+              this.setUnit('days', 0);
+              this.setUnit('hours', 0);
+              this.setUnit('minutes', 0);
+              this.setUnit('seconds', 0);
+            } else {
+              window.location.href = this.redirectUrl;
+            }
+          } else if (this.expireBehavior === 'message' && this.expiredElement) {
+            this.timerElement.hidden = true;
+            this.expiredElement.hidden = false;
+          } else {
             this.setUnit('days', 0);
             this.setUnit('hours', 0);
             this.setUnit('minutes', 0);
             this.setUnit('seconds', 0);
-          } else {
-            window.location.href = this.redirectUrl;
           }
-        } else if (this.expireBehavior === 'message' && this.expiredElement) {
-          this.timerElement.hidden = true;
-          this.expiredElement.hidden = false;
-        } else {
-          this.setUnit('days', 0);
-          this.setUnit('hours', 0);
-          this.setUnit('minutes', 0);
-          this.setUnit('seconds', 0);
+
+          this.dispatchEvent(new CustomEvent('lego:countdown:end', { bubbles: true }));
         }
-
-        this.dispatchEvent(new CustomEvent('lego:countdown:end', { bubbles: true }));
       }
+
+      customElements.define('lego-countdown', LegoCountdown);
     }
-
-    customElements.define('lego-countdown', LegoCountdown);
-  }
-</script>
-
-<lego-countdown
-  data-lego="countdown"
-  data-block-id="{{ block.id }}"
-  data-mode="{{ block.settings.mode }}"
-  data-target="{{ block.settings.target_date }}T{{ block.settings.target_time }}{{ block.settings.utc_offset }}"
-  data-evergreen-hours="{{ block.settings.evergreen_hours }}"
-  data-expire-behavior="{{ block.settings.expire_behavior }}"
-  data-redirect-url="{{ block.settings.expire_redirect_url }}"
-  data-urgency-threshold="{{ block.settings.urgency_threshold_minutes }}"
-  data-style="{{ block.settings.style }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  <div data-lego="countdown-timer" data-slot="timer">
-    {% if block.settings.show_days %}
-      <div class="unit" data-unit="days">
-        <span class="value" data-slot="days">00</span>
-        {% if block.settings.show_labels -%}
-          <span class="label">{{ block.settings.label_days }}</span>
-        {%- endif %}
-      </div>
-      <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
-    {% endif %}
-    <div class="unit" data-unit="hours">
-      <span class="value" data-slot="hours">00</span>
-      {% if block.settings.show_labels -%}
-        <span class="label">{{ block.settings.label_hours }}</span>
-      {%- endif %}
-    </div>
-    <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
-    <div class="unit" data-unit="minutes">
-      <span class="value" data-slot="minutes">00</span>
-      {% if block.settings.show_labels -%}
-        <span class="label">{{ block.settings.label_minutes }}</span>
-      {%- endif %}
-    </div>
-    <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
-    <div class="unit" data-unit="seconds">
-      <span class="value" data-slot="seconds">00</span>
-      {% if block.settings.show_labels -%}
-        <span class="label">{{ block.settings.label_seconds }}</span>
-      {%- endif %}
-    </div>
-  </div>
-
-  {% if block.settings.expire_behavior == 'message' %}
-    <div data-lego="countdown-expired" data-slot="expired" hidden>{{ block.settings.expire_message }}</div>
-  {% endif %}
-</lego-countdown>
+  </script>
+{% endif %}
 
 <style>
   #youcan-block--{{ block.id }} [data-lego="countdown"] {
@@ -374,6 +376,9 @@
   "label": "Countdown",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     {
       "type": "select",
