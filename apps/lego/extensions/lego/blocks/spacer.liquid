@@ -1,74 +1,79 @@
-<div
-  data-lego="spacer"
-  aria-hidden="true"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
-></div>
+{% if block.settings.page.slug == page.slug %}
+  <div
+    data-lego="spacer"
+    aria-hidden="true"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  ></div>
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="spacer"] {
-    display: block;
-    width: 100%;
-    height: {{ block.settings.height | append: 'px' }};
-    opacity: {{ block.settings.opacity }};
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="spacer"] {
+      display: block;
+      width: 100%;
+      height: {{ block.settings.height | append: 'px' }};
+      opacity: {{ block.settings.opacity }};
 
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        background-color: {{ block.settings.bg_color.hex }};
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-    {% endcase %}
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          background-color: {{ block.settings.bg_color.hex }};
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
 
-    {% if block.settings.customize_by_breakpoint %}
-      @media (width >= 1200px) {
-        height: {{ block.settings.height_lg | append: 'px' }};
-      }
-      @media (992px <= width < 1200px) {
-        height: {{ block.settings.height_md | append: 'px' }};
-      }
-      @media (768px <= width < 992px) {
-        height: {{ block.settings.height_sm | append: 'px' }};
-      }
-      @media (width < 768px) {
-        height: {{ block.settings.height_xs | append: 'px' }};
+      {% if block.settings.customize_by_breakpoint %}
+        @media (width >= 1200px) {
+          height: {{ block.settings.height_lg | append: 'px' }};
+        }
+        @media (992px <= width < 1200px) {
+          height: {{ block.settings.height_md | append: 'px' }};
+        }
+        @media (768px <= width < 992px) {
+          height: {{ block.settings.height_sm | append: 'px' }};
+        }
+        @media (width < 768px) {
+          height: {{ block.settings.height_xs | append: 'px' }};
+        }
+      {% endif %}
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) {
+          display: none;
+        }
+      {% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="spacer"] {
+        {{ block.settings.custom_css }}
       }
     {% endif %}
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) {
-        display: none;
-      }
-    {% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="spacer"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
+  </style>
+{% endif %}
 
 {% schema %}
 {
   "label": "Spacer",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Design" },
     { "type": "number", "id": "height", "label": "Height", "default": 40 },
     { "type": "checkbox", "id": "customize_by_breakpoint", "label": "Different height per screen size", "default": false },
