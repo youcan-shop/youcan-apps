@@ -1,189 +1,209 @@
-{% if block.settings.icon %}
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,{% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},0&icon_names={{ block.settings.icon }}"
-  />
-{% endif %}
-
-<a
-  data-lego="button"
-  href="{{ block.settings.url | default: '#' }}"
-  {% unless block.settings.same_window %}
-    target="_blank"
-  {% endunless %}
-  {% if block.settings.disabled %}
-    aria-disabled="true" tabindex="-1"
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
   {% endif %}
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.icon and block.settings.icon_position == 'left' %}
-    <span class="material-symbols-rounded">{{ block.settings.icon }}</span>
-  {% endif %}
-  {{ block.settings.text }}
-  {% if block.settings.icon and block.settings.icon_position == 'right' %}
-    <span class="material-symbols-rounded">{{ block.settings.icon }}</span>
-  {% endif %}
-</a>
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="button"] {
-    display: flex;
-    align-items: center;
-    justify-content: {{ block.settings.align }};
-    text-transform: {{ block.settings.transform }};
-    border-radius: {{ block.settings.border_radius_tl }}px {{ block.settings.border_radius_tr }}px {{ block.settings.border_radius_br }}px {{ block.settings.border_radius_bl }}px;
-    opacity: {{ block.settings.opacity }};
-    width: {{ block.settings.width }};
-    border: {{ block.settings.border_weight }}px solid transparent;
-    color: {{ block.settings.primary_color.hex }};
-    transition: 350ms cubic-bezier(0.27, 1.06, 0.18, 1);
-    outline: 1px solid transparent;
-    font: 400 14px/20px var(--font-family);
-    transform: scale({{ block.settings.scale }});
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-
-    {% case block.settings.style %}
-      {% when 'filled' %}
-        color: {{ block.settings.secondary_color.hex }};
-        {% if block.settings.gradient_enabled %}
-          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.primary_color.hex }}, {{ block.settings.gradient_end.hex }});
-        {% else %}
-          background-color: {{ block.settings.primary_color.hex }};
-        {% endif %}
-      {% when 'stroke' %}
-        background-color: transparent;
-        border-color: currentColor;
-        border-style: {{ block.settings.border_style }};
-      {% when 'lighter' %}
-        background-color: color-mix(in srgb, currentColor 15%, transparent);
-      {% when 'ghost' %}
-        background-color: transparent;
-    {% endcase %}
-
-    {% case block.settings.size %}
-      {% when 'xl' %}
-        gap: 14px;
-        height: 44px;
-        padding-inline: 16px;
-        font: 500 16px/24px var(--font-family);
-      {% when 'lg' %}
-        gap: 12px;
-        height: 40px;
-        padding-inline: 14px;
-      {% when 'md' %}
-        gap: 12px;
-        height: 36px;
-        padding-inline: 12px;
-      {% when 'sm' %}
-        gap: 10px;
-        height: 32px;
-        padding-inline: 10px;
-      {% when 'xs' %}
-        gap: 10px;
-        height: 28px;
-        padding-inline: 8px;
-    {% endcase %}
-
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %}
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %}
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %}
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %}
-        box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
-
-    .material-symbols-rounded {
-      font-size: 20px;
-      margin-inline: -4px;
-      font-variation-settings:
-        "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
-        "wght" 400,
-        "GRAD" 0,
-        "opsz" 20;
-    }
-
+  <a
+    data-lego="button"
+    href="{{ block.settings.url | default: '#' }}"
+    {% unless block.settings.same_window %}
+      target="_blank"
+    {% endunless %}
     {% if block.settings.disabled %}
-      opacity: 0.5;
-      pointer-events: none;
-    {% else %}
-      {% unless block.settings.width == '100%' %}
-        &:active {
-          scale: 0.97;
+      aria-disabled="true" tabindex="-1"
+    {% endif %}
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.icon and block.settings.icon_position == 'left' %}
+      <span class="material-symbols-rounded">{{ block.settings.icon }}</span>
+    {% endif %}
+    {{ block.settings.text }}
+    {% if block.settings.icon and block.settings.icon_position == 'right' %}
+      <span class="material-symbols-rounded">{{ block.settings.icon }}</span>
+    {% endif %}
+  </a>
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="button"] {
+      display: flex;
+      align-items: center;
+      justify-content: {{ block.settings.align }};
+      text-transform: {{ block.settings.transform }};
+      border-radius: {{ block.settings.border_radius_tl }}px {{ block.settings.border_radius_tr }}px {{ block.settings.border_radius_br }}px {{ block.settings.border_radius_bl }}px;
+      opacity: {{ block.settings.opacity }};
+      width: {{ block.settings.width }};
+      border: {{ block.settings.border_weight }}px solid transparent;
+      color: {{ block.settings.primary_color.hex }};
+      transition: 350ms cubic-bezier(0.27, 1.06, 0.18, 1);
+      outline: 1px solid transparent;
+      font: 400 14px/20px var(--lego-button-font-family);
+      transform: scale({{ block.settings.scale }});
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+
+      {% case block.settings.style %}
+        {% when 'filled' %}
+          color: {{ block.settings.secondary_color.hex }};
+          {% if block.settings.gradient_enabled %}
+            background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.primary_color.hex }}, {{ block.settings.gradient_end.hex }});
+          {% else %}
+            background-color: {{ block.settings.primary_color.hex }};
+          {% endif %}
+        {% when 'stroke' %}
+          background-color: transparent;
+          border-color: currentColor;
+          border-style: {{ block.settings.border_style }};
+        {% when 'lighter' %}
+          background-color: color-mix(in srgb, currentColor 15%, transparent);
+        {% when 'ghost' %}
+          background-color: transparent;
+      {% endcase %}
+
+      {% case block.settings.size %}
+        {% when 'xl' %}
+          gap: 14px;
+          height: 44px;
+          padding-inline: 16px;
+          font: 500 16px/24px var(--lego-button-font-family);
+        {% when 'lg' %}
+          gap: 12px;
+          height: 40px;
+          padding-inline: 14px;
+        {% when 'md' %}
+          gap: 12px;
+          height: 36px;
+          padding-inline: 12px;
+        {% when 'sm' %}
+          gap: 10px;
+          height: 32px;
+          padding-inline: 10px;
+        {% when 'xs' %}
+          gap: 10px;
+          height: 28px;
+          padding-inline: 8px;
+      {% endcase %}
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %}
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %}
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %}
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %}
+          box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      .material-symbols-rounded {
+        font-size: 20px;
+        margin-inline: -4px;
+        font-variation-settings:
+          "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 20;
+      }
+
+      {% if block.settings.font_family == 'custom' %}
+        --lego-button-font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+      {% elsif block.settings.font_family != 'inherit' %}
+        --lego-button-font-family: {{ block.settings.font_family }};
+      {% endif %}
+
+      {% if block.settings.disabled %}
+        opacity: 0.5;
+        pointer-events: none;
+      {% else %}
+        {% unless block.settings.width == '100%' %}
+          &:active {
+            scale: 0.97;
+          }
+        {% endunless %}
+
+        @media (hover: hover) and (pointer: fine) {
+          &:hover {
+            opacity: {{ block.settings.hover_opacity }};
+            transform: scale({{ block.settings.hover_scale }});
+          }
+        }
+      {% endif %}
+
+      &:focus-visible {
+        box-shadow: 0 0 transparent,
+          0 0 transparent,
+          0 0 0 2px white,
+          0 0 0 4px {{ block.settings.primary_color.hex }};
+      }
+
+      {% if block.settings.entrance != 'none' %}
+        animation: lego-button-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+      {% endif %}
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) {
+          display: none;
         }
       {% endunless %}
-
-      @media (hover: hover) and (pointer: fine) {
-        &:hover {
-          opacity: {{ block.settings.hover_opacity }};
-          transform: scale({{ block.settings.hover_scale }});
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) {
+          display: none;
         }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) {
+          display: none;
+        }
+      {% endunless %}
+    }
+
+    @keyframes lego-button-fade {
+      from { opacity: 0; }
+    }
+    @keyframes lego-button-fade_up {
+      from { opacity: 0; transform: translateY(12px); }
+    }
+    @keyframes lego-button-zoom {
+      from { opacity: 0; transform: scale(0.92); }
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="button"] {
+        {{ block.settings.custom_css }}
       }
     {% endif %}
 
-    &:focus-visible {
-      box-shadow: 0 0 transparent,
-        0 0 transparent,
-        0 0 0 2px white,
-        0 0 0 4px {{ block.settings.primary_color.hex }};
-    }
-
-    {% if block.settings.entrance != 'none' %}
-      animation: lego-button-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    {% if block.settings.width == 'fit-content' %}
+      #youcan-block--{{ block.id }} {
+        display: flex;
+        justify-content: {{ block.settings.align }};
+      }
     {% endif %}
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) {
-        display: none;
-      }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) {
-        display: none;
-      }
-    {% endunless %}
-  }
-
-  @keyframes lego-button-fade {
-    from { opacity: 0; }
-  }
-  @keyframes lego-button-fade_up {
-    from { opacity: 0; transform: translateY(12px); }
-  }
-  @keyframes lego-button-zoom {
-    from { opacity: 0; transform: scale(0.92); }
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="button"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
+  </style>
+{% endif %}
 
 {% schema %}
 {
   "label": "Button",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "text", "label": "Label", "default": "Button" },
     { "type": "text", "id": "url", "label": "URL", "placeholder": "https://youcan.shop" },
@@ -257,8 +277,7 @@
         { "label": "Center", "value": "center" },
         { "label": "Right", "value": "right" }
       ],
-      "default": "center",
-      "visible_if": { "setting_id": "width", "value": "100%" }
+      "default": "center"
     },
 
     { "type": "header", "content": "Spacing" },
@@ -268,6 +287,26 @@
     { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
 
     { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
     {
       "type": "select",
       "id": "transform",
