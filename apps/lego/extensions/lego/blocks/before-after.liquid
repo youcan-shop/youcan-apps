@@ -1,346 +1,358 @@
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=code,drag_indicator"
-/>
-
-<lego-before-after
-  data-lego="before-after"
-  data-orientation="{{ block.settings.orientation }}"
-  data-interaction="{{ block.settings.interaction }}"
-  data-initial="{{ block.settings.initial_position }}"
-  data-auto-speed="{{ block.settings.auto_speed }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.before_image and block.settings.after_image %}
-    <div class="frame" data-slot="frame" data-orientation="{{ block.settings.orientation }}">
-      <img
-        src="{{ block.settings.after_image.src }}"
-        alt="{{ block.settings.after_label | default : 'After' }}"
-        class="after"
-        width="1600"
-        height="auto"
-      >
-      <div class="before-wrap" data-slot="before-wrap">
+{% if block.settings.page.slug == page.slug %}
+  <lego-before-after
+    data-lego="before-after"
+    data-orientation="{{ block.settings.orientation }}"
+    data-interaction="{{ block.settings.interaction }}"
+    data-initial="{{ block.settings.initial_position }}"
+    data-auto-speed="{{ block.settings.auto_speed }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.before_image and block.settings.after_image %}
+      <div class="frame" data-slot="frame" data-orientation="{{ block.settings.orientation }}">
         <img
-          src="{{ block.settings.before_image.src}}"
-          alt="{{ block.settings.before_label | default: 'Before' }}"
-          class="before"
+          src="{{ block.settings.after_image.src }}"
+          alt="{{ block.settings.after_label | default : 'After' }}"
+          class="after"
           width="1600"
           height="auto"
         >
-      </div>
+        <div class="before-wrap" data-slot="before-wrap">
+          <img
+            src="{{ block.settings.before_image.src}}"
+            alt="{{ block.settings.before_label | default: 'Before' }}"
+            class="before"
+            width="1600"
+            height="auto"
+          >
+        </div>
 
-      {% if block.settings.show_labels %}
-        {% if block.settings.before_label != blank -%}
-          <span class="tag tag-before">{{ block.settings.before_label }}</span>
-        {%- endif %}
-        {% if block.settings.after_label != blank -%}
-          <span class="tag tag-after">{{ block.settings.after_label }}</span>
-        {%- endif %}
+        {% if block.settings.show_labels %}
+          {% if block.settings.before_label -%}
+            <span class="tag tag-before">{{ block.settings.before_label }}</span>
+          {%- endif %}
+          {% if block.settings.after_label -%}
+            <span class="tag tag-after">{{ block.settings.after_label }}</span>
+          {%- endif %}
+        {% endif %}
+
+        <div class="handle" data-slot="handle">
+          <span class="material-symbols-rounded">{{ block.settings.handle_icon }}</span>
+        </div>
+
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="{{ block.settings.initial_position }}"
+          class="range"
+          data-slot="range"
+          aria-label="Comparison slider"
+        >
+      </div>
+      {% if block.settings.caption %}
+        <p class="caption">{{ block.settings.caption }}</p>
+      {% endif %}
+    {% endif %}
+  </lego-before-after>
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="before-after"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
       {% endif %}
 
-      <div class="handle" data-slot="handle">
-        <span class="material-symbols-rounded">{{ block.settings.handle_icon }}</span>
-      </div>
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
 
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value="{{ block.settings.initial_position }}"
-        class="range"
-        data-slot="range"
-        aria-label="Comparison slider"
-      >
-    </div>
-    {% if block.settings.caption != blank %}
-      <p class="caption">{{ block.settings.caption }}</p>
-    {% endif %}
-  {% endif %}
-</lego-before-after>
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="before-after"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
+      .frame {
+        position: relative;
+        overflow: hidden;
+        border-radius: {{ block.settings.media_radius }}px;
+        aspect-ratio: {{ block.settings.aspect_ratio }};
+        cursor: ew-resize;
+        touch-action: pan-y;
+        user-select: none;
 
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
+        &[data-orientation="vertical"] { cursor: ns-resize; touch-action: pan-x; }
 
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
-
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-      margin-inline: auto;
-    {% endif %}
-
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-    {% endcase %}
-
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-
-    .frame {
-      position: relative;
-      overflow: hidden;
-      border-radius: {{ block.settings.media_radius }}px;
-      aspect-ratio: {{ block.settings.aspect_ratio }};
-      cursor: ew-resize;
-      touch-action: pan-y;
-      user-select: none;
-
-      &[data-orientation="vertical"] { cursor: ns-resize; touch-action: pan-x; }
-
-      img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        pointer-events: none;
-      }
-
-      .before-wrap {
-        position: absolute;
-        inset: 0;
-        clip-path: inset(0 50% 0 0);
-      }
-
-      &[data-orientation="vertical"] .before-wrap {
-        clip-path: inset(0 0 50% 0);
-      }
-
-      .tag {
-        position: absolute;
-        top: 12px;
-        padding: 4px 10px;
-        border-radius: 6px;
-        background-color: {{ block.settings.label_bg_color.hex }};
-        color: {{ block.settings.label_text_color.hex }};
-        font-size: 12px;
-        font-weight: 600;
-        z-index: 2;
-      }
-      .tag-before { left: 12px; }
-      .tag-after { right: 12px; }
-
-      .handle {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: {{ block.settings.handle_line_weight }}px;
-        left: {{ block.settings.initial_position }}%;
-        background-color: {{ block.settings.handle_color.hex }};
-        transform: translateX(-50%);
-        pointer-events: none;
-        z-index: 2;
-
-        .material-symbols-rounded {
+        img {
           position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) rotate(90deg);
-          width: {{ block.settings.handle_size }}px;
-          height: {{ block.settings.handle_size }}px;
-          border-radius: 50%;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          pointer-events: none;
+        }
+
+        .before-wrap {
+          position: absolute;
+          inset: 0;
+          clip-path: inset(0 50% 0 0);
+        }
+
+        &[data-orientation="vertical"] .before-wrap {
+          clip-path: inset(0 0 50% 0);
+        }
+
+        .tag {
+          position: absolute;
+          top: 12px;
+          padding: 4px 10px;
+          border-radius: 6px;
+          background-color: {{ block.settings.label_bg_color.hex }};
+          color: {{ block.settings.label_text_color.hex }};
+          font-size: 12px;
+          font-weight: 600;
+          z-index: 2;
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
+        }
+        .tag-before { left: 12px; }
+        .tag-after { right: 12px; }
+
+        .handle {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: {{ block.settings.handle_line_weight }}px;
+          left: {{ block.settings.initial_position }}%;
           background-color: {{ block.settings.handle_color.hex }};
-          color: {{ block.settings.handle_icon_color.hex }};
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: {{ block.settings.handle_size | times: 0.55 | round }}px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          transform: translateX(-50%);
+          pointer-events: none;
+          z-index: 2;
+
+          .material-symbols-rounded {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+            width: {{ block.settings.handle_size }}px;
+            height: {{ block.settings.handle_size }}px;
+            border-radius: 50%;
+            background-color: {{ block.settings.handle_color.hex }};
+            color: {{ block.settings.handle_icon_color.hex }};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: {{ block.settings.handle_size | times: 0.55 | round }}px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        &[data-orientation="vertical"] .handle {
+          top: {{ block.settings.initial_position }}%;
+          left: 0;
+          right: 0;
+          bottom: auto;
+          width: auto;
+          height: {{ block.settings.handle_line_weight }}px;
+          transform: translateY(-50%);
+
+          .material-symbols-rounded { transform: translate(-50%, -50%) rotate(0deg); }
+        }
+
+        .range {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          opacity: 0;
+          cursor: inherit;
+          appearance: none;
+          -webkit-appearance: none;
+
+          &[data-orientation="vertical"] {
+            writing-mode: vertical-lr;
+            direction: rtl;
+          }
         }
       }
 
-      &[data-orientation="vertical"] .handle {
-        top: {{ block.settings.initial_position }}%;
-        left: 0;
-        right: 0;
-        bottom: auto;
-        width: auto;
-        height: {{ block.settings.handle_line_weight }}px;
-        transform: translateY(-50%);
+      .caption {
+        margin: 8px 0 0;
+        font-size: 13px;
+        text-align: center;
+        color: {{ block.settings.caption_color.hex }};
 
-        .material-symbols-rounded { transform: translate(-50%, -50%) rotate(0deg); }
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
       }
 
-      .range {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        opacity: 0;
-        cursor: inherit;
-        appearance: none;
-        -webkit-appearance: none;
+      {% if block.settings.entrance != 'none' %}
+        animation: lego-before-after-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+      {% endif %}
 
-        &[data-orientation="vertical"] {
-          writing-mode: vertical-lr;
-          direction: rtl;
-        }
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) { display: none; }
+      {% endunless %}
+    }
+
+    @keyframes lego-before-after-fade { from { opacity: 0; } }
+    @keyframes lego-before-after-fade_up { from { opacity: 0; transform: translateY(16px); } }
+    @keyframes lego-before-after-zoom { from { opacity: 0; transform: scale(0.94); } }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="before-after"] {
+        {{ block.settings.custom_css }}
       }
-    }
-
-    .caption {
-      margin: 8px 0 0;
-      font-size: 13px;
-      text-align: center;
-      color: {{ block.settings.caption_color.hex }};
-    }
-
-    {% if block.settings.entrance != 'none' %}
-      animation: lego-before-after-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
     {% endif %}
+  </style>
 
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) { display: none; }
-    {% endunless %}
-  }
+  <script defer>
+    if (!customElements.get('lego-before-after')) {
+      class LegoBeforeAfter extends HTMLElement {
+        connectedCallback() {
+          this.orientation = this.getAttribute('data-orientation') || 'horizontal';
+          this.interaction = this.getAttribute('data-interaction') || 'drag';
+          this.autoSpeed = Number(this.getAttribute('data-auto-speed')) || 3;
 
-  @keyframes lego-before-after-fade { from { opacity: 0; } }
-  @keyframes lego-before-after-fade_up { from { opacity: 0; transform: translateY(16px); } }
-  @keyframes lego-before-after-zoom { from { opacity: 0; transform: scale(0.94); } }
+          this.frame = this.querySelector('[data-slot="frame"]');
+          this.beforeWrap = this.querySelector('[data-slot="before-wrap"]');
+          this.handle = this.querySelector('[data-slot="handle"]');
+          this.range = this.querySelector('[data-slot="range"]');
+          if (!this.frame || !this.range) return;
 
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="before-after"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
+          this.setPosition(Number(this.getAttribute('data-initial')) || 50);
 
-<script defer>
-  if (!customElements.get('lego-before-after')) {
-    class LegoBeforeAfter extends HTMLElement {
-      connectedCallback() {
-        this.orientation = this.getAttribute('data-orientation') || 'horizontal';
-        this.interaction = this.getAttribute('data-interaction') || 'drag';
-        this.autoSpeed = Number(this.getAttribute('data-auto-speed')) || 3;
-
-        this.frame = this.querySelector('[data-slot="frame"]');
-        this.beforeWrap = this.querySelector('[data-slot="before-wrap"]');
-        this.handle = this.querySelector('[data-slot="handle"]');
-        this.range = this.querySelector('[data-slot="range"]');
-        if (!this.frame || !this.range) return;
-
-        this.setPosition(Number(this.getAttribute('data-initial')) || 50);
-
-        this.range.addEventListener('input', () => {
-          this.stopAuto();
-          this.setPosition(Number(this.range.value));
-        });
-
-        if (this.interaction === 'hover') {
-          this.frame.addEventListener('mousemove', (e) => this.handlePointer(e));
-          this.frame.addEventListener('mouseleave', () => this.setPosition(50));
-        } else {
-          this.frame.addEventListener('pointerdown', (e) => {
+          this.range.addEventListener('input', () => {
             this.stopAuto();
-            this.dragging = true;
-            this.handlePointer(e);
+            this.setPosition(Number(this.range.value));
           });
-          window.addEventListener('pointermove', (e) => {
-            if (this.dragging) this.handlePointer(e);
-          });
-          window.addEventListener('pointerup', () => {
-            this.dragging = false;
-          });
+
+          if (this.interaction === 'hover') {
+            this.frame.addEventListener('mousemove', (e) => this.handlePointer(e));
+            this.frame.addEventListener('mouseleave', () => this.setPosition(50));
+          } else {
+            this.frame.addEventListener('pointerdown', (e) => {
+              this.stopAuto();
+              this.dragging = true;
+              this.handlePointer(e);
+            });
+            window.addEventListener('pointermove', (e) => {
+              if (this.dragging) this.handlePointer(e);
+            });
+            window.addEventListener('pointerup', () => {
+              this.dragging = false;
+            });
+          }
+
+          if (this.interaction === 'auto') {
+            this.startAuto();
+          }
         }
 
-        if (this.interaction === 'auto') {
-          this.startAuto();
-        }
-      }
-
-      handlePointer(e) {
-        const rect = this.frame.getBoundingClientRect();
-        let percent;
-        if (this.orientation === 'vertical') {
-          percent = ((e.clientY - rect.top) / rect.height) * 100;
-        } else {
-          percent = ((e.clientX - rect.left) / rect.width) * 100;
-        }
-        percent = Math.max(0, Math.min(100, percent));
-        this.setPosition(percent);
-        this.range.value = percent;
-      }
-
-      setPosition(percent) {
-        const inset = this.orientation === 'vertical' ? `0 0 ${100 - percent}% 0` : `0 ${100 - percent}% 0 0`;
-        this.beforeWrap.style.clipPath = `inset(${inset})`;
-        if (this.orientation === 'vertical') {
-          this.handle.style.top = percent + '%';
-        } else {
-          this.handle.style.left = percent + '%';
-        }
-      }
-
-      startAuto() {
-        let direction = 1;
-        let percent = Number(this.getAttribute('data-initial')) || 50;
-        const step = () => {
-          if (!this.autoRunning) return;
-          percent += direction * (this.autoSpeed / 30);
-          if (percent >= 90 || percent <= 10) direction *= -1;
+        handlePointer(e) {
+          const rect = this.frame.getBoundingClientRect();
+          let percent;
+          if (this.orientation === 'vertical') {
+            percent = ((e.clientY - rect.top) / rect.height) * 100;
+          } else {
+            percent = ((e.clientX - rect.left) / rect.width) * 100;
+          }
+          percent = Math.max(0, Math.min(100, percent));
           this.setPosition(percent);
           this.range.value = percent;
+        }
+
+        setPosition(percent) {
+          const inset = this.orientation === 'vertical' ? `0 0 ${100 - percent}% 0` : `0 ${100 - percent}% 0 0`;
+          this.beforeWrap.style.clipPath = `inset(${inset})`;
+          if (this.orientation === 'vertical') {
+            this.handle.style.top = percent + '%';
+          } else {
+            this.handle.style.left = percent + '%';
+          }
+        }
+
+        startAuto() {
+          let direction = 1;
+          let percent = Number(this.getAttribute('data-initial')) || 50;
+          const step = () => {
+            if (!this.autoRunning) return;
+            percent += direction * (this.autoSpeed / 30);
+            if (percent >= 90 || percent <= 10) direction *= -1;
+            this.setPosition(percent);
+            this.range.value = percent;
+            this.autoFrame = requestAnimationFrame(step);
+          };
+          this.autoRunning = true;
           this.autoFrame = requestAnimationFrame(step);
-        };
-        this.autoRunning = true;
-        this.autoFrame = requestAnimationFrame(step);
 
-        this.addEventListener('pointerdown', () => this.stopAuto(), { once: true });
+          this.addEventListener('pointerdown', () => this.stopAuto(), { once: true });
+        }
+
+        stopAuto() {
+          this.autoRunning = false;
+          if (this.autoFrame) cancelAnimationFrame(this.autoFrame);
+        }
       }
 
-      stopAuto() {
-        this.autoRunning = false;
-        if (this.autoFrame) cancelAnimationFrame(this.autoFrame);
-      }
+      customElements.define('lego-before-after', LegoBeforeAfter);
     }
-
-    customElements.define('lego-before-after', LegoBeforeAfter);
-  }
-</script>
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Before / after",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "image_picker", "id": "before_image", "label": "Before image" },
     { "type": "text", "id": "before_label", "label": "Before label", "default": "Before" },
@@ -394,6 +406,26 @@
         { "label": "Portrait (4:5)", "value": "4 / 5" }
       ],
       "default": "1 / 1"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
     },
     { "type": "number", "id": "media_radius", "label": "Media corner radius", "default": 8 },
     { "type": "range", "id": "handle_size", "label": "Handle size", "min": 24, "max": 56, "step": 2, "unit": "px", "default": 32 },
