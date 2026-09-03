@@ -1,4 +1,13 @@
 {% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
   {% assign product = block.settings.product | default: product %}
 
   {% if product %}
@@ -114,12 +123,19 @@
         flex-wrap: wrap;
         gap: {{ block.settings.gap }}px;
         justify-content: {{ block.settings.align }};
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
       }
 
-      .from-label { font-size: 13px; color: {{ block.settings.compare_color.hex }}; }
-      .range-sep { font-size: {{ block.settings.size }}px; color: {{ block.settings.color.hex }}; opacity: 0.5; }
+      .from-label { font-size: 13px; font-family: inherit; color: {{ block.settings.compare_color.hex }}; }
+      .range-sep { font-family: inherit; font-size: {{ block.settings.size }}px; color: {{ block.settings.color.hex }}; opacity: 0.5; }
 
       .current {
+        font-family: inherit;
         font-size: {{ block.settings.size }}px;
         font-weight: {{ block.settings.weight }};
         color: {{ block.settings.color.hex }};
@@ -129,6 +145,7 @@
       }
 
       .compare {
+        font-family: inherit;
         font-size: {{ block.settings.compare_size }}px;
         color: {{ block.settings.compare_color.hex }};
         text-decoration: {{ block.settings.strikethrough_style }};
@@ -140,6 +157,7 @@
         font-size: 12px;
         font-weight: 500;
         padding: 3px 9px;
+        font-family: inherit;
         border-radius: {{ block.settings.badge_radius }}px;
         background-color: {{ block.settings.badge_bg_color.hex }};
         color: {{ block.settings.badge_text_color.hex }};
@@ -147,6 +165,7 @@
 
       .unit-price {
         font-size: 12px;
+        font-family: inherit;
         color: {{ block.settings.unit_price_color.hex }};
       }
 
@@ -156,8 +175,14 @@
         color: {{ block.settings.installments_color.hex }};
         text-align: {{ block.settings.align }};
 
-        strong { font-weight: 700; }
-        .provider { font-weight: 600; opacity: 0.8; }
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        strong { font-weight: 700; font-family: inherit; }
+        .provider { font-weight: 600; opacity: 0.8; font-family: inherit; }
       }
 
       .tax-message {
@@ -165,6 +190,12 @@
         font-size: 12px;
         color: {{ block.settings.tax_message_color.hex }};
         text-align: {{ block.settings.align }};
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
       }
 
       {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
@@ -333,6 +364,26 @@
         { "label": "Right", "value": "flex-end" }
       ],
       "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
     },
     { "type": "range", "id": "gap", "label": "Gap", "min": 0, "max": 20, "step": 2, "unit": "px", "default": 10 },
     { "type": "range", "id": "size", "label": "Price size", "min": 14, "max": 44, "step": 1, "unit": "px", "default": 22 },

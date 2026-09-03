@@ -13,8 +13,6 @@
   {% if product %}
     {% assign default_variant = product.selected_or_first_available_variant %}
 
-    {% dump default_variant %}
-
     <lego-quantity
       data-lego="quantity"
       data-product-id="{{ product.id }}"
