@@ -1,625 +1,634 @@
-{% assign product = block.settings.product | default: product %}
+{% if block.settings.page.slug == page.slug %}
+  {% assign product = block.settings.product | default: product %}
 
-{% if product and product.options.size > 0 %}
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=check,close,upload"
-  />
+  {% if product and product.options.size > 0 %}
+    {% assign default_variant = product.selected_or_first_available_variant %}
 
-  {% assign default_variant = product.selected_or_first_available_variant %}
+    <lego-variant-picker
+      data-lego="variant-picker"
+      data-product-id="{{ product.id }}"
+      {% if block.settings.disable_unavailable_combinations %}
+        data-disable-unavailable="true"
+      {% endif %}
+      data-low-stock-threshold="{{ block.settings.low_stock_threshold }}"
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
+      {% endif %}
+    >
+      {% for option in product.options %}
+        {% assign default_value = '' %}
+        {% for variation in product.selected_or_first_available_variant.variations %}
+          {% if variation[0] == option.name %}{% assign default_value = variation[1] %}{% endif %}
+        {% endfor %}
 
-  <lego-variant-picker
-    data-lego="variant-picker"
-    data-product-id="{{ product.id }}"
-    data-disable-unavailable="{{ block.settings.disable_unavailable_combinations }}"
-    data-low-stock-threshold="{{ block.settings.low_stock_threshold }}"
-    {% if block.settings.anchor %}
-      id="{{ block.settings.anchor }}"
-    {% endif %}
-  >
-    {% for option in product.options %}
-      {% assign default_value = '' %}
-      {% for variation in product.selected_or_first_available_variant.variations %}
-        {% if variation[0] == option.name %}{% assign default_value = variation[1] %}{% endif %}
+        <div class="option-group" data-option-name="{{ option.name | escape }}">
+          <div class="option-header">
+            <span class="option-label">{{ option.name }}</span>
+            {% if option.type == 'color_base_buttons' or option.type == 'textual_buttons' or option.type == 'image_based_buttons' %}
+              <span class="option-value-display" data-slot="selected-value-{{ forloop.index0 }}">{{ default_value }}</span>
+            {% endif %}
+          </div>
+
+          {% case option.type %}
+            {% when 'color_base_buttons' %}
+              <div class="swatches">
+                {% for value in option.values %}
+                  {% assign is_selected = false %}
+                  {% if value.value == default_value %}{% assign is_selected = true %}{% endif %}
+                  <label class="swatch" title="{{ value.value }}">
+                    <input
+                      type="radio"
+                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      value="{{ value.value | escape }}"
+                      data-option-name="{{ option.name | escape }}"
+                      {% if is_selected %}
+                        checked
+                      {% endif %}
+                    >
+                    <span class="swatch-fill" style="background-color: {{ value.preview }};"></span>
+                    <span class="swatch-check material-symbols-rounded">check</span>
+                  </label>
+                {% endfor %}
+              </div>
+
+            {% when 'textual_buttons' %}
+              <div class="pills">
+                {% for value in option.values %}
+                  {% assign is_selected = false %}
+                  {% if value == default_value %}{% assign is_selected = true %}{% endif %}
+                  <label class="pill">
+                    <input
+                      type="radio"
+                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      value="{{ value | escape }}"
+                      data-option-name="{{ option.name | escape }}"
+                      {% if is_selected %}
+                        checked
+                      {% endif %}
+                    >
+                    <span>{{ value }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+
+            {% when 'radio_buttons' %}
+              <div class="radios">
+                {% for value in option.values %}
+                  {% assign is_selected = false %}
+                  {% if value == default_value %}{% assign is_selected = true %}{% endif %}
+                  <label class="radio-row">
+                    <input
+                      type="radio"
+                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      value="{{ value | escape }}"
+                      data-option-name="{{ option.name | escape }}"
+                      {% if is_selected %}
+                        checked
+                      {% endif %}
+                    >
+                    <span class="radio-dot"></span>
+                    <span>{{ value }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+
+            {% when 'image_based_buttons' %}
+              <div class="image-swatches">
+                {% for value in option.values %}
+                  {% assign is_selected = false %}
+                  {% if value.value == default_value %}{% assign is_selected = true %}{% endif %}
+                  <label class="image-swatch">
+                    <input
+                      type="radio"
+                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      value="{{ value.value | escape }}"
+                      data-option-name="{{ option.name | escape }}"
+                      {% if is_selected %}
+                        checked
+                      {% endif %}
+                    >
+                    <span class="image-frame">
+                      {% if value.preview %}
+                        <img src="{{ value.preview }}" alt="{{ value.value }}" width="56" height="56" loading="lazy">
+                      {% endif %}
+                      <span class="image-check material-symbols-rounded">check</span>
+                    </span>
+                    <span class="image-label">{{ value.value }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+
+            {% when 'dropdown' %}
+              <select class="dropdown" data-option-name="{{ option.name | escape }}">
+                {% for value in option.values %}
+                  {% assign is_selected = false %}
+                  {% if value == default_value %}{% assign is_selected = true %}{% endif %}
+                  <option
+                    value="{{ value | escape }}"
+                    {% if is_selected %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ value }}
+                  </option>
+                {% endfor %}
+              </select>
+
+            {% when 'upload_image_zone' %}
+              <label class="upload-zone" data-option-name="{{ option.name | escape }}">
+                <input type="file" accept="image/png, image/gif, image/jpg, image/jpeg, image/webp" data-slot="upload-input" hidden>
+                <span class="material-symbols-rounded">upload</span>
+                <span class="upload-label">{{ block.settings.upload_label }}</span>
+                <span class="upload-hint">{{ block.settings.upload_hint }}</span>
+              </label>
+              <div class="upload-preview" data-slot="upload-preview" hidden>
+                <img src="" alt="" data-slot="upload-preview-image" width="48" height="48">
+                <button type="button" class="upload-remove" data-slot="upload-remove" aria-label="Remove">
+                  <span class="material-symbols-rounded">close</span>
+                </button>
+              </div>
+
+            {% else %}
+              <select class="dropdown" data-option-name="{{ option.name | escape }}">
+                {% for value in option.values %}
+                  {% assign is_selected = false %}
+                  {% if value == default_value %}{% assign is_selected = true %}{% endif %}
+                  <option
+                    value="{{ value | escape }}"
+                    {% if is_selected %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ value }}
+                  </option>
+                {% endfor %}
+              </select>
+          {% endcase %}
+        </div>
       {% endfor %}
 
-      <div class="option-group" data-option-name="{{ option.name | escape }}">
-        <div class="option-header">
-          <span class="option-label">{{ option.name }}</span>
-          {% if option.type == 'color_base_buttons' or option.type == 'textual_buttons' or option.type == 'image_based_buttons' %}
-            <span class="option-value-display" data-slot="selected-value-{{ forloop.index0 }}">{{ default_value }}</span>
-          {% endif %}
-        </div>
+      {% if block.settings.show_low_stock_warning %}
+        <p class="stock-warning" data-slot="stock-warning" hidden></p>
+      {% endif %}
+      {% if block.settings.show_unavailable_message %}
+        <p class="unavailable-message" data-slot="unavailable-message" hidden>{{ block.settings.unavailable_message }}</p>
+      {% endif %}
 
-        {% case option.type %}
-          {% when 'color_base_buttons' %}
-            <div class="swatches">
-              {% for value in option.values %}
-                {% assign is_selected = false %}
-                {% if value.value == default_value %}{% assign is_selected = true %}{% endif %}
-                <label class="swatch" title="{{ value.value }}">
-                  <input
-                    type="radio"
-                    name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
-                    value="{{ value.value | escape }}"
-                    data-option-name="{{ option.name | escape }}"
-                    {% if is_selected %}
-                      checked
-                    {% endif %}
-                  >
-                  <span class="swatch-fill" style="background-color: {{ value.preview }};"></span>
-                  <span class="swatch-check material-symbols-rounded">check</span>
-                </label>
-              {% endfor %}
-            </div>
+      <script type="application/json" data-slot="variants">
+        [
+          {% for variant in product.variants %}
+            {
+              "id": "{{ variant.id }}",
+              "available": {% if variant.available %}true{% else %}false{% endif %},
+              "inventory": {{ variant.inventory }},
+              "price": {{ variant.price }},
+              "comparePrice": {% if variant.compare_at_price %}{{ variant.compare_at_price }}{% else %}null{% endif %},
+              "image": {% if variant.image %}"{{ variant.image }}"{% else %}null{% endif %},
+              "variations": {{ variant.variations | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ]
+      </script>
+    </lego-variant-picker>
+  {% endif %}
 
-          {% when 'textual_buttons' %}
-            <div class="pills">
-              {% for value in option.values %}
-                {% assign is_selected = false %}
-                {% if value == default_value %}{% assign is_selected = true %}{% endif %}
-                <label class="pill">
-                  <input
-                    type="radio"
-                    name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
-                    value="{{ value | escape }}"
-                    data-option-name="{{ option.name | escape }}"
-                    {% if is_selected %}
-                      checked
-                    {% endif %}
-                  >
-                  <span>{{ value }}</span>
-                </label>
-              {% endfor %}
-            </div>
-
-          {% when 'radio_buttons' %}
-            <div class="radios">
-              {% for value in option.values %}
-                {% assign is_selected = false %}
-                {% if value == default_value %}{% assign is_selected = true %}{% endif %}
-                <label class="radio-row">
-                  <input
-                    type="radio"
-                    name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
-                    value="{{ value | escape }}"
-                    data-option-name="{{ option.name | escape }}"
-                    {% if is_selected %}
-                      checked
-                    {% endif %}
-                  >
-                  <span class="radio-dot"></span>
-                  <span>{{ value }}</span>
-                </label>
-              {% endfor %}
-            </div>
-
-          {% when 'image_based_buttons' %}
-            <div class="image-swatches">
-              {% for value in option.values %}
-                {% assign is_selected = false %}
-                {% if value.value == default_value %}{% assign is_selected = true %}{% endif %}
-                <label class="image-swatch">
-                  <input
-                    type="radio"
-                    name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
-                    value="{{ value.value | escape }}"
-                    data-option-name="{{ option.name | escape }}"
-                    {% if is_selected %}
-                      checked
-                    {% endif %}
-                  >
-                  <span class="image-frame">
-                    {% if value.preview %}
-                      <img src="{{ value.preview }}" alt="{{ value.value }}" width="56" height="56" loading="lazy">
-                    {% endif %}
-                    <span class="image-check material-symbols-rounded">check</span>
-                  </span>
-                  <span class="image-label">{{ value.value }}</span>
-                </label>
-              {% endfor %}
-            </div>
-
-          {% when 'dropdown' %}
-            <select class="dropdown" data-option-name="{{ option.name | escape }}">
-              {% for value in option.values %}
-                {% assign is_selected = false %}
-                {% if value == default_value %}{% assign is_selected = true %}{% endif %}
-                <option
-                  value="{{ value | escape }}"
-                  {% if is_selected %}
-                    selected
-                  {% endif %}
-                >
-                  {{ value }}
-                </option>
-              {% endfor %}
-            </select>
-
-          {% when 'upload_image_zone' %}
-            <label class="upload-zone" data-option-name="{{ option.name | escape }}">
-              <input type="file" accept="image/png, image/gif, image/jpg, image/jpeg, image/webp" data-slot="upload-input" hidden>
-              <span class="material-symbols-rounded">upload</span>
-              <span class="upload-label">{{ block.settings.upload_label }}</span>
-              <span class="upload-hint">{{ block.settings.upload_hint }}</span>
-            </label>
-            <div class="upload-preview" data-slot="upload-preview" hidden>
-              <img src="" alt="" data-slot="upload-preview-image" width="48" height="48">
-              <button type="button" class="upload-remove" data-slot="upload-remove" aria-label="Remove">
-                <span class="material-symbols-rounded">close</span>
-              </button>
-            </div>
-
-          {% else %}
-            <select class="dropdown" data-option-name="{{ option.name | escape }}">
-              {% for value in option.values %}
-                {% assign is_selected = false %}
-                {% if value == default_value %}{% assign is_selected = true %}{% endif %}
-                <option
-                  value="{{ value | escape }}"
-                  {% if is_selected %}
-                    selected
-                  {% endif %}
-                >
-                  {{ value }}
-                </option>
-              {% endfor %}
-            </select>
-        {% endcase %}
-      </div>
-    {% endfor %}
-
-    {% if block.settings.show_low_stock_warning %}
-      <p class="stock-warning" data-slot="stock-warning" hidden></p>
-    {% endif %}
-    {% if block.settings.show_unavailable_message %}
-      <p class="unavailable-message" data-slot="unavailable-message" hidden>{{ block.settings.unavailable_message }}</p>
-    {% endif %}
-
-    <script type="application/json" data-slot="variants">
-      [
-        {% for variant in product.variants %}
-          {
-            "id": "{{ variant.id }}",
-            "available": {% if variant.available %}true{% else %}false{% endif %},
-            "inventory": {{ variant.inventory }},
-            "price": {{ variant.price }},
-            "comparePrice": {% if variant.compare_at_price %}{{ variant.compare_at_price }}{% else %}null{% endif %},
-            "image": {% if variant.image %}"{{ variant.image }}"{% else %}null{% endif %},
-            "variations": {{ variant.variations | json }}
-          }{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      ]
-    </script>
-  </lego-variant-picker>
-{% endif %}
-
-<style>
-  #youcan-block--{{ block.id }} [data-lego="variant-picker"] {
-    display: flex;
-    flex-direction: column;
-    gap: {{ block.settings.group_gap }}px;
-    opacity: {{ block.settings.opacity }};
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
-
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
-
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-    {% endcase %}
-
-    .option-header {
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="variant-picker"] {
       display: flex;
-      align-items: baseline;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .option-label { font-size: 13px; font-weight: 600; color: {{ block.settings.label_color.hex }}; }
-    .option-value-display { font-size: 13px; color: {{ block.settings.value_display_color.hex }}; }
+      flex-direction: column;
+      gap: {{ block.settings.group_gap }}px;
+      opacity: {{ block.settings.opacity }};
 
-    input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
 
-    .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
 
-    .swatch {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: {{ block.settings.swatch_size }}px;
-      height: {{ block.settings.swatch_size }}px;
-      border-radius: {% if block.settings.swatch_shape == 'circle' %}50%{% else %}{{ block.settings.swatch_radius }}px{% endif %};
-      cursor: pointer;
-      box-shadow: 0 0 0 1px {{ block.settings.swatch_border_color.hex }};
-      transition: box-shadow 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
 
-      .swatch-fill { position: absolute; inset: 2px; border-radius: inherit; }
-      .swatch-check { position: relative; z-index: 1; font-size: {{ block.settings.swatch_size | divided_by: 2 }}px; color: #FFFFFF; mix-blend-mode: difference; opacity: 0; }
-
-      &:has(input:checked) {
-        box-shadow: 0 0 0 2px {{ block.settings.active_color.hex }};
-        .swatch-check { opacity: 1; }
+      .option-header {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        margin-bottom: 8px;
       }
+      .option-label { font-size: 13px; font-weight: 500; color: {{ block.settings.label_color.hex }}; }
+      .option-value-display { font-size: 13px; color: {{ block.settings.value_display_color.hex }}; }
 
-      &:active { transform: scale(0.92); }
+      input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
 
-      &[data-unavailable= "1"] {
-        cursor: not-allowed;
-        opacity: 0.35;
-        .swatch-fill::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top right, transparent calc(50% - 1px), {{ block.settings.unavailable_line_color.hex }}, transparent calc(50% + 1px));
-        }
-      }
-    }
+      .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
 
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-
-      .pill {
+      .swatch {
+        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 8px 16px;
-        border-radius: {{ block.settings.pill_radius }}px;
-        border: 1px solid {{ block.settings.swatch_border_color.hex }};
-        font-size: 13px;
-        color: {{ block.settings.value_display_color.hex }};
+        width: {{ block.settings.swatch_size }}px;
+        height: {{ block.settings.swatch_size }}px;
+        border-radius: {% if block.settings.swatch_shape == 'circle' %}50%{% else %}{{ block.settings.swatch_radius }}px{% endif %};
         cursor: pointer;
-        transition: border-color 160ms ease, background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 0 0 0 1px {{ block.settings.swatch_border_color.hex }};
+        transition: box-shadow 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 
-        &:has(input:checked) { border-color: {{ block.settings.active_color.hex }}; background-color: {{ block.settings.active_color.hex }}; color: {{ block.settings.active_text_color.hex }}; }
-        &:active { transform: scale(0.96); }
+        .swatch-fill { position: absolute; inset: 2px; border-radius: inherit; }
+        .swatch-check { position: relative; z-index: 1; font-size: {{ block.settings.swatch_size | divided_by: 2 }}px; color: #FFFFFF; mix-blend-mode: difference; opacity: 0; }
+
+        &:has(input:checked) {
+          box-shadow: 0 0 0 2px {{ block.settings.active_color.hex }};
+          .swatch-check { opacity: 1; }
+        }
+
+        &:active { transform: scale(0.92); }
 
         &[data-unavailable= "1"] {
           cursor: not-allowed;
-          color: {{ block.settings.unavailable_line_color.hex }};
-          text-decoration: line-through;
-          opacity: 0.5;
+          opacity: 0.35;
+          .swatch-fill::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top right, transparent calc(50% - 1px), {{ block.settings.unavailable_line_color.hex }}, transparent calc(50% + 1px));
+          }
         }
       }
-    }
 
-    .radios {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-
-      .radio-row {
+      .pills {
         display: flex;
-        align-items: center;
+        flex-wrap: wrap;
         gap: 8px;
+
+        .pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8px 16px;
+          border-radius: {{ block.settings.pill_radius }}px;
+          border: 1px solid {{ block.settings.swatch_border_color.hex }};
+          font-size: 13px;
+          color: {{ block.settings.value_display_color.hex }};
+          cursor: pointer;
+          transition: border-color 160ms ease, background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+          &:has(input:checked) { border-color: {{ block.settings.active_color.hex }}; background-color: {{ block.settings.active_color.hex }}; color: {{ block.settings.active_text_color.hex }}; }
+          &:active { transform: scale(0.96); }
+
+          &[data-unavailable= "1"] {
+            cursor: not-allowed;
+            color: {{ block.settings.unavailable_line_color.hex }};
+            text-decoration: line-through;
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .radios {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .radio-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+          color: {{ block.settings.value_display_color.hex }};
+          cursor: pointer;
+
+          .radio-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid {{ block.settings.swatch_border_color.hex }};
+            position: relative;
+            flex-shrink: 0;
+          }
+
+          &:has(input:checked) .radio-dot { border-color: {{ block.settings.active_color.hex }}; }
+          &:has(input:checked) .radio-dot::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background-color: {{ block.settings.active_color.hex }};
+          }
+
+          &[data-unavailable= "1"] { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+        }
+      }
+
+      .dropdown {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: {{ block.settings.pill_radius }}px;
+        border: 1px solid {{ block.settings.swatch_border_color.hex }};
+        font: inherit;
         font-size: 14px;
         color: {{ block.settings.value_display_color.hex }};
-        cursor: pointer;
-
-        .radio-dot {
-          width: 18px;
-          height: 18px;
-          border-radius: 50%;
-          border: 1px solid {{ block.settings.swatch_border_color.hex }};
-          position: relative;
-          flex-shrink: 0;
-        }
-
-        &:has(input:checked) .radio-dot { border-color: {{ block.settings.active_color.hex }}; }
-        &:has(input:checked) .radio-dot::after {
-          content: "";
-          position: absolute;
-          inset: 3px;
-          border-radius: 50%;
-          background-color: {{ block.settings.active_color.hex }};
-        }
-
-        &[data-unavailable= "1"] { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
       }
-    }
 
-    .dropdown {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: {{ block.settings.pill_radius }}px;
-      border: 1px solid {{ block.settings.swatch_border_color.hex }};
-      font: inherit;
-      font-size: 14px;
-      color: {{ block.settings.value_display_color.hex }};
-    }
+      .image-swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
 
-    .image-swatches {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+        .image-swatch {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
 
-      .image-swatch {
+          .image-frame {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            border-radius: {{ block.settings.swatch_radius }}px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px {{ block.settings.swatch_border_color.hex }};
+
+            img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+            .image-check {
+              position: absolute;
+              inset: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: rgba(0, 0, 0, 0.35);
+              color: #FFFFFF;
+              opacity: 0;
+            }
+          }
+
+          .image-label { font-size: 11px; color: {{ block.settings.value_display_color.hex }}; }
+
+          &:has(input:checked) .image-frame { box-shadow: 0 0 0 2px {{ block.settings.active_color.hex }}; }
+          &:has(input:checked) .image-check { opacity: 1; }
+
+          &[data-unavailable= "1"] { opacity: 0.35; cursor: not-allowed; }
+        }
+      }
+
+      .upload-zone {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
+        padding: 20px;
+        border-radius: {{ block.settings.pill_radius }}px;
+        border: 1px dashed {{ block.settings.swatch_border_color.hex }};
         cursor: pointer;
+        text-align: center;
+        transition: border-color 160ms ease, background-color 160ms ease;
 
-        .image-frame {
-          position: relative;
-          width: 56px;
-          height: 56px;
-          border-radius: {{ block.settings.swatch_radius }}px;
-          overflow: hidden;
-          box-shadow: 0 0 0 1px {{ block.settings.swatch_border_color.hex }};
+        .material-symbols-rounded { font-size: 22px; color: {{ block.settings.active_color.hex }}; }
+        .upload-label { font-size: 13px; font-weight: 500; color: {{ block.settings.value_display_color.hex }}; }
+        .upload-hint { font-size: 11px; color: {{ block.settings.label_color.hex }}; opacity: 0.7; }
 
-          img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-          .image-check {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.35);
-            color: #FFFFFF;
-            opacity: 0;
-          }
-        }
-
-        .image-label { font-size: 11px; color: {{ block.settings.value_display_color.hex }}; }
-
-        &:has(input:checked) .image-frame { box-shadow: 0 0 0 2px {{ block.settings.active_color.hex }}; }
-        &:has(input:checked) .image-check { opacity: 1; }
-
-        &[data-unavailable= "1"] { opacity: 0.35; cursor: not-allowed; }
+        &[data-dragover= "1"] { border-color: {{ block.settings.active_color.hex }}; background-color: color-mix(in srgb, {{ block.settings.active_color.hex }} 6%, transparent); }
       }
-    }
 
-    .upload-zone {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      padding: 20px;
-      border-radius: {{ block.settings.pill_radius }}px;
-      border: 1px dashed {{ block.settings.swatch_border_color.hex }};
-      cursor: pointer;
-      text-align: center;
-      transition: border-color 160ms ease, background-color 160ms ease;
-
-      .material-symbols-rounded { font-size: 22px; color: {{ block.settings.active_color.hex }}; }
-      .upload-label { font-size: 13px; font-weight: 600; color: {{ block.settings.value_display_color.hex }}; }
-      .upload-hint { font-size: 11px; color: {{ block.settings.label_color.hex }}; opacity: 0.7; }
-
-      &[data-dragover= "1"] { border-color: {{ block.settings.active_color.hex }}; background-color: color-mix(in srgb, {{ block.settings.active_color.hex }} 6%, transparent); }
-    }
-
-    .upload-preview {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-
-      img { width: 48px; height: 48px; object-fit: cover; border-radius: {{ block.settings.swatch_radius }}px; }
-
-      .upload-remove {
-        width: 28px;
-        height: 28px;
-        display: inline-flex;
+      .upload-preview {
+        display: flex;
         align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        border: 0;
-        background: {{ block.settings.bg_color.hex | default: '#F5F5F5' }};
-        cursor: pointer;
-      }
-    }
+        gap: 10px;
+        margin-top: 8px;
 
-    .stock-warning {
-      margin: 0;
-      font-size: 12px;
-      font-weight: 600;
-      color: {{ block.settings.low_stock_color.hex }};
-    }
+        img { width: 48px; height: 48px; object-fit: cover; border-radius: {{ block.settings.swatch_radius }}px; }
 
-    .unavailable-message {
-      margin: 0;
-      font-size: 12px;
-      color: {{ block.settings.unavailable_message_color.hex }};
-    }
+        .upload-remove {
+          width: 28px;
+          height: 28px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          border: 0;
+          padding: 0;
+          background: {{ block.settings.bg_color.hex | default: '#F5F5F5' }};
+          cursor: pointer;
 
-    {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
-    {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
-    {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
-    {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="variant-picker"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
-
-<script defer>
-  if (!customElements.get('lego-variant-picker')) {
-    class LegoVariantPicker extends HTMLElement {
-      connectedCallback() {
-        this.productId = this.getAttribute('data-product-id');
-        this.disableUnavailable = this.getAttribute('data-disable-unavailable') === '1';
-
-        const variantsEl = this.querySelector('[data-slot="variants"]');
-        this.variants = variantsEl ? JSON.parse(variantsEl.textContent) : [];
-
-        this.inputs = Array.from(this.querySelectorAll('input[type="radio"], select.dropdown'));
-        this.optionGroups = Array.from(this.querySelectorAll('.option-group'));
-
-        this.inputs.forEach((input) => {
-          const evt = input.tagName === 'SELECT' ? 'change' : 'change';
-          input.addEventListener(evt, () => {
-            this.updateValueDisplays();
-            this.resolveVariant();
-          });
-        });
-
-        this.updateAvailability();
-        this.resolveVariant();
-        this.bindUploadZones();
-      }
-
-      bindUploadZones() {
-        this.querySelectorAll('.upload-zone').forEach((zone) => {
-          const input = zone.querySelector('[data-slot="upload-input"]');
-          const preview = zone.parentElement.querySelector('[data-slot="upload-preview"]');
-          const previewImg = zone.parentElement.querySelector('[data-slot="upload-preview-image"]');
-          const removeBtn = zone.parentElement.querySelector('[data-slot="upload-remove"]');
-          if (!input) return;
-
-          const showFile = (file) => {
-            if (!file) return;
-            const url = URL.createObjectURL(file);
-            if (previewImg) previewImg.src = url;
-            if (preview) preview.hidden = false;
-            zone.hidden = true;
-          };
-
-          input.addEventListener('change', () => showFile(input.files[0]));
-
-          zone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            zone.dataset.dragover = 'true';
-          });
-          zone.addEventListener('dragleave', () => {
-            zone.dataset.dragover = 'false';
-          });
-          zone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            zone.dataset.dragover = 'false';
-            const file = e.dataTransfer.files[0];
-            if (file) {
-              input.files = e.dataTransfer.files;
-              showFile(file);
-            }
-          });
-
-          if (removeBtn) {
-            removeBtn.addEventListener('click', () => {
-              input.value = '';
-              if (preview) preview.hidden = true;
-              zone.hidden = false;
-            });
+          span {
+            font-size: 16px;
           }
-        });
-      }
-
-      currentSelections() {
-        const selections = {};
-        this.optionGroups.forEach((group) => {
-          const name = group.dataset.optionName;
-          const checked = group.querySelector('input[type="radio"]:checked');
-          const select = group.querySelector('select.dropdown');
-          if (checked) selections[name] = checked.value;
-          else if (select) selections[name] = select.value;
-        });
-        return selections;
-      }
-
-      updateValueDisplays() {
-        this.optionGroups.forEach((group, i) => {
-          const display = group.querySelector('[data-slot^="selected-value-"]');
-          const checked = group.querySelector('input[type="radio"]:checked');
-          if (display && checked) display.textContent = checked.value;
-        });
-      }
-
-      findMatch(selections) {
-        return this.variants.find((v) => Object.keys(selections).every((name) => v.variations[name] === selections[name]));
-      }
-
-      updateAvailability() {
-        if (!this.disableUnavailable) return;
-
-        this.optionGroups.forEach((group) => {
-          const name = group.dataset.optionName;
-          const otherSelections = { ...this.currentSelections() };
-          delete otherSelections[name];
-
-          group.querySelectorAll('input[type="radio"]').forEach((input) => {
-            const trial = { ...otherSelections, [name]: input.value };
-            const possible = this.variants.some((v) => Object.keys(trial).every((key) => v.variations[key] === trial[key]) && v.available);
-            const wrapper = input.closest('.swatch, .pill, .radio-row');
-            if (wrapper) wrapper.dataset.unavailable = possible ? 'false' : 'true';
-          });
-        });
-      }
-
-      resolveVariant() {
-        const selections = this.currentSelections();
-        const match = this.findMatch(selections);
-        this.updateAvailability();
-
-        const stockWarning = this.querySelector('[data-slot="stock-warning"]');
-        const unavailableMessage = this.querySelector('[data-slot="unavailable-message"]');
-
-        if (match) {
-          if (unavailableMessage) unavailableMessage.hidden = true;
-          if (stockWarning) {
-            const threshold = Number(this.getAttribute('data-low-stock-threshold')) || 5;
-            if (match.available && match.inventory > 0 && match.inventory <= threshold) {
-              stockWarning.hidden = false;
-              stockWarning.textContent = 'Only ' + match.inventory + ' left in stock';
-            } else {
-              stockWarning.hidden = true;
-            }
-          }
-
-          document.dispatchEvent(
-            new CustomEvent('lego:variant:change', {
-              bubbles: true,
-              detail: {
-                productId: this.productId,
-                variantId: match.id,
-                price: match.price,
-                comparePrice: match.comparePrice,
-                image: match.image,
-                available: match.available,
-              },
-            })
-          );
-        } else if (unavailableMessage) {
-          unavailableMessage.hidden = false;
         }
       }
+
+      .stock-warning {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: {{ block.settings.low_stock_color.hex }};
+      }
+
+      .unavailable-message {
+        margin: 0;
+        font-size: 12px;
+        color: {{ block.settings.unavailable_message_color.hex }};
+      }
+
+      {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+      {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
     }
 
-    customElements.define('lego-variant-picker', LegoVariantPicker);
-  }
-</script>
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="variant-picker"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-variant-picker')) {
+      class LegoVariantPicker extends HTMLElement {
+        connectedCallback() {
+          this.productId = this.getAttribute('data-product-id');
+          this.disableUnavailable = this.getAttribute('data-disable-unavailable') === 'true';
+
+          const variantsEl = this.querySelector('[data-slot="variants"]');
+          this.variants = variantsEl ? JSON.parse(variantsEl.textContent) : [];
+
+          this.inputs = Array.from(this.querySelectorAll('input[type="radio"], select.dropdown'));
+          this.optionGroups = Array.from(this.querySelectorAll('.option-group'));
+
+          this.inputs.forEach((input) => {
+            const evt = input.tagName === 'SELECT' ? 'change' : 'change';
+            input.addEventListener(evt, () => {
+              this.updateValueDisplays();
+              this.resolveVariant();
+            });
+          });
+
+          this.updateAvailability();
+          this.resolveVariant();
+          this.bindUploadZones();
+        }
+
+        bindUploadZones() {
+          this.querySelectorAll('.upload-zone').forEach((zone) => {
+            const input = zone.querySelector('[data-slot="upload-input"]');
+            const preview = zone.parentElement.querySelector('[data-slot="upload-preview"]');
+            const previewImg = zone.parentElement.querySelector('[data-slot="upload-preview-image"]');
+            const removeBtn = zone.parentElement.querySelector('[data-slot="upload-remove"]');
+            if (!input) return;
+
+            const showFile = (file) => {
+              if (!file) return;
+              const url = URL.createObjectURL(file);
+              if (previewImg) previewImg.src = url;
+              if (preview) preview.hidden = false;
+              zone.hidden = true;
+            };
+
+            input.addEventListener('change', () => showFile(input.files[0]));
+
+            zone.addEventListener('dragover', (e) => {
+              e.preventDefault();
+              zone.dataset.dragover = 'true';
+            });
+            zone.addEventListener('dragleave', () => {
+              zone.dataset.dragover = 'false';
+            });
+            zone.addEventListener('drop', (e) => {
+              e.preventDefault();
+              zone.dataset.dragover = 'false';
+              const file = e.dataTransfer.files[0];
+              if (file) {
+                input.files = e.dataTransfer.files;
+                showFile(file);
+              }
+            });
+
+            if (removeBtn) {
+              removeBtn.addEventListener('click', () => {
+                input.value = '';
+                if (preview) preview.hidden = true;
+                zone.hidden = false;
+              });
+            }
+          });
+        }
+
+        currentSelections() {
+          const selections = {};
+          this.optionGroups.forEach((group) => {
+            const name = group.dataset.optionName;
+            const checked = group.querySelector('input[type="radio"]:checked');
+            const select = group.querySelector('select.dropdown');
+            if (checked) selections[name] = checked.value;
+            else if (select) selections[name] = select.value;
+          });
+          return selections;
+        }
+
+        updateValueDisplays() {
+          this.optionGroups.forEach((group, i) => {
+            const display = group.querySelector('[data-slot^="selected-value-"]');
+            const checked = group.querySelector('input[type="radio"]:checked');
+            if (display && checked) display.textContent = checked.value;
+          });
+        }
+
+        findMatch(selections) {
+          return this.variants.find((v) => Object.keys(selections).every((name) => JSON.parse(v.variations)[name] === selections[name]));
+        }
+
+        updateAvailability() {
+          if (!this.disableUnavailable) return;
+
+          this.optionGroups.forEach((group) => {
+            const name = group.dataset.optionName;
+            const otherSelections = { ...this.currentSelections() };
+            delete otherSelections[name];
+
+            group.querySelectorAll('input[type="radio"]').forEach((input) => {
+              const trial = { ...otherSelections, [name]: input.value };
+              const possible = this.variants.some(
+                (v) => Object.keys(trial).every((key) => JSON.parse(v.variations)[key] === trial[key]) && v.available
+              );
+              const wrapper = input.closest('.swatch, .pill, .radio-row');
+              if (wrapper) wrapper.dataset.unavailable = possible ? 'false' : 'true';
+            });
+          });
+        }
+
+        resolveVariant() {
+          const selections = this.currentSelections();
+          const match = this.findMatch(selections);
+          this.updateAvailability();
+
+          const stockWarning = this.querySelector('[data-slot="stock-warning"]');
+          const unavailableMessage = this.querySelector('[data-slot="unavailable-message"]');
+
+          if (match) {
+            if (unavailableMessage) unavailableMessage.hidden = true;
+            if (stockWarning) {
+              const threshold = Number(this.getAttribute('data-low-stock-threshold')) || 5;
+              if (match.available && match.inventory > 0 && match.inventory <= threshold) {
+                stockWarning.hidden = false;
+                stockWarning.textContent = 'Only ' + match.inventory + ' left in stock';
+              } else {
+                stockWarning.hidden = true;
+              }
+            }
+
+            document.dispatchEvent(
+              new CustomEvent('lego:variant:change', {
+                bubbles: true,
+                detail: {
+                  productId: this.productId,
+                  variantId: match.id,
+                  price: match.price,
+                  comparePrice: match.comparePrice,
+                  image: match.image,
+                  available: match.available,
+                },
+              })
+            );
+          } else if (unavailableMessage) {
+            unavailableMessage.hidden = false;
+          }
+        }
+      }
+
+      customElements.define('lego-variant-picker', LegoVariantPicker);
+    }
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Variant picker",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Product" },
     { "type": "product", "id": "product", "label": "Product" },
     {
       "type": "paragraph",
-      "content": "Uses the product on the current page, or pick one. Broadcasts selection changes for Price / Add to Cart blocks placed anywhere else on the page."
+      "content": "Pick a product, broadcasts selection changes for Price / Add to Cart blocks placed anywhere else on the page."
     },
 
     { "type": "header", "content": "Behavior" },
@@ -647,10 +656,6 @@
     { "type": "color", "id": "unavailable_message_color", "label": "Message color", "default": "#DC2626" },
     { "type": "text", "id": "upload_label", "label": "Upload zone label", "default": "Upload an image" },
     { "type": "text", "id": "upload_hint", "label": "Upload zone hint", "default": "PNG, JPG or WEBP" },
-    {
-      "type": "paragraph",
-      "content": "For \"upload image\" options (e.g. personalization). Shows the picker — actually sending the file needs an upload endpoint wired into your Add to Cart submission, which isn't set up here."
-    },
 
     { "type": "header", "content": "Style" },
     { "type": "range", "id": "group_gap", "label": "Gap between option groups", "min": 8, "max": 32, "step": 2, "unit": "px", "default": 16 },
