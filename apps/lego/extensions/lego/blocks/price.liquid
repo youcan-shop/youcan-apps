@@ -1,235 +1,242 @@
-{% assign product = block.settings.product | default: product %}
+{% if block.settings.page.slug == page.slug %}
+  {% assign product = block.settings.product | default: product %}
 
-{% if product %}
-  {% assign default_variant = product.selected_or_first_available_variant %}
-  {% assign price = default_variant.price | default: product.price %}
-  {% assign compare_at_price = default_variant.compare_at_price | default: product.compare_at_price %}
-  {% assign on_sale = false %}
-  {% if compare_at_price > price %}{% assign on_sale = true %}{% endif %}
-  {% assign discount_amount = compare_at_price | minus: price %}
-  {% assign discount_pct = 0 %}
-  {% if on_sale and compare_at_price > 0 %}{% assign discount_pct = discount_amount | times: 100 | divided_by: compare_at_price | round %}{% endif %}
-  {% assign price_min = product.price %}
-  {% assign price_max = product.price %}
-  {% for variant in product.variants %}
-    {% if variant.price < price_min %}{% assign price_min = variant.price %}{% endif %}
-    {% if variant.price > price_max %}{% assign price_max = variant.price %}{% endif %}
-  {% endfor %}
-  {% assign price_varies = false %}
-  {% if price_min != price_max %}{% assign price_varies = true %}{% endif %}
+  {% if product %}
+    {% assign default_variant = product.selected_or_first_available_variant %}
+    {% assign price = default_variant.price | default: product.price %}
+    {% assign compare_at_price = default_variant.compare_at_price | default: product.compare_at_price %}
+    {% assign on_sale = false %}
+    {% if compare_at_price > price %}{% assign on_sale = true %}{% endif %}
+    {% assign discount_amount = compare_at_price | minus: price %}
+    {% assign discount_pct = 0 %}
+    {% if on_sale and compare_at_price > 0 -%}
+      {%- assign discount_pct = discount_amount | times: 100 | divided_by: compare_at_price | round -%}
+    {%- endif %}
+    {% assign price_min = product.price %}
+    {% assign price_max = product.price %}
+    {% for variant in product.variants %}
+      {% if variant.price < price_min %}{% assign price_min = variant.price %}{% endif %}
+      {% if variant.price > price_max %}{% assign price_max = variant.price %}{% endif %}
+    {% endfor %}
+    {% assign price_varies = false %}
+    {% if price_min != price_max %}{% assign price_varies = true %}{% endif %}
 
-  <lego-price
-    data-lego="price"
-    data-product-id="{{ product.id }}"
-    data-price="{{ price }}"
-    data-compare-price="{{ compare_at_price }}"
-    data-currency="{{ block.settings.currency_symbol }}"
-    data-installments-count="{{ block.settings.installments_count }}"
-    {% if block.settings.anchor %}
-      id="{{ block.settings.anchor }}"
-    {% endif %}
-  >
-    <div class="row" data-slot="row">
-      {% if block.settings.show_range and price_varies %}
-        {% if block.settings.show_from_label -%}
-          <span class="from-label">{{ block.settings.from_label }}</span>
-        {%- endif %}
-        <span class="current" data-slot="current">{{ price_min | money }}</span>
-        <span class="range-sep">{{ block.settings.range_separator }}</span>
-        <span class="current" data-slot="current-max">{{ price_max | money }}</span>
-      {% else %}
-        <span class="current" data-slot="current">{{ price | money }}</span>
-        {% if on_sale -%}
-          <span class="compare" data-slot="compare">{{ compare_at_price | money }}</span>
-        {%- endif %}
-        {% if on_sale and block.settings.show_badge %}
-          <span class="badge" data-slot="badge">
-            {% if block.settings.badge_type == 'percentage' -%}
-              -{{ discount_pct }}%
-            {% elsif block.settings.badge_type == 'fixed' -%}
-              -{{ discount_amount | money }}
-            {% else -%}
-              {{- block.settings.badge_custom_text }}
-            {% endif %}
-          </span>
+    <lego-price
+      data-lego="price"
+      data-product-id="{{ product.id }}"
+      data-price="{{ price }}"
+      data-compare-price="{{ compare_at_price }}"
+      data-currency="{{ block.settings.currency_symbol }}"
+      data-installments-count="{{ block.settings.installments_count }}"
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
+      {% endif %}
+    >
+      <div class="row" data-slot="row">
+        {% if block.settings.show_range and price_varies %}
+          {% if block.settings.show_from_label -%}
+            <span class="from-label">{{ block.settings.from_label }}</span>
+          {%- endif %}
+          <span class="current" data-slot="current">{{ price_min | money }}</span>
+          <span class="range-sep">{{ block.settings.range_separator }}</span>
+          <span class="current" data-slot="current-max">{{ price_max | money }}</span>
+        {% else %}
+          <span class="current" data-slot="current">{{ price | money }}</span>
+          {% if on_sale -%}
+            <span class="compare" data-slot="compare">{{ compare_at_price | money }}</span>
+          {%- endif %}
+          {% if on_sale and block.settings.show_badge %}
+            <span class="badge" data-slot="badge">
+              {% if block.settings.badge_type == 'percentage' -%}
+                -{{ discount_pct }}%
+              {% elsif block.settings.badge_type == 'fixed' -%}
+                -{{ discount_amount | money }}
+              {% else -%}
+                {{- block.settings.badge_custom_text }}
+              {% endif %}
+            </span>
+          {% endif %}
         {% endif %}
+
+        {% if block.settings.unit_price_enabled and block.settings.unit_price_label != blank %}
+          <span class="unit-price">{{ block.settings.unit_price_label }}</span>
+        {% endif %}
+      </div>
+
+      {% if block.settings.show_installments %}
+        <p class="installments">
+          {{ block.settings.installments_prefix }}
+          <strong data-slot="installment-amount">{{ price | divided_by: block.settings.installments_count | money }}</strong>
+          {{ block.settings.installments_suffix }}
+          {% if block.settings.installments_provider != blank -%}
+            <span class="provider">{{ block.settings.installments_provider }}</span>
+          {%- endif %}
+        </p>
       {% endif %}
 
-      {% if block.settings.unit_price_enabled and block.settings.unit_price_label != blank %}
-        <span class="unit-price">{{ block.settings.unit_price_label }}</span>
+      {% if block.settings.show_tax_message %}
+        <p class="tax-message">{{ block.settings.tax_message }}</p>
       {% endif %}
-    </div>
-
-    {% if block.settings.show_installments %}
-      <p class="installments">
-        {{ block.settings.installments_prefix }}
-        <strong data-slot="installment-amount">{{ price | divided_by: block.settings.installments_count | money }}</strong>
-        {{ block.settings.installments_suffix }}
-        {% if block.settings.installments_provider != blank -%}
-          <span class="provider">{{ block.settings.installments_provider }}</span>
-        {%- endif %}
-      </p>
-    {% endif %}
-
-    {% if block.settings.show_tax_message %}
-      <p class="tax-message">{{ block.settings.tax_message }}</p>
-    {% endif %}
-  </lego-price>
-{% endif %}
-
-<style>
-  #youcan-block--{{ block.id }} [data-lego="price"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
-
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
-
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-    {% endcase %}
-
-    .row {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: {{ block.settings.gap }}px;
-      justify-content: {{ block.settings.align }};
-    }
-
-    .from-label { font-size: 13px; color: {{ block.settings.compare_color.hex }}; }
-    .range-sep { font-size: {{ block.settings.size }}px; color: {{ block.settings.color.hex }}; opacity: 0.5; }
-
-    .current {
-      font-size: {{ block.settings.size }}px;
-      font-weight: {{ block.settings.weight }};
-      color: {{ block.settings.color.hex }};
-      transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
-
-      &.flash { transform: scale(1.08); }
-    }
-
-    .compare {
-      font-size: {{ block.settings.compare_size }}px;
-      color: {{ block.settings.compare_color.hex }};
-      text-decoration: {{ block.settings.strikethrough_style }};
-      text-decoration-color: {{ block.settings.strikethrough_color.hex }};
-      text-decoration-thickness: {{ block.settings.strikethrough_weight }}px;
-    }
-
-    .badge {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: {{ block.settings.badge_radius }}px;
-      background-color: {{ block.settings.badge_bg_color.hex }};
-      color: {{ block.settings.badge_text_color.hex }};
-    }
-
-    .unit-price {
-      font-size: 12px;
-      color: {{ block.settings.unit_price_color.hex }};
-    }
-
-    .installments {
-      margin: 6px 0 0;
-      font-size: 13px;
-      color: {{ block.settings.installments_color.hex }};
-      text-align: {{ block.settings.align }};
-
-      strong { font-weight: 700; }
-      .provider { font-weight: 600; opacity: 0.8; }
-    }
-
-    .tax-message {
-      margin: 4px 0 0;
-      font-size: 12px;
-      color: {{ block.settings.tax_message_color.hex }};
-      text-align: {{ block.settings.align }};
-    }
-
-    {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
-    {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
-    {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
-    {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="price"] {
-      {{ block.settings.custom_css }}
-    }
+    </lego-price>
   {% endif %}
-</style>
 
-<script defer>
-  if (!customElements.get('lego-price')) {
-    class LegoPrice extends HTMLElement {
-      connectedCallback() {
-        this.productId = this.getAttribute('data-product-id');
-        this.currentElement = this.querySelector('[data-slot="current"]');
-        this.compareElement = this.querySelector('[data-slot="compare"]');
-        this.badgeElement = this.querySelector('[data-slot="badge"]');
-        this.installmentElement = this.querySelector('[data-slot="installment-amount"]');
-        this.installmentsCount = Number(this.getAttribute('data-installments-count')) || 1;
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="price"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
 
-        document.addEventListener('lego:variant:change', (e) => {
-          if (!e.detail || e.detail.productId !== this.productId) return;
-          this.update(e.detail);
-        });
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
+
+      .row {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: {{ block.settings.gap }}px;
+        justify-content: {{ block.settings.align }};
       }
 
-      update(detail) {
-        if (typeof detail.price !== 'number') return;
-        if (this.currentElement) {
-          this.currentElement.textContent = this.money(detail.price);
-          this.currentElement.classList.add('flash');
-          setTimeout(() => this.currentElement.classList.remove('flash'), 200);
-        }
-        const onSale = detail.comparePrice && detail.comparePrice > detail.price;
-        if (this.compareElement) {
-          this.compareElement.hidden = !onSale;
-          if (onSale) this.compareElement.textContent = this.money(detail.comparePrice);
-        }
-        if (this.badgeElement) this.badgeElement.hidden = !onSale;
-        if (this.installmentElement) this.installmentElement.textContent = this.money(detail.price / this.installmentsCount);
+      .from-label { font-size: 13px; color: {{ block.settings.compare_color.hex }}; }
+      .range-sep { font-size: {{ block.settings.size }}px; color: {{ block.settings.color.hex }}; opacity: 0.5; }
+
+      .current {
+        font-size: {{ block.settings.size }}px;
+        font-weight: {{ block.settings.weight }};
+        color: {{ block.settings.color.hex }};
+        transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+
+        &.flash { transform: scale(1.08); }
       }
 
-      money(amount) {
-        return (this.getAttribute('data-currency') || '$') + Number(amount).toFixed(2);
+      .compare {
+        font-size: {{ block.settings.compare_size }}px;
+        color: {{ block.settings.compare_color.hex }};
+        text-decoration: {{ block.settings.strikethrough_style }};
+        text-decoration-color: {{ block.settings.strikethrough_color.hex }};
+        text-decoration-thickness: {{ block.settings.strikethrough_weight }}px;
       }
+
+      .badge {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 3px 9px;
+        border-radius: {{ block.settings.badge_radius }}px;
+        background-color: {{ block.settings.badge_bg_color.hex }};
+        color: {{ block.settings.badge_text_color.hex }};
+      }
+
+      .unit-price {
+        font-size: 12px;
+        color: {{ block.settings.unit_price_color.hex }};
+      }
+
+      .installments {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: {{ block.settings.installments_color.hex }};
+        text-align: {{ block.settings.align }};
+
+        strong { font-weight: 700; }
+        .provider { font-weight: 600; opacity: 0.8; }
+      }
+
+      .tax-message {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: {{ block.settings.tax_message_color.hex }};
+        text-align: {{ block.settings.align }};
+      }
+
+      {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+      {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
     }
 
-    customElements.define('lego-price', LegoPrice);
-  }
-</script>
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="price"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-price')) {
+      class LegoPrice extends HTMLElement {
+        connectedCallback() {
+          this.productId = this.getAttribute('data-product-id');
+          this.currentElement = this.querySelector('[data-slot="current"]');
+          this.compareElement = this.querySelector('[data-slot="compare"]');
+          this.badgeElement = this.querySelector('[data-slot="badge"]');
+          this.installmentElement = this.querySelector('[data-slot="installment-amount"]');
+          this.installmentsCount = Number(this.getAttribute('data-installments-count')) || 1;
+
+          document.addEventListener('lego:variant:change', (e) => {
+            if (!e.detail || e.detail.productId !== this.productId) return;
+            this.update(e.detail);
+          });
+        }
+
+        update(detail) {
+          if (typeof detail.price !== 'number') return;
+          if (this.currentElement) {
+            this.currentElement.textContent = this.money(detail.price);
+            this.currentElement.classList.add('flash');
+            setTimeout(() => this.currentElement.classList.remove('flash'), 200);
+          }
+          const onSale = detail.comparePrice && detail.comparePrice > detail.price;
+          if (this.compareElement) {
+            this.compareElement.hidden = !onSale;
+            if (onSale) this.compareElement.textContent = this.money(detail.comparePrice);
+          }
+          if (this.badgeElement) this.badgeElement.hidden = !onSale;
+          if (this.installmentElement) this.installmentElement.textContent = this.money(detail.price / this.installmentsCount);
+        }
+
+        money(amount) {
+          return (this.getAttribute('data-currency') || '$') + Number(amount).toFixed(2);
+        }
+      }
+
+      customElements.define('lego-price', LegoPrice);
+    }
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Price",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Product" },
     { "type": "product", "id": "product", "label": "Product" },
     {
       "type": "paragraph",
-      "content": "Uses the product on the current page, or pick one. Updates live if a Variant Picker block elsewhere on the page changes selection."
+      "content": "Pick a product, updates live if a Variant Picker block elsewhere on the page changes selection."
     },
 
     { "type": "header", "content": "Content" },
@@ -242,7 +249,7 @@
       "default": "From",
       "visible_if": { "setting_id": "show_from_label", "value": true }
     },
-    { "type": "text", "id": "range_separator", "label": "Range separator", "default": "–" },
+    { "type": "text", "id": "range_separator", "label": "Range separator", "default": "-" },
 
     { "type": "header", "content": "Sale badge" },
     { "type": "checkbox", "id": "show_badge", "label": "Show sale badge", "default": true },
@@ -344,7 +351,7 @@
         { "label": "700", "value": "700" },
         { "label": "800", "value": "800" }
       ],
-      "default": "700"
+      "default": "600"
     },
     { "type": "color", "id": "color", "label": "Price color", "default": "#121212" },
     { "type": "range", "id": "compare_size", "label": "Compare price size", "min": 11, "max": 24, "step": 1, "unit": "px", "default": 15 },
