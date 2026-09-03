@@ -1,334 +1,358 @@
-{% capture logo_items %}
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
+  {% capture logo_items %}
   {% for i in (1..10) %}
     {% assign image_key = 'image_' | append: i %}
     {% assign alt_key = 'alt_' | append: i %}
     {% assign link_key = 'link_' | append: i %}
     {% assign new_window_key = 'new_window_' | append: i %}
+    {% assign alt_fallback = 'Logo ' |  append: i %}
+
     {% if block.settings[image_key] %}
       <li class="logo">
-        {% if block.settings[link_key] != blank %}
+        {% if block.settings[link_key] %}
           <a href="{{ block.settings[link_key] }}" {% if block.settings[new_window_key] %}target="_blank"{% endif %}>
-            <img src="{{ block.settings[image_key].src }}" alt="{{ block.settings[alt_key] }}" loading="lazy" width="400" height="{{ block.settings.logo_height }}">
+            <img src="{{ block.settings[image_key].src }}" alt="{{ block.settings[alt_key] | default: alt_fallback }}" loading="lazy" width="400" height="{{ block.settings.logo_height }}">
           </a>
         {% else %}
-          <img src="{{ block.settings[image_key].src }}" alt="{{ block.settings[alt_key] }}" loading="lazy" width="400" height="{{ block.settings.logo_height }}">
+          <img src="{{ block.settings[image_key].src }}" alt="{{ block.settings[alt_key] | default: alt_fallback }}" loading="lazy" width="400" height="{{ block.settings.logo_height }}">
         {% endif %}
       </li>
     {% endif %}
   {% endfor %}
 {% endcapture %}
 
-<lego-logo-wall
-  data-lego="logo-wall"
-  data-entrance="{{ block.settings.entrance }}"
-  data-marquee-speed="{{ block.settings.speed }}"
-  data-pause-on-hover="{{ block.settings.pause_on_hover }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.heading != blank %}
-    <div class="heading-row">
-      <span class="line"></span>
-      <span class="heading">{{ block.settings.heading }}</span>
-      <span class="line"></span>
-    </div>
-  {% endif %}
+  <lego-logo-wall
+    data-lego="logo-wall"
+    data-entrance="{{ block.settings.entrance }}"
+    data-marquee-speed="{{ block.settings.speed }}"
+    {% if block.settings.pause_on_hover %}
+      data-pause-on-hover="true"
+    {% endif %}
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.heading != blank %}
+      <div class="heading-row">
+        <span class="line"></span>
+        <span class="heading">{{ block.settings.heading }}</span>
+        <span class="line"></span>
+      </div>
+    {% endif %}
 
-  <div class="track" data-slot="track" data-layout="{{ block.settings.layout }}">
-    {% if block.settings.layout == 'marquee' %}
-      <div data-slot="track-inner" class="track-inner">
-        <ul data-slot="cloud">
+    <div class="track" data-slot="track" data-layout="{{ block.settings.layout }}">
+      {% if block.settings.layout == 'marquee' %}
+        <div data-slot="track-inner" class="track-inner">
+          <ul data-slot="cloud">
+            {{ logo_items }}
+          </ul>
+        </div>
+      {% else %}
+        <ul
+          data-slot="cloud"
+          data-reveal="true"
+          {% if block.settings.entrance == 'none' %}
+            data-revealed="true"
+          {% endif %}
+        >
           {{ logo_items }}
         </ul>
-      </div>
-    {% else %}
-      <ul
-        data-slot="cloud"
-        data-reveal="true"
-        {% if block.settings.entrance == 'none' %}
-          data-revealed="true"
-        {% endif %}
-      >
-        {{ logo_items }}
-      </ul>
-    {% endif %}
-  </div>
-</lego-logo-wall>
+      {% endif %}
+    </div>
+  </lego-logo-wall>
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="logo-wall"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
-
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
-
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
-
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
-
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-      margin-inline: auto;
-    {% endif %}
-
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-      {% when 'image' %}
-        background-image: url({{ block.settings.bg_img.src }});
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    {% endcase %}
-
-    .heading-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-
-      .line { flex: 1; height: 1px; background-color: {{ block.settings.heading_line_color.hex }}; }
-
-      .heading {
-        flex-shrink: 0;
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: {{ block.settings.heading_color.hex }};
-      }
-    }
-
-    .track { overflow: hidden; }
-
-    ul {
-      display: flex;
-      align-items: center;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .track[data-layout="grid"] ul {
-      flex-wrap: wrap;
-      justify-content: {{ block.settings.align }};
-      gap: {{ block.settings.gap }}px;
-    }
-
-    .logo {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      img {
-        height: {{ block.settings.logo_height }}px;
-        width: auto;
-        max-width: 160px;
-        object-fit: contain;
-        opacity: {{ block.settings.dim_opacity }};
-        {% if block.settings.grayscale %}filter: grayscale(100%);{% endif %}
-        transition: filter 200ms ease, opacity 200ms ease;
-      }
-
-      @media (hover: hover) and (pointer: fine) {
-        &:hover img {
-          opacity: 1;
-          {% if block.settings.grayscale %}filter: grayscale(0%);{% endif %}
-        }
-      }
-    }
-
-    .track[data-layout="marquee"] {
-      .track-inner {
-        display: flex;
-        min-width: max-content;
-        animation: lego-logo-wall-marquee var(--lego-marquee-duration, 30s) linear infinite;
-        animation-play-state: paused;
-      }
-
-      ul { min-width: max-content; }
-
-      .logo { padding-inline: {{ block.settings.gap | divided_by: 2 }}px; }
-    }
-
-    &[data-marquee-active][data-play-state="running"] .track .track-inner {
-      animation-play-state: running;
-    }
-
-    {% if block.settings.pause_on_hover %}
-      &[data-marquee-active][data-play-state="running"][data-pause-on-hover]:hover .track .track-inner {
-        animation-play-state: paused;
-      }
-    {% endif %}
-
-    [data-reveal="true"] .logo {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1), transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
-      transition-delay: calc(var(--lego-slot, 0) * 40ms);
-    }
-    [data-revealed="true"] .logo { opacity: 1; transform: none; }
-
-    @media (prefers-reduced-motion: reduce) {
-      [data-reveal="true"] .logo { transform: none; }
-      .track-inner { animation: none !important; }
-    }
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) { display: none; }
-    {% endunless %}
-  }
-
-  @keyframes lego-logo-wall-marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  {% if block.settings.custom_css != blank %}
+  <style>
     #youcan-block--{{ block.id }} [data-lego="logo-wall"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
+      display: block;
+      opacity: {{ block.settings.opacity }};
 
-<script defer>
-  if (!customElements.get('lego-logo-wall')) {
-    class LegoLogoWall extends HTMLElement {
-      connectedCallback() {
-        const track = this.querySelector('[data-slot="track"]');
-        const layout = track ? track.dataset.layout : 'grid';
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
 
-        if (layout === 'marquee') {
-          this.setupMarquee(track);
-        } else if (this.getAttribute('data-entrance') !== 'none') {
-          this.setupReveal(track);
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
+      {% endif %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
+
+      .heading-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+
+        .line { flex: 1; height: 1px; background-color: {{ block.settings.heading_line_color.hex }}; }
+
+        .heading {
+          flex-shrink: 0;
+          font-size: 13px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: {{ block.settings.heading_color.hex }};
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
         }
       }
 
-      setupReveal(track) {
-        const cloud = track.querySelector('[data-slot="cloud"]');
-        if (!cloud) return;
-        Array.from(cloud.children).forEach((el, i) => {
-          el.style.setProperty('--lego-slot', i);
-        });
+      .track { overflow: hidden; }
 
-        if (!('IntersectionObserver' in window)) {
-          cloud.setAttribute('data-revealed', 'true');
-          return;
-        }
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.setAttribute('data-revealed', 'true');
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        observer.observe(cloud);
+      ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
       }
 
-      setupMarquee(track) {
-        const trackInner = track.querySelector('[data-slot="track-inner"]');
-        const cloud = track.querySelector('[data-slot="cloud"]');
-        if (!trackInner || !cloud) return;
+      .track[data-layout="grid"] ul {
+        flex-wrap: wrap;
+        justify-content: {{ block.settings.align }};
+        gap: {{ block.settings.gap }}px;
+      }
 
-        this.setAttribute('data-marquee-active', '');
-        if (this.getAttribute('data-pause-on-hover') === 'true') {
-          this.setAttribute('data-pause-on-hover', '');
-        } else {
-          this.removeAttribute('data-pause-on-hover');
+      .logo {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          height: {{ block.settings.logo_height }}px;
+          width: auto;
+          max-width: 160px;
+          object-fit: contain;
+          opacity: {{ block.settings.dim_opacity }};
+          {% if block.settings.grayscale %}filter: grayscale(100%);{% endif %}
+          transition: filter 200ms ease, opacity 200ms ease;
         }
 
-        const render = () => {
-          const items = Array.from(cloud.children);
-          if (items.length < 1) return;
-
-          const wallWidth = this.offsetWidth;
-          const totalItemsWidth = items.reduce((sum, el) => sum + el.offsetWidth, 0);
-          if (totalItemsWidth <= 0) return;
-
-          const copiesToMake = Math.max(0, Math.floor(wallWidth / totalItemsWidth));
-
-          cloud.querySelectorAll('[data-clone]').forEach((el) => el.remove());
-          const fill = document.createDocumentFragment();
-          for (let i = 0; i < copiesToMake; i++) {
-            items.forEach((item) => {
-              const clone = item.cloneNode(true);
-              clone.setAttribute('data-clone', '');
-              fill.appendChild(clone);
-            });
+        @media (hover: hover) and (pointer: fine) {
+          &:hover img {
+            opacity: 1;
+            {% if block.settings.grayscale %}filter: grayscale(0%);{% endif %}
           }
-          cloud.appendChild(fill);
-
-          trackInner.querySelectorAll('[data-slot="cloud-clone"]').forEach((el) => el.remove());
-          const cloudClone = cloud.cloneNode(true);
-          cloudClone.setAttribute('data-slot', 'cloud-clone');
-          cloudClone.setAttribute('aria-hidden', 'true');
-          cloudClone.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'));
-          trackInner.appendChild(cloudClone);
-
-          const pxPerSecond = Number(this.getAttribute('data-marquee-speed')) || 40;
-          const filledWidth = totalItemsWidth * (1 + copiesToMake);
-          const duration = Math.ceil(filledWidth / pxPerSecond);
-          this.style.setProperty('--lego-marquee-duration', duration + 's');
-          this.setAttribute('data-play-state', 'running');
-        };
-
-        render();
-
-        if (window.ResizeObserver) {
-          const observer = new ResizeObserver(() => render());
-          observer.observe(this);
-        } else {
-          window.addEventListener('resize', render);
         }
       }
+
+      .track[data-layout="marquee"] {
+        .track-inner {
+          display: flex;
+          min-width: max-content;
+          animation: lego-logo-wall-marquee var(--lego-marquee-duration, 30s) linear infinite;
+          animation-play-state: paused;
+        }
+
+        ul { min-width: max-content; }
+
+        .logo { padding-inline: {{ block.settings.gap | divided_by: 2 }}px; }
+      }
+
+      &[data-marquee-active][data-play-state="running"] .track .track-inner {
+        animation-play-state: running;
+      }
+
+      {% if block.settings.pause_on_hover %}
+        &[data-marquee-active][data-play-state="running"][data-pause-on-hover]:hover .track .track-inner {
+          animation-play-state: paused;
+        }
+      {% endif %}
+
+      [data-reveal="true"] .logo {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1), transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        transition-delay: calc(var(--lego-slot, 0) * 40ms);
+      }
+      [data-revealed="true"] .logo { opacity: 1; transform: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-reveal="true"] .logo { transform: none; }
+        .track-inner { animation: none !important; }
+      }
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) { display: none; }
+      {% endunless %}
     }
 
-    customElements.define('lego-logo-wall', LegoLogoWall);
-  }
-</script>
+    @keyframes lego-logo-wall-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="logo-wall"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-logo-wall')) {
+      class LegoLogoWall extends HTMLElement {
+        connectedCallback() {
+          const track = this.querySelector('[data-slot="track"]');
+          const layout = track ? track.dataset.layout : 'grid';
+
+          if (layout === 'marquee') {
+            this.setupMarquee(track);
+          } else if (this.getAttribute('data-entrance') !== 'none') {
+            this.setupReveal(track);
+          }
+        }
+
+        setupReveal(track) {
+          const cloud = track.querySelector('[data-slot="cloud"]');
+          if (!cloud) return;
+          Array.from(cloud.children).forEach((el, i) => {
+            el.style.setProperty('--lego-slot', i);
+          });
+
+          if (!('IntersectionObserver' in window)) {
+            cloud.setAttribute('data-revealed', 'true');
+            return;
+          }
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.setAttribute('data-revealed', 'true');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15 }
+          );
+          observer.observe(cloud);
+        }
+
+        setupMarquee(track) {
+          const trackInner = track.querySelector('[data-slot="track-inner"]');
+          const cloud = track.querySelector('[data-slot="cloud"]');
+          if (!trackInner || !cloud) return;
+
+          this.setAttribute('data-marquee-active', '');
+          if (this.getAttribute('data-pause-on-hover') === 'true') {
+            this.setAttribute('data-pause-on-hover', '');
+          } else {
+            this.removeAttribute('data-pause-on-hover');
+          }
+
+          const render = () => {
+            const items = Array.from(cloud.children);
+            if (items.length < 1) return;
+
+            const wallWidth = this.offsetWidth;
+            const totalItemsWidth = items.reduce((sum, el) => sum + el.offsetWidth, 0);
+            if (totalItemsWidth <= 0) return;
+
+            const copiesToMake = Math.max(0, Math.floor(wallWidth / totalItemsWidth));
+
+            cloud.querySelectorAll('[data-clone]').forEach((el) => el.remove());
+            const fill = document.createDocumentFragment();
+            for (let i = 0; i < copiesToMake; i++) {
+              items.forEach((item) => {
+                const clone = item.cloneNode(true);
+                clone.setAttribute('data-clone', '');
+                fill.appendChild(clone);
+              });
+            }
+            cloud.appendChild(fill);
+
+            trackInner.querySelectorAll('[data-slot="cloud-clone"]').forEach((el) => el.remove());
+            const cloudClone = cloud.cloneNode(true);
+            cloudClone.setAttribute('data-slot', 'cloud-clone');
+            cloudClone.setAttribute('aria-hidden', 'true');
+            cloudClone.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'));
+            trackInner.appendChild(cloudClone);
+
+            const pxPerSecond = Number(this.getAttribute('data-marquee-speed')) || 40;
+            const filledWidth = totalItemsWidth * (1 + copiesToMake);
+            const duration = Math.ceil(filledWidth / pxPerSecond);
+            this.style.setProperty('--lego-marquee-duration', duration + 's');
+            this.setAttribute('data-play-state', 'running');
+          };
+
+          render();
+
+          if (window.ResizeObserver) {
+            const observer = new ResizeObserver(() => render());
+            observer.observe(this);
+          } else {
+            window.addEventListener('resize', render);
+          }
+        }
+      }
+
+      customElements.define('lego-logo-wall', LegoLogoWall);
+    }
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Logo wall",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "As featured in" },
     {
@@ -348,7 +372,7 @@
       "min": 10,
       "max": 150,
       "step": 5,
-      "unit": "px/s",
+      "unit": "s",
       "default": 40,
       "visible_if": { "setting_id": "layout", "value": "marquee" }
     },
@@ -379,6 +403,26 @@
     },
     { "type": "color", "id": "heading_color", "label": "Heading text color", "default": "#6B7280" },
     { "type": "color", "id": "heading_line_color", "label": "Heading line color", "default": "#E5E5E5" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
 
     { "type": "header", "content": "Effects" },
     { "type": "range", "id": "opacity", "label": "Block opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
