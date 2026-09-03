@@ -1,93 +1,110 @@
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=star,format_quote,verified,chevron_left,chevron_right"
-/>
-
-<lego-testimonials
-  data-lego="testimonials"
-  data-layout="{{ block.settings.layout }}"
-  data-autoplay="{{ block.settings.autoplay }}"
-  data-interval="{{ block.settings.autoplay_interval }}"
-  data-entrance="{{ block.settings.entrance }}"
-  {% if block.settings.anchor %}
-    id="{{ block.settings.anchor }}"
-  {% endif %}
->
-  {% if block.settings.eyebrow != blank or block.settings.heading != blank %}
-    <div class="section-head">
-      {% if block.settings.eyebrow != blank -%}
-        <span class="eyebrow">{{ block.settings.eyebrow }}</span>
-      {%- endif %}
-      {% if block.settings.heading != blank %}
-        <h2 class="heading">{{ block.settings.heading }}</h2>
-      {% endif %}
-    </div>
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
   {% endif %}
 
-  <div class="wrap" data-slot="wrap">
-    <div class="list" data-slot="list">
-      {% assign slot = 0 %}
-      {% for i in (1..6) %}
-        {% assign quote_key = 'quote_' | append: i %}
-        {% assign author_key = 'author_' | append: i %}
-        {% assign role_key = 'role_' | append: i %}
-        {% assign avatar_key = 'avatar_' | append: i %}
-        {% assign rating_key = 'rating_' | append: i %}
-        {% assign verified_key = 'verified_' | append: i %}
-        {% if block.settings[quote_key] != blank %}
-          <div
-            class="card"
-            data-slot="card"
-            data-index="{{ slot }}"
-            {% if block.settings.entrance != 'none' %}
-              data-reveal="true" style="--lego-slot: {{ slot }};"
-            {% endif %}
-          >
-            {% if block.settings.show_quote_icon -%}
-              <span class="material-symbols-rounded quote-icon">format_quote</span>
-            {%- endif %}
-            {% if block.settings[rating_key] > 0 %}
-              <div class="rating">
-                {% for s in (1..5) %}
-                  <span class="material-symbols-rounded star" data-filled="{% if s <= block.settings[rating_key] %}true{% else %}false{% endif %}"
-                    >star</span
-                  >
-                {% endfor %}
-              </div>
-            {% endif %}
-            <p class="quote">{{ block.settings[quote_key] }}</p>
-            <div class="author-row">
-              {% if block.settings[avatar_key] %}
-                <img
-                  src="{{ block.settings[avatar_key].src }}"
-                  alt="{{ block.settings[author_key] }}"
-                  width="100"
-                  height="100"
-                  class="avatar"
-                  loading="lazy"
-                >
+  <lego-testimonials
+    data-lego="testimonials"
+    data-layout="{{ block.settings.layout }}"
+    {% if block.settings.autoplay %}
+      data-autoplay="true"
+    {% endif %}
+    data-interval="{{ block.settings.autoplay_interval }}"
+    data-entrance="{{ block.settings.entrance }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.eyebrow != blank or block.settings.heading != blank %}
+      <div class="section-head">
+        {% if block.settings.eyebrow != blank -%}
+          <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+        {%- endif %}
+        {% if block.settings.heading != blank %}
+          <h2 class="heading">{{ block.settings.heading }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="wrap" data-slot="wrap">
+      <div class="list" data-slot="list">
+        {% assign slot = 0 %}
+        {% for i in (1..6) %}
+          {% assign quote_key = 'quote_' | append: i %}
+          {% assign author_key = 'author_' | append: i %}
+          {% assign role_key = 'role_' | append: i %}
+          {% assign avatar_key = 'avatar_' | append: i %}
+          {% assign rating_key = 'rating_' | append: i %}
+          {% assign verified_key = 'verified_' | append: i %}
+          {% if block.settings[quote_key] != blank %}
+            <div
+              class="card"
+              data-slot="card"
+              data-index="{{ slot }}"
+              {% if block.settings.entrance != 'none' %}
+                data-reveal="true" style="--lego-slot: {{ slot }};"
               {% endif %}
-              <div class="author-info">
-                <span class="name">
-                  {{ block.settings[author_key] }}
-                  {% if block.settings[verified_key] -%}
-                    <span class="material-symbols-rounded verified">verified</span>
+            >
+              {% if block.settings.show_quote_icon -%}
+                <span class="material-symbols-rounded quote-icon">format_quote</span>
+              {%- endif %}
+              {% if block.settings[rating_key] > 0 %}
+                <div class="rating">
+                  {% for s in (1..5) %}
+                    <span class="material-symbols-rounded star" data-filled="{% if s <= block.settings[rating_key] %}true{% else %}false{% endif %}"
+                      >star</span
+                    >
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <p class="quote">{{ block.settings[quote_key] }}</p>
+              <div class="author-row">
+                {% if block.settings[avatar_key] %}
+                  <img
+                    src="{{ block.settings[avatar_key].src }}"
+                    alt="{{ block.settings[author_key] }}"
+                    width="100"
+                    height="100"
+                    class="avatar"
+                    loading="lazy"
+                  >
+                {% endif %}
+                <div class="author-info">
+                  <span class="name">
+                    {{ block.settings[author_key] }}
+                    {% if block.settings[verified_key] -%}
+                      <span class="material-symbols-rounded verified">verified</span>
+                    {%- endif %}
+                  </span>
+                  {% if block.settings[role_key] != blank -%}
+                    <span class="role">{{ block.settings[role_key] }}</span>
                   {%- endif %}
-                </span>
-                {% if block.settings[role_key] != blank -%}
-                  <span class="role">{{ block.settings[role_key] }}</span>
-                {%- endif %}
+                </div>
               </div>
             </div>
-          </div>
-          {% assign slot = slot | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-    </div>
+            {% assign slot = slot | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      </div>
 
-    {% if block.settings.layout == 'slider' %}
-      {% if block.settings.show_dots %}<div class="dots" data-slot="dots"></div>{% endif %}
-      {% if block.settings.show_arrows %}
+      {% if block.settings.layout == 'slider' %}
+        {% if block.settings.show_dots %}<div class="dots" data-slot="dots"></div>{% endif %}
+        {% if block.settings.show_arrows %}
+          <button type="button" class="arrow prev" data-slot="prev" aria-label="Previous">
+            <span class="material-symbols-rounded">chevron_left</span>
+          </button>
+          <button type="button" class="arrow next" data-slot="next" aria-label="Next">
+            <span class="material-symbols-rounded">chevron_right</span>
+          </button>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.layout == 'carousel' and block.settings.show_arrows %}
         <button type="button" class="arrow prev" data-slot="prev" aria-label="Previous">
           <span class="material-symbols-rounded">chevron_left</span>
         </button>
@@ -95,366 +112,396 @@
           <span class="material-symbols-rounded">chevron_right</span>
         </button>
       {% endif %}
-    {% endif %}
+    </div>
+  </lego-testimonials>
 
-    {% if block.settings.layout == 'carousel' and block.settings.show_arrows %}
-      <button type="button" class="arrow prev" data-slot="prev" aria-label="Previous">
-        <span class="material-symbols-rounded">chevron_left</span>
-      </button>
-      <button type="button" class="arrow next" data-slot="next" aria-label="Next"><span class="material-symbols-rounded">chevron_right</span></button>
-    {% endif %}
-  </div>
-</lego-testimonials>
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="testimonials"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="testimonials"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
 
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
 
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
 
-    {% case block.settings.box_shadow %}
-      {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-      {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
-    {% endcase %}
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
+      {% endif %}
 
-    {% if block.settings.width == 'custom' %}
-      max-width: 100%;
-      width: {{ block.settings.custom_width | append: 'px' }};
-      margin-inline: auto;
-    {% endif %}
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
 
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-      {% when 'image' %}
-        background-image: url({{ block.settings.bg_img.src }});
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    {% endcase %}
-
-    .section-head {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: center;
-      margin-bottom: 32px;
-
-      .eyebrow { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: {{ block.settings.eyebrow_color.hex }}; }
-      .heading { margin: 0; font-size: {{ block.settings.heading_size }}px; font-weight: 700; color: {{ block.settings.heading_color.hex }}; }
-    }
-
-    .wrap { position: relative; }
-
-    .card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: {{ block.settings.card_padding }}px;
-      border-radius: {{ block.settings.card_radius }}px;
-      background-color: {{ block.settings.card_bg_color.hex }};
-      {% if block.settings.card_border_weight > 0 %}border: {{ block.settings.card_border_weight }}px solid {{ block.settings.card_border_color.hex }};{% endif %}
-
-      .quote-icon {
-        position: absolute;
-        top: 16px;
-        right: 20px;
-        font-size: 32px;
-        color: {{ block.settings.quote_icon_color.hex }};
-        opacity: 0.5;
-      }
-
-      .rating {
+      .section-head {
         display: flex;
-        gap: 2px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        margin-bottom: 32px;
 
-        .star {
-          font-size: 16px;
-          color: {{ block.settings.star_color.hex }};
-          opacity: 0.25;
-          &[data-filled="true"] { opacity: 1; }
-        }
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        .eyebrow { font-size: 13px; font-weight: 400; font-family: inherit; text-transform: uppercase; letter-spacing: 0.5px; color: {{ block.settings.eyebrow_color.hex }}; }
+        .heading { margin: 0; font-family: inherit; font-size: {{ block.settings.heading_size }}px; font-weight: 500; color: {{ block.settings.heading_color.hex }}; }
       }
 
-      .quote {
-        margin: 0;
-        font-size: {{ block.settings.quote_size }}px;
-        color: {{ block.settings.quote_color.hex }};
-        line-height: 1.6;
-      }
-
-      .author-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: auto;
-
-        .avatar {
-          width: 40px;
-          height: 40px;
-          object-fit: cover;
-          {% if block.settings.avatar_shape == 'circle' %}border-radius: 50%;{% else %}border-radius: 8px;{% endif %}
-        }
-
-        .author-info {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .name {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          font-size: 14px;
-          font-weight: 600;
-          color: {{ block.settings.author_color.hex }};
-
-          .verified { font-size: 15px; color: {{ block.settings.verified_color.hex }}; }
-        }
-
-        .role { font-size: 12px; color: {{ block.settings.role_color.hex }}; }
-      }
-
-      &[data-reveal="true"] {
-        opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
-        transition-delay: calc(var(--lego-slot) * 80ms);
-      }
-      &[data-revealed="true"] { opacity: 1; transform: none; }
-    }
-
-    .list[data-layout-mode="grid"] {
-      display: grid;
-      gap: {{ block.settings.gap }}px;
-      grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
-
-      @media (width <= 768px) { grid-template-columns: 1fr; }
-    }
-
-    .list[data-layout-mode="carousel"] {
-      display: flex;
-      gap: {{ block.settings.gap }}px;
-      overflow-x: auto;
-      scroll-snap-type: x proximity;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      &::-webkit-scrollbar { display: none; }
-
-      .card { flex: 0 0 min(360px, 88%); scroll-snap-align: start; }
-    }
-
-    .list[data-layout-mode="slider"] {
-      position: relative;
-      min-height: 1px;
+      .wrap { position: relative; }
 
       .card {
-        display: none;
-        max-width: {{ block.settings.slider_max_width }}px;
-        margin-inline: auto;
-        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: {{ block.settings.card_padding }}px;
+        border-radius: {{ block.settings.card_radius }}px;
+        background-color: {{ block.settings.card_bg_color.hex }};
+        {% if block.settings.card_border_weight > 0 %}border: {{ block.settings.card_border_weight }}px solid {{ block.settings.card_border_color.hex }};{% endif %}
 
-        .author-row { justify-content: center; margin-top: 12px; }
-        .rating { justify-content: center; }
+        .quote-icon {
+          position: absolute;
+          top: 16px;
+          right: 20px;
+          font-size: 32px;
+          color: {{ block.settings.quote_icon_color.hex }};
+          opacity: 0.5;
+        }
 
-        &[data-active="true"] { display: flex; }
+        .rating {
+          display: flex;
+          gap: 2px;
+
+          .star {
+            font-size: 16px;
+            color: {{ block.settings.star_color.hex }};
+            opacity: 0.25;
+            &[data-filled="true"] { opacity: 1; }
+          }
+        }
+
+        .quote {
+          margin: 0;
+          font-size: {{ block.settings.quote_size }}px;
+          color: {{ block.settings.quote_color.hex }};
+          line-height: 1.6;
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
+        }
+
+        .author-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: auto;
+
+          .avatar {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            {% if block.settings.avatar_shape == 'circle' %}border-radius: 50%;{% else %}border-radius: 8px;{% endif %}
+          }
+
+          .author-info {
+            display: flex;
+            flex-direction: column;
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+          }
+
+          .name {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            color: {{ block.settings.author_color.hex }};
+
+            .verified { font-size: 15px; color: {{ block.settings.verified_color.hex }}; }
+          }
+
+          .role {
+            font-family: inherit;
+            font-size: 12px; color: {{ block.settings.role_color.hex }};
+          }
+        }
+
+        &[data-reveal="true"] {
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+          transition-delay: calc(var(--lego-slot) * 80ms);
+        }
+        &[data-revealed="true"] { opacity: 1; transform: none; }
       }
-    }
 
-    .dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 20px;
+      .list[data-layout-mode="grid"] {
+        display: grid;
+        gap: {{ block.settings.gap }}px;
+        grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
 
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: {{ block.settings.dot_color.hex }};
-        opacity: 0.3;
-        border: 0;
-        cursor: pointer;
+        @media (width <= 768px) { grid-template-columns: 1fr; }
+      }
+
+      .list[data-layout-mode="carousel"] {
+        display: flex;
+        gap: {{ block.settings.gap }}px;
+        overflow: auto hidden;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        &::-webkit-scrollbar { display: none; }
+
+        .card { flex: 0 0 min(360px, 88%); scroll-snap-align: start; }
+      }
+
+      .list[data-layout-mode="slider"] {
+        position: relative;
+        min-height: 1px;
+
+        .card {
+          display: none;
+          max-width: {{ block.settings.slider_max_width }}px;
+          margin-inline: auto;
+          text-align: center;
+
+          .author-row {
+            justify-content: center;
+            margin-top: 12px;
+
+            .author-info {
+              align-items: center;
+            }
+           }
+
+          .rating { justify-content: center; }
+
+          &[data-active="true"] { display: flex; }
+        }
+      }
+
+      .dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: {{ block.settings.dot_color.hex }};
+          opacity: 0.3;
+          border: 0;
+          cursor: pointer;
+          padding: 0;
+          transition: opacity 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+          &[data-active="true"] { opacity: 1; transform: scale(1.3); }
+        }
+      }
+
+      .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
         padding: 0;
-        transition: opacity 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+        border-radius: 50%;
+        border: 1px solid #E5E5E5;
+        background-color: #FFFFFF;
+        cursor: pointer;
+        transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 
-        &[data-active="true"] { opacity: 1; transform: scale(1.3); }
-      }
-    }
+        &:active { transform: translateY(-50%) scale(0.92); }
+        &.prev { left: -14px; }
+        &.next { right: -14px; }
 
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      border-radius: 50%;
-      border: 1px solid #E5E5E5;
-      background-color: #FFFFFF;
-      cursor: pointer;
-      transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-
-      &:active { transform: translateY(-50%) scale(0.92); }
-      &.prev { left: -14px; }
-      &.next { right: -14px; }
-
-      @media (width <= 640px) { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card[data-reveal="true"] { transform: none; }
-    }
-
-    {% unless block.settings.lg_screens %}
-      @media (width >= 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.md_screens %}
-      @media (992px <= width < 1200px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.sm_screens %}
-      @media (768px <= width < 992px) { display: none; }
-    {% endunless %}
-    {% unless block.settings.xs_screens %}
-      @media (width < 768px) { display: none; }
-    {% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="testimonials"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
-
-<script defer>
-  if (!customElements.get('lego-testimonials')) {
-    class LegoTestimonials extends HTMLElement {
-      connectedCallback() {
-        this.layout = this.getAttribute('data-layout');
-        const list = this.querySelector('[data-slot="list"]');
-        if (list) list.setAttribute('data-layout-mode', this.layout);
-
-        this.cards = Array.from(this.querySelectorAll('[data-slot="card"]'));
-        this.setupReveal();
-
-        if (this.layout === 'slider') this.setupSlider();
-        if (this.layout === 'carousel') this.setupCarouselArrows();
+        @media (width <= 640px) { display: none; }
       }
 
-      setupReveal() {
-        if (this.getAttribute('data-entrance') === 'none' || !('IntersectionObserver' in window)) {
-          this.cards.forEach((c) => c.setAttribute('data-revealed', 'true'));
-          return;
+      .material-symbols-rounded {
+        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 20;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card[data-reveal="true"] { transform: none; }
+      }
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) { display: none; }
+      {% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="testimonials"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-testimonials')) {
+      class LegoTestimonials extends HTMLElement {
+        connectedCallback() {
+          this.layout = this.getAttribute('data-layout');
+          const list = this.querySelector('[data-slot="list"]');
+          if (list) list.setAttribute('data-layout-mode', this.layout);
+
+          this.cards = Array.from(this.querySelectorAll('[data-slot="card"]'));
+          this.setupReveal();
+
+          if (this.layout === 'slider') this.setupSlider();
+          if (this.layout === 'carousel') this.setupCarouselArrows();
         }
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.setAttribute('data-revealed', 'true');
-                observer.unobserve(entry.target);
-              }
+
+        setupReveal() {
+          if (this.getAttribute('data-entrance') === 'none' || !('IntersectionObserver' in window)) {
+            this.cards.forEach((c) => c.setAttribute('data-revealed', 'true'));
+            return;
+          }
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.setAttribute('data-revealed', 'true');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15 }
+          );
+          this.cards.forEach((c) => observer.observe(c));
+        }
+
+        setupCarouselArrows() {
+          const list = this.querySelector('[data-slot="list"]');
+          const prev = this.querySelector('[data-slot="prev"]');
+          const next = this.querySelector('[data-slot="next"]');
+          if (!list || !prev || !next) return;
+
+          const scrollByOne = (dir) => {
+            const card = list.querySelector('[data-slot="card"]');
+            const step = card ? card.getBoundingClientRect().width + 20 : list.clientWidth;
+            list.scrollBy({ left: dir * step, behavior: 'smooth' });
+          };
+          prev.addEventListener('click', () => scrollByOne(-1));
+          next.addEventListener('click', () => scrollByOne(1));
+        }
+
+        setupSlider() {
+          this.activeIndex = 0;
+          this.cards.forEach((c, i) => c.setAttribute('data-active', i === 0 ? 'true' : 'false'));
+
+          const dotsWrap = this.querySelector('[data-slot="dots"]');
+          if (dotsWrap) {
+            this.cards.forEach((_, i) => {
+              const dot = document.createElement('button');
+              dot.type = 'button';
+              dot.className = 'dot';
+              dot.dataset.active = i === 0 ? 'true' : 'false';
+              dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+              dot.addEventListener('click', () => this.goTo(i));
+              dotsWrap.appendChild(dot);
             });
-          },
-          { threshold: 0.15 }
-        );
-        this.cards.forEach((c) => observer.observe(c));
-      }
+            this.dots = Array.from(dotsWrap.children);
+          }
 
-      setupCarouselArrows() {
-        const list = this.querySelector('[data-slot="list"]');
-        const prev = this.querySelector('[data-slot="prev"]');
-        const next = this.querySelector('[data-slot="next"]');
-        if (!list || !prev || !next) return;
+          const prev = this.querySelector('[data-slot="prev"]');
+          const next = this.querySelector('[data-slot="next"]');
+          if (prev) prev.addEventListener('click', () => this.goTo(this.activeIndex - 1));
+          if (next) next.addEventListener('click', () => this.goTo(this.activeIndex + 1));
 
-        const scrollByOne = (dir) => {
-          const card = list.querySelector('[data-slot="card"]');
-          const step = card ? card.getBoundingClientRect().width + 20 : list.clientWidth;
-          list.scrollBy({ left: dir * step, behavior: 'smooth' });
-        };
-        prev.addEventListener('click', () => scrollByOne(-1));
-        next.addEventListener('click', () => scrollByOne(1));
-      }
-
-      setupSlider() {
-        this.activeIndex = 0;
-        this.cards.forEach((c, i) => c.setAttribute('data-active', i === 0 ? 'true' : 'false'));
-
-        const dotsWrap = this.querySelector('[data-slot="dots"]');
-        if (dotsWrap) {
-          this.cards.forEach((_, i) => {
-            const dot = document.createElement('button');
-            dot.type = 'button';
-            dot.className = 'dot';
-            dot.dataset.active = i === 0 ? 'true' : 'false';
-            dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
-            dot.addEventListener('click', () => this.goTo(i));
-            dotsWrap.appendChild(dot);
-          });
-          this.dots = Array.from(dotsWrap.children);
+          if (this.getAttribute('data-autoplay') === 'true') {
+            this.interval = Number(this.getAttribute('data-interval')) || 5000;
+            this.startAutoplay();
+            this.addEventListener('pointerdown', () => this.stopAutoplay(), { once: true });
+          }
         }
 
-        const prev = this.querySelector('[data-slot="prev"]');
-        const next = this.querySelector('[data-slot="next"]');
-        if (prev) prev.addEventListener('click', () => this.goTo(this.activeIndex - 1));
-        if (next) next.addEventListener('click', () => this.goTo(this.activeIndex + 1));
+        goTo(index) {
+          const count = this.cards.length;
+          this.activeIndex = (index + count) % count;
+          this.cards.forEach((c, i) => c.setAttribute('data-active', i === this.activeIndex ? 'true' : 'false'));
+          if (this.dots) this.dots.forEach((d, i) => (d.dataset.active = i === this.activeIndex ? 'true' : 'false'));
+        }
 
-        if (this.getAttribute('data-autoplay') === '1') {
-          this.interval = Number(this.getAttribute('data-interval')) || 5000;
-          this.startAutoplay();
-          this.addEventListener('pointerdown', () => this.stopAutoplay(), { once: true });
+        startAutoplay() {
+          this.timer = setInterval(() => this.goTo(this.activeIndex + 1), this.interval);
+        }
+
+        stopAutoplay() {
+          if (this.timer) clearInterval(this.timer);
         }
       }
 
-      goTo(index) {
-        const count = this.cards.length;
-        this.activeIndex = (index + count) % count;
-        this.cards.forEach((c, i) => c.setAttribute('data-active', i === this.activeIndex ? 'true' : 'false'));
-        if (this.dots) this.dots.forEach((d, i) => (d.dataset.active = i === this.activeIndex ? 'true' : 'false'));
-      }
-
-      startAutoplay() {
-        this.timer = setInterval(() => this.goTo(this.activeIndex + 1), this.interval);
-      }
-
-      stopAutoplay() {
-        if (this.timer) clearInterval(this.timer);
-      }
+      customElements.define('lego-testimonials', LegoTestimonials);
     }
-
-    customElements.define('lego-testimonials', LegoTestimonials);
-  }
-</script>
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Testimonials",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "placeholder": "Testimonials" },
     { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "What our customers say" },
@@ -532,6 +579,26 @@
     { "type": "color", "id": "card_bg_color", "label": "Card background", "default": "#F5F5F5" },
     { "type": "color", "id": "quote_icon_color", "label": "Quote icon color", "default": "#D1D5DB" },
     { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
     { "type": "range", "id": "quote_size", "label": "Quote text size", "min": 13, "max": 22, "step": 1, "unit": "px", "default": 15 },
     { "type": "color", "id": "quote_color", "label": "Quote text color", "default": "#121212" },
     { "type": "color", "id": "author_color", "label": "Author name color", "default": "#121212" },
