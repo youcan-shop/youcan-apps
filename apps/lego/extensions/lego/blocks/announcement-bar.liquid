@@ -1,0 +1,792 @@
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
+  {% assign message_count = 0 %}
+  {% if block.settings.message_1 != blank %}{% assign message_count = message_count | plus: 1 %}{% endif %}
+  {% if block.settings.message_2 != blank %}{% assign message_count = message_count | plus: 1 %}{% endif %}
+  {% if block.settings.message_3 != blank %}{% assign message_count = message_count | plus: 1 %}{% endif %}
+  {% assign is_rotating = false %}
+  {% if block.settings.display_mode == 'rotate' and message_count > 1 %}{% assign is_rotating = true %}{% endif %}
+
+  <lego-announcement-bar
+    data-lego="announcement-bar"
+    {% if block.settings.dismissible %}
+      data-dismissible="true"
+    {% endif %}
+    data-remember="{{ block.settings.remember_dismissal }}"
+    data-block-id="{{ block.id }}"
+    data-sticky="{{ block.settings.sticky }}"
+    data-marquee-speed="{{ block.settings.speed }}"
+    {% if block.settings.pause_on_hover %}
+      data-pause-on-hover="true"
+    {% endif %}
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% capture message_items %}
+    {% assign slot = 0 %}
+    {% for i in (1..3) %}
+      {% assign msg_key = 'message_' | append: i %}
+      {% assign link_key = 'link_' | append: i %}
+      {% assign message = block.settings[msg_key] %}
+      {% if message != blank %}
+        <li style="--lego-slot: {{ slot }};" {% if is_rotating %}data-rotating="true"{% endif %}>
+          <a
+            href="{{ block.settings[link_key] | default: '#' }}"
+            {% if block.settings.new_window %}target="_blank"{% endif %}
+          >
+            {% if block.settings.icon and block.settings.icon_position == 'left' %}
+              <span class="material-symbols-rounded">{{ block.settings.icon }}</span>
+            {% endif %}
+            {{ message }}
+            {% if block.settings.icon and block.settings.icon_position == 'right' %}
+              <span class="material-symbols-rounded">{{ block.settings.icon }}</span>
+            {% endif %}
+          </a>
+        </li>
+        {% assign slot = slot | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+  {% endcapture %}
+
+    <div data-slot="track" class="track" data-mode="{{ block.settings.display_mode }}">
+      {% if block.settings.display_mode == 'marquee' %}
+        <div data-slot="track-inner" class="track-inner">
+          <ul data-slot="cloud">
+            {{ message_items }}
+          </ul>
+        </div>
+      {% else %}
+        <ul data-slot="cloud">
+          {{ message_items }}
+        </ul>
+      {% endif %}
+    </div>
+
+    {% if block.settings.dismissible %}
+      <button type="button" class="close" data-slot="close" aria-label="Dismiss">
+        <span class="material-symbols-rounded">close</span>
+      </button>
+    {% endif %}
+  </lego-announcement-bar>
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="announcement-bar"] {
+      position: relative;
+      display: flex;
+      color: {{ block.settings.color.hex }};
+      text-transform: {{ block.settings.transform }};
+      font-size: {{ block.settings.size | append: 'px' }};
+      font-weight: {{ block.settings.weight }};
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %}
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %}
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %}
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %}
+          box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+      {% else %}
+        width: 100%;
+      {% endif %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}
+            background-color: {{ block.settings.bg_color.hex }};
+          {% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
+
+      &[hidden] { display: none; }
+
+      &[data-sticky="top-page"] {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 50;
+      }
+
+      .track {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+
+        ul {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+
+          li {
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+
+            a {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              color: inherit;
+              text-decoration: none;
+              transition: opacity 160ms ease;
+              font-family: inherit;
+
+              .material-symbols-rounded {
+                font-size: {{ block.settings.icon_size | append: 'px' }};
+                margin-inline: -4px;
+                font-variation-settings:
+                  "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %},
+                  "wght" 400,
+                  "GRAD" 0,
+                  "opsz" 20;
+              }
+
+              @media (hover: hover) and (pointer: fine) {
+                &:hover { opacity: 0.8; }
+              }
+            }
+          }
+        }
+      }
+
+      &:not([data-marquee-active]) .track ul {
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: {{ block.settings.align }};
+        width: 100%;
+      }
+
+      &[data-mode-active="rotate"] .track {
+        ul {
+          position: relative;
+          height: {{ block.settings.size | times: 1.6 | round }}px;
+
+          li {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: {{ block.settings.align }};
+            opacity: 0;
+
+            {% if is_rotating %}
+              animation: lego-announcement-rotate {{ block.settings.rotate_interval | times: message_count }}s ease-in-out infinite;
+              animation-delay: calc(var(--lego-slot) * -{{ block.settings.rotate_interval }}s);
+            {% else %}
+              opacity: 1;
+            {% endif %}
+          }
+        }
+      }
+
+      &[data-marquee-active] .track {
+        overflow: hidden;
+
+        .track-inner {
+          display: flex;
+          min-width: max-content;
+          animation: lego-announcement-marquee var(--lego-marquee-duration, 27s) linear infinite;
+          animation-play-state: paused;
+        }
+
+        [data-slot="cloud"] {
+          display: flex;
+          min-width: max-content;
+        }
+
+        li {
+          flex-shrink: 0;
+          padding-inline: 24px;
+          white-space: nowrap;
+        }
+      }
+
+      &[data-marquee-active][data-play-state="running"] .track .track-inner {
+        animation-play-state: running;
+      }
+
+      {% if block.settings.pause_on_hover %}
+        &[data-marquee-active][data-play-state="running"][data-pause-on-hover]:hover .track .track-inner {
+          animation-play-state: paused;
+        }
+      {% endif %}
+
+      .close {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        color: inherit;
+        opacity: 0.7;
+        margin-inline-start: 12px;
+        transition: opacity 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+        .material-symbols-rounded { font-size: 18px; }
+
+        &:active { transform: scale(0.9); }
+
+        @media (hover: hover) and (pointer: fine) {
+          &:hover { opacity: 1; }
+        }
+      }
+
+      {% if block.settings.entrance != 'none' %}
+        animation: lego-announcement-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+      {% endif %}
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) {
+          display: none;
+        }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) {
+          display: none;
+        }
+      {% endunless %}
+    }
+
+    @keyframes lego-announcement-rotate {
+      0% { opacity: 0; }
+      3% { opacity: 1; }
+      {{ 100.0 | divided_by: message_count | minus: 3 }}% { opacity: 1; }
+      {{ 100.0 | divided_by: message_count }}% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    @keyframes lego-announcement-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes lego-announcement-fade {
+      from { opacity: 0; }
+    }
+    @keyframes lego-announcement-fade_up {
+      from { opacity: 0; transform: translateY(-12px); }
+    }
+    @keyframes lego-announcement-zoom {
+      from { opacity: 0; transform: scale(0.92); }
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="announcement-bar"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-announcement-bar')) {
+      class LegoAnnouncementBar extends HTMLElement {
+        connectedCallback() {
+          this.dismissible = this.getAttribute('data-dismissible') === 'true';
+          this.remember = this.getAttribute('data-remember');
+          this.storage = this.remember === 'permanent' ? window.localStorage : window.sessionStorage;
+          this.storageKey = 'lego-announcement-' + this.getAttribute('data-block-id');
+
+          const track = this.querySelector('[data-slot="track"]');
+          const mode = track ? track.dataset.mode : 'static';
+
+          if (mode === 'rotate') {
+            this.setAttribute('data-mode-active', 'rotate');
+          }
+
+          if (mode === 'marquee') {
+            this.setupMarquee(track);
+          }
+
+          if (this.dismissible) {
+            try {
+              if (this.storage.getItem(this.storageKey) === 'true') {
+                this.hidden = true;
+                return;
+              }
+            } catch (e) {}
+
+            const closeBtn = this.querySelector('[data-slot="close"]');
+            if (closeBtn) {
+              closeBtn.addEventListener('click', () => {
+                this.hidden = true;
+                try {
+                  this.storage.setItem(this.storageKey, 'true');
+                } catch (e) {}
+              });
+            }
+          }
+        }
+
+        setupMarquee(track) {
+          const trackInner = track.querySelector('[data-slot="track-inner"]');
+          const cloud = track.querySelector('[data-slot="cloud"]');
+          if (!trackInner || !cloud) return;
+
+          this.setAttribute('data-marquee-active', '');
+          if (this.getAttribute('data-pause-on-hover') === 'true') {
+            this.setAttribute('data-pause-on-hover', '');
+          } else {
+            this.removeAttribute('data-pause-on-hover');
+          }
+
+          const render = () => {
+            const items = Array.from(cloud.children);
+            if (items.length < 1) return;
+
+            const marqueeWidth = this.offsetWidth;
+            const totalItemsWidth = items.reduce((sum, el) => sum + el.offsetWidth, 0);
+            if (totalItemsWidth <= 0) return;
+
+            const copiesToMake = Math.max(0, Math.floor(marqueeWidth / totalItemsWidth));
+
+            cloud.querySelectorAll('[data-clone]').forEach((el) => el.remove());
+            const fill = document.createDocumentFragment();
+            for (let i = 0; i < copiesToMake; i++) {
+              items.forEach((item) => {
+                const clone = item.cloneNode(true);
+                clone.setAttribute('data-clone', '');
+                fill.appendChild(clone);
+              });
+            }
+            cloud.appendChild(fill);
+
+            trackInner.querySelectorAll('[data-slot="cloud-clone"]').forEach((el) => el.remove());
+            const cloudClone = cloud.cloneNode(true);
+            cloudClone.setAttribute('data-slot', 'cloud-clone');
+            cloudClone.setAttribute('aria-hidden', 'true');
+            cloudClone.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'));
+            trackInner.appendChild(cloudClone);
+
+            const pxPerSecond = Number(this.getAttribute('data-marquee-speed')) || 60;
+            const filledCloudWidth = totalItemsWidth * (1 + copiesToMake);
+            const duration = Math.ceil(filledCloudWidth / pxPerSecond);
+            this.style.setProperty('--lego-marquee-duration', duration + 's');
+            this.setAttribute('data-play-state', 'running');
+          };
+
+          render();
+
+          if (window.ResizeObserver) {
+            const observer = new ResizeObserver(() => render());
+            observer.observe(this);
+          } else {
+            window.addEventListener('resize', render);
+          }
+        }
+      }
+
+      customElements.define('lego-announcement-bar', LegoAnnouncementBar);
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "label": "Announcement bar",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+    { "type": "header", "content": "Items" },
+    { "type": "header", "content": "Item #1" },
+    { "type": "text", "id": "message_1", "label": "Message", "default": "Add your message here" },
+    { "type": "text", "id": "link_1", "label": "Link", "placeholder": "https://youcan.shop", "default": "https://youcan.shop" },
+    { "type": "header", "content": "Item #2" },
+    { "type": "text", "id": "message_2", "label": "Message", "placeholder": "Second message (optional)" },
+    { "type": "text", "id": "link_2", "label": "Link", "placeholder": "https://youcan.shop" },
+    { "type": "header", "content": "Item #3" },
+    { "type": "text", "id": "message_3", "label": "Message", "placeholder": "Third message (optional)" },
+    { "type": "text", "id": "link_3", "label": "Link", "placeholder": "https://youcan.shop" },
+    { "type": "header", "content": "Content" },
+    { "type": "checkbox", "id": "new_window", "label": "Open links in new window", "default": false },
+
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display mode",
+      "options": [
+        { "label": "Static (first message only)", "value": "static" },
+        { "label": "Rotate (crossfade)", "value": "rotate" },
+        { "label": "Marquee (scrolling)", "value": "marquee" }
+      ],
+      "default": "static"
+    },
+    {
+      "type": "range",
+      "id": "rotate_interval",
+      "label": "Time per message",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4,
+      "visible_if": { "setting_id": "display_mode", "value": "rotate" }
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll speed",
+      "min": 20,
+      "max": 240,
+      "step": 10,
+      "unit": "s",
+      "default": 60,
+      "visible_if": { "setting_id": "display_mode", "value": "marquee" }
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true,
+      "visible_if": { "setting_id": "display_mode", "value": "marquee" }
+    },
+
+    { "type": "checkbox", "id": "dismissible", "label": "Dismissible", "default": false },
+    {
+      "type": "select",
+      "id": "remember_dismissal",
+      "label": "Remember dismissal",
+      "options": [
+        { "label": "For this session", "value": "session" },
+        { "label": "Permanently (this browser)", "value": "permanent" }
+      ],
+      "default": "session",
+      "visible_if": { "setting_id": "dismissible", "value": true }
+    },
+    {
+      "type": "select",
+      "id": "sticky",
+      "label": "Position",
+      "options": [
+        { "label": "Static", "value": "static" },
+        { "label": "Sticky to top", "value": "top-page" }
+      ],
+      "default": "static"
+    },
+
+    { "type": "header", "content": "Icon" },
+    { "type": "text", "id": "icon", "label": "Icon", "placeholder": "favorite" },
+    { "type": "paragraph", "content": "Feel free to use [Google Icons](https://fonts.google.com/icons)" },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "options": [
+        { "label": "Left", "value": "left" },
+        { "label": "Right", "value": "right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "icon_sharp",
+      "label": "Icon sharp",
+      "options": [
+        { "label": "Stroke", "value": "stroke" },
+        { "label": "Solid", "value": "solid" }
+      ],
+      "default": "stroke"
+    },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 80, "step": 2, "unit": "px", "default": 20 },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "label": "Left", "value": "flex-start" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "flex-end" }
+      ],
+      "default": "center",
+      "visible_if": { "setting_id": "display_mode", "operator": "!=", "value": "marquee" }
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 1200,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 12 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 20 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 12 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 20 },
+
+    { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Font size",
+      "options": [
+        { "label": "12px", "value": "12" },
+        { "label": "14px", "value": "14" },
+        { "label": "16px", "value": "16" },
+        { "label": "18px", "value": "18" },
+        { "label": "22px", "value": "22" }
+      ],
+      "default": "14"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Font weight",
+      "options": [
+        { "label": "300", "value": "300" },
+        { "label": "400", "value": "400" },
+        { "label": "500", "value": "500" },
+        { "label": "600", "value": "600" },
+        { "label": "700", "value": "700" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "transform",
+      "label": "Text transform",
+      "options": [
+        { "label": "Normal", "value": "none" },
+        { "label": "Capitalize", "value": "capitalize" },
+        { "label": "Uppercase", "value": "uppercase" },
+        { "label": "Lowercase", "value": "lowercase" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "color", "label": "Color", "default": "#FFFFFF" },
+
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "single-color"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#121212",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#111827",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#374151",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    { "type": "image_picker", "id": "bg_img", "label": "Background image", "visible_if": { "setting_id": "background", "value": "image" } },
+
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" },
+        { "label": "Dotted", "value": "dotted" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+    {
+      "type": "select",
+      "id": "entrance",
+      "label": "Entrance animation",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Fade in", "value": "fade" },
+        { "label": "Fade down", "value": "fade-up" },
+        { "label": "Zoom in", "value": "zoom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "entrance_duration",
+      "label": "Animation duration",
+      "min": 100,
+      "max": 2000,
+      "step": 50,
+      "unit": "ms",
+      "default": 400,
+      "visible_if": { "setting_id": "entrance", "operator": "!=", "value": "none" }
+    },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-announcement-bar" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}

@@ -18,6 +18,15 @@ importers:
         specifier: ^3.3.0
         version: 3.9.6
 
+  apps/lego:
+    dependencies:
+      '@youcan/app':
+        specifier: latest
+        version: 2.13.3(@types/node@26.2.0)(typescript@7.0.2)
+      '@youcan/cli':
+        specifier: latest
+        version: 2.13.3(@types/node@26.2.0)(typescript@7.0.2)
+
   apps/payflow:
     dependencies:
       '@youcan/app':

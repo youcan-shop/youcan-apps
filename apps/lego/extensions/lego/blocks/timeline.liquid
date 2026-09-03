@@ -1,0 +1,759 @@
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
+  <lego-timeline
+    data-lego="timeline"
+    data-entrance="{{ block.settings.entrance }}"
+    {% if block.settings.animate_line %}
+      data-animate-line="true"
+    {% endif %}
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    {% if block.settings.eyebrow or block.settings.heading %}
+      <div class="section-head">
+        {% if block.settings.eyebrow %}
+          <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+        {% endif %}
+        {% if block.settings.heading %}
+          <h2 class="heading">{{ block.settings.heading }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div
+      class="steps"
+      data-orientation="{{ block.settings.orientation }}"
+      {% if block.settings.alternate %}
+        data-alternate="true"
+      {% endif %}
+    >
+      {% if block.settings.orientation == 'vertical' %}
+        <div class="line-track" data-slot="line-track">
+          <div class="line-fill" data-slot="line-fill"></div>
+        </div>
+      {% else %}
+        <div class="line-track horizontal" data-slot="line-track">
+          <div class="line-fill" data-slot="line-fill"></div>
+        </div>
+      {% endif %}
+
+      {% assign slot = 0 %}
+      {% for i in (1..6) %}
+        {% assign icon = 'icon_' | append: i %}
+        {% assign is_custom_img = 'is_custom_img_' | append: i %}
+        {% assign custom_img = 'custom_img_' | append: i %}
+        {% assign date = 'date_' | append: i %}
+        {% assign title = 'title_' | append: i %}
+        {% assign description = 'description_' | append: i %}
+        {% assign link = 'link_' | append: i %}
+        {% assign new_window = 'new_window_' | append: i %}
+        {% assign has_link = false %}
+        {% if block.settings[link] != blank %}{% assign has_link = true %}{% endif %}
+
+        {% if block.settings[title] != blank %}
+          <div
+            class="step"
+            {% if block.settings.entrance != 'none' %}
+              data-reveal="true" style="--lego-slot: {{ slot }};"
+            {% endif %}
+          >
+            <div class="marker">
+              {% if block.settings.marker_type == 'number' %}
+                <span class="number">{{ slot | plus: 1 }}</span>
+              {% elsif block.settings[is_custom_img] %}
+                {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}
+                <img src="{{ block.settings[custom_img].src | default: fallback_image_url }}" alt="{{ block.settings[title] }}" loading="lazy">
+              {% elsif block.settings[icon] != blank %}
+                <span class="material-symbols-rounded">{{ block.settings[icon] }}</span>
+              {% else %}
+                <span class="number">{{ slot | plus: 1 }}</span>
+              {% endif %}
+            </div>
+
+            {% if has_link %}
+              <a
+                class="content"
+                href="{{ block.settings[link] }}"
+                {% if block.settings[new_window] %}
+                  target="_blank"
+                {% endif %}
+              >
+            {% else %}
+              <div class="content">
+            {% endif %}
+            {% if block.settings[date] != blank -%}
+              <span class="date">{{ block.settings[date] }}</span>
+            {%- endif %}
+            <h3 class="title">{{ block.settings[title] }}</h3>
+            {% if block.settings[description] != blank %}
+              <p class="description">{{ block.settings[description] }}</p>
+            {% endif %}
+            {% if has_link %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+          {% assign slot = slot | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </lego-timeline>
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="timeline"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+        margin-inline: auto;
+      {% endif %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+        {% when 'image' %}
+          background-image: url({{ block.settings.bg_img.src }});
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      {% endcase %}
+
+      .section-head {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        margin-bottom: 40px;
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        .eyebrow {
+          font-size: 13px;
+          font-weight: 400;
+          font-family: inherit;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: {{ block.settings.eyebrow_color.hex }};
+        }
+
+        .heading {
+          margin: 0;
+          font-family: inherit;
+          font-size: {{ block.settings.heading_size }}px;
+          font-weight: 500;
+          color: {{ block.settings.heading_color.hex }};
+        }
+      }
+
+      .steps {
+        position: relative;
+
+        &[data-orientation="vertical"] {
+          display: flex;
+          flex-direction: column;
+          gap: {{ block.settings.gap }}px;
+          padding-left: {{ block.settings.marker_size | plus: 16 }}px;
+
+          .line-track {
+            position: absolute;
+            top: {{ block.settings.marker_size | divided_by: 2 }}px;
+            left: {{ block.settings.marker_size | divided_by: 2 }}px;
+            bottom: {{ block.settings.marker_size | divided_by: 2 }}px;
+            width: 2px;
+            background-color: {{ block.settings.line_color.hex }};
+          }
+
+          .line-fill {
+            width: 100%;
+            height: 0%;
+            background-color: {{ block.settings.line_fill_color.hex }};
+            transition: height 1200ms cubic-bezier(0.23, 1, 0.32, 1);
+          }
+
+          .step {
+            position: relative;
+            display: flex;
+            gap: 16px;
+
+            .marker {
+              position: absolute;
+              left: {{ block.settings.marker_size | plus: 16 | times: -1 }}px;
+            }
+
+            .content { margin-left: 0; }
+          }
+
+          &[data-alternate="true"] {
+            padding-left: 0;
+
+            .line-track { left: 50%; transform: translateX(-1px); }
+
+            .step {
+              width: calc(50% - {{ block.settings.marker_size | divided_by: 2 | plus: 24 }}px);
+
+              .marker { left: auto; }
+
+              &:nth-child(odd) {
+                margin-left: auto;
+                .marker { left: -{{ block.settings.marker_size | plus: 24 }}px; }
+              }
+              &:nth-child(even) {
+                .marker { right: -{{ block.settings.marker_size | plus: 24 }}px; left: auto; }
+                text-align: right;
+              }
+            }
+
+            @media (width <= 768px) {
+              padding-left: {{ block.settings.marker_size | plus: 16 }}px;
+              .line-track { left: {{ block.settings.marker_size | divided_by: 2 }}px; }
+              .step {
+                width: 100%;
+                margin-left: 0 !important;
+                text-align: left !important;
+                .marker { left: -{{ block.settings.marker_size | plus: 16 }}px !important; right: auto !important; }
+              }
+            }
+          }
+        }
+
+        &[data-orientation="horizontal"] {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: {{ block.settings.gap }}px;
+          padding-top: {{ block.settings.marker_size | plus: 16 }}px;
+
+          .line-track.horizontal {
+            position: absolute;
+            top: {{ block.settings.marker_size | divided_by: 2 }}px;
+            left: {{ block.settings.marker_size | divided_by: 2 }}px;
+            right: {{ block.settings.marker_size | divided_by: 2 }}px;
+            height: 2px;
+            background-color: {{ block.settings.line_color.hex }};
+          }
+
+          .line-fill { height: 100%; width: 0%; background-color: {{ block.settings.line_fill_color.hex }}; transition: width 1200ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+          .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            .marker {
+              position: absolute;
+              top: 0;
+            }
+
+            .content { margin-top: {{ block.settings.marker_size | plus: 16 }}px; }
+          }
+
+          @media (width <= 768px) {
+            grid-template-columns: 1fr;
+          }
+        }
+      }
+
+      .marker {
+        flex-shrink: 0;
+        width: {{ block.settings.marker_size }}px;
+        height: {{ block.settings.marker_size }}px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: {{ block.settings.marker_color.hex }};
+        color: {{ block.settings.marker_icon_color.hex }};
+        z-index: 1;
+
+        .material-symbols-rounded {
+          font-size: {{ block.settings.marker_size | times: 0.45 | round }}px;
+          font-variation-settings: "FILL" {% if block.settings.icon_sharp == 'solid' %}1{% else %}0{% endif %}, "wght" 400, "GRAD" 0, "opsz" 20;
+        }
+
+        .number {
+          font-size: {{ block.settings.marker_size | times: 0.4 | round }}px;
+          font-weight: 500;
+        }
+
+        img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        color: inherit;
+        text-decoration: none;
+        width: 100%;
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        .date {
+          font-size: 12px;
+          font-weight: 400;
+          font-family: inherit;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: {{ block.settings.date_color.hex }};
+        }
+
+        .title {
+          margin: 0;
+          font-family: inherit;
+          font-size: {{ block.settings.title_size }}px;
+          font-weight: 400;
+          color: {{ block.settings.title_color.hex }};
+        }
+
+        .description {
+          margin: 0;
+          font-family: inherit;
+          font-size: {{ block.settings.description_size }}px;
+          line-height: 1.6;
+          color: {{ block.settings.description_color.hex }};
+        }
+      }
+
+      .step[data-reveal="true"] {
+        opacity: 0;
+        {% if block.settings.entrance == 'fade-up' %}transform: translateY(16px);{% endif %}
+        {% if block.settings.entrance == 'zoom' %}transform: scale(0.9);{% endif %}
+        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+        transition-delay: calc(var(--lego-slot) * 100ms);
+      }
+      .step[data-revealed="true"] { opacity: 1; transform: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .step[data-reveal="true"] { transform: none; }
+      }
+
+      {% unless block.settings.lg_screens %}
+        @media (width >= 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.md_screens %}
+        @media (992px <= width < 1200px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.sm_screens %}
+        @media (768px <= width < 992px) { display: none; }
+      {% endunless %}
+      {% unless block.settings.xs_screens %}
+        @media (width < 768px) { display: none; }
+      {% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="timeline"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-timeline')) {
+      class LegoTimeline extends HTMLElement {
+        connectedCallback() {
+          const lineFill = this.querySelector('[data-slot="line-fill"]');
+          const animateLine = this.getAttribute('data-animate-line') === 'true';
+          const entrance = this.getAttribute('data-entrance');
+          const items = this.querySelectorAll('[data-reveal="true"]');
+          const isHorizontal = this.querySelector('.steps').dataset.orientation === 'horizontal';
+
+          const reveal = () => {
+            if (lineFill && animateLine) {
+              lineFill.style[isHorizontal ? 'width' : 'height'] = '100%';
+            }
+            items.forEach((item, i) => {
+              setTimeout(() => item.setAttribute('data-revealed', 'true'), i * 60);
+            });
+          };
+
+          if ((entrance === 'none' && !animateLine) || !('IntersectionObserver' in window)) {
+            if (lineFill) lineFill.style[isHorizontal ? 'width' : 'height'] = '100%';
+            items.forEach((item) => item.setAttribute('data-revealed', 'true'));
+            return;
+          }
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  reveal();
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15 }
+          );
+          observer.observe(this);
+        }
+      }
+
+      customElements.define('lego-timeline', LegoTimeline);
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "label": "Timeline",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "placeholder": "How it works" },
+    { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "From order to doorstep" },
+    {
+      "type": "select",
+      "id": "orientation",
+      "label": "Orientation",
+      "options": [
+        { "label": "Vertical", "value": "vertical" },
+        { "label": "Horizontal", "value": "horizontal" }
+      ],
+      "default": "vertical"
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate",
+      "label": "Alternate sides (zig-zag)",
+      "default": false,
+      "visible_if": { "setting_id": "orientation", "value": "vertical" }
+    },
+    {
+      "type": "select",
+      "id": "marker_type",
+      "label": "Marker",
+      "options": [
+        { "label": "Number", "value": "number" },
+        { "label": "Icon", "value": "icon" }
+      ],
+      "default": "number"
+    },
+    {
+      "type": "select",
+      "id": "icon_sharp",
+      "label": "Icon sharp",
+      "options": [
+        { "label": "Stroke", "value": "stroke" },
+        { "label": "Solid", "value": "solid" }
+      ],
+      "default": "solid",
+      "visible_if": { "setting_id": "marker_type", "value": "icon" }
+    },
+
+    { "type": "header", "content": "Animation" },
+    { "type": "checkbox", "id": "animate_line", "label": "Draw connector line on scroll", "default": true },
+    {
+      "type": "select",
+      "id": "entrance",
+      "label": "Step reveal animation",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Fade in", "value": "fade" },
+        { "label": "Fade up", "value": "fade-up" },
+        { "label": "Zoom in", "value": "zoom" }
+      ],
+      "default": "fade-up"
+    },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap", "label": "Gap between steps", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "marker_size", "label": "Marker size", "min": 24, "max": 64, "step": 2, "unit": "px", "default": 36 },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 320,
+      "step": 20,
+      "unit": "px",
+      "default": 800,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 40 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 20 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 40 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 20 },
+
+    { "type": "header", "content": "Typography" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6B7280" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#121212" },
+    { "type": "color", "id": "date_color", "label": "Date color", "default": "#9CA3AF" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#121212" },
+    { "type": "range", "id": "description_size", "label": "Description size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "description_color", "label": "Description color", "default": "#5c5c5c" },
+
+    { "type": "header", "content": "Marker & line" },
+    { "type": "color", "id": "marker_color", "label": "Marker background", "default": "#121212" },
+    { "type": "color", "id": "marker_icon_color", "label": "Marker icon/number color", "default": "#FFFFFF" },
+    { "type": "color", "id": "line_color", "label": "Line color", "default": "#E5E5E5" },
+    { "type": "color", "id": "line_fill_color", "label": "Line fill color (on scroll)", "default": "#121212" },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#F5F5F5",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    { "type": "image_picker", "id": "bg_img", "label": "Background image", "visible_if": { "setting_id": "background", "value": "image" } },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" },
+        { "label": "Dotted", "value": "dotted" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Step #1" },
+    { "type": "text", "id": "icon_1", "label": "Icon", "default": "shopping_cart", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
+    { "type": "checkbox", "id": "is_custom_img_1", "label": "Use custom image instead", "default": false },
+    { "type": "image_picker", "id": "custom_img_1", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_1", "value": true } },
+    { "type": "text", "id": "date_1", "label": "Date / eyebrow", "default": "Step 1" },
+    { "type": "text", "id": "title_1", "label": "Title", "default": "Order placed" },
+    { "type": "textarea", "id": "description_1", "label": "Description", "default": "We receive your order and get it ready." },
+    { "type": "text", "id": "link_1", "label": "Link (optional)" },
+    { "type": "checkbox", "id": "new_window_1", "label": "Open in new window", "default": false },
+
+    { "type": "header", "content": "Step #2" },
+    { "type": "text", "id": "icon_2", "label": "Icon", "default": "inventory_2", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
+    { "type": "checkbox", "id": "is_custom_img_2", "label": "Use custom image instead", "default": false },
+    { "type": "image_picker", "id": "custom_img_2", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_2", "value": true } },
+    { "type": "text", "id": "date_2", "label": "Date / eyebrow", "default": "Step 2" },
+    { "type": "text", "id": "title_2", "label": "Title", "default": "Packed" },
+    { "type": "textarea", "id": "description_2", "label": "Description", "default": "Carefully packed and quality checked." },
+    { "type": "text", "id": "link_2", "label": "Link (optional)" },
+    { "type": "checkbox", "id": "new_window_2", "label": "Open in new window", "default": false },
+
+    { "type": "header", "content": "Step #3" },
+    { "type": "text", "id": "icon_3", "label": "Icon", "default": "local_shipping", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
+    { "type": "checkbox", "id": "is_custom_img_3", "label": "Use custom image instead", "default": false },
+    { "type": "image_picker", "id": "custom_img_3", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_3", "value": true } },
+    { "type": "text", "id": "date_3", "label": "Date / eyebrow", "default": "Step 3" },
+    { "type": "text", "id": "title_3", "label": "Title", "default": "Shipped" },
+    { "type": "textarea", "id": "description_3", "label": "Description", "default": "On its way, tracking sent to your email." },
+    { "type": "text", "id": "link_3", "label": "Link (optional)" },
+    { "type": "checkbox", "id": "new_window_3", "label": "Open in new window", "default": false },
+
+    { "type": "header", "content": "Step #4" },
+    { "type": "text", "id": "icon_4", "label": "Icon", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
+    { "type": "checkbox", "id": "is_custom_img_4", "label": "Use custom image instead", "default": false },
+    { "type": "image_picker", "id": "custom_img_4", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_4", "value": true } },
+    { "type": "text", "id": "date_4", "label": "Date / eyebrow" },
+    { "type": "text", "id": "title_4", "label": "Title" },
+    { "type": "textarea", "id": "description_4", "label": "Description" },
+    { "type": "text", "id": "link_4", "label": "Link (optional)" },
+    { "type": "checkbox", "id": "new_window_4", "label": "Open in new window", "default": false },
+
+    { "type": "header", "content": "Step #5" },
+    { "type": "text", "id": "icon_5", "label": "Icon", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
+    { "type": "checkbox", "id": "is_custom_img_5", "label": "Use custom image instead", "default": false },
+    { "type": "image_picker", "id": "custom_img_5", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_5", "value": true } },
+    { "type": "text", "id": "date_5", "label": "Date / eyebrow" },
+    { "type": "text", "id": "title_5", "label": "Title" },
+    { "type": "textarea", "id": "description_5", "label": "Description" },
+    { "type": "text", "id": "link_5", "label": "Link (optional)" },
+    { "type": "checkbox", "id": "new_window_5", "label": "Open in new window", "default": false },
+
+    { "type": "header", "content": "Step #6" },
+    { "type": "text", "id": "icon_6", "label": "Icon", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
+    { "type": "checkbox", "id": "is_custom_img_6", "label": "Use custom image instead", "default": false },
+    { "type": "image_picker", "id": "custom_img_6", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_6", "value": true } },
+    { "type": "text", "id": "date_6", "label": "Date / eyebrow" },
+    { "type": "text", "id": "title_6", "label": "Title" },
+    { "type": "textarea", "id": "description_6", "label": "Description" },
+    { "type": "text", "id": "link_6", "label": "Link (optional)" },
+    { "type": "checkbox", "id": "new_window_6", "label": "Open in new window", "default": false },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-timeline" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}

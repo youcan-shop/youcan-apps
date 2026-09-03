@@ -1,0 +1,383 @@
+{% if block.settings.page.slug == page.slug %}
+  {% assign product = block.settings.product %}
+
+  {% case block.settings.source %}
+    {% when 'product_image' %}
+      {% assign dynamic_image = product.preview_image.large | default: product.preview_image.original %}
+    {% when 'product_image_2' %}
+      {% assign dynamic_image = product.images[1] %}
+    {% when 'product_image_3' %}
+      {% assign dynamic_image = product.images[2] %}
+    {% when 'category_image' %}
+      {% assign dynamic_image = product.categories[0].image %}
+    {% when 'store_logo' %}
+      {% assign dynamic_image = store.logo %}
+  {% endcase %}
+
+  {% unless dynamic_image %}
+    {% assign dynamic_image = block.settings.fallback_image.src %}
+  {% endunless %}
+
+  {% if dynamic_image %}
+    <div
+      data-lego="dynamic-image"
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
+      {% endif %}
+    >
+      <img
+        src="{{ dynamic_image }}"
+        alt="{{ product.name | default: 'Image' }}"
+        width="100%"
+        height="100%"
+        loading="lazy"
+      >
+    </div>
+  {% endif %}
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="dynamic-image"] {
+      display: block;
+      overflow: hidden;
+      aspect-ratio: {{ block.settings.aspect_ratio }};
+      opacity: {{ block.settings.opacity }};
+      transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.scale }});
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      {% if block.settings.width == 'custom' %}
+        max-width: 100%;
+        width: {{ block.settings.custom_width | append: 'px' }};
+      {% endif %}
+
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: {{ block.settings.object_fit }};
+        filter:
+          grayscale({{ block.settings.grayscale }}%)
+          blur({{ block.settings.blur }}px)
+          brightness({{ block.settings.brightness }}%)
+          contrast({{ block.settings.contrast }}%)
+          saturate({{ block.settings.saturate }}%);
+        transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1), filter 300ms ease;
+      }
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
+
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% if block.settings.entrance != 'none' %}
+        animation: lego-dynamic-image-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+      {% endif %}
+
+      {% if block.settings.hover_enabled %}
+        @media (hover: hover) and (pointer: fine) {
+          &:hover img {
+            transform: scale({{ block.settings.hover_scale }});
+            {% if block.settings.hover_grayscale %}filter: grayscale(100%);{% endif %}
+          }
+        }
+      {% endif %}
+
+      {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+      {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
+    }
+
+    @keyframes lego-dynamic-image-fade { from { opacity: 0; } }
+    @keyframes lego-dynamic-image-fade_up { from { opacity: 0; transform: translateY(12px); } }
+    @keyframes lego-dynamic-image-zoom { from { opacity: 0; transform: scale(0.92); } }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="dynamic-image"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+{% endif %}
+
+{% schema %}
+{
+  "label": "Dynamic image",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source",
+      "options": [
+        { "label": "Product image", "value": "product_image" },
+        { "label": "Product image #2", "value": "product_image_2" },
+        { "label": "Product image #3", "value": "product_image_3" },
+        { "label": "Category image", "value": "category_image" },
+        { "label": "Store logo", "value": "store_logo" }
+      ],
+      "default": "product_image"
+    },
+    { "type": "product", "id": "product", "label": "Product", "visible_if": { "setting_id": "source", "operator": "!=", "value": "store_logo" } },
+    {
+      "type": "paragraph",
+      "content": "Required for product/category sources ,nothing renders without one selected (falls to the fallback image instead)."
+    },
+    { "type": "image_picker", "id": "fallback_image", "label": "Fallback image (shown if empty)" },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "label": "Auto", "value": "auto" },
+        { "label": "Square (1:1)", "value": "1 / 1" },
+        { "label": "Portrait (4:5)", "value": "4 / 5" },
+        { "label": "Landscape (16:9)", "value": "16 / 9" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "select",
+      "id": "object_fit",
+      "label": "Object fit",
+      "options": [
+        { "label": "Cover", "value": "cover" },
+        { "label": "Contain", "value": "contain" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 100,
+      "step": 20,
+      "unit": "px",
+      "default": 400,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
+
+    { "type": "header", "content": "Filters" },
+    { "type": "range", "id": "grayscale", "label": "Grayscale", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 0 },
+    { "type": "range", "id": "blur", "label": "Blur", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "brightness", "label": "Brightness", "min": 30, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "contrast", "label": "Contrast", "min": 30, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "saturate", "label": "Saturation", "min": 0, "max": 200, "step": 5, "unit": "%", "default": 100 },
+
+    { "type": "header", "content": "Background" },
+    { "type": "paragraph", "content": "Shows behind transparent images (e.g. PNG logos)" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" },
+        { "label": "Dotted", "value": "dotted" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.05, "default": 1 },
+    { "type": "range", "id": "rotate", "label": "Rotate", "min": -180, "max": 180, "step": 1, "unit": "°", "default": 0 },
+    { "type": "range", "id": "scale", "label": "Scale", "min": 0.5, "max": 2, "step": 0.05, "default": 1 },
+    {
+      "type": "select",
+      "id": "entrance",
+      "label": "Entrance animation",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Fade in", "value": "fade" },
+        { "label": "Fade up", "value": "fade-up" },
+        { "label": "Zoom in", "value": "zoom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "entrance_duration",
+      "label": "Animation duration",
+      "min": 100,
+      "max": 2000,
+      "step": 50,
+      "unit": "ms",
+      "default": 500,
+      "visible_if": { "setting_id": "entrance", "operator": "!=", "value": "none" }
+    },
+
+    { "type": "header", "content": "Hover" },
+    { "type": "checkbox", "id": "hover_enabled", "label": "Enable hover effect", "default": false },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover zoom",
+      "min": 0.8,
+      "max": 1.5,
+      "step": 0.01,
+      "default": 1.05,
+      "visible_if": { "setting_id": "hover_enabled", "value": true }
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_grayscale",
+      "label": "Grayscale on hover",
+      "default": false,
+      "visible_if": { "setting_id": "hover_enabled", "value": true }
+    },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-dynamic-image" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}

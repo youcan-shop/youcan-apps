@@ -1,0 +1,734 @@
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
+  {% assign product = block.settings.product %}
+
+  {% assign on_sale = false %}
+  {% if product.compare_at_price > product.price %}{% assign on_sale = true %}{% endif %}
+
+  {% if product.images.size > 0 %}
+    <lego-product-gallery
+      data-lego="product-gallery"
+      data-entrance="{{ block.settings.entrance }}"
+      data-zoom-mode="{{ block.settings.hover_zoom_mode }}"
+      data-magnify-level="{{ block.settings.magnify_level }}"
+      {% if block.settings.enable_lightbox %}
+        data-lightbox-enabled="true"
+      {% endif %}
+      {% if block.settings.enable_swipe %}
+        data-swipe-enabled="true"
+      {% endif %}
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
+      {% endif %}
+    >
+      <div
+        class="gallery"
+        data-layout="{{ block.settings.layout }}"
+        data-thumbs="{{ block.settings.thumbnail_position }}"
+        data-reveal="true"
+      >
+        {% for image in product.images limit: block.settings.max_images %}
+          <input
+            type="radio"
+            name="lego-gallery-{{ block.id }}"
+            id="lego-gallery-{{ block.id }}-{{ forloop.index }}"
+            class="radio"
+            {% if forloop.first %}
+              checked
+            {% endif %}
+          >
+        {% endfor %}
+
+        <div class="main" data-slot="main">
+          {% for image in product.images limit: block.settings.max_images %}
+            <button type="button" class="slide" data-slot="slide" data-index="{{ forloop.index }}" data-full="{{ image | image_url: width: 2000 }}">
+              <img
+                src="{{ image }}"
+                alt="{{ product.title }}"
+                width="1200"
+                height="1200"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            </button>
+          {% endfor %}
+          {% if block.settings.show_badge and on_sale -%}
+            <span class="badge">{{ block.settings.badge_text }}</span>
+          {%- endif %}
+          {% if block.settings.hover_zoom_mode == 'magnify' -%}
+            <span class="zoom-hint material-symbols-rounded">zoom_in</span>
+          {%- endif %}
+        </div>
+
+        {% if product.images.size > 1 and block.settings.layout == 'standard' %}
+          <div class="thumbs" data-slot="thumbs">
+            {% for image in product.images limit: block.settings.max_images %}
+              <label for="lego-gallery-{{ block.id }}-{{ forloop.index }}" class="thumb">
+                <img src="{{ image }}" alt="" width="200" height="200" loading="lazy">
+              </label>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if block.settings.enable_lightbox %}
+        <dialog class="lightbox" data-slot="lightbox">
+          <button type="button" class="lightbox-close" data-slot="lightbox-close" aria-label="Close">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+          <button type="button" class="lightbox-nav prev" data-slot="lightbox-prev" aria-label="Previous">
+            <span class="material-symbols-rounded">chevron_left</span>
+          </button>
+          <img class="lightbox-image" data-slot="lightbox-image" src="" alt="{{ product.title }}" height="100%" width="100%">
+          <button type="button" class="lightbox-nav next" data-slot="lightbox-next" aria-label="Next">
+            <span class="material-symbols-rounded">chevron_right</span>
+          </button>
+        </dialog>
+      {% endif %}
+    </lego-product-gallery>
+  {% endif %}
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="product-gallery"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.box_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        {% when 'custom' %} box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+      {% endcase %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
+
+      .gallery {
+        display: flex;
+        gap: {{ block.settings.gap }}px;
+
+        &[data-thumbs="bottom"] { flex-direction: column; .thumbs { flex-direction: row; } }
+        &[data-thumbs="top"] { flex-direction: column-reverse; .thumbs { flex-direction: row; } }
+        &[data-thumbs="left"] { flex-direction: row-reverse; .thumbs { flex-direction: column; } }
+        &[data-thumbs="right"] { flex-direction: row; .thumbs { flex-direction: column; } }
+
+        &[data-layout="grid"] {
+          display: flex;
+          flex-direction: column;
+          .main { aspect-ratio: auto; }
+          .slide { position: static !important; opacity: 1 !important; aspect-ratio: {{ block.settings.aspect_ratio }}; margin-bottom: {{ block.settings.gap }}px; }
+        }
+      }
+
+      .radio { position: absolute; opacity: 0; pointer-events: none; }
+
+      .main {
+        position: relative;
+        flex: 1;
+        height: 100%;
+        aspect-ratio: {{ block.settings.aspect_ratio }};
+        border-radius: {{ block.settings.media_radius }}px;
+        overflow: hidden;
+        background-color: {{ block.settings.media_bg_color.hex }};
+        cursor: {% if block.settings.enable_lightbox %}zoom-in{% else %}default{% endif %};
+
+        .slide {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          border: 0;
+          background: transparent;
+          cursor: inherit;
+          opacity: 0;
+          transition: opacity 250ms ease;
+
+          img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1); }
+        }
+
+        .badge {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          z-index: 2;
+          padding: 4px 10px;
+          border-radius: 6px;
+          background-color: {{ block.settings.badge_bg_color.hex }};
+          color: {{ block.settings.badge_text_color.hex }};
+          font-size: 12px;
+          font-weight: 500;
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
+        }
+
+        .zoom-hint {
+          position: absolute;
+          bottom: 12px;
+          right: 12px;
+          z-index: 2;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.9);
+          color: #121212;
+          font-size: 18px;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 200ms ease;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+          &:hover .zoom-hint { opacity: 1; }
+        }
+      }
+
+      {% for i in (1..30) %}
+        &:has(#lego-gallery-{{ block.id }}-{{ i }}:checked) .main .slide[data-index="{{ i }}"] { opacity: 1; z-index: 1; }
+      {% endfor %}
+
+      .thumbs {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+        overflow: auto;
+
+        .thumb {
+          display: block;
+          flex-shrink: 0;
+          width: {{ block.settings.thumb_size }}px;
+          height: {{ block.settings.thumb_size }}px;
+          overflow: hidden;
+          cursor: pointer;
+          border: {{ block.settings.thumb_border_weight }}px solid transparent;
+          opacity: 0.6;
+          transition: opacity 160ms ease, border-color 160ms ease;
+
+          {% if block.settings.thumbnail_shape == 'circle' %}border-radius: 50%;{% else %}border-radius: {{ block.settings.thumb_radius }}px;{% endif %}
+
+          img { width: 100%; height: 100%; object-fit: cover; }
+        }
+      }
+
+      {% for i in (1..30) %}
+        &:has(#lego-gallery-{{ block.id }}-{{ i }}:checked) label[for="lego-gallery-{{ block.id }}-{{ i }}"] {
+          opacity: 1;
+          border-color: {{ block.settings.active_thumb_color.hex }};
+        }
+      {% endfor %}
+
+      &[data-entrance="fade-up"] .gallery,
+      &[data-entrance="fade"] .gallery,
+      &[data-entrance="zoom"] .gallery {
+        opacity: 0;
+        transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1), transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      &[data-entrance="fade-up"] .gallery { transform: translateY(16px); }
+      &[data-entrance="zoom"] .gallery { transform: scale(0.95); }
+      .gallery[data-revealed="true"] { opacity: 1; transform: none; }
+
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        max-width: 100vw;
+        max-height: 100vh;
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        padding: 40px;
+        background: rgba(0, 0, 0, 0.95);
+        display: none;
+        align-items: center;
+        justify-content: center;
+
+        &::backdrop { background: transparent; }
+        &[open] { display: flex; }
+
+        .lightbox-image { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .lightbox-close, .lightbox-nav {
+          position: fixed;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          padding: 0;
+          border-radius: 50%;
+          border: 0;
+          background: rgba(255, 255, 255, 0.15);
+          color: #FFFFFF;
+          cursor: pointer;
+          transition: background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+          &:hover { background: rgba(255, 255, 255, 0.3); }
+          &:active { transform: scale(0.9); }
+        }
+
+        .lightbox-close { top: 20px; right: 20px; padding: 0; }
+        .lightbox-nav.prev { left: 20px; top: 50%; transform: translateY(-50%); }
+        .lightbox-nav.next { right: 20px; top: 50%; transform: translateY(-50%); }
+      }
+
+      @media (prefers-reduced-motion: reduce) { .gallery { transform: none !important; } }
+
+      {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+      {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="product-gallery"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-product-gallery')) {
+      class LegoProductGallery extends HTMLElement {
+        connectedCallback() {
+          this.gallery = this.querySelector('.gallery');
+          this.mainElement = this.querySelector('[data-slot="main"]');
+          this.slides = Array.from(this.querySelectorAll('[data-slot="slide"]'));
+          this.zoomMode = this.getAttribute('data-zoom-mode');
+          this.magnifyLevel = Number(this.getAttribute('data-magnify-level')) || 2;
+
+          this.bindReveal();
+          this.bindZoom();
+          this.bindLightbox();
+          this.bindSwipe();
+        }
+
+        activeIndex() {
+          const checked = this.querySelector('.radio:checked');
+          return checked ? Number(checked.id.split('-').pop()) : 1;
+        }
+
+        goTo(index) {
+          const total = this.slides.length;
+          const clamped = ((index - 1 + total) % total) + 1;
+          const radio =
+            this.querySelector('#' + CSS.escape('lego-gallery-' + this.id + '-' + clamped)) || this.querySelectorAll('.radio')[clamped - 1];
+          if (radio) radio.checked = true;
+        }
+
+        bindReveal() {
+          if (this.getAttribute('data-entrance') === 'none' || !('IntersectionObserver' in window)) {
+            if (this.gallery) this.gallery.setAttribute('data-revealed', 'true');
+            return;
+          }
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  this.gallery.setAttribute('data-revealed', 'true');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15 }
+          );
+          if (this.gallery) observer.observe(this.gallery);
+        }
+
+        bindZoom() {
+          if (this.zoomMode === 'none' || !this.mainElement) return;
+
+          if (this.zoomMode === 'scale') {
+            this.mainElement.addEventListener('mouseenter', () => {
+              this.slides.forEach((s) => (s.querySelector('img').style.transform = 'scale(1.08)'));
+            });
+            this.mainElement.addEventListener('mouseleave', () => {
+              this.slides.forEach((s) => (s.querySelector('img').style.transform = 'scale(1)'));
+            });
+          } else if (this.zoomMode === 'magnify') {
+            this.mainElement.addEventListener('mousemove', (e) => {
+              const activeSlide = this.slides[this.activeIndex() - 1];
+              if (!activeSlide) return;
+              const img = activeSlide.querySelector('img');
+              const rect = this.mainElement.getBoundingClientRect();
+              const x = ((e.clientX - rect.left) / rect.width) * 100;
+              const y = ((e.clientY - rect.top) / rect.height) * 100;
+              img.style.transformOrigin = x + '% ' + y + '%';
+              img.style.transform = 'scale(' + this.magnifyLevel + ')';
+            });
+            this.mainElement.addEventListener('mouseleave', () => {
+              const activeSlide = this.slides[this.activeIndex() - 1];
+              const img = activeSlide?.querySelector('img');
+              if (img) img.style.transform = 'scale(1)';
+            });
+          }
+        }
+
+        bindLightbox() {
+          if (this.getAttribute('data-lightbox-enabled') !== 'true') return;
+          const dialog = this.querySelector('[data-slot="lightbox"]');
+          const image = this.querySelector('[data-slot="lightbox-image"]');
+          const closeBtn = this.querySelector('[data-slot="lightbox-close"]');
+          const prevBtn = this.querySelector('[data-slot="lightbox-prev"]');
+          const nextBtn = this.querySelector('[data-slot="lightbox-next"]');
+          if (!dialog || !image) return;
+
+          const open = (index) => {
+            this.goTo(index);
+            image.src = this.slides[index - 1]?.dataset.full || '';
+            dialog.showModal();
+          };
+
+          this.slides.forEach((slide, i) => slide.addEventListener('click', () => open(i + 1)));
+          if (closeBtn) closeBtn.addEventListener('click', () => dialog.close());
+          if (prevBtn) prevBtn.addEventListener('click', () => open(this.activeIndex() === 1 ? this.slides.length : this.activeIndex() - 1));
+          if (nextBtn) nextBtn.addEventListener('click', () => open(this.activeIndex() === this.slides.length ? 1 : this.activeIndex() + 1));
+
+          dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) dialog.close();
+          });
+          dialog.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') open(this.activeIndex() === 1 ? this.slides.length : this.activeIndex() - 1);
+            if (e.key === 'ArrowRight') open(this.activeIndex() === this.slides.length ? 1 : this.activeIndex() + 1);
+          });
+        }
+
+        bindSwipe() {
+          if (this.getAttribute('data-swipe-enabled') !== 'true' || !this.mainElement) return;
+          let startX = 0;
+
+          this.mainElement.addEventListener(
+            'touchstart',
+            (e) => {
+              startX = e.touches[0].clientX;
+            },
+            { passive: true }
+          );
+          this.mainElement.addEventListener(
+            'touchend',
+            (e) => {
+              const diff = e.changedTouches[0].clientX - startX;
+              if (Math.abs(diff) < 40) return;
+              this.goTo(this.activeIndex() + (diff < 0 ? 1 : -1));
+            },
+            { passive: true }
+          );
+        }
+      }
+
+      customElements.define('lego-product-gallery', LegoProductGallery);
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "label": "Product gallery",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+    { "type": "header", "content": "Product" },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "paragraph", "content": "Pick a product to pull images" },
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "label": "Standard (main + thumbnails)", "value": "standard" },
+        { "label": "Grid (stacked, no thumbnails)", "value": "grid" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "thumbnail_position",
+      "label": "Thumbnail position",
+      "options": [
+        { "label": "Bottom", "value": "bottom" },
+        { "label": "Top", "value": "top" },
+        { "label": "Left", "value": "left" },
+        { "label": "Right", "value": "right" }
+      ],
+      "default": "bottom",
+      "visible_if": { "setting_id": "layout", "value": "standard" }
+    },
+    {
+      "type": "select",
+      "id": "thumbnail_shape",
+      "label": "Thumbnail shape",
+      "options": [
+        { "label": "Square", "value": "square" },
+        { "label": "Circle", "value": "circle" }
+      ],
+      "default": "square",
+      "visible_if": { "setting_id": "layout", "value": "standard" }
+    },
+    { "type": "range", "id": "max_images", "label": "Max images shown", "min": 2, "max": 30, "step": 1, "default": 8 },
+    { "type": "checkbox", "id": "show_badge", "label": "Show sale badge", "default": true },
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "Sale" },
+
+    { "type": "header", "content": "Interaction" },
+    {
+      "type": "select",
+      "id": "hover_zoom_mode",
+      "label": "Hover zoom",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Simple scale", "value": "scale" },
+        { "label": "Magnify (follow cursor)", "value": "magnify" }
+      ],
+      "default": "scale"
+    },
+    {
+      "type": "range",
+      "id": "magnify_level",
+      "label": "Magnify level",
+      "min": 1.5,
+      "max": 4,
+      "step": 0.5,
+      "default": 2,
+      "visible_if": { "setting_id": "hover_zoom_mode", "value": "magnify" }
+    },
+    { "type": "checkbox", "id": "enable_lightbox", "label": "Click to open fullscreen viewer", "default": true },
+    { "type": "checkbox", "id": "enable_swipe", "label": "Swipe to change image (mobile)", "default": true },
+
+    { "type": "header", "content": "Style" },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "label": "Auto", "value": "auto" },
+        { "label": "Square (1:1)", "value": "1 / 1" },
+        { "label": "Portrait (4:5)", "value": "4 / 5" },
+        { "label": "Landscape (16:9)", "value": "16 / 9" }
+      ],
+      "default": "1 / 1"
+    },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "media_radius", "label": "Main image corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
+    { "type": "color", "id": "media_bg_color", "label": "Media placeholder background", "default": "#F5F5F5" },
+    { "type": "range", "id": "thumb_size", "label": "Thumbnail size", "min": 40, "max": 100, "step": 4, "unit": "px", "default": 64 },
+    {
+      "type": "range",
+      "id": "thumb_radius",
+      "label": "Thumbnail corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8,
+      "visible_if": { "setting_id": "thumbnail_shape", "value": "square" }
+    },
+    {
+      "type": "range",
+      "id": "thumb_border_weight",
+      "label": "Active thumbnail border weight",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    { "type": "color", "id": "active_thumb_color", "label": "Active thumbnail border color", "default": "#111827" },
+    { "type": "color", "id": "badge_bg_color", "label": "Badge background", "default": "#DC2626" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge text color", "default": "#FFFFFF" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+    {
+      "type": "select",
+      "id": "entrance",
+      "label": "Entrance animation",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Fade in", "value": "fade" },
+        { "label": "Fade up", "value": "fade-up" },
+        { "label": "Zoom in", "value": "zoom" }
+      ],
+      "default": "none"
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-product-gallery" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}

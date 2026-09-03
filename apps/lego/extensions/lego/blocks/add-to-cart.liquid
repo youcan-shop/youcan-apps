@@ -1,0 +1,325 @@
+{% assign product = block.settings.product | default: product %}
+
+{% if product %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=shopping_cart"
+  />
+
+  {% assign default_variant = product.selected_or_first_available_variant %}
+
+  <lego-add-to-cart
+    data-lego="add-to-cart"
+    data-product-id="{{ product.id }}"
+    data-default-variant-id="{{ default_variant.id }}"
+    data-default-available="{{ default_variant.available }}"
+    data-add-text="{{ block.settings.button_text }}"
+    data-sold-out-text="{{ block.settings.sold_out_text }}"
+    data-success-message="{{ block.settings.success_message }}"
+    data-error-message="{{ block.settings.error_message }}"
+    data-cart-url="{{ block.settings.cart_url }}"
+    data-view-cart-text="{{ block.settings.view_cart_text }}"
+    data-redirect-to-cart="{{ block.settings.redirect_to_cart }}"
+    data-sticky-mobile="{{ block.settings.sticky_mobile }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    <button
+      type="button"
+      class="btn"
+      data-slot="add"
+      {% unless default_variant.available %}
+        disabled
+      {% endunless %}
+    >
+      {% if block.settings.show_icon -%}
+        <span class="material-symbols-rounded icon" data-slot="icon">shopping_cart</span>
+      {%- endif %}
+      <span data-slot="label">
+        {% if default_variant.available %}{{ block.settings.button_text }}{% else %}{{ block.settings.sold_out_text }}{% endif %}
+      </span>
+    </button>
+
+    <div class="status" data-slot="status" role="status" hidden></div>
+  </lego-add-to-cart>
+{% endif %}
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="add-to-cart"] {
+    display: block;
+    opacity: {{ block.settings.opacity }};
+
+    margin-top: {{ block.settings.margin_top | append: 'px' }};
+    margin-right: {{ block.settings.margin_right | append: 'px' }};
+    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+    margin-left: {{ block.settings.margin_left | append: 'px' }};
+
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: {{ block.settings.button_height }}px;
+      padding-inline: 20px;
+      border: 0;
+      border-radius: {{ block.settings.corner_radius }}px;
+      font-weight: 700;
+      font-size: 15px;
+      color: {{ block.settings.text_color.hex }};
+      cursor: pointer;
+      transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms ease;
+
+      {% if block.settings.gradient_enabled %}
+        background-image: linear-gradient({{ block.settings.gradient_angle }}deg, {{ block.settings.bg_color.hex }}, {{ block.settings.gradient_end.hex }});
+      {% else %}
+        background-color: {{ block.settings.bg_color.hex }};
+      {% endif %}
+
+      {% case block.settings.button_shadow %}
+        {% when 'sm' %} box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        {% when 'md' %} box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        {% when 'lg' %} box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      {% endcase %}
+
+      .icon { font-size: 18px; transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+      &.bounce .icon { transform: scale(1.3) rotate(-8deg); }
+
+      &:active:not(:disabled) { transform: scale(0.98); }
+      &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+      &[data-loading="true"] {
+        cursor: wait;
+        .icon { animation: lego-atc-spin 700ms linear infinite; }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:disabled) { opacity: 0.92; }
+      }
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: {{ block.settings.corner_radius }}px;
+
+      a { color: inherit; font-weight: 600; text-decoration: underline; margin-left: 4px; }
+
+      &[data-state="success"] { background-color: #DCFCE7; color: #166534; }
+      &[data-state="error"] { background-color: #FEE2E2; color: #991B1B; }
+    }
+
+    &[data-sticky-mobile="1"] {
+      @media (width <= 640px) {
+        .btn { position: sticky; bottom: 12px; z-index: 5; }
+      }
+    }
+
+    {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+    {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+    {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+    {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
+  }
+
+  @keyframes lego-atc-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  {% if block.settings.custom_css != blank %}
+    #youcan-block--{{ block.id }} [data-lego="add-to-cart"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+<script defer>
+  if (!customElements.get('lego-add-to-cart')) {
+    class LegoAddToCart extends HTMLElement {
+      connectedCallback() {
+        this.productId = this.getAttribute('data-product-id');
+        this.variantId = this.getAttribute('data-default-variant-id');
+        this.available = this.getAttribute('data-default-available') === '1';
+        this.quantity = 1;
+        this.attachedImage = null;
+
+        this.btn = this.querySelector('[data-slot="add"]');
+        this.label = this.querySelector('[data-slot="label"]');
+        this.icon = this.querySelector('[data-slot="icon"]');
+        this.status = this.querySelector('[data-slot="status"]');
+
+        document.addEventListener('lego:variant:change', (e) => {
+          if (!e.detail || e.detail.productId !== this.productId) return;
+          this.variantId = e.detail.variantId;
+          this.available = e.detail.available;
+          this.updateDisabledState();
+        });
+        document.addEventListener('lego:quantity:change', (e) => {
+          if (!e.detail || e.detail.productId !== this.productId) return;
+          this.quantity = e.detail.quantity;
+        });
+
+        document.addEventListener('lego:attachment:change', (e) => {
+          if (!e.detail || e.detail.productId !== this.productId) return;
+          this.attachedImage = e.detail.url || null;
+        });
+
+        if (this.btn) this.btn.addEventListener('click', () => this.submit());
+      }
+
+      updateDisabledState() {
+        if (!this.btn) return;
+        this.btn.disabled = !this.available;
+        if (this.label) {
+          this.label.textContent = this.available ? this.getAttribute('data-add-text') : this.getAttribute('data-sold-out-text');
+        }
+      }
+
+      submit() {
+        this.btn.disabled = true;
+        this.btn.dataset.loading = 'true';
+        this.status.hidden = true;
+
+        const payload = {
+          quantity: this.quantity,
+          productVariantId: this.variantId,
+          attachedImage: this.attachedImage,
+        };
+
+        const finish = (ok, cartResult) => {
+          this.btn.removeAttribute('data-loading');
+          if (this.available) this.btn.disabled = false;
+
+          if (ok) {
+            if (window.Dotshop?.pixels?.publish) {
+              window.Dotshop.pixels.publish('add-to-cart', cartResult || payload);
+            }
+            if (this.icon) {
+              this.icon.classList.add('bounce');
+              setTimeout(() => this.icon.classList.remove('bounce'), 300);
+            }
+            if (this.getAttribute('data-redirect-to-cart') === '1') {
+              window.location.href = this.getAttribute('data-cart-url') || '/cart';
+              return;
+            }
+            this.showStatus('success', this.getAttribute('data-success-message'), this.getAttribute('data-cart-url'));
+          } else {
+            this.showStatus('error', this.getAttribute('data-error-message'));
+          }
+        };
+
+        if (window.youcanjs && window.youcanjs.cart && typeof window.youcanjs.cart.addItem === 'function') {
+          window.youcanjs.cart
+            .addItem(payload)
+            .then((cart) => finish(true, cart))
+            .catch(() => finish(false));
+          return;
+        }
+      }
+
+      showStatus(state, message, link) {
+        this.status.hidden = false;
+        this.status.dataset.state = state;
+        this.status.textContent = message || '';
+        if (state === 'success' && link) {
+          const a = document.createElement('a');
+          a.href = link;
+          a.textContent = this.getAttribute('data-view-cart-text') || 'View cart';
+          this.status.appendChild(a);
+        }
+      }
+    }
+
+    customElements.define('lego-add-to-cart', LegoAddToCart);
+  }
+</script>
+
+{% schema %}
+{
+  "label": "Add to cart",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Product" },
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "paragraph",
+      "content": "Uses the product on the current page, or pick one. Reads the latest selection from Variant Picker / Quantity blocks elsewhere on the page automatically."
+    },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Add to cart" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold-out text", "default": "Sold out" },
+    { "type": "checkbox", "id": "show_icon", "label": "Show cart icon", "default": true },
+    { "type": "checkbox", "id": "redirect_to_cart", "label": "Redirect to cart on success", "default": false },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Added to your cart." },
+    { "type": "text", "id": "view_cart_text", "label": "\"View cart\" link text", "default": "View cart" },
+    { "type": "text", "id": "cart_url", "label": "Cart page URL", "default": "/cart" },
+    { "type": "text", "id": "error_message", "label": "Error message", "default": "Couldn't add this to your cart." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "range", "id": "button_height", "label": "Button height", "min": 36, "max": 64, "step": 2, "unit": "px", "default": 48 },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
+    {
+      "type": "select",
+      "id": "button_shadow",
+      "label": "Button shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#111827" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" },
+    { "type": "checkbox", "id": "gradient_enabled", "label": "Gradient background", "default": false },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "label": "Gradient angle",
+      "min": 0,
+      "max": 360,
+      "step": 5,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "gradient_enabled", "value": true }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end color",
+      "default": "#374151",
+      "visible_if": { "setting_id": "gradient_enabled", "value": true }
+    },
+
+    { "type": "header", "content": "Behavior" },
+    { "type": "checkbox", "id": "sticky_mobile", "label": "Sticky on mobile", "default": false },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-add-to-cart" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}

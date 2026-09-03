@@ -1,0 +1,16 @@
+{
+    "name": "lego",
+    "id": "app_FBhiwdDW7bxswRjfRQoVkFcY4ID",
+    "handle": "lego-2",
+    "app_url": null,
+    "redirect_urls": [],
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "3011"
+    },
+    "extension_ids": {
+        "lego": "ext_FBhiwkSakCPr6CMIcuCLP2RM5Kv"
+    }
+}

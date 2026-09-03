@@ -1,0 +1,613 @@
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
+
+  {% assign grid_category = block.settings.category %}
+
+  {% if grid_category %}
+    <lego-collection-grid
+      data-lego="collection-grid"
+      data-success-message="{{ block.settings.success_message }}"
+      data-error-message="{{ block.settings.error_message }}"
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
+      {% endif %}
+    >
+      {% if block.settings.title %}
+        <h2 class="grid-title">{{ block.settings.title }}</h2>
+      {% endif %}
+
+      <div class="grid" style="--lego-columns: {{ block.settings.columns }}; --lego-columns-mobile: {{ block.settings.columns_mobile }};">
+        {% assign render_limit = block.settings.limit | plus: block.settings.load_more_count | times: 3 %}
+        {% paginate collection.products by render_limit id category_id: grid_category.id %}
+          {% for item in items %}
+            {% assign item_price = item.selected_or_first_available_variant.price | default: item.price %}
+            {% assign item_compare = item.selected_or_first_available_variant.compare_at_price | default: item.compare_at_price %}
+            {% assign item_on_sale = false %}
+            {% if item_compare > item_price %}{% assign item_on_sale = true %}{% endif %}
+            {% assign item_discount = 0 %}
+            {% if item_on_sale and item_compare > 0 -%}
+              {%- assign item_discount = item_compare | minus: item_price | times: 100 | divided_by: item_compare | round -%}
+            {%- endif %}
+
+            <div
+              class="card"
+              data-slot="card"
+              {% if forloop.index > block.settings.limit %}
+                hidden
+              {% endif %}
+            >
+              <div class="media">
+                <a class="media-link" href="{{ item.url }}" aria-label="{{ item.name }}">
+                  {% if item.preview_image -%}
+                    <img
+                      src="{{ item.preview_image.medium | default: item.preview_image.original }}"
+                      alt="{{ item.name }}"
+                      loading="lazy"
+                      height="100%"
+                      width="100%"
+                    >
+                  {%- endif %}
+                </a>
+                {% unless item.available -%}
+                  <span class="sold-out-overlay">{{ block.settings.sold_out_text }}</span>
+                {%- endunless %}
+                {% if item_on_sale and block.settings.show_badge and item.available -%}
+                  <span class="badge">-{{ item_discount }}%</span>
+                {%- endif %}
+                {% if block.settings.show_quick_add and item.available %}
+                  <button
+                    type="button"
+                    class="quick-add"
+                    data-slot="quick-add"
+                    data-product-id="{{ item.id }}"
+                    data-variant-id="{{ item.selected_or_first_available_variant.id }}"
+                    {% if item.has_only_default_variant %}
+                      data-single-variant="true"
+                    {% endif %}
+                    data-url="{{ item.url }}"
+                    aria-label="{{ block.settings.quick_add_text }}"
+                  >
+                    <span class="material-symbols-rounded icon">shopping_cart</span>
+                  </button>
+                {% endif %}
+              </div>
+
+              <a class="info" href="{{ item.url }}">
+                <span class="title">{{ item.name }}</span>
+                {% if block.settings.show_rating and item.averageRating > 0 %}
+                  <div class="rating">
+                    {% for s in (1..5) -%}
+                      <span class="material-symbols-rounded star" data-filled="{% if s <= item.averageRating %}true{% else %}false{% endif %}"
+                        >star</span
+                      >
+                    {%- endfor %}
+                  </div>
+                {% endif %}
+                <div class="price-row">
+                  <span class="price">{{ item_price | money }}</span>
+                  {% if item_on_sale -%}
+                    <span class="compare">{{ item_compare | money }}</span>
+                  {%- endif %}
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endpaginate %}
+      </div>
+
+      {% if block.settings.show_load_more %}
+        <a href="/collections/{{ grid_category.slug }}" class="load-more" data-slot="load-more">
+          {{ block.settings.load_more_text }}
+        </a>
+      {% endif %}
+
+      <div class="status" data-slot="status" role="status"></div>
+    </lego-collection-grid>
+  {% endif %}
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="collection-grid"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% endcase %}
+
+      .grid-title {
+        margin: 0 0 20px;
+        font-size: {{ block.settings.title_size }}px;
+        font-weight: 600;
+        color: {{ block.settings.title_color.hex }};
+        text-align: {{ block.settings.title_align }};
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(var(--lego-columns), 1fr);
+        gap: {{ block.settings.gap }}px;
+
+        @media (width <= 768px) {
+          grid-template-columns: repeat(var(--lego-columns-mobile), 1fr);
+        }
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        &[hidden] { display: none; }
+
+        .media {
+          position: relative;
+          aspect-ratio: {{ block.settings.aspect_ratio }};
+          border-radius: {{ block.settings.media_radius }}px;
+          overflow: hidden;
+          background-color: {{ block.settings.media_bg_color.hex }};
+
+          .media-link { position: absolute; inset: 0; display: block; }
+          img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+          .sold-out-overlay {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.7); font-size: 12px; font-weight: 600; color: #121212;
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+          }
+
+          .badge {
+            position: absolute; top: 8px; left: 8px; padding: 3px 8px; border-radius: 6px;
+            background-color: {{ block.settings.badge_bg_color.hex }}; color: {{ block.settings.badge_text_color.hex }};
+            font-size: 11px; font-weight: 600;
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+          }
+
+          .quick-add {
+            padding: 0;
+            position: absolute; bottom: 8px; right: 8px; width: 32px; height: 32px;
+            display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
+            border: 0; background-color: {{ block.settings.quick_add_bg_color.hex }}; color: {{ block.settings.quick_add_icon_color.hex }};
+            cursor: pointer; opacity: 0; transform: translateY(6px);
+            transition: opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+
+            .icon { font-size: 16px; transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+            &.bounce .icon { transform: scale(1.3) rotate(-8deg); }
+          }
+
+          @media (hover: hover) and (pointer: fine) {
+            &:hover img { transform: scale(1.05); }
+            &:hover .quick-add { opacity: 1; transform: translateY(0); }
+          }
+          @media (width <= 768px) {
+            .quick-add { opacity: 1; transform: translateY(0); }
+          }
+        }
+
+        .info {
+          display: flex; flex-direction: column; gap: 4px;
+          text-decoration: none; color: inherit;
+
+          .title {
+            font-size: {{ block.settings.title_card_size }}px;
+            font-weight: 500;
+            color: {{ block.settings.card_title_color.hex }};
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+          }
+
+          .rating { display: flex; gap: 1px;
+            .star { font-size: 12px; color: {{ block.settings.star_color.hex }}; opacity: 0.25; }
+            .star[data-filled="true"] { opacity: 1; }
+          }
+
+          .price-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            {% if block.settings.font_family == 'custom' %}
+              font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+            {% elsif block.settings.font_family != 'inherit' %}
+              font-family: {{ block.settings.font_family }};
+            {% endif %}
+
+            .price { font-family: inherit; font-size: {{ block.settings.price_size }}px; font-weight: 600; color: {{ block.settings.price_color.hex }}; }
+            .compare { font-family: inherit; font-size: 12px; color: {{ block.settings.compare_color.hex }}; text-decoration: line-through; }
+          }
+        }
+      }
+
+      .load-more {
+        display: block;
+        margin: {{ block.settings.gap | times: 1.5 | round }}px auto 0;
+        padding: 12px 28px;
+        width: fit-content;
+        border-radius: {{ block.settings.load_more_radius }}px;
+        border: 1px solid {{ block.settings.load_more_border_color.hex }};
+        background-color: {{ block.settings.load_more_bg_color.hex }};
+        color: {{ block.settings.load_more_text_color.hex }};
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: opacity 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        &:active { transform: scale(0.97); }
+        &[hidden] { display: none; }
+
+        @media (hover: hover) and (pointer: fine) { &:hover { opacity: 0.85; } }
+      }
+
+      .status {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        position: fixed;
+        z-index: 50;
+        left: 50%;
+        bottom: -42px;
+        transform: translateX(-50%);
+        transition: bottom 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+
+        &[data-show="true"] { bottom: 12px; }
+        &[data-state="success"] { background-color: #DCFCE7; color: #166534; }
+        &[data-state="error"] { background-color: #FEE2E2; color: #991B1B; }
+      }
+
+      {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+      {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
+    }
+
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="collection-grid"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+  </style>
+{% endif %}
+
+<script defer>
+  if (!customElements.get('lego-collection-grid')) {
+    class LegoCollectionGrid extends HTMLElement {
+      connectedCallback() {
+        this.status = this.querySelector('[data-slot="status"]');
+
+        this.querySelectorAll('[data-slot="quick-add"]').forEach((btn) => {
+          btn.addEventListener('click', () => this.quickAdd(btn));
+        });
+      }
+
+      quickAdd(btn) {
+        const isSingleVariant = btn.dataset.singleVariant === 'true';
+        if (!isSingleVariant) {
+          window.location.href = btn.dataset.url;
+          return;
+        }
+
+        const icon = btn.querySelector('.icon');
+        const payload = { quantity: 1, productVariantId: btn.dataset.variantId };
+
+        const finish = (ok) => {
+          if (ok && icon) {
+            icon.classList.add('bounce');
+            setTimeout(() => icon.classList.remove('bounce'), 300);
+          }
+          this.showStatus(ok ? 'success' : 'error', ok ? this.getAttribute('data-success-message') : this.getAttribute('data-error-message'));
+        };
+
+        if (window.youcanjs && window.youcanjs.cart && typeof window.youcanjs.cart.addItem === 'function') {
+          window.youcanjs.cart
+            .addItem(payload)
+            .then(() => finish(true))
+            .catch(() => finish(false));
+          return;
+        }
+      }
+
+      showStatus(state, message) {
+        if (!this.status) return;
+        this.status.setAttribute('data-show', 'true');
+        this.status.dataset.state = state;
+        this.status.textContent = message || '';
+        setTimeout(() => {
+          this.status.removeAttribute('data-show');
+        }, 2500);
+      }
+    }
+
+    customElements.define('lego-collection-grid', LegoCollectionGrid);
+  }
+</script>
+
+{% schema %}
+{
+  "label": "Collection grid",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+    { "type": "header", "content": "Category" },
+    { "type": "category", "id": "category", "label": "Category" },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "title", "label": "Title (optional)", "default": "Shop the collection" },
+    {
+      "type": "select",
+      "id": "title_align",
+      "label": "Title alignment",
+      "options": [
+        { "label": "Left", "value": "left" },
+        { "label": "Center", "value": "center" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "limit", "label": "Products shown initially", "min": 2, "max": 24, "step": 2, "default": 8 },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "options": [
+        { "label": "2", "value": "2" },
+        { "label": "3", "value": "3" },
+        { "label": "4", "value": "4" },
+        { "label": "5", "value": "5" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "label": "1", "value": "1" },
+        { "label": "2", "value": "2" }
+      ],
+      "default": "2"
+    },
+    { "type": "checkbox", "id": "show_badge", "label": "Show sale badge", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": true },
+    { "type": "text", "id": "sold_out_text", "label": "Sold-out overlay text", "default": "Sold out" },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show quick-add button", "default": true },
+    { "type": "text", "id": "quick_add_text", "label": "Quick-add label (accessibility)", "default": "Add to cart" },
+    { "type": "paragraph", "content": "Quick-add only adds directly for single-variant products, otherwise it opens the product page" },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Added to cart" },
+    { "type": "text", "id": "error_message", "label": "Error message", "default": "Couldn't add to cart" },
+
+    { "type": "header", "content": "Load more" },
+    { "type": "checkbox", "id": "show_load_more", "label": "Show \"Load more\" button", "default": true },
+    { "type": "text", "id": "load_more_text", "label": "Button text", "default": "Show more" },
+    {
+      "type": "range",
+      "id": "load_more_count",
+      "label": "Products revealed per click",
+      "min": 2,
+      "max": 24,
+      "step": 2,
+      "default": 8,
+      "visible_if": { "setting_id": "show_load_more", "value": true }
+    },
+    {
+      "type": "paragraph",
+      "content": "Reveals products already rendered on the page rather than fetching new ones, there's a hard ceiling around 3x the initial count"
+    },
+
+    { "type": "header", "content": "Card style" },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "label": "Square (1:1)", "value": "1 / 1" },
+        { "label": "Portrait (4:5)", "value": "4 / 5" },
+        { "label": "Landscape (16:9)", "value": "16 / 9" }
+      ],
+      "default": "1 / 1"
+    },
+    { "type": "range", "id": "media_radius", "label": "Image corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
+    { "type": "color", "id": "media_bg_color", "label": "Image placeholder background", "default": "#F5F5F5" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
+    { "type": "range", "id": "title_card_size", "label": "Card title size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "card_title_color", "label": "Card title color", "default": "#121212" },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
+    { "type": "range", "id": "price_size", "label": "Price size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "price_color", "label": "Price color", "default": "#121212" },
+    { "type": "color", "id": "compare_color", "label": "Compare price color", "default": "#9CA3AF" },
+    { "type": "color", "id": "badge_bg_color", "label": "Badge background", "default": "#DC2626" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge text color", "default": "#FFFFFF" },
+    { "type": "color", "id": "quick_add_bg_color", "label": "Quick-add background", "default": "#FFFFFF" },
+    { "type": "color", "id": "quick_add_icon_color", "label": "Quick-add icon color", "default": "#111827" },
+
+    { "type": "header", "content": "Load more button style" },
+    { "type": "color", "id": "load_more_bg_color", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "load_more_text_color", "label": "Text color", "default": "#111827" },
+    { "type": "color", "id": "load_more_border_color", "label": "Border color", "default": "#D1D5DB" },
+    { "type": "number", "id": "load_more_radius", "label": "Corner radius", "default": 999 },
+
+    { "type": "header", "content": "Title" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 20, "max": 40, "step": 1, "unit": "px", "default": 28 },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#121212" },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#F5F5F5",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-collection-grid" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}

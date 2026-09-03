@@ -1,0 +1,759 @@
+{% if block.settings.page.slug == page.slug %}
+  <lego-countdown
+    data-lego="countdown"
+    data-block-id="{{ block.id }}"
+    data-mode="{{ block.settings.mode }}"
+    data-target="{{ block.settings.target_date }}T{{ block.settings.target_time }}{{ block.settings.utc_offset }}"
+    data-evergreen-hours="{{ block.settings.evergreen_hours }}"
+    data-expire-behavior="{{ block.settings.expire_behavior }}"
+    data-redirect-url="{{ block.settings.expire_redirect_url }}"
+    data-urgency-threshold="{{ block.settings.urgency_threshold_minutes }}"
+    data-style="{{ block.settings.style }}"
+    {% if block.settings.anchor %}
+      id="{{ block.settings.anchor }}"
+    {% endif %}
+  >
+    <div data-lego="countdown-timer" data-slot="timer">
+      {% if block.settings.show_days %}
+        <div class="unit" data-unit="days">
+          <span class="value" data-slot="days">00</span>
+          {% if block.settings.show_labels -%}
+            <span class="label">{{ block.settings.label_days }}</span>
+          {%- endif %}
+        </div>
+        <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
+      {% endif %}
+      <div class="unit" data-unit="hours">
+        <span class="value" data-slot="hours">00</span>
+        {% if block.settings.show_labels -%}
+          <span class="label">{{ block.settings.label_hours }}</span>
+        {%- endif %}
+      </div>
+      <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
+      <div class="unit" data-unit="minutes">
+        <span class="value" data-slot="minutes">00</span>
+        {% if block.settings.show_labels -%}
+          <span class="label">{{ block.settings.label_minutes }}</span>
+        {%- endif %}
+      </div>
+      <span class="sep" data-slot="sep">{{ block.settings.separator }}</span>
+      <div class="unit" data-unit="seconds">
+        <span class="value" data-slot="seconds">00</span>
+        {% if block.settings.show_labels -%}
+          <span class="label">{{ block.settings.label_seconds }}</span>
+        {%- endif %}
+      </div>
+    </div>
+
+    {% if block.settings.expire_behavior == 'message' %}
+      <div data-lego="countdown-expired" data-slot="expired" hidden>{{ block.settings.expire_message }}</div>
+    {% endif %}
+  </lego-countdown>
+
+  <script defer>
+    if (!customElements.get('lego-countdown')) {
+      class LegoCountdown extends HTMLElement {
+        static MS = { second: 1000, minute: 60000, hour: 3600000, day: 86400000 };
+
+        connectedCallback() {
+          this.mode = this.getAttribute('data-mode');
+          this.expireBehavior = this.getAttribute('data-expire-behavior');
+          this.redirectUrl = this.getAttribute('data-redirect-url');
+          this.urgencyThreshold = Number(this.getAttribute('data-urgency-threshold')) * LegoCountdown.MS.minute;
+          this.isFlip = this.getAttribute('data-style') === 'flip';
+          this.prevValues = {};
+
+          this.timerElement = this.querySelector('[data-slot="timer"]');
+          this.expiredElement = this.querySelector('[data-slot="expired"]');
+
+          this.targetTime = this.resolveTarget();
+
+          this.tick();
+          this.interval = setInterval(() => this.tick(), 1000);
+        }
+
+        disconnectedCallback() {
+          if (this.interval) clearInterval(this.interval);
+        }
+
+        resolveTarget() {
+          if (this.mode === 'evergreen') {
+            const storageKey = 'lego-countdown-' + (this.id || this.getAttribute('data-block-id'));
+            let startedAt = localStorage.getItem(storageKey);
+            if (!startedAt) {
+              startedAt = Date.now();
+              localStorage.setItem(storageKey, startedAt);
+            }
+            return Number(startedAt) + Number(this.getAttribute('data-evergreen-hours')) * LegoCountdown.MS.hour;
+          }
+          return new Date(this.getAttribute('data-target')).getTime();
+        }
+
+        inEditor() {
+          try {
+            return window.self !== window.top;
+          } catch (e) {
+            return true;
+          }
+        }
+
+        pad(value) {
+          return String(value).padStart(2, '0');
+        }
+
+        setUnit(name, value) {
+          const target = this.querySelector('[data-slot="' + name + '"]');
+          if (!target) return;
+          const padded = this.pad(value);
+          if (this.isFlip && this.prevValues[name] !== undefined && this.prevValues[name] !== padded) {
+            target.classList.remove('flipping');
+            void target.offsetWidth;
+            target.classList.add('flipping');
+          }
+          this.prevValues[name] = padded;
+          target.textContent = padded;
+        }
+
+        tick() {
+          const diff = this.targetTime - Date.now();
+
+          if (diff <= 0) {
+            clearInterval(this.interval);
+            this.onEnd();
+            return;
+          }
+
+          if (this.urgencyThreshold > 0) {
+            this.setAttribute('data-urgency', diff <= this.urgencyThreshold ? 'true' : 'false');
+          }
+
+          let remaining = diff;
+          const days = Math.floor(remaining / LegoCountdown.MS.day);
+          remaining %= LegoCountdown.MS.day;
+          const hours = Math.floor(remaining / LegoCountdown.MS.hour);
+          remaining %= LegoCountdown.MS.hour;
+          const minutes = Math.floor(remaining / LegoCountdown.MS.minute);
+          remaining %= LegoCountdown.MS.minute;
+          const seconds = Math.floor(remaining / LegoCountdown.MS.second);
+
+          this.setUnit('days', days);
+          this.setUnit('hours', hours);
+          this.setUnit('minutes', minutes);
+          this.setUnit('seconds', seconds);
+        }
+
+        onEnd() {
+          if (this.expireBehavior === 'hide') {
+            this.hidden = true;
+          } else if (this.expireBehavior === 'redirect' && this.redirectUrl) {
+            if (this.inEditor()) {
+              this.setUnit('days', 0);
+              this.setUnit('hours', 0);
+              this.setUnit('minutes', 0);
+              this.setUnit('seconds', 0);
+            } else {
+              window.location.href = this.redirectUrl;
+            }
+          } else if (this.expireBehavior === 'message' && this.expiredElement) {
+            this.timerElement.hidden = true;
+            this.expiredElement.hidden = false;
+          } else {
+            this.setUnit('days', 0);
+            this.setUnit('hours', 0);
+            this.setUnit('minutes', 0);
+            this.setUnit('seconds', 0);
+          }
+
+          this.dispatchEvent(new CustomEvent('lego:countdown:end', { bubbles: true }));
+        }
+      }
+
+      customElements.define('lego-countdown', LegoCountdown);
+    }
+  </script>
+{% endif %}
+
+<style>
+  #youcan-block--{{ block.id }} [data-lego="countdown"] {
+    display: flex;
+    justify-content: {{ block.settings.align }};
+    opacity: {{ block.settings.opacity }};
+    transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.scale }});
+
+    margin-top: {{ block.settings.margin_top | append: 'px' }};
+    margin-right: {{ block.settings.margin_right | append: 'px' }};
+    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+    margin-left: {{ block.settings.margin_left | append: 'px' }};
+    padding-top: {{ block.settings.padding_top | append: 'px' }};
+    padding-right: {{ block.settings.padding_right | append: 'px' }};
+    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+    padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+    {% if block.settings.width == 'custom' %}
+      max-width: 100%;
+      width: {{ block.settings.custom_width | append: 'px' }};
+    {% endif %}
+
+    {% case block.settings.background %}
+      {% when 'single-color' %}
+        {% unless block.settings.bg_transparent %}
+          background-color: {{ block.settings.bg_color.hex }};
+        {% endunless %}
+      {% when 'gradient' %}
+        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
+      {% when 'image' %}
+        background-image: url({{ block.settings.bg_img.src }});
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    {% endcase %}
+
+    {% if block.settings.border_style != 'none' %}
+      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+    {% endif %}
+    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+
+    {% case block.settings.box_shadow %}
+      {% when 'sm' %}
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      {% when 'md' %}
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      {% when 'lg' %}
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      {% when 'custom' %}
+        box-shadow: {{ block.settings.box_shadow_x }}px {{ block.settings.box_shadow_y }}px {{ block.settings.box_shadow_blur }}px {{ block.settings.box_shadow_spread }}px {{ block.settings.box_shadow_color.hex }};
+    {% endcase %}
+
+    &[hidden] { display: none; }
+
+    [data-lego="countdown-timer"] {
+      display: flex;
+      align-items: center;
+      gap: {{ block.settings.gap }}px;
+    }
+
+    .sep {
+      font-size: {{ block.settings.digit_size }}px;
+      color: {{ block.settings.digit_color.hex }};
+      opacity: 0.5;
+      {% if block.settings.separator_blink %}
+        animation: lego-countdown-blink 1s steps(1) infinite;
+      {% endif %}
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: {{ block.settings.digit_size | times: 1.6 | round }}px;
+
+      {% if block.settings.style == 'boxes' or block.settings.style == 'flip' %}
+        padding: 10px 6px;
+        border-radius: {{ block.settings.unit_corner_radius }}px;
+        background-color: {{ block.settings.unit_bg_color.hex }};
+      {% endif %}
+
+      .value {
+        font-size: {{ block.settings.digit_size }}px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        color: {{ block.settings.digit_color.hex }};
+
+        {% if block.settings.style == 'flip' %}
+          display: inline-block;
+          &.flipping {
+            animation: lego-countdown-flip 350ms ease;
+          }
+        {% endif %}
+      }
+
+      .label {
+        font-size: {{ block.settings.label_size }}px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.6;
+        color: {{ block.settings.digit_color.hex }};
+      }
+    }
+
+    {% if block.settings.style == 'grouped' %}
+      [data-lego="countdown-timer"] {
+        padding: 10px 16px;
+        border-radius: {{ block.settings.unit_corner_radius }}px;
+        background-color: {{ block.settings.unit_bg_color.hex }};
+      }
+    {% endif %}
+
+    &[data-urgency="true"] {
+      .value, .label { color: {{ block.settings.urgency_color.hex }}; }
+      {% if block.settings.style == 'boxes' or block.settings.style == 'flip' or block.settings.style == 'grouped' %}
+        .unit, [data-lego="countdown-timer"] { background-color: color-mix(in srgb, {{ block.settings.urgency_color.hex }} 12%, transparent); }
+      {% endif %}
+      {% if block.settings.urgency_pulse %}
+        [data-lego="countdown-timer"] {
+          animation: lego-countdown-pulse 1s ease-in-out infinite;
+        }
+      {% endif %}
+    }
+
+    [data-lego="countdown-expired"] {
+      font-size: {{ block.settings.digit_size }}px;
+      color: {{ block.settings.digit_color.hex }};
+    }
+
+    {% if block.settings.entrance != 'none' %}
+      animation: lego-countdown-{{ block.settings.entrance | replace: '-', '_' }} {{ block.settings.entrance_duration }}ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    {% endif %}
+
+    {% unless block.settings.lg_screens %}
+      @media (width >= 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.md_screens %}
+      @media (992px <= width < 1200px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.sm_screens %}
+      @media (768px <= width < 992px) {
+        display: none;
+      }
+    {% endunless %}
+    {% unless block.settings.xs_screens %}
+      @media (width < 768px) {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  {% if block.settings.hover_enabled %}
+    #youcan-block--{{ block.id }} [data-lego="countdown"] {
+      transition: opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    #youcan-block--{{ block.id }} [data-lego="countdown"]:hover {
+      opacity: {{ block.settings.hover_opacity }};
+      transform: rotate({{ block.settings.rotate }}deg) scale({{ block.settings.hover_scale }});
+    }
+  {% endif %}
+
+  @keyframes lego-countdown-blink {
+    50% { opacity: 0; }
+  }
+  @keyframes lego-countdown-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes lego-countdown-flip {
+    0% { transform: rotateX(0deg); opacity: 1; }
+    50% { transform: rotateX(90deg); opacity: 0.3; }
+    100% { transform: rotateX(0deg); opacity: 1; }
+  }
+  @keyframes lego-countdown-fade {
+    from { opacity: 0; }
+  }
+  @keyframes lego-countdown-fade_up {
+    from { opacity: 0; transform: translateY(12px); }
+  }
+  @keyframes lego-countdown-zoom {
+    from { opacity: 0; transform: scale(0.92); }
+  }
+
+  {% if block.settings.custom_css != blank %}
+    #youcan-block--{{ block.id }} [data-lego="countdown"] {
+      {{ block.settings.custom_css }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "label": "Countdown",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Countdown type",
+      "options": [
+        { "label": "Fixed date", "value": "fixed_date" },
+        { "label": "Evergreen (per visitor)", "value": "evergreen" }
+      ],
+      "default": "fixed_date"
+    },
+    {
+      "type": "text",
+      "id": "target_date",
+      "label": "Target date",
+      "placeholder": "2026-12-31",
+      "default": "2026-12-31",
+      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+    },
+    {
+      "type": "text",
+      "id": "target_time",
+      "label": "Target time",
+      "placeholder": "23:59:59",
+      "default": "23:59:59",
+      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+    },
+    {
+      "type": "text",
+      "id": "utc_offset",
+      "label": "UTC offset (optional)",
+      "placeholder": "+01:00",
+      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+    },
+    {
+      "type": "paragraph",
+      "content": "Leave blank to use each visitor's local time, set an offset so everyone sees the same deadline regardless of timezone",
+      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+    },
+    {
+      "type": "range",
+      "id": "evergreen_hours",
+      "label": "Duration",
+      "min": 1,
+      "max": 168,
+      "step": 1,
+      "unit": "h",
+      "default": 24,
+      "visible_if": { "setting_id": "mode", "value": "evergreen" }
+    },
+    {
+      "type": "paragraph",
+      "content": "Resets per visitor when their browser storage clears",
+      "visible_if": { "setting_id": "mode", "value": "evergreen" }
+    },
+
+    {
+      "type": "select",
+      "id": "expire_behavior",
+      "label": "When it ends",
+      "options": [
+        { "label": "Freeze at 00:00:00:00", "value": "zeros" },
+        { "label": "Show a message", "value": "message" },
+        { "label": "Hide the block", "value": "hide" },
+        { "label": "Redirect", "value": "redirect" }
+      ],
+      "default": "zeros"
+    },
+    {
+      "type": "text",
+      "id": "expire_message",
+      "label": "Expiry message",
+      "default": "This offer has ended",
+      "visible_if": { "setting_id": "expire_behavior", "value": "message" }
+    },
+    {
+      "type": "text",
+      "id": "expire_redirect_url",
+      "label": "Redirect URL",
+      "placeholder": "/collections/all",
+      "visible_if": { "setting_id": "expire_behavior", "value": "redirect" }
+    },
+
+    { "type": "header", "content": "Labels" },
+    { "type": "checkbox", "id": "show_days", "label": "Show days unit", "default": true },
+    { "type": "checkbox", "id": "show_labels", "label": "Show unit labels", "default": true },
+    { "type": "text", "id": "label_days", "label": "Days label", "default": "Days", "visible_if": { "setting_id": "show_labels", "value": true } },
+    { "type": "text", "id": "label_hours", "label": "Hours label", "default": "Hours", "visible_if": { "setting_id": "show_labels", "value": true } },
+    {
+      "type": "text",
+      "id": "label_minutes",
+      "label": "Minutes label",
+      "default": "Min",
+      "visible_if": { "setting_id": "show_labels", "value": true }
+    },
+    {
+      "type": "text",
+      "id": "label_seconds",
+      "label": "Seconds label",
+      "default": "Sec",
+      "visible_if": { "setting_id": "show_labels", "value": true }
+    },
+
+    { "type": "header", "content": "Style" },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Layout",
+      "options": [
+        { "label": "Inline", "value": "inline" },
+        { "label": "Boxes", "value": "boxes" },
+        { "label": "Grouped", "value": "grouped" },
+        { "label": "Flip clock", "value": "flip" }
+      ],
+      "default": "boxes"
+    },
+    {
+      "type": "select",
+      "id": "separator",
+      "label": "Separator",
+      "options": [
+        { "label": "Colon (:)", "value": ":" },
+        { "label": "Dot (·)", "value": "·" },
+        { "label": "None", "value": "" }
+      ],
+      "default": ":"
+    },
+    { "type": "checkbox", "id": "separator_blink", "label": "Blink separator every second", "default": false },
+    { "type": "range", "id": "digit_size", "label": "Digit size", "min": 14, "max": 64, "step": 1, "unit": "px", "default": 28 },
+    { "type": "range", "id": "label_size", "label": "Label size", "min": 8, "max": 20, "step": 1, "unit": "px", "default": 11 },
+    { "type": "range", "id": "gap", "label": "Gap between units", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 10 },
+    { "type": "color", "id": "digit_color", "label": "Digit color", "default": "#121212" },
+    {
+      "type": "color",
+      "id": "unit_bg_color",
+      "label": "Unit background",
+      "default": "#F5F5F5",
+      "visible_if": { "setting_id": "style", "operator": "!=", "value": "inline" }
+    },
+    {
+      "type": "number",
+      "id": "unit_corner_radius",
+      "label": "Unit corner radius",
+      "default": 8,
+      "visible_if": { "setting_id": "style", "operator": "!=", "value": "inline" }
+    },
+
+    { "type": "header", "content": "Urgency" },
+    { "type": "paragraph", "content": "Highlight the countdown once it drops below a threshold, good for last-hour FOMO" },
+    {
+      "type": "range",
+      "id": "urgency_threshold_minutes",
+      "label": "Urgency threshold",
+      "min": 0,
+      "max": 1440,
+      "step": 5,
+      "unit": "min",
+      "default": 0
+    },
+    { "type": "paragraph", "content": "0 = disabled" },
+    { "type": "color", "id": "urgency_color", "label": "Urgency color", "default": "#DC2626" },
+    { "type": "checkbox", "id": "urgency_pulse", "label": "Pulse when urgent", "default": true },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "label": "Left", "value": "flex-start" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "flex-end" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "label": "Auto", "value": "auto" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "max": 1920,
+      "min": 200,
+      "step": 20,
+      "unit": "px",
+      "default": 480,
+      "visible_if": { "setting_id": "width", "value": "custom" }
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
+    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
+    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
+    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
+    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
+    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
+    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
+    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Single color", "value": "single-color" },
+        { "label": "Gradient", "value": "gradient" },
+        { "label": "Image", "value": "image" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent background",
+      "default": false,
+      "visible_if": { "setting_id": "background", "value": "single-color" }
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": [
+        { "setting_id": "background", "value": "single-color" },
+        { "setting_id": "bg_transparent", "value": false }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle_degree",
+      "label": "Angle degree",
+      "min": 0,
+      "step": 1,
+      "max": 360,
+      "unit": "°",
+      "default": 90,
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start",
+      "default": "#DDDDDD",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end",
+      "default": "#FFFFFF",
+      "visible_if": { "setting_id": "background", "value": "gradient" }
+    },
+    { "type": "image_picker", "id": "bg_img", "label": "Background image", "visible_if": { "setting_id": "background", "value": "image" } },
+
+    { "type": "header", "content": "Border" },
+    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Solid", "value": "solid" },
+        { "label": "Dashed", "value": "dashed" },
+        { "label": "Dotted", "value": "dotted" },
+        { "label": "Double", "value": "double" }
+      ],
+      "default": "none"
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
+    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
+    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
+    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
+    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
+
+    { "type": "header", "content": "Shadow" },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Small", "value": "sm" },
+        { "label": "Medium", "value": "md" },
+        { "label": "Large", "value": "lg" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+    },
+    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
+
+    { "type": "header", "content": "Effects" },
+    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+    { "type": "range", "id": "rotate", "label": "Rotate", "min": -180, "max": 180, "step": 1, "unit": "°", "default": 0 },
+    { "type": "range", "id": "scale", "label": "Scale", "min": 0.5, "max": 2, "step": 0.1, "default": 1 },
+    {
+      "type": "select",
+      "id": "entrance",
+      "label": "Entrance animation",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Fade in", "value": "fade" },
+        { "label": "Fade up", "value": "fade-up" },
+        { "label": "Zoom in", "value": "zoom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "entrance_duration",
+      "label": "Animation duration",
+      "min": 100,
+      "max": 2000,
+      "step": 50,
+      "unit": "ms",
+      "default": 500,
+      "visible_if": { "setting_id": "entrance", "operator": "!=", "value": "none" }
+    },
+
+    { "type": "header", "content": "Hover" },
+    { "type": "checkbox", "id": "hover_enabled", "label": "Enable hover effect", "default": false },
+    {
+      "type": "range",
+      "id": "hover_opacity",
+      "label": "Hover opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1,
+      "visible_if": { "setting_id": "hover_enabled", "value": true }
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover scale",
+      "min": 0.8,
+      "max": 1.3,
+      "step": 0.1,
+      "default": 1.1,
+      "visible_if": { "setting_id": "hover_enabled", "value": true }
+    },
+
+    { "type": "header", "content": "Visibility" },
+    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
+    { "type": "paragraph", "content": "1200px and wider" },
+    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
+    { "type": "paragraph", "content": "992px - 1199px" },
+    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
+    { "type": "paragraph", "content": "768px - 991px" },
+    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
+    { "type": "paragraph", "content": "767px and smaller" },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-countdown" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+  ]
+}
+{% endschema %}
