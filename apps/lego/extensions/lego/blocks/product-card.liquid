@@ -151,6 +151,12 @@
           font-size: 13px;
           font-weight: 600;
           color: #121212;
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
         }
 
         .badge {
@@ -163,6 +169,12 @@
           color: {{ block.settings.badge_text_color.hex }};
           font-size: 11px;
           font-weight: 600;
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
         }
 
         .quick-add {
@@ -206,7 +218,17 @@
         text-decoration: none;
         color: inherit;
 
-        .title { font-size: {{ block.settings.title_size }}px; font-weight: 500; color: {{ block.settings.title_color.hex }}; }
+        .title { 
+          font-size: {{ block.settings.title_size }}px; 
+          font-weight: 500; 
+          color: {{ block.settings.title_color.hex }};
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
+        }
 
         .rating {
           display: flex;
@@ -221,8 +243,24 @@
           align-items: center;
           gap: 6px;
 
-          .price { font-size: {{ block.settings.price_size }}px; font-weight: 600; color: {{ block.settings.price_color.hex }}; }
-          .compare { font-size: 12px; color: {{ block.settings.compare_color.hex }}; text-decoration: line-through; }
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
+
+          .price {
+            font-family: inherit;
+            font-size: {{ block.settings.price_size }}px; 
+            font-weight: 600; 
+            color: {{ block.settings.price_color.hex }}; 
+          }
+          .compare {
+            font-family: inherit;
+            font-size: 12px; 
+            color: {{ block.settings.compare_color.hex }}; 
+            text-decoration: line-through; 
+          }
         }
       }
 
@@ -237,6 +275,12 @@
         bottom: -42px;
         transform: translateX(-50%);
         transition: bottom 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
 
         &[data-show="true"] { bottom: 12px; }
         &[data-state="success"] { background-color: #DCFCE7; color: #166534; }
@@ -359,6 +403,26 @@
     },
     { "type": "range", "id": "media_radius", "label": "Image corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
     { "type": "color", "id": "media_bg_color", "label": "Image placeholder background", "default": "#F5F5F5" },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
     { "type": "range", "id": "title_size", "label": "Title size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 14 },
     { "type": "color", "id": "title_color", "label": "Title color", "default": "#121212" },
     { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
