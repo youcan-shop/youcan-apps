@@ -26,7 +26,6 @@
       data-product-id="{{ product.id }}"
       data-price="{{ price }}"
       data-compare-price="{{ compare_at_price }}"
-      data-currency="{{ block.settings.currency_symbol }}"
       data-installments-count="{{ block.settings.installments_count }}"
       {% if block.settings.anchor %}
         id="{{ block.settings.anchor }}"
@@ -201,21 +200,17 @@
         update(detail) {
           if (typeof detail.price !== 'number') return;
           if (this.currentElement) {
-            this.currentElement.textContent = this.money(detail.price);
+            this.currentElement.textContent = formatCurrency(detail.price);
             this.currentElement.classList.add('flash');
             setTimeout(() => this.currentElement.classList.remove('flash'), 200);
           }
           const onSale = detail.comparePrice && detail.comparePrice > detail.price;
           if (this.compareElement) {
             this.compareElement.hidden = !onSale;
-            if (onSale) this.compareElement.textContent = this.money(detail.comparePrice);
+            if (onSale) this.compareElement.textContent = formatCurrency(detail.comparePrice);
           }
           if (this.badgeElement) this.badgeElement.hidden = !onSale;
-          if (this.installmentElement) this.installmentElement.textContent = this.money(detail.price / this.installmentsCount);
-        }
-
-        money(amount) {
-          return (this.getAttribute('data-currency') || '$') + Number(amount).toFixed(2);
+          if (this.installmentElement) this.installmentElement.textContent = formatCurrency(detail.price / this.installmentsCount);
         }
       }
 
@@ -328,7 +323,6 @@
     },
 
     { "type": "header", "content": "Style" },
-    { "type": "text", "id": "currency_symbol", "label": "Currency symbol (for live updates)", "default": "$" },
     {
       "type": "select",
       "id": "align",

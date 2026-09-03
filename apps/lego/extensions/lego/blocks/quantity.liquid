@@ -1,283 +1,329 @@
-{% assign product = block.settings.product | default: product %}
+{% if block.settings.page.slug == page.slug %}
+  {% if block.settings.font_family == 'custom' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family={{ block.settings.custom_font_family }}"
+    >
+  {% endif %}
 
-{% if product %}
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=remove,add"
-  />
+  {% assign product = block.settings.product %}
 
-  {% assign default_variant = product.selected_or_first_available_variant %}
+  {% if product %}
+    {% assign default_variant = product.selected_or_first_available_variant %}
 
-  <lego-quantity
-    data-lego="quantity"
-    data-product-id="{{ product.id }}"
-    data-style="{{ block.settings.style }}"
-    data-min="{{ block.settings.min_value }}"
-    data-max="{{ block.settings.max_value }}"
-    data-step="{{ block.settings.step_value }}"
-    data-default-inventory="{{ default_variant.inventory }}"
-    data-respect-inventory="{{ block.settings.respect_inventory }}"
-    {% if block.settings.anchor %}
-      id="{{ block.settings.anchor }}"
-    {% endif %}
-  >
-    <div class="row" data-position="{{ block.settings.label_position }}">
-      {% if block.settings.label != blank -%}
-        <span class="label">{{ block.settings.label }}</span>
-      {%- endif %}
+    {% dump default_variant %}
 
-      {% case block.settings.style %}
-        {% when 'stepper' %}
-          <div class="stepper">
-            <button type="button" class="step" data-slot="dec" aria-label="Decrease"><span class="material-symbols-rounded">remove</span></button>
+    <lego-quantity
+      data-lego="quantity"
+      data-product-id="{{ product.id }}"
+      data-style="{{ block.settings.style }}"
+      data-min="{{ block.settings.min_value }}"
+      data-max="{{ block.settings.max_value }}"
+      data-step="{{ block.settings.step_value }}"
+      data-default-inventory="{{ default_variant.inventory }}"
+      {% if block.settings.respect_inventory %}
+        data-respect-inventory="true"
+      {% endif %}
+      {% if block.settings.anchor %}
+        id="{{ block.settings.anchor }}"
+      {% endif %}
+    >
+      <div class="row" data-position="{{ block.settings.label_position }}">
+        {% if block.settings.label -%}
+          <span class="label">{{ block.settings.label }}</span>
+        {%- endif %}
+
+        {% case block.settings.style %}
+          {% when 'stepper' %}
+            <div class="stepper">
+              <button type="button" class="step" data-slot="dec" aria-label="Decrease"><span class="material-symbols-rounded">remove</span></button>
+              <input
+                type="number"
+                class="value-input"
+                data-slot="input"
+                value="{{ block.settings.min_value }}"
+                min="{{ block.settings.min_value }}"
+                max="{{ block.settings.max_value }}"
+                step="{{ block.settings.step_value }}"
+                inputmode="numeric"
+                {% unless block.settings.input_editable %}
+                  readonly
+                {% endunless %}
+              >
+              <button type="button" class="step" data-slot="inc" aria-label="Increase"><span class="material-symbols-rounded">add</span></button>
+            </div>
+          {% when 'input' %}
             <input
               type="number"
-              class="value-input"
+              class="value-input plain"
               data-slot="input"
               value="{{ block.settings.min_value }}"
               min="{{ block.settings.min_value }}"
               max="{{ block.settings.max_value }}"
               step="{{ block.settings.step_value }}"
               inputmode="numeric"
-              {% unless block.settings.input_editable %}
-                readonly
-              {% endunless %}
             >
-            <button type="button" class="step" data-slot="inc" aria-label="Increase"><span class="material-symbols-rounded">add</span></button>
-          </div>
-        {% when 'input' %}
-          <input
-            type="number"
-            class="value-input plain"
-            data-slot="input"
-            value="{{ block.settings.min_value }}"
-            min="{{ block.settings.min_value }}"
-            max="{{ block.settings.max_value }}"
-            step="{{ block.settings.step_value }}"
-            inputmode="numeric"
-          >
-        {% when 'dropdown' %}
-          <select class="dropdown" data-slot="input">
-            {% assign i = block.settings.min_value %}
-            {% for n in (1..50) %}
-              {% if i > block.settings.max_value %}{% break %}{% endif %}
-              <option
-                value="{{ i }}"
-                {% if i == block.settings.min_value %}
-                  selected
-                {% endif %}
-              >
-                {{ i }}
-              </option>
-              {% assign i = i | plus: block.settings.step_value %}
-            {% endfor %}
-          </select>
+          {% when 'dropdown' %}
+            <select class="dropdown" data-slot="input">
+              {% assign i = block.settings.min_value %}
+              {% for n in (1..50) %}
+                {% if i > block.settings.max_value %}{% break %}{% endif %}
+                <option
+                  value="{{ i }}"
+                  {% if i == block.settings.min_value %}
+                    selected
+                  {% endif %}
+                >
+                  {{ i }}
+                </option>
+                {% assign i = i | plus: block.settings.step_value %}
+              {% endfor %}
+            </select>
+        {% endcase %}
+      </div>
+
+      {% if block.settings.show_max_message %}
+        <p class="max-message" data-slot="max-message" hidden>{{ block.settings.max_message }}</p>
+      {% endif %}
+    </lego-quantity>
+  {% endif %}
+
+  <style>
+    #youcan-block--{{ block.id }} [data-lego="quantity"] {
+      display: block;
+      opacity: {{ block.settings.opacity }};
+
+      margin-top: {{ block.settings.margin_top | append: 'px' }};
+      margin-right: {{ block.settings.margin_right | append: 'px' }};
+      margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
+      margin-left: {{ block.settings.margin_left | append: 'px' }};
+      padding-top: {{ block.settings.padding_top | append: 'px' }};
+      padding-right: {{ block.settings.padding_right | append: 'px' }};
+      padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
+      padding-left: {{ block.settings.padding_left | append: 'px' }};
+
+      border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
+      border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
+      border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
+      border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
+      {% if block.settings.border_style != 'none' %}
+        border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
+      {% endif %}
+
+      {% case block.settings.background %}
+        {% when 'single-color' %}
+          {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
+        {% when 'gradient' %}
+          background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
       {% endcase %}
-    </div>
 
-    {% if block.settings.show_max_message %}
-      <p class="max-message" data-slot="max-message" hidden>{{ block.settings.max_message }}</p>
-    {% endif %}
-  </lego-quantity>
-{% endif %}
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
 
-<style>
-  #youcan-block--{{ block.id }} [data-lego="quantity"] {
-    display: block;
-    opacity: {{ block.settings.opacity }};
+        &[data-position="top"] { flex-direction: column; align-items: flex-start; }
+      }
 
-    margin-top: {{ block.settings.margin_top | append: 'px' }};
-    margin-right: {{ block.settings.margin_right | append: 'px' }};
-    margin-bottom: {{ block.settings.margin_bottom | append: 'px' }};
-    margin-left: {{ block.settings.margin_left | append: 'px' }};
-    padding-top: {{ block.settings.padding_top | append: 'px' }};
-    padding-right: {{ block.settings.padding_right | append: 'px' }};
-    padding-bottom: {{ block.settings.padding_bottom | append: 'px' }};
-    padding-left: {{ block.settings.padding_left | append: 'px' }};
+      .label {
+        font-size: 13px;
+        font-weight: 500;
+        color: {{ block.settings.label_color.hex }};
 
-    border-top-left-radius: {{ block.settings.border_radius_tl | append: 'px' }};
-    border-top-right-radius: {{ block.settings.border_radius_tr | append: 'px' }};
-    border-bottom-right-radius: {{ block.settings.border_radius_br | append: 'px' }};
-    border-bottom-left-radius: {{ block.settings.border_radius_bl | append: 'px' }};
-    {% if block.settings.border_style != 'none' %}
-      border: {{ block.settings.border_weight | append: 'px' }} {{ block.settings.border_style }} {{ block.settings.border_color.hex }};
-    {% endif %}
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
+      }
 
-    {% case block.settings.background %}
-      {% when 'single-color' %}
-        {% unless block.settings.bg_transparent %}background-color: {{ block.settings.bg_color.hex }};{% endunless %}
-      {% when 'gradient' %}
-        background-image: linear-gradient({{ block.settings.gradient_angle_degree }}deg, {{ block.settings.gradient_start.hex }}, {{ block.settings.gradient_end.hex }});
-    {% endcase %}
-
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      &[data-position="top"] { flex-direction: column; align-items: flex-start; }
-    }
-
-    .label { font-size: 13px; font-weight: 600; color: {{ block.settings.label_color.hex }}; }
-
-    .stepper {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid {{ block.settings.border_control_color.hex }};
-      border-radius: {{ block.settings.control_radius }}px;
-      overflow: hidden;
-
-      .step {
-        width: {{ block.settings.control_height }}px;
-        height: {{ block.settings.control_height }}px;
-        flex-shrink: 0;
+      .stepper {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        background: transparent;
-        border: 0;
-        padding: 0;
-        border-radius: 0;
-        cursor: pointer;
-        color: {{ block.settings.text_color.hex }};
-        transition: background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+        border: 1px solid {{ block.settings.border_control_color.hex }};
+        border-radius: {{ block.settings.control_radius }}px;
+        overflow: hidden;
 
-        .material-symbols-rounded { font-size: 18px; }
+        .step {
+          width: {{ block.settings.control_height }}px;
+          height: {{ block.settings.control_height }}px;
+          flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: 0;
+          padding: 0;
+          border-radius: 0;
+          cursor: pointer;
+          color: {{ block.settings.text_color.hex }};
+          transition: background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 
-        &:active { transform: scale(0.9); }
-        &:disabled { opacity: 0.35; cursor: not-allowed; }
+          .material-symbols-rounded { font-size: 18px; }
 
-        @media (hover: hover) and (pointer: fine) {
-          &:hover:not(:disabled) { background-color: {{ block.settings.hover_bg_color.hex }}; }
+          &:active { transform: scale(0.9); }
+          &:disabled { opacity: 0.35; cursor: not-allowed; }
+
+          @media (hover: hover) and (pointer: fine) {
+            &:hover:not(:disabled) { background-color: {{ block.settings.hover_bg_color.hex }}; }
+          }
+        }
+
+        .value-input {
+          min-width: {{ block.settings.input_width }}px;
+          height: {{ block.settings.control_height }}px;
+          border: 0;
+          border-inline: 1px solid {{ block.settings.border_control_color.hex }};
+          text-align: center;
+          font: inherit;
+          font-size: 14px;
+          border-radius: 0;
+          color: {{ block.settings.text_color.hex }};
+          -moz-appearance: textfield;
+
+          {% if block.settings.font_family == 'custom' %}
+            font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+          {% elsif block.settings.font_family != 'inherit' %}
+            font-family: {{ block.settings.font_family }};
+          {% endif %}
+
+          &::-webkit-outer-spin-button, &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+          &:focus { outline: none; }
+          &[readonly] { background-color: transparent; cursor: default; }
         }
       }
 
-      .value-input {
-        min-width: {{ block.settings.input_width }}px;
+      .value-input.plain, .dropdown {
         height: {{ block.settings.control_height }}px;
-        border: 0;
-        border-inline: 1px solid {{ block.settings.border_control_color.hex }};
-        text-align: center;
+        padding: 0 12px;
+        border-radius: {{ block.settings.control_radius }}px;
+        border: 1px solid {{ block.settings.border_control_color.hex }};
         font: inherit;
         font-size: 14px;
-        border-radius: 0;
         color: {{ block.settings.text_color.hex }};
-        -moz-appearance: textfield;
+        width: {{ block.settings.input_width | times: 2 }}px;
 
-        &::-webkit-outer-spin-button, &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        &:focus { outline: none; }
-        &[readonly] { background-color: transparent; cursor: default; }
-      }
-    }
-
-    .value-input.plain, .dropdown {
-      height: {{ block.settings.control_height }}px;
-      padding: 0 12px;
-      border-radius: {{ block.settings.control_radius }}px;
-      border: 1px solid {{ block.settings.border_control_color.hex }};
-      font: inherit;
-      font-size: 14px;
-      color: {{ block.settings.text_color.hex }};
-      width: {{ block.settings.input_width | times: 2 }}px;
-    }
-
-    .max-message {
-      margin: 6px 0 0;
-      font-size: 12px;
-      color: {{ block.settings.max_message_color.hex }};
-    }
-
-    {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
-    {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
-    {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
-    {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
-  }
-
-  {% if block.settings.custom_css != blank %}
-    #youcan-block--{{ block.id }} [data-lego="quantity"] {
-      {{ block.settings.custom_css }}
-    }
-  {% endif %}
-</style>
-
-<script defer>
-  if (!customElements.get('lego-quantity')) {
-    class LegoQuantity extends HTMLElement {
-      connectedCallback() {
-        this.productId = this.getAttribute('data-product-id');
-        this.min = Number(this.getAttribute('data-min')) || 1;
-        this.max = Number(this.getAttribute('data-max')) || 999;
-        this.step = Number(this.getAttribute('data-step')) || 1;
-        this.respectInventory = this.getAttribute('data-respect-inventory') === '1';
-        this.currentMax = this.max;
-
-        if (this.respectInventory) {
-          const defaultInventory = Number(this.getAttribute('data-default-inventory'));
-          if (defaultInventory > 0) this.currentMax = Math.min(this.max, defaultInventory);
-        }
-
-        this.input = this.querySelector('[data-slot="input"]');
-        this.decBtn = this.querySelector('[data-slot="dec"]');
-        this.incBtn = this.querySelector('[data-slot="inc"]');
-        this.maxMessage = this.querySelector('[data-slot="max-message"]');
-
-        if (this.decBtn) this.decBtn.addEventListener('click', () => this.step_(-1));
-        if (this.incBtn) this.incBtn.addEventListener('click', () => this.step_(1));
-        if (this.input) {
-          this.input.addEventListener('change', () => this.setValue(Number(this.input.value)));
-          this.input.addEventListener('input', () => {
-            if (this.input.tagName === 'SELECT') this.setValue(Number(this.input.value));
-          });
-        }
-
-        if (this.respectInventory) {
-          document.addEventListener('lego:variant:change', (e) => {
-            if (!e.detail || e.detail.productId !== this.productId) return;
-            this.setValue(Math.min(Number(this.input.value), this.currentMax));
-          });
-        }
-
-        this.setValue(this.min, true);
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
       }
 
-      step_(dir) {
-        const current = Number(this.input.value) || this.min;
-        this.setValue(current + dir * this.step);
+      .max-message {
+        margin: 6px 0 0;
+        font-size: 12px;
+        color: {{ block.settings.max_message_color.hex }};
+
+        {% if block.settings.font_family == 'custom' %}
+          font-family: {{ block.settings.custom_font_family | replace: '+', ' ' }}, sans-serif, yc-sans;
+        {% elsif block.settings.font_family != 'inherit' %}
+          font-family: {{ block.settings.font_family }};
+        {% endif %}
       }
 
-      setValue(value, silent) {
-        let clamped = Math.max(this.min, Math.min(this.currentMax, value));
-        this.input.value = clamped;
-
-        if (this.decBtn) this.decBtn.disabled = clamped <= this.min;
-        if (this.incBtn) this.incBtn.disabled = clamped >= this.currentMax;
-        if (this.maxMessage) this.maxMessage.hidden = clamped < this.currentMax;
-
-        if (!silent) {
-          document.dispatchEvent(
-            new CustomEvent('lego:quantity:change', {
-              bubbles: true,
-              detail: { productId: this.productId, quantity: clamped },
-            })
-          );
-        }
-      }
+      {% unless block.settings.lg_screens %}@media (width >= 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.md_screens %}@media (992px <= width < 1200px) { display: none; }{% endunless %}
+      {% unless block.settings.sm_screens %}@media (768px <= width < 992px) { display: none; }{% endunless %}
+      {% unless block.settings.xs_screens %}@media (width < 768px) { display: none; }{% endunless %}
     }
 
-    customElements.define('lego-quantity', LegoQuantity);
-  }
-</script>
+    {% if block.settings.custom_css != blank %}
+      #youcan-block--{{ block.id }} [data-lego="quantity"] {
+        {{ block.settings.custom_css }}
+      }
+    {% endif %}
+
+    #youcan-block--{{ block.id }} {
+      display: flex;
+      justify-content: {{ block.settings.align }}
+    }
+  </style>
+
+  <script defer>
+    if (!customElements.get('lego-quantity')) {
+      class LegoQuantity extends HTMLElement {
+        connectedCallback() {
+          this.productId = this.getAttribute('data-product-id');
+          this.min = Number(this.getAttribute('data-min')) || 1;
+          this.max = Number(this.getAttribute('data-max')) || 999;
+          this.step = Number(this.getAttribute('data-step')) || 1;
+          this.respectInventory = this.getAttribute('data-respect-inventory') === 'true';
+          this.currentMax = this.max;
+
+          if (this.respectInventory) {
+            const defaultInventory = Number(this.getAttribute('data-default-inventory'));
+            if (defaultInventory > 0) this.currentMax = Math.min(this.max, defaultInventory);
+          }
+
+          this.input = this.querySelector('[data-slot="input"]');
+          this.decBtn = this.querySelector('[data-slot="dec"]');
+          this.incBtn = this.querySelector('[data-slot="inc"]');
+          this.maxMessage = this.querySelector('[data-slot="max-message"]');
+
+          if (this.decBtn) this.decBtn.addEventListener('click', () => this.step_(-1));
+          if (this.incBtn) this.incBtn.addEventListener('click', () => this.step_(1));
+          if (this.input) {
+            this.input.addEventListener('change', () => this.setValue(Number(this.input.value)));
+            this.input.addEventListener('input', () => {
+              if (this.input.tagName === 'SELECT') this.setValue(Number(this.input.value));
+            });
+          }
+
+          if (this.respectInventory) {
+            document.addEventListener('lego:variant:change', (e) => {
+              if (!e.detail || e.detail.productId !== this.productId) return;
+              this.setValue(Math.min(Number(this.input.value), this.currentMax));
+            });
+          }
+
+          this.setValue(this.min, true);
+        }
+
+        step_(dir) {
+          const current = Number(this.input.value) || this.min;
+          this.setValue(current + dir * this.step);
+        }
+
+        setValue(value, silent) {
+          let clamped = Math.max(this.min, Math.min(this.currentMax, value));
+          this.input.value = clamped;
+
+          if (this.decBtn) this.decBtn.disabled = clamped <= this.min;
+          if (this.incBtn) this.incBtn.disabled = clamped >= this.currentMax;
+          if (this.maxMessage) this.maxMessage.hidden = clamped < this.currentMax;
+
+          if (!silent) {
+            document.dispatchEvent(
+              new CustomEvent('lego:quantity:change', {
+                bubbles: true,
+                detail: { productId: this.productId, quantity: clamped },
+              })
+            );
+          }
+        }
+      }
+
+      customElements.define('lego-quantity', LegoQuantity);
+    }
+  </script>
+{% endif %}
 
 {% schema %}
 {
   "label": "Quantity",
   "target": "section",
   "settings": [
+    { "type": "header", "content": "Applies to" },
+    { "type": "page", "id": "page", "label": "Page" },
+    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
     { "type": "header", "content": "Product" },
     { "type": "product", "id": "product", "label": "Product" },
     {
       "type": "paragraph",
-      "content": "Uses the product on the current page, or pick one. Broadcasts changes for Add to Cart / Buy Box blocks placed elsewhere."
+      "content": "Pick a product, broadcasts changes for Add to Cart / Buy Box blocks placed elsewhere."
     },
 
     { "type": "header", "content": "Content" },
@@ -327,9 +373,40 @@
     { "type": "color", "id": "max_message_color", "label": "Max message color", "default": "#DC2626" },
 
     { "type": "header", "content": "Style" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "label": "Left", "value": "flex-start" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "flex-end" }
+      ],
+      "default": "flex-start"
+    },
     { "type": "range", "id": "control_height", "label": "Control height", "min": 28, "max": 56, "step": 2, "unit": "px", "default": 40 },
     { "type": "range", "id": "input_width", "label": "Value width", "min": 32, "max": 72, "step": 4, "unit": "px", "default": 44 },
     { "type": "range", "id": "control_radius", "label": "Control corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 8 },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "label": "Theme default", "value": "inherit" },
+        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
+        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
+        { "label": "Monospace", "value": "ui-monospace, monospace" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family",
+      "label": "Custom font family",
+      "placeholder": "DM+Sans",
+      "visible_if": { "setting_id": "font_family", "value": "custom" }
+    },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#1A1A1A" },
     { "type": "color", "id": "label_color", "label": "Label color", "default": "#374151" },
     { "type": "color", "id": "border_control_color", "label": "Control border color", "default": "#D1D5DB" },
