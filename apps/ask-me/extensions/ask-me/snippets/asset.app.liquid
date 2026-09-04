@@ -1,0 +1,117 @@
+{% comment %}
+  Renders global CSS styles (tokens | colors | globals).
+
+  Usage:
+  {% render 'asset.app' %}
+{% endcomment %}
+
+{% unless block.settings.font == 'inherit' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family={{ block.settings.font }}"
+  >
+
+  {% style %}
+    ui-ask-me {
+      --font-app-family: '{{ block.settings.font | replace: '+', ' ' }}', sans-serif, 'yc-sans';
+    }
+  {% endstyle %}
+{% endunless %}
+
+{% style %}
+  /* Tokens */
+  :has(> ui-ask-me) {
+    --spacing-0: 0px;
+    --spacing-4: 4px;
+    --spacing-6: 6px;
+    --spacing-8: 8px;
+    --spacing-10: 10px;
+    --spacing-12: 12px;
+    --spacing-14: 14px;
+    --spacing-16: 16px;
+    --spacing-20: 20px;
+    --spacing-24: 24px;
+    --spacing-32: 32px;
+    --spacing-64: 64px;
+    --radius-4: 4px;
+    --radius-16: 16px;
+    --radius-20: 20px;
+    --radius-rounded: calc(1px * infinity);
+    --font-title-md: 500 16px/24px var(--font-app-family);
+    --font-title-sm: 500 14px/20px var(--font-app-family);
+    --font-body-md: 400 14px/20px var(--font-app-family);
+    --transition-expressive-fast-spatial: 350ms cubic-bezier(0.42, 1.67, 0.21, 0.9);
+    --transition-standard-fast-spatial: 350ms cubic-bezier(0.27, 1.06, 0.18, 1);
+    --transition-standard-default-spatial: 500ms cubic-bezier(0.27, 1.06, 0.18, 1);
+    --transition-standard-fast-effects: 150ms cubic-bezier(0.31, 0.94, 0.34, 1);
+    --transition-standard-default-effects: 200ms cubic-bezier(0.34, 0.8, 0.34, 1);
+  }
+
+  ui-ask-me {
+    --brand-l: 0.18;
+    --brand-c: 0;
+    --brand-h: 0;
+
+    /* AS-FOREGROUND  */
+    --color-primary: oklch(min(var(--brand-l), 0.48) var(--brand-c) var(--brand-h));
+    --color-on-primary: oklch(1 0 0);
+    --color-surface: oklch(0.98 min(var(--brand-c), 0.009) var(--brand-h));
+    --color-on-surface: oklch(0.18 var(--brand-c) var(--brand-h));
+    --color-surface-container-high: oklch(0.92 min(var(--brand-c), 0.038) var(--brand-h));
+    --color-on-surface-variant: oklch(0.42 min(var(--brand-c), 0.071) var(--brand-h));
+    --color-outline-variant: oklch(0.82 min(var(--brand-c), 0.089) var(--brand-h));
+
+    /* AS-LIGHT-BG */
+    &[data-intensity='as-light-bg'] {
+      --color-primary: oklch(min(var(--brand-l), 0.42) var(--brand-c) var(--brand-h));
+      --color-on-primary: oklch(1 0 0);
+      --color-surface: oklch(0.93 min(calc(var(--brand-c) * 0.55), 0.033) var(--brand-h));
+      --color-on-surface: oklch(0.25 var(--brand-c) var(--brand-h));
+      --color-surface-container-high: oklch(0.86 min(var(--brand-c), 0.068) var(--brand-h));
+      --color-on-surface-variant: oklch(0.35 min(var(--brand-c), 0.059) var(--brand-h));
+      --color-outline-variant: oklch(0.82 min(var(--brand-c), 0.089) var(--brand-h));
+    }
+
+    /* AS-SOLID-BG */
+    &[data-intensity='as-solid-bg'] {
+      --color-primary: oklch(0.88 min(var(--brand-c), 0.058) var(--brand-h));
+      --color-on-primary: oklch(min(var(--brand-l), 0.22) var(--brand-c) var(--brand-h));
+      --color-surface: oklch(0.14 min(var(--brand-c), 0.024) var(--brand-h));
+      --color-on-surface: oklch(0.90 min(var(--brand-c), 0.048) var(--brand-h));
+      --color-surface-container-high: oklch(0.28 min(var(--brand-c), 0.047) var(--brand-h));
+      --color-on-surface-variant: oklch(0.78 min(var(--brand-c), 0.110) var(--brand-h));
+      --color-outline-variant: oklch(0.34 min(var(--brand-c), 0.057) var(--brand-h));
+    }
+  }
+
+  /* Globals */
+  ui-ask-me {
+    * {
+      font-family: var(--font-app-family);
+    }
+
+    h3 {
+      text-wrap: balance;
+      overflow-wrap: break-word;
+    }
+
+    p {
+      text-wrap: pretty;
+    }
+
+    button {
+      border: none;
+      outline: none;
+      padding: var(--spacing-0);
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+
+  [dir='rtl'] ui-ask-me svg[data-mirror-rtl],
+  ui-ask-me svg[data-mirror-rtl]:dir(rtl)  {
+    scale: -1 1;
+  }
+{% endstyle %}

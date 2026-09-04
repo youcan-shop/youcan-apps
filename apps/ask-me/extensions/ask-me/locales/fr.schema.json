@@ -1,0 +1,46 @@
+{
+  "blocks": {
+    "ask_me": {
+      "label": "Ask Me",
+      "settings": {
+        "widget": {
+          "label": "Widget",
+          "info": "ℹ️ Ajoutez ce bloc une seule fois, puis ajoutez autant de blocs Ask Me — Question que nécessaire.",
+          "position": {
+            "label": "Coin",
+            "options": {
+              "end": "En bas, côté fin",
+              "start": "En bas, côté début"
+            }
+          },
+          "panel_title": "Titre du panneau"
+        },
+        "appearance": {
+          "label": "Apparence",
+          "color": "Couleur",
+          "intensity": {
+            "label": "Intensité",
+            "options": {
+              "as_foreground": "En premier plan",
+              "as_light_bg": "En fond clair",
+              "as_solid_bg": "En fond uni"
+            }
+          },
+          "font": {
+            "label": "Police",
+            "options": {
+              "inherit": "Hériter"
+            }
+          }
+        }
+      }
+    },
+    "question": {
+      "label": "Ask Me — Question",
+      "settings": {
+        "question": "Question",
+        "answer": "Réponse"
+      }
+    }
+  }
+}

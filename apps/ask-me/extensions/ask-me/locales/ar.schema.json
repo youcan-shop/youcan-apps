@@ -1,0 +1,46 @@
+{
+  "blocks": {
+    "ask_me": {
+      "label": "Ask Me",
+      "settings": {
+        "widget": {
+          "label": "الأداة",
+          "info": "ℹ️ أضف هذا البلوك مرة واحدة، ثم أضف العدد الذي تريده من بلوكات Ask Me — Question.",
+          "position": {
+            "label": "الزاوية",
+            "options": {
+              "end": "أسفل جهة النهاية",
+              "start": "أسفل جهة البداية"
+            }
+          },
+          "panel_title": "عنوان اللوحة"
+        },
+        "appearance": {
+          "label": "المظهر",
+          "color": "اللون",
+          "intensity": {
+            "label": "الشدة",
+            "options": {
+              "as_foreground": "كمقدمة",
+              "as_light_bg": "كخلفية فاتحة",
+              "as_solid_bg": "كخلفية صلبة"
+            }
+          },
+          "font": {
+            "label": "الخط",
+            "options": {
+              "inherit": "موروث"
+            }
+          }
+        }
+      }
+    },
+    "question": {
+      "label": "Ask Me — Question",
+      "settings": {
+        "question": "السؤال",
+        "answer": "الجواب"
+      }
+    }
+  }
+}
