@@ -1,0 +1,9 @@
+{
+  "ask_me": {
+    "widget": {
+      "title": "Frequently asked questions",
+      "open": "Frequently asked questions",
+      "empty": "No questions have been added yet"
+    }
+  }
+}

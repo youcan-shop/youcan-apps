@@ -1,0 +1,236 @@
+{% comment %}
+  Renders "question" component CSS styles
+
+  Usage:
+  {% render 'asset.question' %}
+{% endcomment %}
+
+{% style %}
+  @keyframes ask-me-reply-in {
+    from {
+      translate: 0 calc(-1 * var(--spacing-8));
+      opacity: 0;
+    }
+
+    to {
+      translate: 0 0;
+      opacity: 1;
+    }
+  }
+
+  @keyframes ask-me-word-in {
+    from {
+      translate: 0 var(--spacing-4);
+      opacity: 0;
+    }
+
+    to {
+      translate: 0 0;
+      opacity: 1;
+    }
+  }
+
+  @keyframes ask-me-typing-out {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  @keyframes ask-me-dot {
+    0%,
+    60%,
+    100% {
+      translate: 0 0;
+      opacity: 0.35;
+    }
+
+    30% {
+      translate: 0 calc(-1 * var(--spacing-4));
+      opacity: 0.9;
+    }
+  }
+
+  ui-ask-me [ui-ask-me='question'] {
+    --stream-lead: 520ms;
+    --stream-stagger: 45ms;
+
+    display: flex;
+    flex-direction: column;
+    interpolate-size: allow-keywords;
+
+    &::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition:
+        block-size var(--transition-expressive-fast-spatial),
+        opacity var(--transition-standard-default-effects),
+        content-visibility var(--transition-expressive-fast-spatial) allow-discrete;
+      opacity: 0;
+    }
+
+    &[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::details-content {
+        transition: none;
+      }
+    }
+
+    & > summary {
+      display: flex;
+      align-self: flex-start;
+      align-items: center;
+      gap: var(--spacing-10);
+      max-width: 88%;
+      padding: var(--spacing-10) var(--spacing-14);
+      transition:
+        translate var(--transition-standard-fast-spatial),
+        box-shadow var(--transition-standard-default-effects),
+        border-radius var(--transition-standard-fast-spatial);
+      border-radius: var(--radius-16);
+      border-start-start-radius: var(--radius-4);
+      background-color: var(--color-surface-container-high);
+      box-shadow: 0 1px 2px color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+      font: var(--font-title-sm);
+      color: var(--color-on-surface);
+      text-align: start;
+      list-style: none;
+      cursor: pointer;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &::marker {
+        content: '';
+      }
+
+      &:hover {
+        translate: 0 -1px;
+        box-shadow:
+          0 2px 4px color-mix(in srgb, var(--color-on-surface) 10%, transparent),
+          0 8px 16px -6px color-mix(in srgb, var(--color-on-surface) 18%, transparent);
+      }
+
+      &:active {
+        translate: 0 0;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      & > .text {
+        min-width: 0;
+        overflow-wrap: break-word;
+      }
+    }
+
+    &[open] > summary {
+      translate: 0 0;
+      border-end-start-radius: var(--radius-4);
+      box-shadow: none;
+    }
+
+    & > .reply {
+      display: flex;
+      align-self: flex-start;
+      align-items: flex-start;
+      gap: var(--spacing-8);
+      margin-block-start: var(--spacing-8);
+      margin-block-end: var(--spacing-12);
+      margin-inline-start: var(--spacing-12);
+      max-width: 92%;
+      padding: var(--spacing-12) var(--spacing-14);
+      border-radius: var(--radius-16);
+      border-start-start-radius: var(--radius-4);
+      background-color: var(--color-surface-container-high);
+      box-shadow:
+        0 1px 2px color-mix(in srgb, var(--color-on-surface) 10%, transparent),
+        0 4px 12px -4px color-mix(in srgb, var(--color-on-surface) 14%, transparent);
+      color: var(--color-on-surface);
+      animation: ask-me-reply-in var(--transition-standard-default-spatial) both;
+
+      & > .answer {
+        position: relative;
+        margin: var(--spacing-0);
+        padding: var(--spacing-0);
+        font: var(--font-body-md);
+        color: inherit;
+        text-align: start;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+
+    & > .reply .word {
+      --i: 0;
+
+      display: inline-block;
+    }
+
+    &[open] > .reply .word {
+      animation: ask-me-word-in var(--transition-standard-default-effects) both;
+      animation-delay: calc(var(--stream-lead) + var(--i) * var(--stream-stagger));
+    }
+
+    & > .reply .typing {
+      display: flex;
+      position: absolute;
+      inset-block-start: var(--spacing-6);
+      inset-inline-start: var(--spacing-0);
+      gap: var(--spacing-4);
+      white-space: normal;
+
+      & > span {
+        --dot-size: 6px;
+
+        width: var(--dot-size);
+        height: var(--dot-size);
+        border-radius: var(--radius-rounded);
+        background-color: currentcolor;
+        opacity: 0.35;
+      }
+    }
+
+    &[open] > .reply .typing {
+      animation: ask-me-typing-out var(--transition-standard-fast-effects) both;
+      animation-delay: var(--stream-lead);
+
+      & > span {
+        animation: ask-me-dot 1000ms ease-in-out infinite;
+
+        &:nth-child(2) {
+          animation-delay: 160ms;
+        }
+
+        &:nth-child(3) {
+          animation-delay: 320ms;
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &[open] > .reply .word {
+        animation: none;
+      }
+
+      & > .reply .typing {
+        display: none;
+      }
+    }
+  }
+
+  ui-ask-me:not(:has([ui-ask-me='panel']:popover-open)) [ui-ask-me='question']::details-content {
+    transition: none;
+  }
+{% endstyle %}

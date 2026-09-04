@@ -1,0 +1,56 @@
+{% render 'asset.chat-panel' %}
+{% render 'asset.question' %}
+
+{%- assign panel_id = 'ask-me-panel-' | append: block.id -%}
+
+{%- assign default_title = 'ask_me.widget.title' | t -%}
+{%- assign panel_title = block.settings.panel_title | strip | default: default_title -%}
+
+{%- assign brand_lightness = block.settings.color.lightness | default: 18 -%}
+{%- assign brand_chroma = block.settings.color.chroma | default: 0 -%}
+{%- assign brand_hue = block.settings.color.oklch_hue | default: 0 -%}
+
+<ui-ask-me
+  style="
+    --brand-l: calc({{ brand_lightness }} / 100);
+    --brand-c: {{ brand_chroma }};
+    --brand-h: {{ brand_hue }};
+  "
+  data-intensity="{{ block.settings.intensity }}"
+  data-position="{{ block.settings.position }}"
+  {% if request.design_mode %}data-design-mode{% endif %}
+  {{ block.youcan_attributes }}
+>
+  <button
+    ui-ask-me="launcher"
+    ask-me-slot="button"
+    data-variant="primary"
+    data-mode="filled"
+    data-size="fab"
+    data-as-icon
+    type="button"
+    popovertarget="{{ panel_id }}"
+    aria-controls="{{ panel_id }}"
+    aria-label="{{ 'ask_me.widget.open' | t }}"
+  >
+    {% render 'svg.help' %}
+  </button>
+
+  <div
+    ui-ask-me="panel"
+    id="{{ panel_id }}"
+    popover
+    role="dialog"
+    aria-label="{{ panel_title }}"
+  >
+    <div class="header">
+      <span class="avatar">{% render 'svg.help', size: 20 %}</span>
+
+      <h3 class="title">{{ panel_title }}</h3>
+    </div>
+
+    <div ui-ask-me="list" class="list" hidden></div>
+
+    <p ui-ask-me="empty" class="empty">{{ 'ask_me.widget.empty' | t }}</p>
+  </div>
+</ui-ask-me>

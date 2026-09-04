@@ -1,0 +1,46 @@
+{
+  "blocks": {
+    "ask_me": {
+      "label": "Ask Me",
+      "settings": {
+        "widget": {
+          "label": "Widget",
+          "info": "ℹ️ Add this block once, then add as many Ask Me — Question blocks as you need.",
+          "position": {
+            "label": "Corner",
+            "options": {
+              "end": "Bottom end",
+              "start": "Bottom start"
+            }
+          },
+          "panel_title": "Panel title"
+        },
+        "appearance": {
+          "label": "Appearance",
+          "color": "Color",
+          "intensity": {
+            "label": "Intensity",
+            "options": {
+              "as_foreground": "As foreground",
+              "as_light_bg": "As light background",
+              "as_solid_bg": "As solid background"
+            }
+          },
+          "font": {
+            "label": "Font",
+            "options": {
+              "inherit": "Inherit"
+            }
+          }
+        }
+      }
+    },
+    "question": {
+      "label": "Ask Me — Question",
+      "settings": {
+        "question": "Question",
+        "answer": "Answer"
+      }
+    }
+  }
+}
