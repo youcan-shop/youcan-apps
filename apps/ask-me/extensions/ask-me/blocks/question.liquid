@@ -1,0 +1,51 @@
+{% comment %}
+  ask-me ——— question block. The question and answer pair
+{% endcomment %}
+
+<div
+  ui-ask-me="question-source"
+  data-block-id="{{ block.id }}"
+  hidden
+  {{ block.youcan_attributes }}
+>
+  {%- if block.settings.question != blank -%}
+
+    {%- assign answer_words = block.settings.answer | escape | strip | split: ' ' -%}
+
+    <details ui-ask-me="question" name="ask-me" data-block-id="{{ block.id }}">
+      <summary>
+        <span class="text">{{ block.settings.question }}</span>
+      </summary>
+
+      {%- if answer_words.size > 0 -%}
+        <div class="reply">
+          <p class="answer"><span class="typing" aria-hidden="true"><span></span><span></span><span></span></span>
+            {%- for word in answer_words -%}
+              {%- unless forloop.first %} {% endunless -%}
+              <span class="word" style="--i: {{ forloop.index0 }}">{{ word }}</span>
+            {%- endfor -%}
+          </p>
+        </div>
+      {%- endif -%}
+    </details>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "label": "t:blocks.question.label",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "question",
+      "label": "t:blocks.question.settings.question"
+    },
+    {
+      "type": "textarea",
+      "id": "answer",
+      "label": "t:blocks.question.settings.answer"
+    }
+  ]
+}
+{% endschema %}

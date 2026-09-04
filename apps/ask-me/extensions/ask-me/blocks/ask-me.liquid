@@ -1,0 +1,173 @@
+{% comment %}
+  ask-me block. The floating launcher and its question panel.
+{% endcomment %}
+
+{% render 'asset.app' %}
+{% render 'asset.button' %}
+{% render 'widget.chat-panel' %}
+
+{{ 'component.ask-me.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "label": "t:blocks.ask_me.label",
+  "target": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:blocks.ask_me.settings.widget.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.ask_me.settings.widget.info"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "t:blocks.ask_me.settings.widget.position.label",
+      "options": [
+        {
+          "value": "end",
+          "label": "t:blocks.ask_me.settings.widget.position.options.end"
+        },
+        {
+          "value": "start",
+          "label": "t:blocks.ask_me.settings.widget.position.options.start"
+        }
+      ],
+      "default": "end"
+    },
+    {
+      "type": "text",
+      "id": "panel_title",
+      "label": "t:blocks.ask_me.settings.widget.panel_title"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.ask_me.settings.appearance.label"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "t:blocks.ask_me.settings.appearance.color",
+      "default": "#121212"
+    },
+    {
+      "type": "select",
+      "id": "intensity",
+      "label": "t:blocks.ask_me.settings.appearance.intensity.label",
+      "options": [
+        {
+          "value": "as-foreground",
+          "label": "t:blocks.ask_me.settings.appearance.intensity.options.as_foreground"
+        },
+        {
+          "value": "as-light-bg",
+          "label": "t:blocks.ask_me.settings.appearance.intensity.options.as_light_bg"
+        },
+        {
+          "value": "as-solid-bg",
+          "label": "t:blocks.ask_me.settings.appearance.intensity.options.as_solid_bg"
+        }
+      ],
+      "default": "as-foreground"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:blocks.ask_me.settings.appearance.font.label",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "t:blocks.ask_me.settings.appearance.font.options.inherit"
+        },
+        {
+          "value": "DM+Sans",
+          "label": "DM Sans"
+        },
+        {
+          "value": "Roboto",
+          "label": "Roboto"
+        },
+        {
+          "value": "Open+Sans",
+          "label": "Open Sans"
+        },
+        {
+          "value": "Lato",
+          "label": "Lato"
+        },
+        {
+          "value": "Noto+Sans",
+          "label": "Noto Sans"
+        },
+        {
+          "value": "Noto+Serif",
+          "label": "Noto Serif"
+        },
+        {
+          "value": "Montserrat",
+          "label": "Montserrat"
+        },
+        {
+          "value": "Oswald",
+          "label": "Oswald"
+        },
+        {
+          "value": "Poppins",
+          "label": "Poppins"
+        },
+        {
+          "value": "Raleway",
+          "label": "Raleway"
+        },
+        {
+          "value": "Inter",
+          "label": "Inter"
+        },
+        {
+          "value": "PT+Sans",
+          "label": "PT Sans"
+        },
+        {
+          "value": "PT+Serif",
+          "label": "PT Serif"
+        },
+        {
+          "value": "Lora",
+          "label": "Lora"
+        },
+        {
+          "value": "Rubik",
+          "label": "Rubik"
+        },
+        {
+          "value": "Cairo",
+          "label": "Cairo"
+        },
+        {
+          "value": "Tajawal",
+          "label": "Tajawal"
+        },
+        {
+          "value": "Almarai",
+          "label": "Almarai"
+        },
+        {
+          "value": "Noto+Kufi+Arabic",
+          "label": "Noto Kufi"
+        },
+        {
+          "value": "Changa",
+          "label": "Changa"
+        },
+        {
+          "value": "Beiruti",
+          "label": "Beiruti"
+        }
+      ],
+      "default": "inherit"
+    }
+  ]
+}
+{% endschema %}

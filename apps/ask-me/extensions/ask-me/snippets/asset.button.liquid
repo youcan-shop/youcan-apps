@@ -1,0 +1,66 @@
+{% comment %}
+  Renders button component CSS styles
+
+  Usage:
+  {% render 'asset.button' %}
+{% endcomment %}
+
+{% style %}
+  ui-ask-me [ask-me-slot='button'] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--button-size);
+    transition: all var(--transition-standard-default-spatial);
+    border: 1px solid transparent;
+    border-radius: var(--radius-rounded);
+    outline: none;
+    box-shadow: 0 0 0 3px transparent;
+    font: var(--font-body-md);
+    text-decoration: none;
+    cursor: pointer;
+
+    & > * {
+      font-family: inherit;
+    }
+
+    &[data-size='fab'] {
+      --button-size: 56px;
+
+      padding-inline: var(--spacing-16);
+      gap: var(--spacing-10);
+    }
+
+    &[data-mode='filled'] {
+      background-color: var(--color-on-button);
+      color: var(--color-button);
+      box-shadow: rgba(0, 0, 0, 0.12) 0px 2.737px 12.775px -1.825px;
+
+      &:hover {
+        background-color: color-mix(in oklab, var(--color-on-button) 95%, var(--color-button));
+      }
+    }
+
+    &[data-variant='primary'] {
+      --color-button: var(--color-primary);
+      --color-on-button: var(--color-on-primary);
+    }
+
+    &[data-as-icon] {
+      width: var(--button-size);
+      padding-inline: var(--spacing-0);
+    }
+
+    & > svg {
+      flex-shrink: 0;
+    }
+
+    &:active {
+      scale: 0.98;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-button) 30%, transparent);
+    }
+  }
+{% endstyle %}
