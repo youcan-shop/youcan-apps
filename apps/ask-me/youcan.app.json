@@ -1,3 +1,14 @@
 {
-    "name": "ask-me"
+    "name": "ask-me",
+    "id": "app_FDCQJkH1YPKixBTg1hyM1PjkdL4",
+    "handle": "ask-me-5",
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "3218"
+    },
+    "extension_ids": {
+        "ask-me": "ext_FDCQJwdArIyIuKkIyBRP2p3k2Ee"
+    }
 }
