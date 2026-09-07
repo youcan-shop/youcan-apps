@@ -1,7 +1,7 @@
 {
-    "name": "ask-me",
+    "name": "AskMe",
     "id": "app_FDCQJkH1YPKixBTg1hyM1PjkdL4",
-    "handle": "ask-me-5",
+    "handle": "ask-me-app",
     "oauth": {
         "scopes": [
             "*"
