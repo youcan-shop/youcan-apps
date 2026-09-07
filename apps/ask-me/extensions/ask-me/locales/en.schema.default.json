@@ -1,11 +1,11 @@
 {
   "blocks": {
     "ask_me": {
-      "label": "Ask Me",
+      "label": "AskMe",
       "settings": {
         "widget": {
           "label": "Widget",
-          "info": "ℹ️ Add this block once, then add as many Ask Me — Question blocks as you need.",
+          "info": "ℹ️ Add this block once, then add as many AskMe — Question blocks as you need.",
           "position": {
             "label": "Corner",
             "options": {
@@ -39,7 +39,7 @@
       }
     },
     "question": {
-      "label": "Ask Me — Question",
+      "label": "AskMe — Question",
       "settings": {
         "question": "Question",
         "answer": "Answer"

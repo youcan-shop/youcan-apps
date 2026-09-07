@@ -1,11 +1,11 @@
 {
   "blocks": {
     "ask_me": {
-      "label": "Ask Me",
+      "label": "AskMe",
       "settings": {
         "widget": {
           "label": "الأداة",
-          "info": "ℹ️ أضف هذا البلوك مرة واحدة، ثم أضف العدد الذي تريده من بلوكات Ask Me — Question.",
+          "info": "ℹ️ أضف هذا البلوك مرة واحدة، ثم أضف العدد الذي تريده من بلوكات AskMe — Question.",
           "position": {
             "label": "الزاوية",
             "options": {
@@ -39,7 +39,7 @@
       }
     },
     "question": {
-      "label": "Ask Me — Question",
+      "label": "AskMe — Question",
       "settings": {
         "question": "السؤال",
         "answer": "الجواب"
