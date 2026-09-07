@@ -13,6 +13,9 @@
               "start": "En bas, côté début"
             }
           },
+          "launcher_offset": {
+            "label": "Distance depuis le bas",
+          },
           "panel_title": "Titre du panneau"
         },
         "appearance": {

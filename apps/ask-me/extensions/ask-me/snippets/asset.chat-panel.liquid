@@ -32,7 +32,7 @@
   :has(> ui-ask-me[data-design-mode]) {
     position: fixed;
     z-index: 48;
-    inset-block-end: var(--spacing-64);
+    inset-block-end: var(--launcher-inset);
     width: fit-content;
 
     &:has(> ui-ask-me[data-position='end']) {
@@ -45,8 +45,6 @@
   }
 
   ui-ask-me {
-    --launcher-inset: var(--spacing-64);
-
     display: block;
     position: fixed;
     z-index: 48;

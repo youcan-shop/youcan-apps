@@ -13,6 +13,9 @@
               "start": "Bottom start"
             }
           },
+          "launcher_offset": {
+            "label": "Distance from bottom",
+          },
           "panel_title": "Panel title"
         },
         "appearance": {
