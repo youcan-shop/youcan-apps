@@ -14,7 +14,7 @@
             }
           },
           "launcher_offset": {
-            "label": "Distance depuis le bas",
+            "label": "Distance depuis le bas"
           },
           "panel_title": "Titre du panneau"
         },
