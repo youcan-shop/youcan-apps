@@ -1,0 +1,83 @@
+{% if template.name == 'page' %}
+  <script id="lego-app-config">
+    (function () {
+      let hideIds = ['youcan-section--page'];
+
+      {% if block.settings.hide_announcement_bar %}
+        hideIds.push('youcan-section--announcement-bar', 'youcan-section--announcement-banner', 'youcan-section--notice-bar');
+      {% endif %}
+      {% if block.settings.hide_header %}
+        hideIds.push('youcan-section--header', 'youcan-section--main-navbar');
+      {% endif %}
+      {% if block.settings.hide_footer %}
+        hideIds.push('youcan-section--footer', 'youcan-section--main-footer');
+      {% endif %}
+
+      let style = document.createElement('style');
+      style.id = 'lego-app-config-hidden-sections';
+      style.textContent = hideIds.map(function (id) {
+        return '#' + id + ' { display: none !important; }';
+      }).join('\n');
+      document.head.appendChild(style);
+    })();
+  </script>
+
+  {% if block.settings.page_width != 'full' %}
+    {% case block.settings.page_width %}
+      {% when 'tablet' %}
+        {% assign page_max_width = 768 %}
+      {% when 'mobile' %}
+        {% assign page_max_width = 480 %}
+      {% when 'custom' %}
+        {% assign page_max_width = block.settings.page_width_custom %}
+    {% endcase %}
+    <style id="lego-app-config-page-width">
+      [id^="youcan-block--"] {
+        max-width: {{ page_max_width }}px;
+        margin-inline: auto;
+      }
+    </style>
+  {% endif %}
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0"
+  />
+{% endif %}
+
+{% schema %}
+{
+  "label": "App config",
+  "target": "body",
+  "settings": [
+    { "type": "header", "content": "Page width" },
+    {
+      "type": "select",
+      "id": "page_width",
+      "label": "Content width on desktop",
+      "options": [
+        { "label": "Full width", "value": "full" },
+        { "label": "Tablet (768px)", "value": "tablet" },
+        { "label": "Mobile (480px)", "value": "mobile" },
+        { "label": "Custom", "value": "custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "page_width_custom",
+      "label": "Custom width",
+      "min": 360,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 600,
+      "visible_if": { "setting_id": "page_width", "value": "custom" }
+    },
+    { "type": "header", "content": "Hide theme sections" },
+    { "type": "checkbox", "id": "hide_announcement_bar", "label": "Hide announcement bar", "default": true },
+    { "type": "checkbox", "id": "hide_header", "label": "Hide header / navbar", "default": true },
+    { "type": "checkbox", "id": "hide_footer", "label": "Hide footer", "default": true }
+  ]
+}
+{% endschema %}
