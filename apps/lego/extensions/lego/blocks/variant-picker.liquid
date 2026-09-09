@@ -2,8 +2,6 @@
   {% assign product = block.settings.product | default: product %}
 
   {% if product and product.options.size > 0 %}
-    {% assign default_variant = product.selected_or_first_available_variant %}
-
     <lego-variant-picker
       data-lego="variant-picker"
       data-product-id="{{ product.id }}"
@@ -16,6 +14,7 @@
       {% endif %}
     >
       {% for option in product.options %}
+        {% assign option_index = forloop.index0 %}
         {% assign default_value = '' %}
         {% for variation in product.selected_or_first_available_variant.variations %}
           {% if variation[0] == option.name %}{% assign default_value = variation[1] %}{% endif %}
@@ -38,7 +37,7 @@
                   <label class="swatch" title="{{ value.value }}">
                     <input
                       type="radio"
-                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      name="lego-vp-option-{{ option_index }}-{{ block.id }}"
                       value="{{ value.value | escape }}"
                       data-option-name="{{ option.name | escape }}"
                       {% if is_selected %}
@@ -59,7 +58,7 @@
                   <label class="pill">
                     <input
                       type="radio"
-                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      name="lego-vp-option-{{ option_index }}-{{ block.id }}"
                       value="{{ value | escape }}"
                       data-option-name="{{ option.name | escape }}"
                       {% if is_selected %}
@@ -79,7 +78,7 @@
                   <label class="radio-row">
                     <input
                       type="radio"
-                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      name="lego-vp-option-{{ option_index }}-{{ block.id }}"
                       value="{{ value | escape }}"
                       data-option-name="{{ option.name | escape }}"
                       {% if is_selected %}
@@ -100,7 +99,7 @@
                   <label class="image-swatch">
                     <input
                       type="radio"
-                      name="lego-vp-option-{{ forloop.parentloop.index0 }}-{{ block.id }}"
+                      name="lego-vp-option-{{ option_index }}-{{ block.id }}"
                       value="{{ value.value | escape }}"
                       data-option-name="{{ option.name | escape }}"
                       {% if is_selected %}
@@ -142,7 +141,7 @@
                 <span class="upload-hint">{{ block.settings.upload_hint }}</span>
               </label>
               <div class="upload-preview" data-slot="upload-preview" hidden>
-                <img src="" alt="" data-slot="upload-preview-image" width="48" height="48">
+                <img src="" alt="" data-slot="upload-preview-image">
                 <button type="button" class="upload-remove" data-slot="upload-remove" aria-label="Remove">
                   <span class="material-symbols-rounded">close</span>
                 </button>
@@ -258,7 +257,7 @@
 
         &:active { transform: scale(0.92); }
 
-        &[data-unavailable= "1"] {
+        &[data-unavailable="true"] {
           cursor: not-allowed;
           opacity: 0.35;
           .swatch-fill::after {
@@ -290,7 +289,7 @@
           &:has(input:checked) { border-color: {{ block.settings.active_color.hex }}; background-color: {{ block.settings.active_color.hex }}; color: {{ block.settings.active_text_color.hex }}; }
           &:active { transform: scale(0.96); }
 
-          &[data-unavailable= "1"] {
+          &[data-unavailable="true"] {
             cursor: not-allowed;
             color: {{ block.settings.unavailable_line_color.hex }};
             text-decoration: line-through;
@@ -330,7 +329,7 @@
             background-color: {{ block.settings.active_color.hex }};
           }
 
-          &[data-unavailable= "1"] { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+          &[data-unavailable="true"] { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
         }
       }
 
@@ -383,7 +382,7 @@
           &:has(input:checked) .image-frame { box-shadow: 0 0 0 2px {{ block.settings.active_color.hex }}; }
           &:has(input:checked) .image-check { opacity: 1; }
 
-          &[data-unavailable= "1"] { opacity: 0.35; cursor: not-allowed; }
+          &[data-unavailable="true"] { opacity: 0.35; cursor: not-allowed; }
         }
       }
 
@@ -403,7 +402,7 @@
         .upload-label { font-size: 13px; font-weight: 500; color: {{ block.settings.value_display_color.hex }}; }
         .upload-hint { font-size: 11px; color: {{ block.settings.label_color.hex }}; opacity: 0.7; }
 
-        &[data-dragover= "1"] { border-color: {{ block.settings.active_color.hex }}; background-color: color-mix(in srgb, {{ block.settings.active_color.hex }} 6%, transparent); }
+        &[data-dragover="true"] { border-color: {{ block.settings.active_color.hex }}; background-color: color-mix(in srgb, {{ block.settings.active_color.hex }} 6%, transparent); }
       }
 
       .upload-preview {
@@ -417,18 +416,16 @@
         .upload-remove {
           width: 28px;
           height: 28px;
+          padding: 0;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           border-radius: 50%;
           border: 0;
-          padding: 0;
           background: {{ block.settings.bg_color.hex | default: '#F5F5F5' }};
           cursor: pointer;
 
-          span {
-            font-size: 16px;
-          }
+          span { font-size: 16px; }
         }
       }
 
@@ -624,6 +621,7 @@
     { "type": "header", "content": "Applies to" },
     { "type": "page", "id": "page", "label": "Page" },
     { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
+
     { "type": "header", "content": "Product" },
     { "type": "product", "id": "product", "label": "Product" },
     {

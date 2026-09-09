@@ -8,12 +8,12 @@
     >
   {% endif %}
 
-  {% assign product = block.settings.product | default: product %}
+  {% assign product = block.settings.product %}
 
   {% if product %}
     {% assign default_variant = product.selected_or_first_available_variant %}
-    {% assign price = default_variant.price | default: product.price %}
-    {% assign compare_at_price = default_variant.compare_at_price | default: product.compare_at_price %}
+    {% assign price = default_variant.price | default: product.price | default: 0 %}
+    {% assign compare_at_price = default_variant.compare_at_price | default: product.compare_at_price | default: 0 %}
     {% assign on_sale = false %}
     {% if compare_at_price > price %}{% assign on_sale = true %}{% endif %}
     {% assign discount_amount = compare_at_price | minus: price %}
@@ -224,6 +224,7 @@
 
           document.addEventListener('lego:variant:change', (e) => {
             if (!e.detail || e.detail.productId !== this.productId) return;
+            if (document.readyState === 'loading') return;
             this.update(e.detail);
           });
         }
