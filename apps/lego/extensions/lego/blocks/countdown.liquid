@@ -373,387 +373,870 @@
 
 {% schema %}
 {
-  "label": "Countdown",
+  "label": "t:blocks.countdown.label",
   "target": "section",
   "settings": [
-    { "type": "header", "content": "Applies to" },
-    { "type": "page", "id": "page", "label": "Page" },
-    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
-    { "type": "header", "content": "Content" },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.applies_to.label"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "t:blocks.countdown.settings.applies_to.page"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.applies_to.paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.content.label"
+    },
     {
       "type": "select",
       "id": "mode",
-      "label": "Countdown type",
+      "label": "t:blocks.countdown.settings.content.mode.label",
       "options": [
-        { "label": "Fixed date", "value": "fixed_date" },
-        { "label": "Evergreen (per visitor)", "value": "evergreen" }
+        {
+          "label": "t:blocks.countdown.settings.content.mode.options.fixed_date",
+          "value": "fixed_date"
+        },
+        {
+          "label": "t:blocks.countdown.settings.content.mode.options.evergreen",
+          "value": "evergreen"
+        }
       ],
       "default": "fixed_date"
     },
     {
       "type": "text",
       "id": "target_date",
-      "label": "Target date",
-      "placeholder": "2026-12-31",
+      "label": "t:blocks.countdown.settings.content.target_date.label",
+      "placeholder": "t:blocks.countdown.settings.content.target_date.placeholder",
       "default": "2026-12-31",
-      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+      "visible_if": {
+        "setting_id": "mode",
+        "value": "fixed_date"
+      }
     },
     {
       "type": "text",
       "id": "target_time",
-      "label": "Target time",
-      "placeholder": "23:59:59",
+      "label": "t:blocks.countdown.settings.content.target_time.label",
+      "placeholder": "t:blocks.countdown.settings.content.target_time.placeholder",
       "default": "23:59:59",
-      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+      "visible_if": {
+        "setting_id": "mode",
+        "value": "fixed_date"
+      }
     },
     {
       "type": "text",
       "id": "utc_offset",
-      "label": "UTC offset (optional)",
-      "placeholder": "+01:00",
-      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+      "label": "t:blocks.countdown.settings.content.utc_offset.label",
+      "placeholder": "t:blocks.countdown.settings.content.utc_offset.placeholder",
+      "visible_if": {
+        "setting_id": "mode",
+        "value": "fixed_date"
+      }
     },
     {
       "type": "paragraph",
-      "content": "Leave blank to use each visitor's local time, set an offset so everyone sees the same deadline regardless of timezone",
-      "visible_if": { "setting_id": "mode", "value": "fixed_date" }
+      "content": "t:blocks.countdown.settings.content.paragraph",
+      "visible_if": {
+        "setting_id": "mode",
+        "value": "fixed_date"
+      }
     },
     {
       "type": "range",
       "id": "evergreen_hours",
-      "label": "Duration",
+      "label": "t:blocks.countdown.settings.content.evergreen_hours",
       "min": 1,
       "max": 168,
       "step": 1,
       "unit": "h",
       "default": 24,
-      "visible_if": { "setting_id": "mode", "value": "evergreen" }
+      "visible_if": {
+        "setting_id": "mode",
+        "value": "evergreen"
+      }
     },
     {
       "type": "paragraph",
-      "content": "Resets per visitor when their browser storage clears",
-      "visible_if": { "setting_id": "mode", "value": "evergreen" }
+      "content": "t:blocks.countdown.settings.content.paragraph_2",
+      "visible_if": {
+        "setting_id": "mode",
+        "value": "evergreen"
+      }
     },
-
     {
       "type": "select",
       "id": "expire_behavior",
-      "label": "When it ends",
+      "label": "t:blocks.countdown.settings.content.expire_behavior.label",
       "options": [
-        { "label": "Freeze at 00:00:00:00", "value": "zeros" },
-        { "label": "Show a message", "value": "message" },
-        { "label": "Hide the block", "value": "hide" },
-        { "label": "Redirect", "value": "redirect" }
+        {
+          "label": "t:blocks.countdown.settings.content.expire_behavior.options.zeros",
+          "value": "zeros"
+        },
+        {
+          "label": "t:blocks.countdown.settings.content.expire_behavior.options.message",
+          "value": "message"
+        },
+        {
+          "label": "t:blocks.countdown.settings.content.expire_behavior.options.hide",
+          "value": "hide"
+        },
+        {
+          "label": "t:blocks.countdown.settings.content.expire_behavior.options.redirect",
+          "value": "redirect"
+        }
       ],
       "default": "zeros"
     },
     {
       "type": "text",
       "id": "expire_message",
-      "label": "Expiry message",
+      "label": "t:blocks.countdown.settings.content.expire_message",
       "default": "This offer has ended",
-      "visible_if": { "setting_id": "expire_behavior", "value": "message" }
+      "visible_if": {
+        "setting_id": "expire_behavior",
+        "value": "message"
+      }
     },
     {
       "type": "text",
       "id": "expire_redirect_url",
-      "label": "Redirect URL",
-      "placeholder": "/collections/all",
-      "visible_if": { "setting_id": "expire_behavior", "value": "redirect" }
+      "label": "t:blocks.countdown.settings.content.expire_redirect_url.label",
+      "placeholder": "t:blocks.countdown.settings.content.expire_redirect_url.placeholder",
+      "visible_if": {
+        "setting_id": "expire_behavior",
+        "value": "redirect"
+      }
     },
-
-    { "type": "header", "content": "Labels" },
-    { "type": "checkbox", "id": "show_days", "label": "Show days unit", "default": true },
-    { "type": "checkbox", "id": "show_labels", "label": "Show unit labels", "default": true },
-    { "type": "text", "id": "label_days", "label": "Days label", "default": "Days", "visible_if": { "setting_id": "show_labels", "value": true } },
-    { "type": "text", "id": "label_hours", "label": "Hours label", "default": "Hours", "visible_if": { "setting_id": "show_labels", "value": true } },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.labels.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_days",
+      "label": "t:blocks.countdown.settings.labels.show_days",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_labels",
+      "label": "t:blocks.countdown.settings.labels.show_labels",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_days",
+      "label": "t:blocks.countdown.settings.labels.label_days",
+      "default": "Days",
+      "visible_if": {
+        "setting_id": "show_labels",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "label_hours",
+      "label": "t:blocks.countdown.settings.labels.label_hours",
+      "default": "Hours",
+      "visible_if": {
+        "setting_id": "show_labels",
+        "value": true
+      }
+    },
     {
       "type": "text",
       "id": "label_minutes",
-      "label": "Minutes label",
+      "label": "t:blocks.countdown.settings.labels.label_minutes",
       "default": "Min",
-      "visible_if": { "setting_id": "show_labels", "value": true }
+      "visible_if": {
+        "setting_id": "show_labels",
+        "value": true
+      }
     },
     {
       "type": "text",
       "id": "label_seconds",
-      "label": "Seconds label",
+      "label": "t:blocks.countdown.settings.labels.label_seconds",
       "default": "Sec",
-      "visible_if": { "setting_id": "show_labels", "value": true }
+      "visible_if": {
+        "setting_id": "show_labels",
+        "value": true
+      }
     },
-
-    { "type": "header", "content": "Style" },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.style.label"
+    },
     {
       "type": "select",
       "id": "style",
-      "label": "Layout",
+      "label": "t:blocks.countdown.settings.style.style.label",
       "options": [
-        { "label": "Inline", "value": "inline" },
-        { "label": "Boxes", "value": "boxes" },
-        { "label": "Grouped", "value": "grouped" },
-        { "label": "Flip clock", "value": "flip" }
+        {
+          "label": "t:blocks.countdown.settings.style.style.options.inline",
+          "value": "inline"
+        },
+        {
+          "label": "t:blocks.countdown.settings.style.style.options.boxes",
+          "value": "boxes"
+        },
+        {
+          "label": "t:blocks.countdown.settings.style.style.options.grouped",
+          "value": "grouped"
+        },
+        {
+          "label": "t:blocks.countdown.settings.style.style.options.flip",
+          "value": "flip"
+        }
       ],
       "default": "boxes"
     },
     {
       "type": "select",
       "id": "separator",
-      "label": "Separator",
+      "label": "t:blocks.countdown.settings.style.separator.label",
       "options": [
-        { "label": "Colon (:)", "value": ":" },
-        { "label": "Dot (·)", "value": "·" },
-        { "label": "None", "value": "" }
+        {
+          "label": "t:blocks.countdown.settings.style.separator.options.section",
+          "value": ":"
+        },
+        {
+          "label": "t:blocks.countdown.settings.style.separator.options.section_2",
+          "value": "·"
+        },
+        {
+          "label": "t:blocks.countdown.settings.style.separator.options.section_3",
+          "value": ""
+        }
       ],
       "default": ":"
     },
-    { "type": "checkbox", "id": "separator_blink", "label": "Blink separator every second", "default": false },
-    { "type": "range", "id": "digit_size", "label": "Digit size", "min": 14, "max": 64, "step": 1, "unit": "px", "default": 28 },
-    { "type": "range", "id": "label_size", "label": "Label size", "min": 8, "max": 20, "step": 1, "unit": "px", "default": 11 },
-    { "type": "range", "id": "gap", "label": "Gap between units", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 10 },
-    { "type": "color", "id": "digit_color", "label": "Digit color", "default": "#121212" },
+    {
+      "type": "checkbox",
+      "id": "separator_blink",
+      "label": "t:blocks.countdown.settings.style.separator_blink",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "digit_size",
+      "label": "t:blocks.countdown.settings.style.digit_size",
+      "min": 14,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "t:blocks.countdown.settings.style.label_size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:blocks.countdown.settings.style.gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "digit_color",
+      "label": "t:blocks.countdown.settings.style.digit_color",
+      "default": "#121212"
+    },
     {
       "type": "color",
       "id": "unit_bg_color",
-      "label": "Unit background",
+      "label": "t:blocks.countdown.settings.style.unit_bg_color",
       "default": "#F5F5F5",
-      "visible_if": { "setting_id": "style", "operator": "!=", "value": "inline" }
+      "visible_if": {
+        "setting_id": "style",
+        "operator": "!=",
+        "value": "inline"
+      }
     },
     {
       "type": "number",
       "id": "unit_corner_radius",
-      "label": "Unit corner radius",
+      "label": "t:blocks.countdown.settings.style.unit_corner_radius",
       "default": 8,
-      "visible_if": { "setting_id": "style", "operator": "!=", "value": "inline" }
+      "visible_if": {
+        "setting_id": "style",
+        "operator": "!=",
+        "value": "inline"
+      }
     },
-
-    { "type": "header", "content": "Urgency" },
-    { "type": "paragraph", "content": "Highlight the countdown once it drops below a threshold, good for last-hour FOMO" },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.urgency.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.urgency.paragraph"
+    },
     {
       "type": "range",
       "id": "urgency_threshold_minutes",
-      "label": "Urgency threshold",
+      "label": "t:blocks.countdown.settings.urgency.urgency_threshold_minutes",
       "min": 0,
       "max": 1440,
       "step": 5,
       "unit": "min",
       "default": 0
     },
-    { "type": "paragraph", "content": "0 = disabled" },
-    { "type": "color", "id": "urgency_color", "label": "Urgency color", "default": "#DC2626" },
-    { "type": "checkbox", "id": "urgency_pulse", "label": "Pulse when urgent", "default": true },
-
-    { "type": "header", "content": "Layout" },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.urgency.paragraph_2"
+    },
+    {
+      "type": "color",
+      "id": "urgency_color",
+      "label": "t:blocks.countdown.settings.urgency.urgency_color",
+      "default": "#DC2626"
+    },
+    {
+      "type": "checkbox",
+      "id": "urgency_pulse",
+      "label": "t:blocks.countdown.settings.urgency.urgency_pulse",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.layout.label"
+    },
     {
       "type": "select",
       "id": "align",
-      "label": "Alignment",
+      "label": "t:blocks.countdown.settings.layout.align.label",
       "options": [
-        { "label": "Left", "value": "flex-start" },
-        { "label": "Center", "value": "center" },
-        { "label": "Right", "value": "flex-end" }
+        {
+          "label": "t:blocks.countdown.settings.layout.align.options.flex_start",
+          "value": "flex-start"
+        },
+        {
+          "label": "t:blocks.countdown.settings.layout.align.options.center",
+          "value": "center"
+        },
+        {
+          "label": "t:blocks.countdown.settings.layout.align.options.flex_end",
+          "value": "flex-end"
+        }
       ],
       "default": "center"
     },
     {
       "type": "select",
       "id": "width",
-      "label": "Width",
+      "label": "t:blocks.countdown.settings.layout.width.label",
       "options": [
-        { "label": "Auto", "value": "auto" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.countdown.settings.layout.width.options.auto",
+          "value": "auto"
+        },
+        {
+          "label": "t:blocks.countdown.settings.layout.width.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "auto"
     },
     {
       "type": "range",
       "id": "custom_width",
-      "label": "Custom width",
+      "label": "t:blocks.countdown.settings.layout.custom_width",
       "max": 1920,
       "min": 200,
       "step": 20,
       "unit": "px",
       "default": 480,
-      "visible_if": { "setting_id": "width", "value": "custom" }
+      "visible_if": {
+        "setting_id": "width",
+        "value": "custom"
+      }
     },
-
-    { "type": "header", "content": "Spacing" },
-    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
-    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
-    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
-    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
-    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
-    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
-    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
-    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
-
-    { "type": "header", "content": "Background" },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.spacing.label"
+    },
+    {
+      "type": "number",
+      "id": "margin_top",
+      "label": "t:blocks.countdown.settings.spacing.margin_top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_right",
+      "label": "t:blocks.countdown.settings.spacing.margin_right",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_bottom",
+      "label": "t:blocks.countdown.settings.spacing.margin_bottom",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_left",
+      "label": "t:blocks.countdown.settings.spacing.margin_left",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_top",
+      "label": "t:blocks.countdown.settings.spacing.padding_top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_right",
+      "label": "t:blocks.countdown.settings.spacing.padding_right",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom",
+      "label": "t:blocks.countdown.settings.spacing.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_left",
+      "label": "t:blocks.countdown.settings.spacing.padding_left",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.background.label"
+    },
     {
       "type": "select",
       "id": "background",
-      "label": "Background",
+      "label": "t:blocks.countdown.settings.background.background.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Single color", "value": "single-color" },
-        { "label": "Gradient", "value": "gradient" },
-        { "label": "Image", "value": "image" }
+        {
+          "label": "t:blocks.countdown.settings.background.background.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.countdown.settings.background.background.options.single_color",
+          "value": "single-color"
+        },
+        {
+          "label": "t:blocks.countdown.settings.background.background.options.gradient",
+          "value": "gradient"
+        },
+        {
+          "label": "t:blocks.countdown.settings.background.background.options.image",
+          "value": "image"
+        }
       ],
       "default": "none"
     },
     {
       "type": "checkbox",
       "id": "bg_transparent",
-      "label": "Transparent background",
+      "label": "t:blocks.countdown.settings.background.bg_transparent",
       "default": false,
-      "visible_if": { "setting_id": "background", "value": "single-color" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "single-color"
+      }
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background color",
+      "label": "t:blocks.countdown.settings.background.bg_color",
       "default": "#FFFFFF",
       "visible_if": [
-        { "setting_id": "background", "value": "single-color" },
-        { "setting_id": "bg_transparent", "value": false }
+        {
+          "setting_id": "background",
+          "value": "single-color"
+        },
+        {
+          "setting_id": "bg_transparent",
+          "value": false
+        }
       ]
     },
     {
       "type": "range",
       "id": "gradient_angle_degree",
-      "label": "Angle degree",
+      "label": "t:blocks.countdown.settings.background.gradient_angle_degree",
       "min": 0,
       "step": 1,
       "max": 360,
       "unit": "°",
       "default": 90,
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
     {
       "type": "color",
       "id": "gradient_start",
-      "label": "Gradient start",
+      "label": "t:blocks.countdown.settings.background.gradient_start",
       "default": "#DDDDDD",
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
     {
       "type": "color",
       "id": "gradient_end",
-      "label": "Gradient end",
+      "label": "t:blocks.countdown.settings.background.gradient_end",
       "default": "#FFFFFF",
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
-    { "type": "image_picker", "id": "bg_img", "label": "Background image", "visible_if": { "setting_id": "background", "value": "image" } },
-
-    { "type": "header", "content": "Border" },
-    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "t:blocks.countdown.settings.background.bg_img",
+      "visible_if": {
+        "setting_id": "background",
+        "value": "image"
+      }
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.border.label"
+    },
+    {
+      "type": "number",
+      "id": "border_weight",
+      "label": "t:blocks.countdown.settings.border.border_weight",
+      "default": 0
+    },
     {
       "type": "select",
       "id": "border_style",
-      "label": "Border style",
+      "label": "t:blocks.countdown.settings.border.border_style.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Solid", "value": "solid" },
-        { "label": "Dashed", "value": "dashed" },
-        { "label": "Dotted", "value": "dotted" },
-        { "label": "Double", "value": "double" }
+        {
+          "label": "t:blocks.countdown.settings.border.border_style.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.countdown.settings.border.border_style.options.solid",
+          "value": "solid"
+        },
+        {
+          "label": "t:blocks.countdown.settings.border.border_style.options.dashed",
+          "value": "dashed"
+        },
+        {
+          "label": "t:blocks.countdown.settings.border.border_style.options.dotted",
+          "value": "dotted"
+        },
+        {
+          "label": "t:blocks.countdown.settings.border.border_style.options.double",
+          "value": "double"
+        }
       ],
       "default": "none"
     },
-    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
-    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
-    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
-    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
-    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
-
-    { "type": "header", "content": "Shadow" },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:blocks.countdown.settings.border.border_color",
+      "default": "#121212"
+    },
+    {
+      "type": "number",
+      "id": "border_radius_tl",
+      "label": "t:blocks.countdown.settings.border.border_radius_tl",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_tr",
+      "label": "t:blocks.countdown.settings.border.border_radius_tr",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_br",
+      "label": "t:blocks.countdown.settings.border.border_radius_br",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_bl",
+      "label": "t:blocks.countdown.settings.border.border_radius_bl",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.shadow.label"
+    },
     {
       "type": "select",
       "id": "box_shadow",
-      "label": "Box shadow",
+      "label": "t:blocks.countdown.settings.shadow.box_shadow.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Small", "value": "sm" },
-        { "label": "Medium", "value": "md" },
-        { "label": "Large", "value": "lg" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.countdown.settings.shadow.box_shadow.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.countdown.settings.shadow.box_shadow.options.sm",
+          "value": "sm"
+        },
+        {
+          "label": "t:blocks.countdown.settings.shadow.box_shadow.options.md",
+          "value": "md"
+        },
+        {
+          "label": "t:blocks.countdown.settings.shadow.box_shadow.options.lg",
+          "value": "lg"
+        },
+        {
+          "label": "t:blocks.countdown.settings.shadow.box_shadow.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "none"
     },
     {
       "type": "color",
       "id": "box_shadow_color",
-      "label": "Shadow color",
+      "label": "t:blocks.countdown.settings.shadow.box_shadow_color",
       "default": "#000000",
-      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
     },
-    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-
-    { "type": "header", "content": "Effects" },
-    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
-    { "type": "range", "id": "rotate", "label": "Rotate", "min": -180, "max": 180, "step": 1, "unit": "°", "default": 0 },
-    { "type": "range", "id": "scale", "label": "Scale", "min": 0.5, "max": 2, "step": 0.1, "default": 1 },
+    {
+      "type": "number",
+      "id": "box_shadow_x",
+      "label": "t:blocks.countdown.settings.shadow.box_shadow_x",
+      "default": 0,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "number",
+      "id": "box_shadow_y",
+      "label": "t:blocks.countdown.settings.shadow.box_shadow_y",
+      "default": 4,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "number",
+      "id": "box_shadow_blur",
+      "label": "t:blocks.countdown.settings.shadow.box_shadow_blur",
+      "default": 12,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "number",
+      "id": "box_shadow_spread",
+      "label": "t:blocks.countdown.settings.shadow.box_shadow_spread",
+      "default": 0,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.effects.label"
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "t:blocks.countdown.settings.effects.opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "rotate",
+      "label": "t:blocks.countdown.settings.effects.rotate",
+      "min": -180,
+      "max": 180,
+      "step": 1,
+      "unit": "°",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "scale",
+      "label": "t:blocks.countdown.settings.effects.scale",
+      "min": 0.5,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
     {
       "type": "select",
       "id": "entrance",
-      "label": "Entrance animation",
+      "label": "t:blocks.countdown.settings.effects.entrance.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Fade in", "value": "fade" },
-        { "label": "Fade up", "value": "fade-up" },
-        { "label": "Zoom in", "value": "zoom" }
+        {
+          "label": "t:blocks.countdown.settings.effects.entrance.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.countdown.settings.effects.entrance.options.fade",
+          "value": "fade"
+        },
+        {
+          "label": "t:blocks.countdown.settings.effects.entrance.options.fade_up",
+          "value": "fade-up"
+        },
+        {
+          "label": "t:blocks.countdown.settings.effects.entrance.options.zoom",
+          "value": "zoom"
+        }
       ],
       "default": "none"
     },
     {
       "type": "range",
       "id": "entrance_duration",
-      "label": "Animation duration",
+      "label": "t:blocks.countdown.settings.effects.entrance_duration",
       "min": 100,
       "max": 2000,
       "step": 50,
       "unit": "ms",
       "default": 500,
-      "visible_if": { "setting_id": "entrance", "operator": "!=", "value": "none" }
+      "visible_if": {
+        "setting_id": "entrance",
+        "operator": "!=",
+        "value": "none"
+      }
     },
-
-    { "type": "header", "content": "Hover" },
-    { "type": "checkbox", "id": "hover_enabled", "label": "Enable hover effect", "default": false },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.hover.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_enabled",
+      "label": "t:blocks.countdown.settings.hover.hover_enabled",
+      "default": false
+    },
     {
       "type": "range",
       "id": "hover_opacity",
-      "label": "Hover opacity",
+      "label": "t:blocks.countdown.settings.hover.hover_opacity",
       "min": 0,
       "max": 1,
       "step": 0.1,
       "default": 1,
-      "visible_if": { "setting_id": "hover_enabled", "value": true }
+      "visible_if": {
+        "setting_id": "hover_enabled",
+        "value": true
+      }
     },
     {
       "type": "range",
       "id": "hover_scale",
-      "label": "Hover scale",
+      "label": "t:blocks.countdown.settings.hover.hover_scale",
       "min": 0.8,
       "max": 1.3,
       "step": 0.1,
       "default": 1.1,
-      "visible_if": { "setting_id": "hover_enabled", "value": true }
+      "visible_if": {
+        "setting_id": "hover_enabled",
+        "value": true
+      }
     },
-
-    { "type": "header", "content": "Visibility" },
-    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
-    { "type": "paragraph", "content": "1200px and wider" },
-    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
-    { "type": "paragraph", "content": "992px - 1199px" },
-    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
-    { "type": "paragraph", "content": "768px - 991px" },
-    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
-    { "type": "paragraph", "content": "767px and smaller" },
-
-    { "type": "header", "content": "Advanced" },
-    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-countdown" },
-    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.visibility.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "lg_screens",
+      "label": "t:blocks.countdown.settings.visibility.lg_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.visibility.paragraph"
+    },
+    {
+      "type": "checkbox",
+      "id": "md_screens",
+      "label": "t:blocks.countdown.settings.visibility.md_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.visibility.paragraph_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "sm_screens",
+      "label": "t:blocks.countdown.settings.visibility.sm_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.visibility.paragraph_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "xs_screens",
+      "label": "t:blocks.countdown.settings.visibility.xs_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.countdown.settings.visibility.paragraph_4"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.countdown.settings.advanced.label"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "t:blocks.countdown.settings.advanced.anchor.label",
+      "placeholder": "t:blocks.countdown.settings.advanced.anchor.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "t:blocks.countdown.settings.advanced.custom_css.label",
+      "placeholder": "t:blocks.countdown.settings.advanced.custom_css.placeholder"
+    }
   ]
 }
 {% endschema %}

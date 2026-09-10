@@ -1,0 +1,8 @@
+{
+  "general": {
+    "loading": "Chargement...",
+    "checkout_unavailable": "Le paiement n'est pas encore disponible sur cette page.",
+    "combination_unavailable": "Cette combinaison n'est pas disponible",
+    "only_x_left": "Plus que %count% en stock"
+  }
+}

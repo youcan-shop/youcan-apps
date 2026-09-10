@@ -204,236 +204,731 @@
 
 {% schema %}
 {
-  "label": "Reviews",
+  "label": "t:blocks.reviews.label",
   "target": "section",
   "settings": [
-    { "type": "header", "content": "Applies to" },
-    { "type": "page", "id": "page", "label": "Page" },
-    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
-    { "type": "header", "content": "Summary" },
-    { "type": "checkbox", "id": "show_summary", "label": "Show summary", "default": true },
-    { "type": "text", "id": "reviews_label", "label": "Count label", "default": "reviews" },
-    { "type": "range", "id": "score_size", "label": "Score number size", "min": 20, "max": 40, "step": 1, "unit": "px", "default": 26 },
-
-    { "type": "header", "content": "Layout" },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.applies_to.label"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "t:blocks.reviews.settings.applies_to.page"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.applies_to.paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.summary.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "t:blocks.reviews.settings.summary.show_summary",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_label",
+      "label": "t:blocks.reviews.settings.summary.reviews_label",
+      "default": "reviews"
+    },
+    {
+      "type": "range",
+      "id": "score_size",
+      "label": "t:blocks.reviews.settings.summary.score_size",
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.layout.label"
+    },
     {
       "type": "select",
       "id": "layout",
-      "label": "Review list layout",
+      "label": "t:blocks.reviews.settings.layout.layout.label",
       "options": [
-        { "label": "List", "value": "list" },
-        { "label": "Grid", "value": "grid" }
+        {
+          "label": "t:blocks.reviews.settings.layout.layout.options.list",
+          "value": "list"
+        },
+        {
+          "label": "t:blocks.reviews.settings.layout.layout.options.grid",
+          "value": "grid"
+        }
       ],
       "default": "list"
     },
     {
       "type": "range",
       "id": "gap",
-      "label": "Grid gap",
+      "label": "t:blocks.reviews.settings.layout.gap",
       "min": 8,
       "max": 32,
       "step": 2,
       "unit": "px",
       "default": 16,
-      "visible_if": { "setting_id": "layout", "value": "grid" }
+      "visible_if": {
+        "setting_id": "layout",
+        "value": "grid"
+      }
     },
     {
       "type": "range",
       "id": "card_radius",
-      "label": "Grid card corner radius",
+      "label": "t:blocks.reviews.settings.layout.card_radius",
       "min": 0,
       "max": 24,
       "step": 2,
       "unit": "px",
       "default": 10,
-      "visible_if": { "setting_id": "layout", "value": "grid" }
+      "visible_if": {
+        "setting_id": "layout",
+        "value": "grid"
+      }
     },
-
-    { "type": "header", "content": "Style" },
-    { "type": "color", "id": "star_color", "label": "Star color", "default": "#F59E0B" },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.style.label"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "t:blocks.reviews.settings.style.star_color",
+      "default": "#F59E0B"
+    },
     {
       "type": "select",
       "id": "font_family",
-      "label": "Font",
+      "label": "t:blocks.reviews.settings.style.font_family.label",
       "options": [
-        { "label": "Theme default", "value": "inherit" },
-        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
-        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
-        { "label": "Monospace", "value": "ui-monospace, monospace" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.reviews.settings.style.font_family.options.inherit",
+          "value": "inherit"
+        },
+        {
+          "label": "t:blocks.reviews.settings.style.font_family.options.ui_sans_serif_system_ui_sans_serif",
+          "value": "ui-sans-serif, system-ui, sans-serif"
+        },
+        {
+          "label": "t:blocks.reviews.settings.style.font_family.options.ui_serif_georgia_serif",
+          "value": "ui-serif, Georgia, serif"
+        },
+        {
+          "label": "t:blocks.reviews.settings.style.font_family.options.ui_monospace_monospace",
+          "value": "ui-monospace, monospace"
+        },
+        {
+          "label": "t:blocks.reviews.settings.style.font_family.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "inherit"
     },
     {
       "type": "text",
       "id": "custom_font_family",
-      "label": "Custom font family",
-      "placeholder": "DM+Sans",
-      "visible_if": { "setting_id": "font_family", "value": "custom" }
+      "label": "t:blocks.reviews.settings.style.custom_font_family.label",
+      "placeholder": "t:blocks.reviews.settings.style.custom_font_family.placeholder",
+      "visible_if": {
+        "setting_id": "font_family",
+        "value": "custom"
+      }
     },
-    { "type": "range", "id": "text_size", "label": "Review text size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#121212" },
-    { "type": "color", "id": "meta_color", "label": "Meta text color", "default": "#9CA3AF" },
-    { "type": "color", "id": "verified_color", "label": "Verified badge color", "default": "#3B82F6" },
-    { "type": "color", "id": "divider_color", "label": "Summary divider color", "default": "#E5E5E5" },
-    { "type": "color", "id": "item_divider_color", "label": "Review divider color", "default": "#F0F0F0" },
-
-    { "type": "header", "content": "Background" },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "t:blocks.reviews.settings.style.text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:blocks.reviews.settings.style.text_color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "meta_color",
+      "label": "t:blocks.reviews.settings.style.meta_color",
+      "default": "#9CA3AF"
+    },
+    {
+      "type": "color",
+      "id": "verified_color",
+      "label": "t:blocks.reviews.settings.style.verified_color",
+      "default": "#3B82F6"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "t:blocks.reviews.settings.style.divider_color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "item_divider_color",
+      "label": "t:blocks.reviews.settings.style.item_divider_color",
+      "default": "#F0F0F0"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.background.label"
+    },
     {
       "type": "select",
       "id": "background",
-      "label": "Background",
+      "label": "t:blocks.reviews.settings.background.background.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Single color", "value": "single-color" },
-        { "label": "Gradient", "value": "gradient" }
+        {
+          "label": "t:blocks.reviews.settings.background.background.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.reviews.settings.background.background.options.single_color",
+          "value": "single-color"
+        },
+        {
+          "label": "t:blocks.reviews.settings.background.background.options.gradient",
+          "value": "gradient"
+        }
       ],
       "default": "none"
     },
     {
       "type": "checkbox",
       "id": "bg_transparent",
-      "label": "Transparent background",
+      "label": "t:blocks.reviews.settings.background.bg_transparent",
       "default": false,
-      "visible_if": { "setting_id": "background", "value": "single-color" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "single-color"
+      }
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background color",
+      "label": "t:blocks.reviews.settings.background.bg_color",
       "default": "#FFFFFF",
       "visible_if": [
-        { "setting_id": "background", "value": "single-color" },
-        { "setting_id": "bg_transparent", "value": false }
+        {
+          "setting_id": "background",
+          "value": "single-color"
+        },
+        {
+          "setting_id": "bg_transparent",
+          "value": false
+        }
       ]
     },
     {
       "type": "range",
       "id": "gradient_angle_degree",
-      "label": "Angle degree",
+      "label": "t:blocks.reviews.settings.background.gradient_angle_degree",
       "min": 0,
       "step": 1,
       "max": 360,
       "unit": "°",
       "default": 90,
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
     {
       "type": "color",
       "id": "gradient_start",
-      "label": "Gradient start",
+      "label": "t:blocks.reviews.settings.background.gradient_start",
       "default": "#FFFFFF",
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
     {
       "type": "color",
       "id": "gradient_end",
-      "label": "Gradient end",
+      "label": "t:blocks.reviews.settings.background.gradient_end",
       "default": "#F3F4F6",
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
-
-    { "type": "header", "content": "Border" },
-    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.border.label"
+    },
+    {
+      "type": "number",
+      "id": "border_weight",
+      "label": "t:blocks.reviews.settings.border.border_weight",
+      "default": 0
+    },
     {
       "type": "select",
       "id": "border_style",
-      "label": "Border style",
+      "label": "t:blocks.reviews.settings.border.border_style.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Solid", "value": "solid" },
-        { "label": "Dashed", "value": "dashed" }
+        {
+          "label": "t:blocks.reviews.settings.border.border_style.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.reviews.settings.border.border_style.options.solid",
+          "value": "solid"
+        },
+        {
+          "label": "t:blocks.reviews.settings.border.border_style.options.dashed",
+          "value": "dashed"
+        }
       ],
       "default": "none"
     },
-    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
-    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
-    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
-    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
-    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
-
-    { "type": "header", "content": "Effects" },
-    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
-
-    { "type": "header", "content": "Spacing" },
-    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
-    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
-    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
-    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
-    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 0 },
-    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 0 },
-    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 0 },
-    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 0 },
-
-    { "type": "header", "content": "Review #1" },
-    { "type": "range", "id": "rating_1", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_1", "label": "Text", "default": "Exactly as described, arrived fast." },
-    { "type": "text", "id": "author_1", "label": "Author", "default": "Nadia K." },
-    { "type": "text", "id": "date_1", "label": "Date", "default": "2 weeks ago" },
-    { "type": "checkbox", "id": "verified_1", "label": "Verified badge", "default": true },
-
-    { "type": "header", "content": "Review #2" },
-    { "type": "range", "id": "rating_2", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 4 },
-    { "type": "textarea", "id": "text_2", "label": "Text", "default": "Great quality for the price." },
-    { "type": "text", "id": "author_2", "label": "Author", "default": "Karim T." },
-    { "type": "text", "id": "date_2", "label": "Date", "default": "1 month ago" },
-    { "type": "checkbox", "id": "verified_2", "label": "Verified badge", "default": true },
-
-    { "type": "header", "content": "Review #3" },
-    { "type": "range", "id": "rating_3", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_3", "label": "Text" },
-    { "type": "text", "id": "author_3", "label": "Author" },
-    { "type": "text", "id": "date_3", "label": "Date" },
-    { "type": "checkbox", "id": "verified_3", "label": "Verified badge", "default": false },
-
-    { "type": "header", "content": "Review #4" },
-    { "type": "range", "id": "rating_4", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_4", "label": "Text" },
-    { "type": "text", "id": "author_4", "label": "Author" },
-    { "type": "text", "id": "date_4", "label": "Date" },
-    { "type": "checkbox", "id": "verified_4", "label": "Verified badge", "default": false },
-
-    { "type": "header", "content": "Review #5" },
-    { "type": "range", "id": "rating_5", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_5", "label": "Text" },
-    { "type": "text", "id": "author_5", "label": "Author" },
-    { "type": "text", "id": "date_5", "label": "Date" },
-    { "type": "checkbox", "id": "verified_5", "label": "Verified badge", "default": false },
-
-    { "type": "header", "content": "Review #6" },
-    { "type": "range", "id": "rating_6", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_6", "label": "Text" },
-    { "type": "text", "id": "author_6", "label": "Author" },
-    { "type": "text", "id": "date_6", "label": "Date" },
-    { "type": "checkbox", "id": "verified_6", "label": "Verified badge", "default": false },
-
-    { "type": "header", "content": "Review #7" },
-    { "type": "range", "id": "rating_7", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_7", "label": "Text" },
-    { "type": "text", "id": "author_7", "label": "Author" },
-    { "type": "text", "id": "date_7", "label": "Date" },
-    { "type": "checkbox", "id": "verified_7", "label": "Verified badge", "default": false },
-
-    { "type": "header", "content": "Review #8" },
-    { "type": "range", "id": "rating_8", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-    { "type": "textarea", "id": "text_8", "label": "Text" },
-    { "type": "text", "id": "author_8", "label": "Author" },
-    { "type": "text", "id": "date_8", "label": "Date" },
-    { "type": "checkbox", "id": "verified_8", "label": "Verified badge", "default": false },
-
-    { "type": "header", "content": "Visibility" },
-    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
-    { "type": "paragraph", "content": "1200px and wider" },
-    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
-    { "type": "paragraph", "content": "992px - 1199px" },
-    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
-    { "type": "paragraph", "content": "768px - 991px" },
-    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
-    { "type": "paragraph", "content": "767px and smaller" },
-
-    { "type": "header", "content": "Advanced" },
-    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-reviews" },
-    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:blocks.reviews.settings.border.border_color",
+      "default": "#121212"
+    },
+    {
+      "type": "number",
+      "id": "border_radius_tl",
+      "label": "t:blocks.reviews.settings.border.border_radius_tl",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_tr",
+      "label": "t:blocks.reviews.settings.border.border_radius_tr",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_br",
+      "label": "t:blocks.reviews.settings.border.border_radius_br",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_bl",
+      "label": "t:blocks.reviews.settings.border.border_radius_bl",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.effects.label"
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "t:blocks.reviews.settings.effects.opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.spacing.label"
+    },
+    {
+      "type": "number",
+      "id": "margin_top",
+      "label": "t:blocks.reviews.settings.spacing.margin_top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_right",
+      "label": "t:blocks.reviews.settings.spacing.margin_right",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_bottom",
+      "label": "t:blocks.reviews.settings.spacing.margin_bottom",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_left",
+      "label": "t:blocks.reviews.settings.spacing.margin_left",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_top",
+      "label": "t:blocks.reviews.settings.spacing.padding_top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_right",
+      "label": "t:blocks.reviews.settings.spacing.padding_right",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom",
+      "label": "t:blocks.reviews.settings.spacing.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_left",
+      "label": "t:blocks.reviews.settings.spacing.padding_left",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_1.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_1",
+      "label": "t:blocks.reviews.settings.review_1.rating_1",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_1",
+      "label": "t:blocks.reviews.settings.review_1.text_1",
+      "default": "Exactly as described, arrived fast."
+    },
+    {
+      "type": "text",
+      "id": "author_1",
+      "label": "t:blocks.reviews.settings.review_1.author_1",
+      "default": "Nadia K."
+    },
+    {
+      "type": "text",
+      "id": "date_1",
+      "label": "t:blocks.reviews.settings.review_1.date_1",
+      "default": "2 weeks ago"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_1",
+      "label": "t:blocks.reviews.settings.review_1.verified_1",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_2.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_2",
+      "label": "t:blocks.reviews.settings.review_2.rating_2",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "textarea",
+      "id": "text_2",
+      "label": "t:blocks.reviews.settings.review_2.text_2",
+      "default": "Great quality for the price."
+    },
+    {
+      "type": "text",
+      "id": "author_2",
+      "label": "t:blocks.reviews.settings.review_2.author_2",
+      "default": "Karim T."
+    },
+    {
+      "type": "text",
+      "id": "date_2",
+      "label": "t:blocks.reviews.settings.review_2.date_2",
+      "default": "1 month ago"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_2",
+      "label": "t:blocks.reviews.settings.review_2.verified_2",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_3.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_3",
+      "label": "t:blocks.reviews.settings.review_3.rating_3",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_3",
+      "label": "t:blocks.reviews.settings.review_3.text_3"
+    },
+    {
+      "type": "text",
+      "id": "author_3",
+      "label": "t:blocks.reviews.settings.review_3.author_3"
+    },
+    {
+      "type": "text",
+      "id": "date_3",
+      "label": "t:blocks.reviews.settings.review_3.date_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_3",
+      "label": "t:blocks.reviews.settings.review_3.verified_3",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_4.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_4",
+      "label": "t:blocks.reviews.settings.review_4.rating_4",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_4",
+      "label": "t:blocks.reviews.settings.review_4.text_4"
+    },
+    {
+      "type": "text",
+      "id": "author_4",
+      "label": "t:blocks.reviews.settings.review_4.author_4"
+    },
+    {
+      "type": "text",
+      "id": "date_4",
+      "label": "t:blocks.reviews.settings.review_4.date_4"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_4",
+      "label": "t:blocks.reviews.settings.review_4.verified_4",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_5.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_5",
+      "label": "t:blocks.reviews.settings.review_5.rating_5",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_5",
+      "label": "t:blocks.reviews.settings.review_5.text_5"
+    },
+    {
+      "type": "text",
+      "id": "author_5",
+      "label": "t:blocks.reviews.settings.review_5.author_5"
+    },
+    {
+      "type": "text",
+      "id": "date_5",
+      "label": "t:blocks.reviews.settings.review_5.date_5"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_5",
+      "label": "t:blocks.reviews.settings.review_5.verified_5",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_6.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_6",
+      "label": "t:blocks.reviews.settings.review_6.rating_6",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_6",
+      "label": "t:blocks.reviews.settings.review_6.text_6"
+    },
+    {
+      "type": "text",
+      "id": "author_6",
+      "label": "t:blocks.reviews.settings.review_6.author_6"
+    },
+    {
+      "type": "text",
+      "id": "date_6",
+      "label": "t:blocks.reviews.settings.review_6.date_6"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_6",
+      "label": "t:blocks.reviews.settings.review_6.verified_6",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_7.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_7",
+      "label": "t:blocks.reviews.settings.review_7.rating_7",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_7",
+      "label": "t:blocks.reviews.settings.review_7.text_7"
+    },
+    {
+      "type": "text",
+      "id": "author_7",
+      "label": "t:blocks.reviews.settings.review_7.author_7"
+    },
+    {
+      "type": "text",
+      "id": "date_7",
+      "label": "t:blocks.reviews.settings.review_7.date_7"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_7",
+      "label": "t:blocks.reviews.settings.review_7.verified_7",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.review_8.label"
+    },
+    {
+      "type": "range",
+      "id": "rating_8",
+      "label": "t:blocks.reviews.settings.review_8.rating_8",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "text_8",
+      "label": "t:blocks.reviews.settings.review_8.text_8"
+    },
+    {
+      "type": "text",
+      "id": "author_8",
+      "label": "t:blocks.reviews.settings.review_8.author_8"
+    },
+    {
+      "type": "text",
+      "id": "date_8",
+      "label": "t:blocks.reviews.settings.review_8.date_8"
+    },
+    {
+      "type": "checkbox",
+      "id": "verified_8",
+      "label": "t:blocks.reviews.settings.review_8.verified_8",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.visibility.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "lg_screens",
+      "label": "t:blocks.reviews.settings.visibility.lg_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.visibility.paragraph"
+    },
+    {
+      "type": "checkbox",
+      "id": "md_screens",
+      "label": "t:blocks.reviews.settings.visibility.md_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.visibility.paragraph_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "sm_screens",
+      "label": "t:blocks.reviews.settings.visibility.sm_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.visibility.paragraph_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "xs_screens",
+      "label": "t:blocks.reviews.settings.visibility.xs_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.reviews.settings.visibility.paragraph_4"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.reviews.settings.advanced.label"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "t:blocks.reviews.settings.advanced.anchor.label",
+      "placeholder": "t:blocks.reviews.settings.advanced.anchor.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "t:blocks.reviews.settings.advanced.custom_css.label",
+      "placeholder": "t:blocks.reviews.settings.advanced.custom_css.placeholder"
+    }
   ]
 }
 {% endschema %}

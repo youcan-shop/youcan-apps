@@ -334,251 +334,811 @@
 
 {% schema %}
 {
-  "label": "Comparison table",
+  "label": "t:blocks.comparison_table.label",
   "target": "section",
   "settings": [
-    { "type": "header", "content": "Applies to" },
-    { "type": "page", "id": "page", "label": "Page" },
-    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
-    { "type": "header", "content": "Content" },
-    { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "Compare plans" },
-    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 28 },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#121212" },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.applies_to.label"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "t:blocks.comparison_table.settings.applies_to.page"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.applies_to.paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.content.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:blocks.comparison_table.settings.content.heading.label",
+      "placeholder": "t:blocks.comparison_table.settings.content.heading.placeholder"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "t:blocks.comparison_table.settings.content.heading_size",
+      "min": 20,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:blocks.comparison_table.settings.content.heading_color",
+      "default": "#121212"
+    },
     {
       "type": "select",
       "id": "columns",
-      "label": "Columns",
+      "label": "t:blocks.comparison_table.settings.content.columns.label",
       "options": [
-        { "label": "2 (Us vs Them)", "value": "2" },
-        { "label": "3", "value": "3" }
+        {
+          "label": "t:blocks.comparison_table.settings.content.columns.options.2",
+          "value": "2"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.content.columns.options.3",
+          "value": "3"
+        }
       ],
       "default": "2"
     },
     {
       "type": "paragraph",
-      "content": "Each row's cell: leave blank or type \"no\" for a cross, \"yes\" for a check, or type anything else (e.g. \"5 GB\") to show that text instead."
+      "content": "t:blocks.comparison_table.settings.content.paragraph"
     },
-
-    { "type": "header", "content": "Column #1" },
-    { "type": "text", "id": "col_label_1", "label": "Label", "default": "Us" },
-    { "type": "text", "id": "col_subtitle_1", "label": "Subtitle / price", "placeholder": "$29/mo" },
-    { "type": "text", "id": "col_badge_1", "label": "Badge", "placeholder": "Most popular" },
-    { "type": "checkbox", "id": "col_highlight_1", "label": "Highlight this column", "default": true },
-    { "type": "text", "id": "col_cta_text_1", "label": "Button text (optional)", "placeholder": "Choose plan" },
-    { "type": "text", "id": "col_cta_link_1", "label": "Button link" },
-
-    { "type": "header", "content": "Column #2" },
-    { "type": "text", "id": "col_label_2", "label": "Label", "default": "Others" },
-    { "type": "text", "id": "col_subtitle_2", "label": "Subtitle / price" },
-    { "type": "text", "id": "col_badge_2", "label": "Badge" },
-    { "type": "checkbox", "id": "col_highlight_2", "label": "Highlight this column", "default": false },
-    { "type": "text", "id": "col_cta_text_2", "label": "Button text (optional)" },
-    { "type": "text", "id": "col_cta_link_2", "label": "Button link" },
-
-    { "type": "header", "content": "Column #3" },
-    { "type": "paragraph", "content": "Only shown when Columns is set to 3" },
-    { "type": "text", "id": "col_label_3", "label": "Label", "default": "Enterprise" },
-    { "type": "text", "id": "col_subtitle_3", "label": "Subtitle / price" },
-    { "type": "text", "id": "col_badge_3", "label": "Badge" },
-    { "type": "checkbox", "id": "col_highlight_3", "label": "Highlight this column", "default": false },
-    { "type": "text", "id": "col_cta_text_3", "label": "Button text (optional)" },
-    { "type": "text", "id": "col_cta_link_3", "label": "Button link" },
-
-    { "type": "header", "content": "Row #1" },
-    { "type": "text", "id": "row_label_1", "label": "Feature", "default": "Free shipping" },
-    { "type": "text", "id": "row_col1_1", "label": "Column #1 value", "default": "yes" },
-    { "type": "text", "id": "row_col2_1", "label": "Column #2 value", "default": "no" },
-    { "type": "text", "id": "row_col3_1", "label": "Column #3 value", "default": "yes" },
-
-    { "type": "header", "content": "Row #2" },
-    { "type": "text", "id": "row_label_2", "label": "Feature", "default": "24/7 support" },
-    { "type": "text", "id": "row_col1_2", "label": "Column #1 value", "default": "yes" },
-    { "type": "text", "id": "row_col2_2", "label": "Column #2 value", "default": "no" },
-    { "type": "text", "id": "row_col3_2", "label": "Column #3 value", "default": "yes" },
-
-    { "type": "header", "content": "Row #3" },
-    { "type": "text", "id": "row_label_3", "label": "Feature", "default": "Storage" },
-    { "type": "text", "id": "row_col1_3", "label": "Column #1 value", "default": "50 GB" },
-    { "type": "text", "id": "row_col2_3", "label": "Column #2 value", "default": "5 GB" },
-    { "type": "text", "id": "row_col3_3", "label": "Column #3 value", "default": "Unlimited" },
-
-    { "type": "header", "content": "Row #4" },
-    { "type": "text", "id": "row_label_4", "label": "Feature" },
-    { "type": "text", "id": "row_col1_4", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_4", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_4", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Row #5" },
-    { "type": "text", "id": "row_label_5", "label": "Feature" },
-    { "type": "text", "id": "row_col1_5", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_5", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_5", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Row #6" },
-    { "type": "text", "id": "row_label_6", "label": "Feature" },
-    { "type": "text", "id": "row_col1_6", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_6", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_6", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Row #7" },
-    { "type": "text", "id": "row_label_7", "label": "Feature" },
-    { "type": "text", "id": "row_col1_7", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_7", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_7", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Row #8" },
-    { "type": "text", "id": "row_label_8", "label": "Feature" },
-    { "type": "text", "id": "row_col1_8", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_8", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_8", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Row #9" },
-    { "type": "text", "id": "row_label_9", "label": "Feature" },
-    { "type": "text", "id": "row_col1_9", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_9", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_9", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Row #10" },
-    { "type": "text", "id": "row_label_10", "label": "Feature" },
-    { "type": "text", "id": "row_col1_10", "label": "Column #1 value" },
-    { "type": "text", "id": "row_col2_10", "label": "Column #2 value" },
-    { "type": "text", "id": "row_col3_10", "label": "Column #3 value" },
-
-    { "type": "header", "content": "Style" },
-    { "type": "checkbox", "id": "zebra_striping", "label": "Zebra striping", "default": false },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.column_1.label"
+    },
+    {
+      "type": "text",
+      "id": "col_label_1",
+      "label": "t:blocks.comparison_table.settings.column_1.col_label_1",
+      "default": "Us"
+    },
+    {
+      "type": "text",
+      "id": "col_subtitle_1",
+      "label": "t:blocks.comparison_table.settings.column_1.col_subtitle_1.label",
+      "placeholder": "t:blocks.comparison_table.settings.column_1.col_subtitle_1.placeholder"
+    },
+    {
+      "type": "text",
+      "id": "col_badge_1",
+      "label": "t:blocks.comparison_table.settings.column_1.col_badge_1.label",
+      "placeholder": "t:blocks.comparison_table.settings.column_1.col_badge_1.placeholder"
+    },
+    {
+      "type": "checkbox",
+      "id": "col_highlight_1",
+      "label": "t:blocks.comparison_table.settings.column_1.col_highlight_1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "col_cta_text_1",
+      "label": "t:blocks.comparison_table.settings.column_1.col_cta_text_1.label",
+      "placeholder": "t:blocks.comparison_table.settings.column_1.col_cta_text_1.placeholder"
+    },
+    {
+      "type": "text",
+      "id": "col_cta_link_1",
+      "label": "t:blocks.comparison_table.settings.column_1.col_cta_link_1"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.column_2.label"
+    },
+    {
+      "type": "text",
+      "id": "col_label_2",
+      "label": "t:blocks.comparison_table.settings.column_2.col_label_2",
+      "default": "Others"
+    },
+    {
+      "type": "text",
+      "id": "col_subtitle_2",
+      "label": "t:blocks.comparison_table.settings.column_2.col_subtitle_2"
+    },
+    {
+      "type": "text",
+      "id": "col_badge_2",
+      "label": "t:blocks.comparison_table.settings.column_2.col_badge_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "col_highlight_2",
+      "label": "t:blocks.comparison_table.settings.column_2.col_highlight_2",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "col_cta_text_2",
+      "label": "t:blocks.comparison_table.settings.column_2.col_cta_text_2"
+    },
+    {
+      "type": "text",
+      "id": "col_cta_link_2",
+      "label": "t:blocks.comparison_table.settings.column_2.col_cta_link_2"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.column_3.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.column_3.paragraph"
+    },
+    {
+      "type": "text",
+      "id": "col_label_3",
+      "label": "t:blocks.comparison_table.settings.column_3.col_label_3",
+      "default": "Enterprise"
+    },
+    {
+      "type": "text",
+      "id": "col_subtitle_3",
+      "label": "t:blocks.comparison_table.settings.column_3.col_subtitle_3"
+    },
+    {
+      "type": "text",
+      "id": "col_badge_3",
+      "label": "t:blocks.comparison_table.settings.column_3.col_badge_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "col_highlight_3",
+      "label": "t:blocks.comparison_table.settings.column_3.col_highlight_3",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "col_cta_text_3",
+      "label": "t:blocks.comparison_table.settings.column_3.col_cta_text_3"
+    },
+    {
+      "type": "text",
+      "id": "col_cta_link_3",
+      "label": "t:blocks.comparison_table.settings.column_3.col_cta_link_3"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_1.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_1",
+      "label": "t:blocks.comparison_table.settings.row_1.row_label_1",
+      "default": "Free shipping"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_1",
+      "label": "t:blocks.comparison_table.settings.row_1.row_col1_1",
+      "default": "yes"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_1",
+      "label": "t:blocks.comparison_table.settings.row_1.row_col2_1",
+      "default": "no"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_1",
+      "label": "t:blocks.comparison_table.settings.row_1.row_col3_1",
+      "default": "yes"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_2.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_2",
+      "label": "t:blocks.comparison_table.settings.row_2.row_label_2",
+      "default": "24/7 support"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_2",
+      "label": "t:blocks.comparison_table.settings.row_2.row_col1_2",
+      "default": "yes"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_2",
+      "label": "t:blocks.comparison_table.settings.row_2.row_col2_2",
+      "default": "no"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_2",
+      "label": "t:blocks.comparison_table.settings.row_2.row_col3_2",
+      "default": "yes"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_3.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_3",
+      "label": "t:blocks.comparison_table.settings.row_3.row_label_3",
+      "default": "Storage"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_3",
+      "label": "t:blocks.comparison_table.settings.row_3.row_col1_3",
+      "default": "50 GB"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_3",
+      "label": "t:blocks.comparison_table.settings.row_3.row_col2_3",
+      "default": "5 GB"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_3",
+      "label": "t:blocks.comparison_table.settings.row_3.row_col3_3",
+      "default": "Unlimited"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_4.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_4",
+      "label": "t:blocks.comparison_table.settings.row_4.row_label_4"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_4",
+      "label": "t:blocks.comparison_table.settings.row_4.row_col1_4"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_4",
+      "label": "t:blocks.comparison_table.settings.row_4.row_col2_4"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_4",
+      "label": "t:blocks.comparison_table.settings.row_4.row_col3_4"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_5.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_5",
+      "label": "t:blocks.comparison_table.settings.row_5.row_label_5"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_5",
+      "label": "t:blocks.comparison_table.settings.row_5.row_col1_5"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_5",
+      "label": "t:blocks.comparison_table.settings.row_5.row_col2_5"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_5",
+      "label": "t:blocks.comparison_table.settings.row_5.row_col3_5"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_6.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_6",
+      "label": "t:blocks.comparison_table.settings.row_6.row_label_6"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_6",
+      "label": "t:blocks.comparison_table.settings.row_6.row_col1_6"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_6",
+      "label": "t:blocks.comparison_table.settings.row_6.row_col2_6"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_6",
+      "label": "t:blocks.comparison_table.settings.row_6.row_col3_6"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_7.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_7",
+      "label": "t:blocks.comparison_table.settings.row_7.row_label_7"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_7",
+      "label": "t:blocks.comparison_table.settings.row_7.row_col1_7"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_7",
+      "label": "t:blocks.comparison_table.settings.row_7.row_col2_7"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_7",
+      "label": "t:blocks.comparison_table.settings.row_7.row_col3_7"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_8.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_8",
+      "label": "t:blocks.comparison_table.settings.row_8.row_label_8"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_8",
+      "label": "t:blocks.comparison_table.settings.row_8.row_col1_8"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_8",
+      "label": "t:blocks.comparison_table.settings.row_8.row_col2_8"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_8",
+      "label": "t:blocks.comparison_table.settings.row_8.row_col3_8"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_9.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_9",
+      "label": "t:blocks.comparison_table.settings.row_9.row_label_9"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_9",
+      "label": "t:blocks.comparison_table.settings.row_9.row_col1_9"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_9",
+      "label": "t:blocks.comparison_table.settings.row_9.row_col2_9"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_9",
+      "label": "t:blocks.comparison_table.settings.row_9.row_col3_9"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.row_10.label"
+    },
+    {
+      "type": "text",
+      "id": "row_label_10",
+      "label": "t:blocks.comparison_table.settings.row_10.row_label_10"
+    },
+    {
+      "type": "text",
+      "id": "row_col1_10",
+      "label": "t:blocks.comparison_table.settings.row_10.row_col1_10"
+    },
+    {
+      "type": "text",
+      "id": "row_col2_10",
+      "label": "t:blocks.comparison_table.settings.row_10.row_col2_10"
+    },
+    {
+      "type": "text",
+      "id": "row_col3_10",
+      "label": "t:blocks.comparison_table.settings.row_10.row_col3_10"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.style.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "zebra_striping",
+      "label": "t:blocks.comparison_table.settings.style.zebra_striping",
+      "default": false
+    },
     {
       "type": "color",
       "id": "zebra_color",
-      "label": "Zebra stripe color",
+      "label": "t:blocks.comparison_table.settings.style.zebra_color",
       "default": "#FAFAFA",
-      "visible_if": { "setting_id": "zebra_striping", "value": true }
+      "visible_if": {
+        "setting_id": "zebra_striping",
+        "value": true
+      }
     },
-    { "type": "checkbox", "id": "hover_enabled", "label": "Highlight row on hover", "default": true },
+    {
+      "type": "checkbox",
+      "id": "hover_enabled",
+      "label": "t:blocks.comparison_table.settings.style.hover_enabled",
+      "default": true
+    },
     {
       "type": "color",
       "id": "hover_color",
-      "label": "Hover color",
+      "label": "t:blocks.comparison_table.settings.style.hover_color",
       "default": "#F5F5F5",
-      "visible_if": { "setting_id": "hover_enabled", "value": true }
+      "visible_if": {
+        "setting_id": "hover_enabled",
+        "value": true
+      }
     },
     {
       "type": "select",
       "id": "font_family",
-      "label": "Font",
+      "label": "t:blocks.comparison_table.settings.style.font_family.label",
       "options": [
-        { "label": "Theme default", "value": "inherit" },
-        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
-        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
-        { "label": "Monospace", "value": "ui-monospace, monospace" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.comparison_table.settings.style.font_family.options.inherit",
+          "value": "inherit"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.font_family.options.ui_sans_serif_system_ui_sans_serif",
+          "value": "ui-sans-serif, system-ui, sans-serif"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.font_family.options.ui_serif_georgia_serif",
+          "value": "ui-serif, Georgia, serif"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.font_family.options.ui_monospace_monospace",
+          "value": "ui-monospace, monospace"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.font_family.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "inherit"
     },
     {
       "type": "text",
       "id": "custom_font_family",
-      "label": "Custom font family",
-      "placeholder": "DM+Sans",
-      "visible_if": { "setting_id": "font_family", "value": "custom" }
+      "label": "t:blocks.comparison_table.settings.style.custom_font_family.label",
+      "placeholder": "t:blocks.comparison_table.settings.style.custom_font_family.placeholder",
+      "visible_if": {
+        "setting_id": "font_family",
+        "value": "custom"
+      }
     },
-    { "type": "range", "id": "cell_size", "label": "Cell text size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
-    { "type": "color", "id": "cell_color", "label": "Cell text color", "default": "#374151" },
-    { "type": "color", "id": "divider_color", "label": "Row divider color", "default": "#EEEEEE" },
-    { "type": "color", "id": "table_bg_color", "label": "Table background", "default": "#FFFFFF" },
-    { "type": "color", "id": "header_bg_color", "label": "Header background", "default": "#FAFAFA" },
-    { "type": "color", "id": "header_text_color", "label": "Header text color", "default": "#121212" },
-    { "type": "color", "id": "highlight_bg_color", "label": "Highlighted column background", "default": "#F5F3FF" },
-    { "type": "color", "id": "badge_bg_color", "label": "Badge background", "default": "#4F46E5" },
-    { "type": "color", "id": "badge_text_color", "label": "Badge text color", "default": "#FFFFFF" },
-    { "type": "color", "id": "cta_bg_color", "label": "Button background", "default": "#121212" },
-    { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#FFFFFF" },
-    { "type": "color", "id": "check_color", "label": "Check icon color", "default": "#16A34A" },
-    { "type": "color", "id": "cross_color", "label": "Cross icon color", "default": "#9CA3AF" },
-    { "type": "number", "id": "table_radius", "label": "Table corner radius", "default": 12 },
-    { "type": "number", "id": "border_weight", "label": "Table border weight", "default": 1 },
-    { "type": "color", "id": "border_color", "label": "Table border color", "default": "#EEEEEE" },
+    {
+      "type": "range",
+      "id": "cell_size",
+      "label": "t:blocks.comparison_table.settings.style.cell_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "cell_color",
+      "label": "t:blocks.comparison_table.settings.style.cell_color",
+      "default": "#374151"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "t:blocks.comparison_table.settings.style.divider_color",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "color",
+      "id": "table_bg_color",
+      "label": "t:blocks.comparison_table.settings.style.table_bg_color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "t:blocks.comparison_table.settings.style.header_bg_color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "t:blocks.comparison_table.settings.style.header_text_color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "highlight_bg_color",
+      "label": "t:blocks.comparison_table.settings.style.highlight_bg_color",
+      "default": "#F5F3FF"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "t:blocks.comparison_table.settings.style.badge_bg_color",
+      "default": "#4F46E5"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "t:blocks.comparison_table.settings.style.badge_text_color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "t:blocks.comparison_table.settings.style.cta_bg_color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "t:blocks.comparison_table.settings.style.cta_text_color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "check_color",
+      "label": "t:blocks.comparison_table.settings.style.check_color",
+      "default": "#16A34A"
+    },
+    {
+      "type": "color",
+      "id": "cross_color",
+      "label": "t:blocks.comparison_table.settings.style.cross_color",
+      "default": "#9CA3AF"
+    },
+    {
+      "type": "number",
+      "id": "table_radius",
+      "label": "t:blocks.comparison_table.settings.style.table_radius",
+      "default": 12
+    },
+    {
+      "type": "number",
+      "id": "border_weight",
+      "label": "t:blocks.comparison_table.settings.style.border_weight",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:blocks.comparison_table.settings.style.border_color",
+      "default": "#EEEEEE"
+    },
     {
       "type": "select",
       "id": "box_shadow",
-      "label": "Box shadow",
+      "label": "t:blocks.comparison_table.settings.style.box_shadow.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Small", "value": "sm" },
-        { "label": "Medium", "value": "md" },
-        { "label": "Large", "value": "lg" }
+        {
+          "label": "t:blocks.comparison_table.settings.style.box_shadow.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.box_shadow.options.sm",
+          "value": "sm"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.box_shadow.options.md",
+          "value": "md"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.style.box_shadow.options.lg",
+          "value": "lg"
+        }
       ],
       "default": "none"
     },
-
-    { "type": "header", "content": "Effects" },
-    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.effects.label"
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "t:blocks.comparison_table.settings.effects.opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
     {
       "type": "select",
       "id": "entrance",
-      "label": "Entrance animation",
+      "label": "t:blocks.comparison_table.settings.effects.entrance.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Fade in", "value": "fade" },
-        { "label": "Fade up", "value": "fade-up" },
-        { "label": "Zoom in", "value": "zoom" }
+        {
+          "label": "t:blocks.comparison_table.settings.effects.entrance.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.effects.entrance.options.fade",
+          "value": "fade"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.effects.entrance.options.fade_up",
+          "value": "fade-up"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.effects.entrance.options.zoom",
+          "value": "zoom"
+        }
       ],
       "default": "none"
     },
     {
       "type": "range",
       "id": "entrance_duration",
-      "label": "Entrance duration",
+      "label": "t:blocks.comparison_table.settings.effects.entrance_duration",
       "min": 100,
       "max": 2000,
       "step": 50,
       "unit": "ms",
       "default": 500,
-      "visible_if": { "setting_id": "entrance", "operator": "!=", "value": "none" }
+      "visible_if": {
+        "setting_id": "entrance",
+        "operator": "!=",
+        "value": "none"
+      }
     },
-
-    { "type": "header", "content": "Layout" },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.layout.label"
+    },
     {
       "type": "select",
       "id": "width",
-      "label": "Width",
+      "label": "t:blocks.comparison_table.settings.layout.width.label",
       "options": [
-        { "label": "Full width", "value": "full" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.comparison_table.settings.layout.width.options.full",
+          "value": "full"
+        },
+        {
+          "label": "t:blocks.comparison_table.settings.layout.width.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "full"
     },
     {
       "type": "range",
       "id": "custom_width",
-      "label": "Custom width",
+      "label": "t:blocks.comparison_table.settings.layout.custom_width",
       "max": 1920,
       "min": 400,
       "step": 20,
       "unit": "px",
       "default": 900,
-      "visible_if": { "setting_id": "width", "value": "custom" }
+      "visible_if": {
+        "setting_id": "width",
+        "value": "custom"
+      }
     },
-    { "type": "paragraph", "content": "The table scrolls horizontally on narrow screens, the feature column stays pinned so it's always readable" },
-
-    { "type": "header", "content": "Spacing" },
-    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
-    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
-    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
-    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
-
-    { "type": "header", "content": "Visibility" },
-    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
-    { "type": "paragraph", "content": "1200px and wider" },
-    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
-    { "type": "paragraph", "content": "992px - 1199px" },
-    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
-    { "type": "paragraph", "content": "768px - 991px" },
-    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
-    { "type": "paragraph", "content": "767px and smaller" },
-
-    { "type": "header", "content": "Advanced" },
-    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-comparison-table" },
-    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.layout.paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.spacing.label"
+    },
+    {
+      "type": "number",
+      "id": "margin_top",
+      "label": "t:blocks.comparison_table.settings.spacing.margin_top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_right",
+      "label": "t:blocks.comparison_table.settings.spacing.margin_right",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_bottom",
+      "label": "t:blocks.comparison_table.settings.spacing.margin_bottom",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_left",
+      "label": "t:blocks.comparison_table.settings.spacing.margin_left",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.visibility.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "lg_screens",
+      "label": "t:blocks.comparison_table.settings.visibility.lg_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.visibility.paragraph"
+    },
+    {
+      "type": "checkbox",
+      "id": "md_screens",
+      "label": "t:blocks.comparison_table.settings.visibility.md_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.visibility.paragraph_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "sm_screens",
+      "label": "t:blocks.comparison_table.settings.visibility.sm_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.visibility.paragraph_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "xs_screens",
+      "label": "t:blocks.comparison_table.settings.visibility.xs_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.comparison_table.settings.visibility.paragraph_4"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.comparison_table.settings.advanced.label"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "t:blocks.comparison_table.settings.advanced.anchor.label",
+      "placeholder": "t:blocks.comparison_table.settings.advanced.anchor.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "t:blocks.comparison_table.settings.advanced.custom_css.label",
+      "placeholder": "t:blocks.comparison_table.settings.advanced.custom_css.placeholder"
+    }
   ]
 }
 {% endschema %}

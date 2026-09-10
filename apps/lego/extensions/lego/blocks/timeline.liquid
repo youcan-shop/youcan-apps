@@ -441,319 +441,1022 @@
 
 {% schema %}
 {
-  "label": "Timeline",
+  "label": "t:blocks.timeline.label",
   "target": "section",
   "settings": [
-    { "type": "header", "content": "Applies to" },
-    { "type": "page", "id": "page", "label": "Page" },
-    { "type": "paragraph", "content": "You can't see your block without selecting a specific page." },
-    { "type": "header", "content": "Content" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "placeholder": "How it works" },
-    { "type": "text", "id": "heading", "label": "Heading (optional)", "placeholder": "From order to doorstep" },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.applies_to.label"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "t:blocks.timeline.settings.applies_to.page"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.timeline.settings.applies_to.paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.content.label"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:blocks.timeline.settings.content.eyebrow.label",
+      "placeholder": "t:blocks.timeline.settings.content.eyebrow.placeholder"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:blocks.timeline.settings.content.heading.label",
+      "placeholder": "t:blocks.timeline.settings.content.heading.placeholder"
+    },
     {
       "type": "select",
       "id": "orientation",
-      "label": "Orientation",
+      "label": "t:blocks.timeline.settings.content.orientation.label",
       "options": [
-        { "label": "Vertical", "value": "vertical" },
-        { "label": "Horizontal", "value": "horizontal" }
+        {
+          "label": "t:blocks.timeline.settings.content.orientation.options.vertical",
+          "value": "vertical"
+        },
+        {
+          "label": "t:blocks.timeline.settings.content.orientation.options.horizontal",
+          "value": "horizontal"
+        }
       ],
       "default": "vertical"
     },
     {
       "type": "checkbox",
       "id": "alternate",
-      "label": "Alternate sides (zig-zag)",
+      "label": "t:blocks.timeline.settings.content.alternate",
       "default": false,
-      "visible_if": { "setting_id": "orientation", "value": "vertical" }
+      "visible_if": {
+        "setting_id": "orientation",
+        "value": "vertical"
+      }
     },
     {
       "type": "select",
       "id": "marker_type",
-      "label": "Marker",
+      "label": "t:blocks.timeline.settings.content.marker_type.label",
       "options": [
-        { "label": "Number", "value": "number" },
-        { "label": "Icon", "value": "icon" }
+        {
+          "label": "t:blocks.timeline.settings.content.marker_type.options.number",
+          "value": "number"
+        },
+        {
+          "label": "t:blocks.timeline.settings.content.marker_type.options.icon",
+          "value": "icon"
+        }
       ],
       "default": "number"
     },
     {
       "type": "select",
       "id": "icon_sharp",
-      "label": "Icon sharp",
+      "label": "t:blocks.timeline.settings.content.icon_sharp.label",
       "options": [
-        { "label": "Stroke", "value": "stroke" },
-        { "label": "Solid", "value": "solid" }
+        {
+          "label": "t:blocks.timeline.settings.content.icon_sharp.options.stroke",
+          "value": "stroke"
+        },
+        {
+          "label": "t:blocks.timeline.settings.content.icon_sharp.options.solid",
+          "value": "solid"
+        }
       ],
       "default": "solid",
-      "visible_if": { "setting_id": "marker_type", "value": "icon" }
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
     },
-
-    { "type": "header", "content": "Animation" },
-    { "type": "checkbox", "id": "animate_line", "label": "Draw connector line on scroll", "default": true },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.animation.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate_line",
+      "label": "t:blocks.timeline.settings.animation.animate_line",
+      "default": true
+    },
     {
       "type": "select",
       "id": "entrance",
-      "label": "Step reveal animation",
+      "label": "t:blocks.timeline.settings.animation.entrance.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Fade in", "value": "fade" },
-        { "label": "Fade up", "value": "fade-up" },
-        { "label": "Zoom in", "value": "zoom" }
+        {
+          "label": "t:blocks.timeline.settings.animation.entrance.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.timeline.settings.animation.entrance.options.fade",
+          "value": "fade"
+        },
+        {
+          "label": "t:blocks.timeline.settings.animation.entrance.options.fade_up",
+          "value": "fade-up"
+        },
+        {
+          "label": "t:blocks.timeline.settings.animation.entrance.options.zoom",
+          "value": "zoom"
+        }
       ],
       "default": "fade-up"
     },
-
-    { "type": "header", "content": "Layout" },
-    { "type": "range", "id": "gap", "label": "Gap between steps", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 32 },
-    { "type": "range", "id": "marker_size", "label": "Marker size", "min": 24, "max": 64, "step": 2, "unit": "px", "default": 36 },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.layout.label"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:blocks.timeline.settings.layout.gap",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "marker_size",
+      "label": "t:blocks.timeline.settings.layout.marker_size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
     {
       "type": "select",
       "id": "width",
-      "label": "Width",
+      "label": "t:blocks.timeline.settings.layout.width.label",
       "options": [
-        { "label": "Full width", "value": "full" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.timeline.settings.layout.width.options.full",
+          "value": "full"
+        },
+        {
+          "label": "t:blocks.timeline.settings.layout.width.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "full"
     },
     {
       "type": "range",
       "id": "custom_width",
-      "label": "Custom width",
+      "label": "t:blocks.timeline.settings.layout.custom_width",
       "max": 1920,
       "min": 320,
       "step": 20,
       "unit": "px",
       "default": 800,
-      "visible_if": { "setting_id": "width", "value": "custom" }
+      "visible_if": {
+        "setting_id": "width",
+        "value": "custom"
+      }
     },
-
-    { "type": "header", "content": "Spacing" },
-    { "type": "number", "id": "margin_top", "label": "Margin top", "default": 0 },
-    { "type": "number", "id": "margin_right", "label": "Margin right", "default": 0 },
-    { "type": "number", "id": "margin_bottom", "label": "Margin bottom", "default": 0 },
-    { "type": "number", "id": "margin_left", "label": "Margin left", "default": 0 },
-    { "type": "number", "id": "padding_top", "label": "Padding top", "default": 40 },
-    { "type": "number", "id": "padding_right", "label": "Padding right", "default": 20 },
-    { "type": "number", "id": "padding_bottom", "label": "Padding bottom", "default": 40 },
-    { "type": "number", "id": "padding_left", "label": "Padding left", "default": 20 },
-
-    { "type": "header", "content": "Typography" },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.spacing.label"
+    },
+    {
+      "type": "number",
+      "id": "margin_top",
+      "label": "t:blocks.timeline.settings.spacing.margin_top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_right",
+      "label": "t:blocks.timeline.settings.spacing.margin_right",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_bottom",
+      "label": "t:blocks.timeline.settings.spacing.margin_bottom",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "margin_left",
+      "label": "t:blocks.timeline.settings.spacing.margin_left",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_top",
+      "label": "t:blocks.timeline.settings.spacing.padding_top",
+      "default": 40
+    },
+    {
+      "type": "number",
+      "id": "padding_right",
+      "label": "t:blocks.timeline.settings.spacing.padding_right",
+      "default": 20
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom",
+      "label": "t:blocks.timeline.settings.spacing.padding_bottom",
+      "default": 40
+    },
+    {
+      "type": "number",
+      "id": "padding_left",
+      "label": "t:blocks.timeline.settings.spacing.padding_left",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.typography.label"
+    },
     {
       "type": "select",
       "id": "font_family",
-      "label": "Font",
+      "label": "t:blocks.timeline.settings.typography.font_family.label",
       "options": [
-        { "label": "Theme default", "value": "inherit" },
-        { "label": "Sans-serif", "value": "ui-sans-serif, system-ui, sans-serif" },
-        { "label": "Serif", "value": "ui-serif, Georgia, serif" },
-        { "label": "Monospace", "value": "ui-monospace, monospace" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.timeline.settings.typography.font_family.options.inherit",
+          "value": "inherit"
+        },
+        {
+          "label": "t:blocks.timeline.settings.typography.font_family.options.ui_sans_serif_system_ui_sans_serif",
+          "value": "ui-sans-serif, system-ui, sans-serif"
+        },
+        {
+          "label": "t:blocks.timeline.settings.typography.font_family.options.ui_serif_georgia_serif",
+          "value": "ui-serif, Georgia, serif"
+        },
+        {
+          "label": "t:blocks.timeline.settings.typography.font_family.options.ui_monospace_monospace",
+          "value": "ui-monospace, monospace"
+        },
+        {
+          "label": "t:blocks.timeline.settings.typography.font_family.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "inherit"
     },
     {
       "type": "text",
       "id": "custom_font_family",
-      "label": "Custom font family",
-      "placeholder": "DM+Sans",
-      "visible_if": { "setting_id": "font_family", "value": "custom" }
+      "label": "t:blocks.timeline.settings.typography.custom_font_family.label",
+      "placeholder": "t:blocks.timeline.settings.typography.custom_font_family.placeholder",
+      "visible_if": {
+        "setting_id": "font_family",
+        "value": "custom"
+      }
     },
-    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6B7280" },
-    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#121212" },
-    { "type": "color", "id": "date_color", "label": "Date color", "default": "#9CA3AF" },
-    { "type": "range", "id": "title_size", "label": "Title size", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 17 },
-    { "type": "color", "id": "title_color", "label": "Title color", "default": "#121212" },
-    { "type": "range", "id": "description_size", "label": "Description size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
-    { "type": "color", "id": "description_color", "label": "Description color", "default": "#5c5c5c" },
-
-    { "type": "header", "content": "Marker & line" },
-    { "type": "color", "id": "marker_color", "label": "Marker background", "default": "#121212" },
-    { "type": "color", "id": "marker_icon_color", "label": "Marker icon/number color", "default": "#FFFFFF" },
-    { "type": "color", "id": "line_color", "label": "Line color", "default": "#E5E5E5" },
-    { "type": "color", "id": "line_fill_color", "label": "Line fill color (on scroll)", "default": "#121212" },
-
-    { "type": "header", "content": "Background" },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "t:blocks.timeline.settings.typography.eyebrow_color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "t:blocks.timeline.settings.typography.heading_size",
+      "min": 20,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:blocks.timeline.settings.typography.heading_color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "date_color",
+      "label": "t:blocks.timeline.settings.typography.date_color",
+      "default": "#9CA3AF"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "t:blocks.timeline.settings.typography.title_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "t:blocks.timeline.settings.typography.title_color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "t:blocks.timeline.settings.typography.description_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "t:blocks.timeline.settings.typography.description_color",
+      "default": "#5c5c5c"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.marker_and_line.label"
+    },
+    {
+      "type": "color",
+      "id": "marker_color",
+      "label": "t:blocks.timeline.settings.marker_and_line.marker_color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "marker_icon_color",
+      "label": "t:blocks.timeline.settings.marker_and_line.marker_icon_color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "t:blocks.timeline.settings.marker_and_line.line_color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "line_fill_color",
+      "label": "t:blocks.timeline.settings.marker_and_line.line_fill_color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.background.label"
+    },
     {
       "type": "select",
       "id": "background",
-      "label": "Background",
+      "label": "t:blocks.timeline.settings.background.background.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Single color", "value": "single-color" },
-        { "label": "Gradient", "value": "gradient" },
-        { "label": "Image", "value": "image" }
+        {
+          "label": "t:blocks.timeline.settings.background.background.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.timeline.settings.background.background.options.single_color",
+          "value": "single-color"
+        },
+        {
+          "label": "t:blocks.timeline.settings.background.background.options.gradient",
+          "value": "gradient"
+        },
+        {
+          "label": "t:blocks.timeline.settings.background.background.options.image",
+          "value": "image"
+        }
       ],
       "default": "none"
     },
     {
       "type": "checkbox",
       "id": "bg_transparent",
-      "label": "Transparent background",
+      "label": "t:blocks.timeline.settings.background.bg_transparent",
       "default": false,
-      "visible_if": { "setting_id": "background", "value": "single-color" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "single-color"
+      }
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background color",
+      "label": "t:blocks.timeline.settings.background.bg_color",
       "default": "#F5F5F5",
       "visible_if": [
-        { "setting_id": "background", "value": "single-color" },
-        { "setting_id": "bg_transparent", "value": false }
+        {
+          "setting_id": "background",
+          "value": "single-color"
+        },
+        {
+          "setting_id": "bg_transparent",
+          "value": false
+        }
       ]
     },
     {
       "type": "range",
       "id": "gradient_angle_degree",
-      "label": "Angle degree",
+      "label": "t:blocks.timeline.settings.background.gradient_angle_degree",
       "min": 0,
       "step": 1,
       "max": 360,
       "unit": "°",
       "default": 90,
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
     {
       "type": "color",
       "id": "gradient_start",
-      "label": "Gradient start",
+      "label": "t:blocks.timeline.settings.background.gradient_start",
       "default": "#DDDDDD",
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
     {
       "type": "color",
       "id": "gradient_end",
-      "label": "Gradient end",
+      "label": "t:blocks.timeline.settings.background.gradient_end",
       "default": "#FFFFFF",
-      "visible_if": { "setting_id": "background", "value": "gradient" }
+      "visible_if": {
+        "setting_id": "background",
+        "value": "gradient"
+      }
     },
-    { "type": "image_picker", "id": "bg_img", "label": "Background image", "visible_if": { "setting_id": "background", "value": "image" } },
-
-    { "type": "header", "content": "Border" },
-    { "type": "number", "id": "border_weight", "label": "Border weight", "default": 0 },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "t:blocks.timeline.settings.background.bg_img",
+      "visible_if": {
+        "setting_id": "background",
+        "value": "image"
+      }
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.border.label"
+    },
+    {
+      "type": "number",
+      "id": "border_weight",
+      "label": "t:blocks.timeline.settings.border.border_weight",
+      "default": 0
+    },
     {
       "type": "select",
       "id": "border_style",
-      "label": "Border style",
+      "label": "t:blocks.timeline.settings.border.border_style.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Solid", "value": "solid" },
-        { "label": "Dashed", "value": "dashed" },
-        { "label": "Dotted", "value": "dotted" }
+        {
+          "label": "t:blocks.timeline.settings.border.border_style.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.timeline.settings.border.border_style.options.solid",
+          "value": "solid"
+        },
+        {
+          "label": "t:blocks.timeline.settings.border.border_style.options.dashed",
+          "value": "dashed"
+        },
+        {
+          "label": "t:blocks.timeline.settings.border.border_style.options.dotted",
+          "value": "dotted"
+        }
       ],
       "default": "none"
     },
-    { "type": "color", "id": "border_color", "label": "Border color", "default": "#121212" },
-    { "type": "number", "id": "border_radius_tl", "label": "Radius top-left", "default": 0 },
-    { "type": "number", "id": "border_radius_tr", "label": "Radius top-right", "default": 0 },
-    { "type": "number", "id": "border_radius_br", "label": "Radius bottom-right", "default": 0 },
-    { "type": "number", "id": "border_radius_bl", "label": "Radius bottom-left", "default": 0 },
-
-    { "type": "header", "content": "Shadow" },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:blocks.timeline.settings.border.border_color",
+      "default": "#121212"
+    },
+    {
+      "type": "number",
+      "id": "border_radius_tl",
+      "label": "t:blocks.timeline.settings.border.border_radius_tl",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_tr",
+      "label": "t:blocks.timeline.settings.border.border_radius_tr",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_br",
+      "label": "t:blocks.timeline.settings.border.border_radius_br",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "border_radius_bl",
+      "label": "t:blocks.timeline.settings.border.border_radius_bl",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.shadow.label"
+    },
     {
       "type": "select",
       "id": "box_shadow",
-      "label": "Box shadow",
+      "label": "t:blocks.timeline.settings.shadow.box_shadow.label",
       "options": [
-        { "label": "None", "value": "none" },
-        { "label": "Small", "value": "sm" },
-        { "label": "Medium", "value": "md" },
-        { "label": "Large", "value": "lg" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.timeline.settings.shadow.box_shadow.options.none",
+          "value": "none"
+        },
+        {
+          "label": "t:blocks.timeline.settings.shadow.box_shadow.options.sm",
+          "value": "sm"
+        },
+        {
+          "label": "t:blocks.timeline.settings.shadow.box_shadow.options.md",
+          "value": "md"
+        },
+        {
+          "label": "t:blocks.timeline.settings.shadow.box_shadow.options.lg",
+          "value": "lg"
+        },
+        {
+          "label": "t:blocks.timeline.settings.shadow.box_shadow.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "none"
     },
     {
       "type": "color",
       "id": "box_shadow_color",
-      "label": "Shadow color",
+      "label": "t:blocks.timeline.settings.shadow.box_shadow_color",
       "default": "#000000",
-      "visible_if": { "setting_id": "box_shadow", "value": "custom" }
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
     },
-    { "type": "number", "id": "box_shadow_x", "label": "Offset X", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-    { "type": "number", "id": "box_shadow_y", "label": "Offset Y", "default": 4, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-    { "type": "number", "id": "box_shadow_blur", "label": "Blur", "default": 12, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-    { "type": "number", "id": "box_shadow_spread", "label": "Spread", "default": 0, "visible_if": { "setting_id": "box_shadow", "value": "custom" } },
-
-    { "type": "header", "content": "Step #1" },
-    { "type": "text", "id": "icon_1", "label": "Icon", "default": "shopping_cart", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
-    { "type": "checkbox", "id": "is_custom_img_1", "label": "Use custom image instead", "default": false },
-    { "type": "image_picker", "id": "custom_img_1", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_1", "value": true } },
-    { "type": "text", "id": "date_1", "label": "Date / eyebrow", "default": "Step 1" },
-    { "type": "text", "id": "title_1", "label": "Title", "default": "Order placed" },
-    { "type": "textarea", "id": "description_1", "label": "Description", "default": "We receive your order and get it ready." },
-    { "type": "text", "id": "link_1", "label": "Link (optional)" },
-    { "type": "checkbox", "id": "new_window_1", "label": "Open in new window", "default": false },
-
-    { "type": "header", "content": "Step #2" },
-    { "type": "text", "id": "icon_2", "label": "Icon", "default": "inventory_2", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
-    { "type": "checkbox", "id": "is_custom_img_2", "label": "Use custom image instead", "default": false },
-    { "type": "image_picker", "id": "custom_img_2", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_2", "value": true } },
-    { "type": "text", "id": "date_2", "label": "Date / eyebrow", "default": "Step 2" },
-    { "type": "text", "id": "title_2", "label": "Title", "default": "Packed" },
-    { "type": "textarea", "id": "description_2", "label": "Description", "default": "Carefully packed and quality checked." },
-    { "type": "text", "id": "link_2", "label": "Link (optional)" },
-    { "type": "checkbox", "id": "new_window_2", "label": "Open in new window", "default": false },
-
-    { "type": "header", "content": "Step #3" },
-    { "type": "text", "id": "icon_3", "label": "Icon", "default": "local_shipping", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
-    { "type": "checkbox", "id": "is_custom_img_3", "label": "Use custom image instead", "default": false },
-    { "type": "image_picker", "id": "custom_img_3", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_3", "value": true } },
-    { "type": "text", "id": "date_3", "label": "Date / eyebrow", "default": "Step 3" },
-    { "type": "text", "id": "title_3", "label": "Title", "default": "Shipped" },
-    { "type": "textarea", "id": "description_3", "label": "Description", "default": "On its way, tracking sent to your email." },
-    { "type": "text", "id": "link_3", "label": "Link (optional)" },
-    { "type": "checkbox", "id": "new_window_3", "label": "Open in new window", "default": false },
-
-    { "type": "header", "content": "Step #4" },
-    { "type": "text", "id": "icon_4", "label": "Icon", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
-    { "type": "checkbox", "id": "is_custom_img_4", "label": "Use custom image instead", "default": false },
-    { "type": "image_picker", "id": "custom_img_4", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_4", "value": true } },
-    { "type": "text", "id": "date_4", "label": "Date / eyebrow" },
-    { "type": "text", "id": "title_4", "label": "Title" },
-    { "type": "textarea", "id": "description_4", "label": "Description" },
-    { "type": "text", "id": "link_4", "label": "Link (optional)" },
-    { "type": "checkbox", "id": "new_window_4", "label": "Open in new window", "default": false },
-
-    { "type": "header", "content": "Step #5" },
-    { "type": "text", "id": "icon_5", "label": "Icon", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
-    { "type": "checkbox", "id": "is_custom_img_5", "label": "Use custom image instead", "default": false },
-    { "type": "image_picker", "id": "custom_img_5", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_5", "value": true } },
-    { "type": "text", "id": "date_5", "label": "Date / eyebrow" },
-    { "type": "text", "id": "title_5", "label": "Title" },
-    { "type": "textarea", "id": "description_5", "label": "Description" },
-    { "type": "text", "id": "link_5", "label": "Link (optional)" },
-    { "type": "checkbox", "id": "new_window_5", "label": "Open in new window", "default": false },
-
-    { "type": "header", "content": "Step #6" },
-    { "type": "text", "id": "icon_6", "label": "Icon", "visible_if": { "setting_id": "marker_type", "value": "icon" } },
-    { "type": "checkbox", "id": "is_custom_img_6", "label": "Use custom image instead", "default": false },
-    { "type": "image_picker", "id": "custom_img_6", "label": "Custom image", "visible_if": { "setting_id": "is_custom_img_6", "value": true } },
-    { "type": "text", "id": "date_6", "label": "Date / eyebrow" },
-    { "type": "text", "id": "title_6", "label": "Title" },
-    { "type": "textarea", "id": "description_6", "label": "Description" },
-    { "type": "text", "id": "link_6", "label": "Link (optional)" },
-    { "type": "checkbox", "id": "new_window_6", "label": "Open in new window", "default": false },
-
-    { "type": "header", "content": "Effects" },
-    { "type": "range", "id": "opacity", "label": "Opacity", "max": 1, "min": 0, "step": 0.1, "default": 1 },
-
-    { "type": "header", "content": "Visibility" },
-    { "type": "checkbox", "id": "lg_screens", "label": "Show on large screens", "default": true },
-    { "type": "paragraph", "content": "1200px and wider" },
-    { "type": "checkbox", "id": "md_screens", "label": "Show on medium screens", "default": true },
-    { "type": "paragraph", "content": "992px - 1199px" },
-    { "type": "checkbox", "id": "sm_screens", "label": "Show on small screens", "default": true },
-    { "type": "paragraph", "content": "768px - 991px" },
-    { "type": "checkbox", "id": "xs_screens", "label": "Show on extra small screens", "default": true },
-    { "type": "paragraph", "content": "767px and smaller" },
-
-    { "type": "header", "content": "Advanced" },
-    { "type": "text", "id": "anchor", "label": "Anchor ID", "placeholder": "my-timeline" },
-    { "type": "textarea", "id": "custom_css", "label": "Custom CSS", "placeholder": "transform: scale(2);\nbackdrop-filter: blur(2px);" }
+    {
+      "type": "number",
+      "id": "box_shadow_x",
+      "label": "t:blocks.timeline.settings.shadow.box_shadow_x",
+      "default": 0,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "number",
+      "id": "box_shadow_y",
+      "label": "t:blocks.timeline.settings.shadow.box_shadow_y",
+      "default": 4,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "number",
+      "id": "box_shadow_blur",
+      "label": "t:blocks.timeline.settings.shadow.box_shadow_blur",
+      "default": 12,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "number",
+      "id": "box_shadow_spread",
+      "label": "t:blocks.timeline.settings.shadow.box_shadow_spread",
+      "default": 0,
+      "visible_if": {
+        "setting_id": "box_shadow",
+        "value": "custom"
+      }
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.step_1.label"
+    },
+    {
+      "type": "text",
+      "id": "icon_1",
+      "label": "t:blocks.timeline.settings.step_1.icon_1",
+      "default": "shopping_cart",
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "is_custom_img_1",
+      "label": "t:blocks.timeline.settings.step_1.is_custom_img_1",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_img_1",
+      "label": "t:blocks.timeline.settings.step_1.custom_img_1",
+      "visible_if": {
+        "setting_id": "is_custom_img_1",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "date_1",
+      "label": "t:blocks.timeline.settings.step_1.date_1",
+      "default": "Step 1"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "t:blocks.timeline.settings.step_1.title_1",
+      "default": "Order placed"
+    },
+    {
+      "type": "textarea",
+      "id": "description_1",
+      "label": "t:blocks.timeline.settings.step_1.description_1",
+      "default": "We receive your order and get it ready."
+    },
+    {
+      "type": "text",
+      "id": "link_1",
+      "label": "t:blocks.timeline.settings.step_1.link_1"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_window_1",
+      "label": "t:blocks.timeline.settings.step_1.new_window_1",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.step_2.label"
+    },
+    {
+      "type": "text",
+      "id": "icon_2",
+      "label": "t:blocks.timeline.settings.step_2.icon_2",
+      "default": "inventory_2",
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "is_custom_img_2",
+      "label": "t:blocks.timeline.settings.step_2.is_custom_img_2",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_img_2",
+      "label": "t:blocks.timeline.settings.step_2.custom_img_2",
+      "visible_if": {
+        "setting_id": "is_custom_img_2",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "date_2",
+      "label": "t:blocks.timeline.settings.step_2.date_2",
+      "default": "Step 2"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "t:blocks.timeline.settings.step_2.title_2",
+      "default": "Packed"
+    },
+    {
+      "type": "textarea",
+      "id": "description_2",
+      "label": "t:blocks.timeline.settings.step_2.description_2",
+      "default": "Carefully packed and quality checked."
+    },
+    {
+      "type": "text",
+      "id": "link_2",
+      "label": "t:blocks.timeline.settings.step_2.link_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_window_2",
+      "label": "t:blocks.timeline.settings.step_2.new_window_2",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.step_3.label"
+    },
+    {
+      "type": "text",
+      "id": "icon_3",
+      "label": "t:blocks.timeline.settings.step_3.icon_3",
+      "default": "local_shipping",
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "is_custom_img_3",
+      "label": "t:blocks.timeline.settings.step_3.is_custom_img_3",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_img_3",
+      "label": "t:blocks.timeline.settings.step_3.custom_img_3",
+      "visible_if": {
+        "setting_id": "is_custom_img_3",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "date_3",
+      "label": "t:blocks.timeline.settings.step_3.date_3",
+      "default": "Step 3"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "t:blocks.timeline.settings.step_3.title_3",
+      "default": "Shipped"
+    },
+    {
+      "type": "textarea",
+      "id": "description_3",
+      "label": "t:blocks.timeline.settings.step_3.description_3",
+      "default": "On its way, tracking sent to your email."
+    },
+    {
+      "type": "text",
+      "id": "link_3",
+      "label": "t:blocks.timeline.settings.step_3.link_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_window_3",
+      "label": "t:blocks.timeline.settings.step_3.new_window_3",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.step_4.label"
+    },
+    {
+      "type": "text",
+      "id": "icon_4",
+      "label": "t:blocks.timeline.settings.step_4.icon_4",
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "is_custom_img_4",
+      "label": "t:blocks.timeline.settings.step_4.is_custom_img_4",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_img_4",
+      "label": "t:blocks.timeline.settings.step_4.custom_img_4",
+      "visible_if": {
+        "setting_id": "is_custom_img_4",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "date_4",
+      "label": "t:blocks.timeline.settings.step_4.date_4"
+    },
+    {
+      "type": "text",
+      "id": "title_4",
+      "label": "t:blocks.timeline.settings.step_4.title_4"
+    },
+    {
+      "type": "textarea",
+      "id": "description_4",
+      "label": "t:blocks.timeline.settings.step_4.description_4"
+    },
+    {
+      "type": "text",
+      "id": "link_4",
+      "label": "t:blocks.timeline.settings.step_4.link_4"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_window_4",
+      "label": "t:blocks.timeline.settings.step_4.new_window_4",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.step_5.label"
+    },
+    {
+      "type": "text",
+      "id": "icon_5",
+      "label": "t:blocks.timeline.settings.step_5.icon_5",
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "is_custom_img_5",
+      "label": "t:blocks.timeline.settings.step_5.is_custom_img_5",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_img_5",
+      "label": "t:blocks.timeline.settings.step_5.custom_img_5",
+      "visible_if": {
+        "setting_id": "is_custom_img_5",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "date_5",
+      "label": "t:blocks.timeline.settings.step_5.date_5"
+    },
+    {
+      "type": "text",
+      "id": "title_5",
+      "label": "t:blocks.timeline.settings.step_5.title_5"
+    },
+    {
+      "type": "textarea",
+      "id": "description_5",
+      "label": "t:blocks.timeline.settings.step_5.description_5"
+    },
+    {
+      "type": "text",
+      "id": "link_5",
+      "label": "t:blocks.timeline.settings.step_5.link_5"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_window_5",
+      "label": "t:blocks.timeline.settings.step_5.new_window_5",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.step_6.label"
+    },
+    {
+      "type": "text",
+      "id": "icon_6",
+      "label": "t:blocks.timeline.settings.step_6.icon_6",
+      "visible_if": {
+        "setting_id": "marker_type",
+        "value": "icon"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "is_custom_img_6",
+      "label": "t:blocks.timeline.settings.step_6.is_custom_img_6",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_img_6",
+      "label": "t:blocks.timeline.settings.step_6.custom_img_6",
+      "visible_if": {
+        "setting_id": "is_custom_img_6",
+        "value": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "date_6",
+      "label": "t:blocks.timeline.settings.step_6.date_6"
+    },
+    {
+      "type": "text",
+      "id": "title_6",
+      "label": "t:blocks.timeline.settings.step_6.title_6"
+    },
+    {
+      "type": "textarea",
+      "id": "description_6",
+      "label": "t:blocks.timeline.settings.step_6.description_6"
+    },
+    {
+      "type": "text",
+      "id": "link_6",
+      "label": "t:blocks.timeline.settings.step_6.link_6"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_window_6",
+      "label": "t:blocks.timeline.settings.step_6.new_window_6",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.effects.label"
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "label": "t:blocks.timeline.settings.effects.opacity",
+      "max": 1,
+      "min": 0,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.visibility.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "lg_screens",
+      "label": "t:blocks.timeline.settings.visibility.lg_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.timeline.settings.visibility.paragraph"
+    },
+    {
+      "type": "checkbox",
+      "id": "md_screens",
+      "label": "t:blocks.timeline.settings.visibility.md_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.timeline.settings.visibility.paragraph_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "sm_screens",
+      "label": "t:blocks.timeline.settings.visibility.sm_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.timeline.settings.visibility.paragraph_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "xs_screens",
+      "label": "t:blocks.timeline.settings.visibility.xs_screens",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "t:blocks.timeline.settings.visibility.paragraph_4"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks.timeline.settings.advanced.label"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "t:blocks.timeline.settings.advanced.anchor.label",
+      "placeholder": "t:blocks.timeline.settings.advanced.anchor.placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "t:blocks.timeline.settings.advanced.custom_css.label",
+      "placeholder": "t:blocks.timeline.settings.advanced.custom_css.placeholder"
+    }
   ]
 }
 {% endschema %}

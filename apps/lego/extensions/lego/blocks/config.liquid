@@ -47,37 +47,73 @@
 
 {% schema %}
 {
-  "label": "App config",
+  "label": "t:blocks.config.label",
   "target": "body",
   "settings": [
-    { "type": "header", "content": "Page width" },
+    {
+      "type": "header",
+      "content": "t:blocks.config.settings.page_width.label"
+    },
     {
       "type": "select",
       "id": "page_width",
-      "label": "Content width on desktop",
+      "label": "t:blocks.config.settings.page_width.page_width.label",
       "options": [
-        { "label": "Full width", "value": "full" },
-        { "label": "Tablet (768px)", "value": "tablet" },
-        { "label": "Mobile (480px)", "value": "mobile" },
-        { "label": "Custom", "value": "custom" }
+        {
+          "label": "t:blocks.config.settings.page_width.page_width.options.full",
+          "value": "full"
+        },
+        {
+          "label": "t:blocks.config.settings.page_width.page_width.options.tablet",
+          "value": "tablet"
+        },
+        {
+          "label": "t:blocks.config.settings.page_width.page_width.options.mobile",
+          "value": "mobile"
+        },
+        {
+          "label": "t:blocks.config.settings.page_width.page_width.options.custom",
+          "value": "custom"
+        }
       ],
       "default": "full"
     },
     {
       "type": "range",
       "id": "page_width_custom",
-      "label": "Custom width",
+      "label": "t:blocks.config.settings.page_width.page_width_custom",
       "min": 360,
       "max": 1400,
       "step": 20,
       "unit": "px",
       "default": 600,
-      "visible_if": { "setting_id": "page_width", "value": "custom" }
+      "visible_if": {
+        "setting_id": "page_width",
+        "value": "custom"
+      }
     },
-    { "type": "header", "content": "Hide theme sections" },
-    { "type": "checkbox", "id": "hide_announcement_bar", "label": "Hide announcement bar", "default": true },
-    { "type": "checkbox", "id": "hide_header", "label": "Hide header / navbar", "default": true },
-    { "type": "checkbox", "id": "hide_footer", "label": "Hide footer", "default": true }
+    {
+      "type": "header",
+      "content": "t:blocks.config.settings.hide_theme_sections.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_announcement_bar",
+      "label": "t:blocks.config.settings.hide_theme_sections.hide_announcement_bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_header",
+      "label": "t:blocks.config.settings.hide_theme_sections.hide_header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_footer",
+      "label": "t:blocks.config.settings.hide_theme_sections.hide_footer",
+      "default": true
+    }
   ]
 }
 {% endschema %}
