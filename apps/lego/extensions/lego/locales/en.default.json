@@ -1,0 +1,8 @@
+{
+  "general": {
+    "loading": "Loading...",
+    "checkout_unavailable": "Checkout isn't available on this page yet.",
+    "combination_unavailable": "This combination is unavailable",
+    "only_x_left": "Only %count% left in stock"
+  }
+}
