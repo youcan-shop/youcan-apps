@@ -609,7 +609,11 @@
 
       @media (width <= 769px) {
         .trigger { width: 100%; }
-        &[data-trigger-sticky="true"] .trigger { inset-inline: 16px; width: auto; transform: none; }
+        &[data-trigger-sticky="true"] .trigger { 
+          inset-inline: 16px; 
+          transform: none;
+          width: calc(100% - 32px);
+        }
       }
 
       .panel { border: none; padding: 0; background: transparent; }
@@ -1741,8 +1745,7 @@
           if (!window.youcanjs || !window.youcanjs.checkout || typeof window.youcanjs.checkout.placeExpressCheckoutOrder !== 'function') {
             this.status.hidden = false;
             this.status.dataset.state = 'error';
-            this.status.textContent =
-              this.getAttribute('data-checkout-unavailable-text') || "Checkout isn't available on this page yet.";
+            this.status.textContent = this.getAttribute('data-checkout-unavailable-text') || "Checkout isn't available on this page yet.";
             return;
           }
 

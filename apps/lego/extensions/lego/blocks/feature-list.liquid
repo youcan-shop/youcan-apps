@@ -42,7 +42,7 @@
         {% assign has_link = false %}
         {% if block.settings[link] != blank %}{% assign has_link = true %}{% endif %}
 
-        {% if block.settings[title] != blank %}
+        {% if block.settings[title] != blank and block.settings[title] != '' %}
           <li
             class="feature"
             data-style="{{ block.settings.card_style }}"
@@ -63,7 +63,7 @@
               <div class="inner">
             {% endif %}
 
-            {% if block.settings[icon] != blank or block.settings[is_custom_img] %}
+            {% if block.settings[icon] != blank and block.settings[icon] != '' or block.settings[is_custom_img] %}
               <div class="icon-wrap" data-shape="{{ block.settings.icon_shape }}">
                 {% if block.settings[is_custom_img] %}
                   {% assign fallback_image_url = 'default-fallback-image.webp' | asset_url %}

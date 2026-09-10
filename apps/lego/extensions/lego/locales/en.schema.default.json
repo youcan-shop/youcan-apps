@@ -861,7 +861,7 @@
           "show_icon": "Show cart icon",
           "redirect_to_cart": "Redirect to cart on success",
           "success_message": "Success message",
-          "view_cart_text": "\"View cart\" link text",
+          "view_cart_text": "'View cart' link text",
           "cart_url": "Cart page URL",
           "error_message": "Error message"
         },
@@ -1418,7 +1418,7 @@
         },
         "load_more": {
           "label": "Load more",
-          "show_load_more": "Show \"Load more\" button",
+          "show_load_more": "Show 'Load more' button",
           "load_more_text": "Button text",
           "load_more_count": "Products revealed per click",
           "paragraph": "Reveals products already rendered on the page rather than fetching new ones, there's a hard ceiling around 3x the initial count"
@@ -1568,7 +1568,7 @@
               "3": "3"
             }
           },
-          "paragraph": "Each row's cell: leave blank or type \"no\" for a cross, \"yes\" for a check, or type anything else (e.g. \"5 GB\") to show that text instead."
+          "paragraph": "Each row's cell: leave blank or type 'no' for a cross, 'yes' for a check, or type anything else (e.g. '5 GB') to show that text instead."
         },
         "column_1": {
           "label": "Column #1",
@@ -2568,7 +2568,7 @@
           "summary_corner_radius": "Summary corner radius",
           "summary_bg_color": "Summary background",
           "summary_text_color": "Summary text color",
-          "summary_saved_color": "\"You save\" color"
+          "summary_saved_color": "'You save' color"
         },
         "submit_button": {
           "label": "Submit button",
@@ -2998,7 +2998,7 @@
           "card_radius": "Card corner radius",
           "card_border_weight": "Card border weight",
           "card_border_color": "Card border color",
-          "show_link_text": "Show \"Learn more\" link on items with a link",
+          "show_link_text": "Show 'Learn more' link on items with a link",
           "link_text": "Link text"
         },
         "icon": {
@@ -3717,7 +3717,7 @@
         "content": {
           "label": "Content",
           "show_range": "Show price range for multi-price products",
-          "show_from_label": "Show \"From\" label on ranges",
+          "show_from_label": "Show 'From' label on ranges",
           "from_label": "From label",
           "range_separator": "Range separator"
         },
@@ -3895,7 +3895,7 @@
         "product": {
           "label": "Product",
           "product": "Product",
-          "paragraph": "Bound to one specific product, for a \"Featured item\" spot, not a repeating grid. For a list of many products, use Collection Grid instead."
+          "paragraph": "Bound to one specific product, for a 'Featured item' spot, not a repeating grid. For a list of many products, use Collection Grid instead."
         },
         "content": {
           "label": "Content",
@@ -4267,7 +4267,7 @@
             "label": "Value suffix",
             "placeholder": "sold"
           },
-          "show_value": "Show \"current / target\" label",
+          "show_value": "Show 'current / target' label",
           "label_position": {
             "label": "Label position",
             "options": {
@@ -4278,7 +4278,7 @@
         },
         "milestones": {
           "label": "Milestones",
-          "paragraph": "Mark points along the bar, e.g. \"Free shipping at $50\". Use the same scale as your value above.",
+          "paragraph": "Mark points along the bar, e.g. 'Free shipping at $50'. Use the same scale as your value above.",
           "milestone_value_1": "Milestone #1 value",
           "milestone_label_1": {
             "label": "Milestone #1 label",
