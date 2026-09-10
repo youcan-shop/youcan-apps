@@ -106,6 +106,8 @@
   </lego-feature-list>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="feature-list"] {
       display: block;
       opacity: {{ block.settings.opacity }};
@@ -197,10 +199,10 @@
         gap: {{ block.settings.gap | append: 'px' }};
         grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
 
-        @media (width <= 992px) {
+        @container lego-block (width <= 992px) {
           grid-template-columns: repeat(2, 1fr);
         }
-        @media (width <= 640px) {
+        @container lego-block (width <= 640px) {
           grid-template-columns: 1fr;
         }
       }

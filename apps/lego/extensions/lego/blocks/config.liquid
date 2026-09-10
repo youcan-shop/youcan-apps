@@ -1,6 +1,10 @@
 {% if template.name == 'page' %}
   <script id="lego-app-config">
     (function () {
+      // Lets blocks react to the page-width cap (e.g. a full-width CTA button on
+      // a phone/tablet column) without every block needing a container query.
+      document.documentElement.dataset.legoPageWidth = '{{ block.settings.page_width }}';
+
       let hideIds = ['youcan-section--page'];
 
       {% if block.settings.hide_announcement_bar %}

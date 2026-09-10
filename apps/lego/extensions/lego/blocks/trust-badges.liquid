@@ -125,6 +125,8 @@
   </lego-trust-badges>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="trust-badges"] {
       position: relative;
       display: block;
@@ -192,7 +194,7 @@
             display: grid;
             grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
 
-            @media (width <= 769px) {
+            @container lego-block (width <= 769px) {
               grid-template-columns: 1fr;
             }
           {% when 'list' %}
@@ -217,7 +219,7 @@
               min-width: calc((100% - ({{ block.settings.gap }}px * ({{ block.settings.columns }} - 1))) / {{ block.settings.columns }});
             }
 
-            @media (width <= 769px) {
+            @container lego-block (width <= 769px) {
               li {
                 width: calc(100% - {{ block.settings.gap }}px);
                 min-width: calc(100% - {{ block.settings.gap }}px);
@@ -333,7 +335,7 @@
         &.prev { left: 12px; }
         &.next { right: 12px; }
 
-        @media (width <= 769px) { display: none; }
+        @container lego-block (width <= 769px) { display: none; }
       }
 
       @media (prefers-reduced-motion: reduce) {

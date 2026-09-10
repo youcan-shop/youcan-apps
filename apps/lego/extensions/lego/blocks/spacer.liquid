@@ -8,6 +8,8 @@
   ></div>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="spacer"] {
       display: block;
       width: 100%;
@@ -22,16 +24,16 @@
       {% endcase %}
 
       {% if block.settings.customize_by_breakpoint %}
-        @media (width >= 1200px) {
+        @container lego-block (width >= 1200px) {
           height: {{ block.settings.height_lg | append: 'px' }};
         }
-        @media (992px <= width < 1200px) {
+        @container lego-block (992px <= width < 1200px) {
           height: {{ block.settings.height_md | append: 'px' }};
         }
-        @media (768px <= width < 992px) {
+        @container lego-block (768px <= width < 992px) {
           height: {{ block.settings.height_sm | append: 'px' }};
         }
-        @media (width < 768px) {
+        @container lego-block (width < 768px) {
           height: {{ block.settings.height_xs | append: 'px' }};
         }
       {% endif %}

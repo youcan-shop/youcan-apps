@@ -110,6 +110,8 @@
   </lego-timeline>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="timeline"] {
       display: block;
       opacity: {{ block.settings.opacity }};
@@ -245,7 +247,7 @@
               }
             }
 
-            @media (width <= 768px) {
+            @container lego-block (width <= 768px) {
               padding-left: {{ block.settings.marker_size | plus: 16 }}px;
               .line-track { left: {{ block.settings.marker_size | divided_by: 2 }}px; }
               .step {
@@ -289,7 +291,7 @@
             .content { margin-top: {{ block.settings.marker_size | plus: 16 }}px; }
           }
 
-          @media (width <= 768px) {
+          @container lego-block (width <= 768px) {
             grid-template-columns: 1fr;
           }
         }

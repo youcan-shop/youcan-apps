@@ -85,12 +85,14 @@
   {% endif %}
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="product-card"] {
       display: block;
       max-width: {{ block.settings.card_width }}px;
       opacity: {{ block.settings.opacity }};
 
-       @media (width <= 768px) {
+       @container lego-block (width <= 768px) {
         max-width: 100%;
       }
 
@@ -205,7 +207,7 @@
           &:hover .quick-add { opacity: 1; transform: translateY(0); }
         }
 
-        @media (width <= 768px) {
+        @container lego-block (width <= 768px) {
           .quick-add { opacity: 1; transform: translateY(0); }
         }
       }

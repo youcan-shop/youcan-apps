@@ -46,6 +46,8 @@
 {% endif %}
 
 <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
   #youcan-block--{{ block.id }} [data-lego="add-to-cart"] {
     display: block;
     opacity: {{ block.settings.opacity }};
@@ -112,7 +114,7 @@
     }
 
     &[data-sticky-mobile="1"] {
-      @media (width <= 640px) {
+      @container lego-block (width <= 640px) {
         .btn { position: sticky; bottom: 12px; z-index: 5; }
       }
     }

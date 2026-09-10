@@ -76,6 +76,8 @@
   </lego-faq>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="faq"] {
       display: block;
       opacity: {{ block.settings.opacity }};
@@ -180,11 +182,11 @@
           gap: 0 32px;
           align-items: start;
 
-          @media (width > 640px) {
+          @container lego-block (width > 640px) {
             .item:nth-child(2) { border-top: {{ block.settings.divider_weight }}px {{ block.settings.divider_style }} {{ block.settings.divider_color.hex }}; }
           }
 
-          @media (width <= 640px) {
+          @container lego-block (width <= 640px) {
             grid-template-columns: 1fr;
           }
         }

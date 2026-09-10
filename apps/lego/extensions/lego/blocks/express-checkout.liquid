@@ -567,6 +567,8 @@
   </lego-express-checkout>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="express-checkout"] {
       --lego-accent: {{ block.settings.accent_color.hex }};
       display: block;
@@ -609,8 +611,8 @@
 
       @media (width <= 769px) {
         .trigger { width: 100%; }
-        &[data-trigger-sticky="true"] .trigger { 
-          inset-inline: 16px; 
+        &[data-trigger-sticky="true"] .trigger {
+          inset-inline: 16px;
           transform: none;
           width: calc(100% - 32px);
         }
@@ -1120,7 +1122,7 @@
       }
 
       &[data-sticky-submit="true"] {
-        @media (width <= 640px) {
+        @container lego-block (width <= 640px) {
           .submit {
             position: sticky;
             bottom: 12px;

@@ -116,6 +116,8 @@
   </lego-testimonials>
 
   <style>
+    #youcan-block--{{ block.id }} { container: lego-block / inline-size; }
+
     #youcan-block--{{ block.id }} [data-lego="testimonials"] {
       display: block;
       opacity: {{ block.settings.opacity }};
@@ -281,7 +283,7 @@
         gap: {{ block.settings.gap }}px;
         grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
 
-        @media (width <= 768px) { grid-template-columns: 1fr; }
+        @container lego-block (width <= 768px) { grid-template-columns: 1fr; }
       }
 
       .list[data-layout-mode="carousel"] {
@@ -362,7 +364,7 @@
         &.prev { left: -14px; }
         &.next { right: -14px; }
 
-        @media (width <= 640px) { display: none; }
+        @container lego-block (width <= 640px) { display: none; }
       }
 
       .material-symbols-rounded {
