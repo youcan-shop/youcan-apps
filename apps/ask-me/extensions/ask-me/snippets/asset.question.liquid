@@ -93,7 +93,8 @@
         border-radius var(--transition-standard-fast-spatial);
       border-radius: var(--radius-16);
       background-color: var(--color-surface-container-highest);
-      box-shadow: 0 1px 2px color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+      box-shadow: 0 1px 2px color-mix(in srgb, var(--color-surface-container-highest) 70%, transparent);
+      box-shadow: 0 1px 2px oklch(from var(--color-surface-container-highest) calc(1 - l) c h / 0.12);
       font: var(--font-title-sm);
       color: var(--color-on-surface);
       text-align: start;
@@ -111,8 +112,11 @@
       &:hover {
         translate: 0 -1px;
         box-shadow:
-          0 2px 4px color-mix(in srgb, var(--color-on-surface) 10%, transparent),
-          0 8px 16px -6px color-mix(in srgb, var(--color-on-surface) 18%, transparent);
+          0 2px 4px color-mix(in srgb, var(--color-surface-container-highest) 75%, transparent),
+          0 8px 16px -6px color-mix(in srgb, var(--color-surface-container-highest) 85%, transparent);
+        box-shadow:
+          0 2px 4px oklch(from var(--color-surface-container-highest) calc(1 - l) c h / 0.14),
+          0 8px 16px -6px oklch(from var(--color-surface-container-highest) calc(1 - l) c h / 0.2);
       }
 
       &:active {
@@ -149,8 +153,11 @@
       border-start-start-radius: var(--radius-4);
       background-color: var(--color-reply);
       box-shadow:
-        0 1px 2px color-mix(in srgb, var(--color-on-surface) 10%, transparent),
-        0 4px 12px -4px color-mix(in srgb, var(--color-on-surface) 14%, transparent);
+        0 1px 2px color-mix(in srgb, var(--color-reply) 40%, transparent),
+        0 4px 12px -4px color-mix(in srgb, var(--color-reply) 50%, transparent);
+      box-shadow:
+        0 1px 2px oklch(from var(--color-reply) calc(1 - l) c h / 0.12),
+        0 4px 12px -4px oklch(from var(--color-reply) calc(1 - l) c h / 0.16);
       color: var(--color-on-reply);
       animation: ask-me-reply-in var(--transition-standard-default-spatial) both;
 
