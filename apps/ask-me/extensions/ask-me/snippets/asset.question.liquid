@@ -228,7 +228,7 @@
     }
   }
 
-  ui-ask-me:not(:has([ui-ask-me='panel']:popover-open)) [ui-ask-me='question']::details-content {
+  ui-ask-me[data-resetting] [ui-ask-me='question']::details-content {
     transition: none;
   }
 {% endstyle %}

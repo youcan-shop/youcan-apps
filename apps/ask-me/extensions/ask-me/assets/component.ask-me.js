@@ -23,9 +23,15 @@ if (!customElements.get("ui-ask-me")) {
       this.querySelector('[ui-ask-me="empty"]')?.toggleAttribute("hidden", total > 0);
 
       this.querySelector('[ui-ask-me="panel"]')?.addEventListener("toggle", (event) => {
-        if (event.newState !== "closed") return;
+        if (event.newState !== "open") return;
+
+        this.setAttribute("data-resetting", "");
 
         for (const question of list.children) question.open = false;
+
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => this.removeAttribute("data-resetting"))
+        );
       });
     }
   }
