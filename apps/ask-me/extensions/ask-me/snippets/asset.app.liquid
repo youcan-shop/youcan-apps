@@ -60,9 +60,12 @@
     /* AS-FOREGROUND  */
     --color-primary: oklch(min(var(--brand-l), 0.48) var(--brand-c) var(--brand-h));
     --color-on-primary: oklch(1 0 0);
-    --color-surface: oklch(0.98 min(var(--brand-c), 0.009) var(--brand-h));
+    --color-surface-container-lowest: oklch(1 0 var(--brand-h));
+    --color-surface-container: oklch(0.94 min(var(--brand-c), 0.028) var(--brand-h));
+    --color-surface-container-highest: oklch(0.90 min(var(--brand-c), 0.048) var(--brand-h));
     --color-on-surface: oklch(0.18 var(--brand-c) var(--brand-h));
-    --color-surface-container-high: oklch(0.92 min(var(--brand-c), 0.038) var(--brand-h));
+    --color-reply: var(--color-surface-container-lowest);
+    --color-on-reply: var(--color-on-surface);
     --color-on-surface-variant: oklch(0.42 min(var(--brand-c), 0.071) var(--brand-h));
     --color-outline-variant: oklch(0.82 min(var(--brand-c), 0.089) var(--brand-h));
 
@@ -70,9 +73,12 @@
     &[data-intensity='as-light-bg'] {
       --color-primary: oklch(min(var(--brand-l), 0.42) var(--brand-c) var(--brand-h));
       --color-on-primary: oklch(1 0 0);
-      --color-surface: oklch(0.93 min(calc(var(--brand-c) * 0.55), 0.033) var(--brand-h));
+      --color-surface-container-lowest: oklch(0.98 min(var(--brand-c), 0.009) var(--brand-h));
+      --color-surface-container: oklch(0.90 min(var(--brand-c), 0.048) var(--brand-h));
+      --color-surface-container-highest: oklch(0.82 min(var(--brand-c), 0.089) var(--brand-h));
       --color-on-surface: oklch(0.25 var(--brand-c) var(--brand-h));
-      --color-surface-container-high: oklch(0.86 min(var(--brand-c), 0.068) var(--brand-h));
+      --color-reply: var(--color-surface-container-lowest);
+      --color-on-reply: var(--color-on-surface);
       --color-on-surface-variant: oklch(0.35 min(var(--brand-c), 0.059) var(--brand-h));
       --color-outline-variant: oklch(0.82 min(var(--brand-c), 0.089) var(--brand-h));
     }
@@ -81,9 +87,12 @@
     &[data-intensity='as-solid-bg'] {
       --color-primary: oklch(0.88 min(var(--brand-c), 0.058) var(--brand-h));
       --color-on-primary: oklch(min(var(--brand-l), 0.22) var(--brand-c) var(--brand-h));
-      --color-surface: oklch(0.14 min(var(--brand-c), 0.024) var(--brand-h));
+      --color-surface-container-lowest: oklch(0.10 min(var(--brand-c), 0.018) var(--brand-h));
+      --color-surface-container: oklch(0.22 min(var(--brand-c), 0.037) var(--brand-h));
+      --color-surface-container-highest: oklch(0.34 min(var(--brand-c), 0.057) var(--brand-h));
       --color-on-surface: oklch(0.90 min(var(--brand-c), 0.048) var(--brand-h));
-      --color-surface-container-high: oklch(0.28 min(var(--brand-c), 0.047) var(--brand-h));
+      --color-reply: var(--color-primary);
+      --color-on-reply: var(--color-on-primary);
       --color-on-surface-variant: oklch(0.78 min(var(--brand-c), 0.110) var(--brand-h));
       --color-outline-variant: oklch(0.34 min(var(--brand-c), 0.057) var(--brand-h));
     }
