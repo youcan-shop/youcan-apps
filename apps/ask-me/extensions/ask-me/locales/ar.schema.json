@@ -22,11 +22,11 @@
           "label": "المظهر",
           "color": "اللون",
           "intensity": {
-            "label": "الشدة",
+            "label": "الشِّدة",
             "options": {
-              "as_foreground": "كمقدمة",
+              "as_foreground": "كخلفية بلون موحد",
               "as_light_bg": "كخلفية فاتحة",
-              "as_solid_bg": "كخلفية صلبة"
+              "as_solid_bg": "كلون للنص"
             }
           },
           "font": {
