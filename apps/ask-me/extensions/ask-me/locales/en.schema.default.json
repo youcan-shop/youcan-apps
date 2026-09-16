@@ -1,20 +1,20 @@
 {
   "blocks": {
     "ask_me": {
-      "label": "AskMe",
+      "label": "AskMe - Floating FAQs",
       "settings": {
         "widget": {
           "label": "Widget",
-          "info": "ℹ️ Add this block once, then add as many AskMe — Question blocks as you need.",
+          "info": "ℹ️ Add this block once, then add as many [AskMe] Q & A blocks as you need.",
           "position": {
-            "label": "Corner",
+            "label": "Position",
             "options": {
               "end": "Bottom end",
               "start": "Bottom start"
             }
           },
           "launcher_offset": {
-            "label": "Distance from bottom"
+            "label": "Bottom spacing"
           },
           "panel_title": "Panel title"
         },
@@ -39,7 +39,7 @@
       }
     },
     "question": {
-      "label": "AskMe — Question",
+      "label": "[AskMe] Q & A",
       "settings": {
         "question": "Question",
         "answer": "Answer"

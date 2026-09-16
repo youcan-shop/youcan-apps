@@ -1,20 +1,20 @@
 {
   "blocks": {
     "ask_me": {
-      "label": "AskMe",
+      "label": "AskMe - Floating FAQs",
       "settings": {
         "widget": {
           "label": "Widget",
-          "info": "ℹ️ Ajoutez ce bloc une seule fois, puis ajoutez autant de blocs AskMe — Question que nécessaire.",
+          "info": "ℹ️ Ajoutez ce bloc une seule fois, puis ajoutez autant de blocs [AskMe] Q & A que nécessaire.",
           "position": {
-            "label": "Coin",
+            "label": "Position",
             "options": {
               "end": "En bas, côté fin",
               "start": "En bas, côté début"
             }
           },
           "launcher_offset": {
-            "label": "Distance depuis le bas"
+            "label": "Espacement inférieur"
           },
           "panel_title": "Titre du panneau"
         },
@@ -39,7 +39,7 @@
       }
     },
     "question": {
-      "label": "AskMe — Question",
+      "label": "[AskMe] Q & A",
       "settings": {
         "question": "Question",
         "answer": "Réponse"

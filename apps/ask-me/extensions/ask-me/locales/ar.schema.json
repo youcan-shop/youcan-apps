@@ -1,22 +1,22 @@
 {
   "blocks": {
     "ask_me": {
-      "label": "AskMe",
+      "label": "AskMe - Floating FAQs",
       "settings": {
         "widget": {
           "label": "الأداة",
-          "info": "ℹ️ أضف هذا البلوك مرة واحدة، ثم أضف العدد الذي تريده من بلوكات AskMe — Question.",
+          "info": "ℹ️ أضف هذا البلوك مرة واحدة، ثم أضف العدد الذي تريده من بلوكات [AskMe] Q & A.",
           "position": {
-            "label": "الزاوية",
+            "label": "الموضع",
             "options": {
-              "end": "أسفل جهة النهاية",
-              "start": "أسفل جهة البداية"
+              "end": "نهاية الزاوية السفلى",
+              "start": "بداية الزاوية السفلى"
             }
           },
           "launcher_offset": {
-            "label": "المسافة من الأسفل"
+            "label": "المسافة السفلية"
           },
-          "panel_title": "عنوان اللوحة"
+          "panel_title": "عنوان النافذة"
         },
         "appearance": {
           "label": "المظهر",
@@ -39,7 +39,7 @@
       }
     },
     "question": {
-      "label": "AskMe — Question",
+      "label": "[AskMe] Q & A",
       "settings": {
         "question": "السؤال",
         "answer": "الجواب"
