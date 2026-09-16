@@ -24,9 +24,9 @@
           "intensity": {
             "label": "Intensité",
             "options": {
-              "as_foreground": "Comme arrière-plan uni",
-              "as_light_bg": "Comme arrière-plan clair",
-              "as_solid_bg": "Comme premier plan"
+              "as_foreground": "Légère",
+              "as_light_bg": "Modérée",
+              "as_solid_bg": "Immense"
             }
           },
           "font": {

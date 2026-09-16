@@ -24,9 +24,9 @@
           "intensity": {
             "label": "الشِّدة",
             "options": {
-              "as_foreground": "كخلفية بلون موحد",
-              "as_light_bg": "كخلفية فاتحة",
-              "as_solid_bg": "كلون للنص"
+              "as_foreground": "خفيفة",
+              "as_light_bg": "معتدلة",
+              "as_solid_bg": "كثيفة"
             }
           },
           "font": {
