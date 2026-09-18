@@ -1,0 +1,49 @@
+{
+  "blocks": {
+    "ask_me": {
+      "label": "AskMe - Floating FAQs",
+      "settings": {
+        "widget": {
+          "label": "الأداة",
+          "info": "ℹ️ أضف هذا البلوك مرة واحدة، ثم أضف العدد الذي تريده من بلوكات [AskMe] Q & A.",
+          "position": {
+            "label": "الموضع",
+            "options": {
+              "end": "نهاية الزاوية السفلى",
+              "start": "بداية الزاوية السفلى"
+            }
+          },
+          "launcher_offset": {
+            "label": "المسافة السفلية"
+          },
+          "panel_title": "عنوان النافذة"
+        },
+        "appearance": {
+          "label": "المظهر",
+          "color": "اللون",
+          "intensity": {
+            "label": "الشِّدة",
+            "options": {
+              "as_foreground": "خفيفة",
+              "as_light_bg": "معتدلة",
+              "as_solid_bg": "كثيفة"
+            }
+          },
+          "font": {
+            "label": "الخط",
+            "options": {
+              "inherit": "موروث"
+            }
+          }
+        }
+      }
+    },
+    "question": {
+      "label": "[AskMe] Q & A",
+      "settings": {
+        "question": "السؤال",
+        "answer": "الجواب"
+      }
+    }
+  }
+}

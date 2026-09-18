@@ -1,0 +1,14 @@
+{
+    "name": "AskMe - Floating FAQs",
+    "id": "app_FDCQJkH1YPKixBTg1hyM1PjkdL4",
+    "handle": "ask-me-app",
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "3218"
+    },
+    "extension_ids": {
+        "ask-me": "ext_FDCQJwdArIyIuKkIyBRP2p3k2Ee"
+    }
+}

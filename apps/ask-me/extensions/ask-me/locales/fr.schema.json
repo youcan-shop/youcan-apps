@@ -1,0 +1,49 @@
+{
+  "blocks": {
+    "ask_me": {
+      "label": "AskMe - Floating FAQs",
+      "settings": {
+        "widget": {
+          "label": "Widget",
+          "info": "ℹ️ Ajoutez ce bloc une seule fois, puis ajoutez autant de blocs [AskMe] Q & A que nécessaire.",
+          "position": {
+            "label": "Position",
+            "options": {
+              "end": "En bas, côté fin",
+              "start": "En bas, côté début"
+            }
+          },
+          "launcher_offset": {
+            "label": "Espacement inférieur"
+          },
+          "panel_title": "Titre du panneau"
+        },
+        "appearance": {
+          "label": "Apparence",
+          "color": "Couleur",
+          "intensity": {
+            "label": "Intensité",
+            "options": {
+              "as_foreground": "Légère",
+              "as_light_bg": "Modérée",
+              "as_solid_bg": "Immense"
+            }
+          },
+          "font": {
+            "label": "Police",
+            "options": {
+              "inherit": "Hériter"
+            }
+          }
+        }
+      }
+    },
+    "question": {
+      "label": "[AskMe] Q & A",
+      "settings": {
+        "question": "Question",
+        "answer": "Réponse"
+      }
+    }
+  }
+}
