@@ -20,7 +20,7 @@
   popovertarget="{{ id }}"
   data-position="{{ block.settings.trigger_position }}"
   style="
-    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100 }};
+    --brand-lightness: {{ block.settings.color.lightness | divided_by: 100.0 }};
     --brand-chroma: {{ block.settings.color.chroma }};
     --brand-hue: {{ block.settings.color.oklch_hue }};
   "
