@@ -63,7 +63,7 @@
 
           product.slug = "{{ product.slug }}";
           product.name = "{{ product.name }}";
-          product.images = JSON.parse({{ product.images | slice: 0, 2 | json }});
+          product.images = {{ product.images | slice: 0, 2 | json_raw }};
           product.url = "{{ product.url }}";
           product.price = Number("{{ product.price }}");
 
