@@ -8,7 +8,7 @@
 
 ## How to use?
 
-Check the [documentation](https://developer.youcan.shop/apps/embedded_app/getstarted).
+Check the [documentation](https://docs.youcan.shop/apps/embedded_app/getstarted).
 
 ## Settings
 
