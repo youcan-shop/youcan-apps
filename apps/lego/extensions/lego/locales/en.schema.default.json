@@ -1,0 +1,5959 @@
+{
+  "blocks": {
+    "config": {
+      "label": "App config",
+      "settings": {
+        "page_width": {
+          "label": "Page width",
+          "page_width": {
+            "label": "Content width on desktop",
+            "options": {
+              "full": "Full width",
+              "tablet": "Tablet (768px)",
+              "mobile": "Mobile (480px)",
+              "custom": "Custom"
+            }
+          },
+          "page_width_custom": "Custom width"
+        },
+        "hide_theme_sections": {
+          "label": "Hide theme sections",
+          "hide_announcement_bar": "Hide announcement bar",
+          "hide_header": "Hide header / navbar",
+          "hide_footer": "Hide footer"
+        }
+      }
+    },
+    "spacer": {
+      "label": "Spacer",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "design": {
+          "label": "Design",
+          "height": "Height",
+          "customize_by_breakpoint": "Different height per screen size",
+          "height_lg": "Height on large screens",
+          "height_md": "Height on medium screens",
+          "height_sm": "Height on small screens",
+          "height_xs": "Height on extra small screens",
+          "opacity": "Opacity"
+        },
+        "background": {
+          "label": "Background",
+          "paragraph": "Optional. Turns the empty space into a colored band.",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-spacer"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "divider": {
+      "label": "Divider",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "label_setting": {
+            "label": "Center label (optional)",
+            "placeholder": "OR"
+          },
+          "label_size": "Label size",
+          "label_color": "Label color"
+        },
+        "design": {
+          "label": "Design",
+          "orientation": {
+            "label": "Orientation",
+            "options": {
+              "horizontal": "Horizontal",
+              "vertical": "Vertical"
+            }
+          },
+          "style": {
+            "label": "Line style",
+            "options": {
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted",
+              "double": "Double"
+            }
+          },
+          "thickness": "Thickness",
+          "color": "Color",
+          "fade_edges": "Fade edges"
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          },
+          "vertical_length": "Length"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller",
+          "opacity": "Opacity"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-divider"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "heading": {
+      "label": "Heading",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "source": {
+            "label": "Source",
+            "options": {
+              "static": "Static",
+              "dynamic": "Dynamic"
+            }
+          },
+          "text": "Text",
+          "dynamic_source": {
+            "label": "Text source",
+            "options": {
+              "product_title": "Product title",
+              "collection_title": "Collection title",
+              "store_name": "Store name"
+            }
+          },
+          "product": "Product",
+          "collection": "Collection",
+          "tag": {
+            "label": "HTML tag",
+            "options": {
+              "h1": "H1",
+              "h2": "H2",
+              "h3": "H3",
+              "h4": "H4",
+              "h5": "H5",
+              "h6": "H6"
+            }
+          },
+          "link": "Link (optional)"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "size": {
+            "label": "Font size",
+            "options": {
+              "12": "12px",
+              "14": "14px",
+              "16": "16px",
+              "18": "18px",
+              "22": "22px",
+              "28": "28px",
+              "36": "36px",
+              "44": "44px",
+              "56": "56px",
+              "72": "72px",
+              "custom": "Custom"
+            }
+          },
+          "custom_size": "Custom font size",
+          "weight": {
+            "label": "Font weight",
+            "options": {
+              "300": "300",
+              "400": "400",
+              "500": "500",
+              "600": "600",
+              "700": "700",
+              "800": "800",
+              "900": "900"
+            }
+          },
+          "line_height": "Line height",
+          "letter_spacing": "Letter spacing",
+          "transform": {
+            "label": "Text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "decoration": {
+            "label": "Text decoration",
+            "options": {
+              "none": "None",
+              "underline": "Underline",
+              "line_through": "Line-through"
+            }
+          },
+          "color": "Color"
+        },
+        "text_shadow": {
+          "label": "Text shadow",
+          "text_shadow_enabled": "Enable text shadow",
+          "text_shadow_color": "Shadow color",
+          "text_shadow_offset_x": "Offset X",
+          "text_shadow_offset_y": "Offset Y",
+          "text_shadow_blur": "Blur"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted",
+              "double": "Double"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effect",
+          "hover_color": "Hover color",
+          "hover_opacity": "Hover opacity",
+          "hover_scale": "Hover scale"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-heading"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "text": {
+      "label": "Text",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "source": {
+            "label": "Source",
+            "options": {
+              "static": "Static",
+              "dynamic": "Dynamic"
+            }
+          },
+          "text": "Text",
+          "dynamic_source": {
+            "label": "Text source",
+            "options": {
+              "product_title": "Product title",
+              "product_description": "Product description",
+              "collection_title": "Collection title",
+              "store_name": "Store name"
+            }
+          },
+          "product": "Product",
+          "collection": "Collection",
+          "link": "Link (optional)",
+          "truncate_lines": "Cut text after this many lines",
+          "paragraph": "Use 0 to keep all lines"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right",
+              "justify": "Justify"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "size": {
+            "label": "Font size",
+            "options": {
+              "12": "12px",
+              "14": "14px",
+              "16": "16px",
+              "18": "18px",
+              "22": "22px",
+              "28": "28px",
+              "36": "36px",
+              "44": "44px",
+              "56": "56px",
+              "custom": "Custom"
+            }
+          },
+          "custom_size": "Custom font size",
+          "weight": {
+            "label": "Font weight",
+            "options": {
+              "300": "300",
+              "400": "400",
+              "500": "500",
+              "600": "600",
+              "700": "700",
+              "800": "800",
+              "900": "900"
+            }
+          },
+          "line_height": "Line height",
+          "letter_spacing": "Letter spacing",
+          "transform": {
+            "label": "Text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "decoration": {
+            "label": "Text decoration",
+            "options": {
+              "none": "None",
+              "underline": "Underline",
+              "line_through": "Line-through"
+            }
+          },
+          "color": "Color"
+        },
+        "text_shadow": {
+          "label": "Text shadow",
+          "text_shadow_enabled": "Enable text shadow",
+          "text_shadow_color": "Shadow color",
+          "text_shadow_offset_x": "Offset X",
+          "text_shadow_offset_y": "Offset Y",
+          "text_shadow_blur": "Blur"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted",
+              "double": "Double"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effect",
+          "hover_color": "Hover color",
+          "hover_opacity": "Hover opacity",
+          "hover_scale": "Hover scale"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-text"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "button": {
+      "label": "Button",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "text": "Label",
+          "url": {
+            "label": "URL",
+            "placeholder": "https://youcan.shop"
+          },
+          "same_window": "Open in same tab",
+          "disabled": "Disabled",
+          "style": {
+            "label": "Style",
+            "options": {
+              "filled": "Filled",
+              "stroke": "Stroke",
+              "lighter": "Lighter",
+              "ghost": "Ghost"
+            }
+          },
+          "size": {
+            "label": "Size",
+            "options": {
+              "xl": "XLarge",
+              "lg": "Large",
+              "md": "Medium",
+              "sm": "Small",
+              "xs": "XSmall"
+            }
+          },
+          "icon": {
+            "label": "Icon",
+            "placeholder": "favorite"
+          },
+          "paragraph": "Feel free to use [Google Icons](https://fonts.google.com/icons)",
+          "icon_position": {
+            "label": "Icon position",
+            "options": {
+              "left": "Left",
+              "right": "Right"
+            }
+          },
+          "icon_sharp": {
+            "label": "Icon sharp",
+            "options": {
+              "stroke": "Stroke",
+              "solid": "Solid"
+            }
+          }
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "100": "Full",
+              "fit_content": "Auto"
+            }
+          },
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          }
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left"
+        },
+        "design": {
+          "label": "Design",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "transform": {
+            "label": "Text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "primary_color": "Primary color",
+          "secondary_color": "Secondary color",
+          "gradient_enabled": "Gradient background",
+          "gradient_angle_degree": "Gradient angle",
+          "gradient_end": "Gradient end color",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_weight": "Border weight",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_opacity": "Hover opacity",
+          "hover_scale": "Hover scale"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-button"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "add_to_cart": {
+      "label": "Add to cart",
+      "settings": {
+        "product": {
+          "label": "Product",
+          "product": "Product",
+          "paragraph": "Uses the product on the current page, or pick one. Reads the latest selection from Variant Picker / Quantity blocks elsewhere on the page automatically."
+        },
+        "content": {
+          "label": "Content",
+          "button_text": "Button text",
+          "sold_out_text": "Sold-out text",
+          "show_icon": "Show cart icon",
+          "redirect_to_cart": "Redirect to cart on success",
+          "success_message": "Success message",
+          "view_cart_text": "'View cart' link text",
+          "cart_url": "Cart page URL",
+          "error_message": "Error message"
+        },
+        "style": {
+          "label": "Style",
+          "button_height": "Button height",
+          "corner_radius": "Corner radius",
+          "button_shadow": {
+            "label": "Button shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large"
+            }
+          },
+          "bg_color": "Background color",
+          "text_color": "Text color",
+          "gradient_enabled": "Gradient background",
+          "gradient_angle": "Gradient angle",
+          "gradient_end": "Gradient end color"
+        },
+        "behavior": {
+          "label": "Behavior",
+          "sticky_mobile": "Sticky on mobile"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-add-to-cart"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "announcement_bar": {
+      "label": "Announcement bar",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "items": {
+          "label": "Items"
+        },
+        "item_1": {
+          "label": "Item #1",
+          "message_1": "Message",
+          "link_1": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          }
+        },
+        "item_2": {
+          "label": "Item #2",
+          "message_2": {
+            "label": "Message",
+            "placeholder": "Second message (optional)"
+          },
+          "link_2": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          }
+        },
+        "item_3": {
+          "label": "Item #3",
+          "message_3": {
+            "label": "Message",
+            "placeholder": "Third message (optional)"
+          },
+          "link_3": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          }
+        },
+        "content": {
+          "label": "Content",
+          "new_window": "Open links in new window",
+          "display_mode": {
+            "label": "Display mode",
+            "options": {
+              "static": "Static (first message only)",
+              "rotate": "Rotate (crossfade)",
+              "marquee": "Marquee (scrolling)"
+            }
+          },
+          "rotate_interval": "Time per message",
+          "speed": "Scroll speed",
+          "pause_on_hover": "Pause on hover",
+          "dismissible": "Dismissible",
+          "remember_dismissal": {
+            "label": "Remember dismissal",
+            "options": {
+              "session": "For this session",
+              "permanent": "Permanently (this browser)"
+            }
+          },
+          "sticky": {
+            "label": "Position",
+            "options": {
+              "static": "Static",
+              "top_page": "Sticky to top"
+            }
+          }
+        },
+        "icon": {
+          "label": "Icon",
+          "icon": {
+            "label": "Icon",
+            "placeholder": "favorite"
+          },
+          "paragraph": "Feel free to use [Google Icons](https://fonts.google.com/icons)",
+          "icon_position": {
+            "label": "Icon position",
+            "options": {
+              "left": "Left",
+              "right": "Right"
+            }
+          },
+          "icon_sharp": {
+            "label": "Icon sharp",
+            "options": {
+              "stroke": "Stroke",
+              "solid": "Solid"
+            }
+          },
+          "icon_size": "Icon size"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "flex_start": "Left",
+              "center": "Center",
+              "flex_end": "Right"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "design": {
+          "label": "Design",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "size": {
+            "label": "Font size",
+            "options": {
+              "12": "12px",
+              "14": "14px",
+              "16": "16px",
+              "18": "18px",
+              "22": "22px"
+            }
+          },
+          "weight": {
+            "label": "Font weight",
+            "options": {
+              "300": "300",
+              "400": "400",
+              "500": "500",
+              "600": "600",
+              "700": "700"
+            }
+          },
+          "transform": {
+            "label": "Text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "color": "Color",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade down",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-announcement-bar"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "before_after": {
+      "label": "Before / after",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "before_image": "Before image",
+          "before_label": "Before label",
+          "after_image": "After image",
+          "after_label": "After label",
+          "show_labels": "Show labels",
+          "caption": "Caption (optional)"
+        },
+        "interaction": {
+          "label": "Interaction",
+          "orientation": {
+            "label": "Slider direction",
+            "options": {
+              "horizontal": "Horizontal",
+              "vertical": "Vertical"
+            }
+          },
+          "interaction": {
+            "label": "Interaction",
+            "options": {
+              "drag": "Drag / tap",
+              "hover": "Follow cursor (hover)",
+              "auto": "Auto-play"
+            }
+          },
+          "auto_speed": "Auto-play speed",
+          "initial_position": "Starting position"
+        },
+        "style": {
+          "label": "Style",
+          "aspect_ratio": {
+            "label": "Aspect ratio",
+            "options": {
+              "1_1": "Square (1:1)",
+              "16_9": "Landscape (16:9)",
+              "4_5": "Portrait (4:5)"
+            }
+          },
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "media_radius": "Media corner radius",
+          "handle_size": "Handle size",
+          "handle_line_weight": "Handle line weight",
+          "handle_color": "Handle color",
+          "handle_icon_color": "Handle icon color",
+          "handle_icon": {
+            "label": "Handle icon",
+            "options": {
+              "code": "Arrows",
+              "drag_indicator": "Drag dots"
+            }
+          },
+          "label_bg_color": "Label background",
+          "label_text_color": "Label text color",
+          "caption_color": "Caption color"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Entrance duration"
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-before-after"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "collection_grid": {
+      "label": "Collection grid",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "category": {
+          "label": "Category",
+          "category": "Category"
+        },
+        "content": {
+          "label": "Content",
+          "title": "Title (optional)",
+          "title_align": {
+            "label": "Title alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center"
+            }
+          },
+          "limit": "Products shown initially",
+          "columns": {
+            "label": "Columns (desktop)",
+            "options": {
+              "2": "2",
+              "3": "3",
+              "4": "4",
+              "5": "5"
+            }
+          },
+          "columns_mobile": {
+            "label": "Columns (mobile)",
+            "options": {
+              "1": "1",
+              "2": "2"
+            }
+          },
+          "show_badge": "Show sale badge",
+          "show_rating": "Show rating",
+          "sold_out_text": "Sold-out overlay text",
+          "show_quick_add": "Show quick-add button",
+          "quick_add_text": "Quick-add label (accessibility)",
+          "paragraph": "Quick-add only adds directly for single-variant products, otherwise it opens the product page",
+          "success_message": "Success message",
+          "error_message": "Error message"
+        },
+        "load_more": {
+          "label": "Load more",
+          "show_load_more": "Show 'Load more' button",
+          "load_more_text": "Button text",
+          "load_more_count": "Products revealed per click",
+          "paragraph": "Reveals products already rendered on the page rather than fetching new ones, there's a hard ceiling around 3x the initial count"
+        },
+        "card_style": {
+          "label": "Card style",
+          "gap": "Gap",
+          "aspect_ratio": {
+            "label": "Image aspect ratio",
+            "options": {
+              "1_1": "Square (1:1)",
+              "4_5": "Portrait (4:5)",
+              "16_9": "Landscape (16:9)"
+            }
+          },
+          "media_radius": "Image corner radius",
+          "media_bg_color": "Image placeholder background",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "title_card_size": "Card title size",
+          "card_title_color": "Card title color",
+          "star_color": "Star color",
+          "price_size": "Price size",
+          "price_color": "Price color",
+          "compare_color": "Compare price color",
+          "badge_bg_color": "Badge background",
+          "badge_text_color": "Badge text color",
+          "quick_add_bg_color": "Quick-add background",
+          "quick_add_icon_color": "Quick-add icon color"
+        },
+        "load_more_button_style": {
+          "label": "Load more button style",
+          "load_more_bg_color": "Background",
+          "load_more_text_color": "Text color",
+          "load_more_border_color": "Border color",
+          "load_more_radius": "Corner radius"
+        },
+        "title": {
+          "label": "Title",
+          "title_size": "Title size",
+          "title_color": "Title color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-collection-grid"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "comparison_table": {
+      "label": "Comparison table",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "heading": {
+            "label": "Heading (optional)",
+            "placeholder": "Compare plans"
+          },
+          "heading_size": "Heading size",
+          "heading_color": "Heading color",
+          "columns": {
+            "label": "Columns",
+            "options": {
+              "2": "2 (Us vs Them)",
+              "3": "3"
+            }
+          },
+          "paragraph": "Each row's cell: leave blank or type 'no' for a cross, 'yes' for a check, or type anything else (e.g. '5 GB') to show that text instead."
+        },
+        "column_1": {
+          "label": "Column #1",
+          "col_label_1": "Label",
+          "col_subtitle_1": {
+            "label": "Subtitle / price",
+            "placeholder": "$29/mo"
+          },
+          "col_badge_1": {
+            "label": "Badge",
+            "placeholder": "Most popular"
+          },
+          "col_highlight_1": "Highlight this column",
+          "col_cta_text_1": {
+            "label": "Button text (optional)",
+            "placeholder": "Choose plan"
+          },
+          "col_cta_link_1": "Button link"
+        },
+        "column_2": {
+          "label": "Column #2",
+          "col_label_2": "Label",
+          "col_subtitle_2": "Subtitle / price",
+          "col_badge_2": "Badge",
+          "col_highlight_2": "Highlight this column",
+          "col_cta_text_2": "Button text (optional)",
+          "col_cta_link_2": "Button link"
+        },
+        "column_3": {
+          "label": "Column #3",
+          "paragraph": "Only shown when Columns is set to 3",
+          "col_label_3": "Label",
+          "col_subtitle_3": "Subtitle / price",
+          "col_badge_3": "Badge",
+          "col_highlight_3": "Highlight this column",
+          "col_cta_text_3": "Button text (optional)",
+          "col_cta_link_3": "Button link"
+        },
+        "row_1": {
+          "label": "Row #1",
+          "row_label_1": "Feature",
+          "row_col1_1": "Column #1 value",
+          "row_col2_1": "Column #2 value",
+          "row_col3_1": "Column #3 value"
+        },
+        "row_2": {
+          "label": "Row #2",
+          "row_label_2": "Feature",
+          "row_col1_2": "Column #1 value",
+          "row_col2_2": "Column #2 value",
+          "row_col3_2": "Column #3 value"
+        },
+        "row_3": {
+          "label": "Row #3",
+          "row_label_3": "Feature",
+          "row_col1_3": "Column #1 value",
+          "row_col2_3": "Column #2 value",
+          "row_col3_3": "Column #3 value"
+        },
+        "row_4": {
+          "label": "Row #4",
+          "row_label_4": "Feature",
+          "row_col1_4": "Column #1 value",
+          "row_col2_4": "Column #2 value",
+          "row_col3_4": "Column #3 value"
+        },
+        "row_5": {
+          "label": "Row #5",
+          "row_label_5": "Feature",
+          "row_col1_5": "Column #1 value",
+          "row_col2_5": "Column #2 value",
+          "row_col3_5": "Column #3 value"
+        },
+        "row_6": {
+          "label": "Row #6",
+          "row_label_6": "Feature",
+          "row_col1_6": "Column #1 value",
+          "row_col2_6": "Column #2 value",
+          "row_col3_6": "Column #3 value"
+        },
+        "row_7": {
+          "label": "Row #7",
+          "row_label_7": "Feature",
+          "row_col1_7": "Column #1 value",
+          "row_col2_7": "Column #2 value",
+          "row_col3_7": "Column #3 value"
+        },
+        "row_8": {
+          "label": "Row #8",
+          "row_label_8": "Feature",
+          "row_col1_8": "Column #1 value",
+          "row_col2_8": "Column #2 value",
+          "row_col3_8": "Column #3 value"
+        },
+        "row_9": {
+          "label": "Row #9",
+          "row_label_9": "Feature",
+          "row_col1_9": "Column #1 value",
+          "row_col2_9": "Column #2 value",
+          "row_col3_9": "Column #3 value"
+        },
+        "row_10": {
+          "label": "Row #10",
+          "row_label_10": "Feature",
+          "row_col1_10": "Column #1 value",
+          "row_col2_10": "Column #2 value",
+          "row_col3_10": "Column #3 value"
+        },
+        "style": {
+          "label": "Style",
+          "zebra_striping": "Zebra striping",
+          "zebra_color": "Zebra stripe color",
+          "hover_enabled": "Highlight row on hover",
+          "hover_color": "Hover color",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "cell_size": "Cell text size",
+          "cell_color": "Cell text color",
+          "divider_color": "Row divider color",
+          "table_bg_color": "Table background",
+          "header_bg_color": "Header background",
+          "header_text_color": "Header text color",
+          "highlight_bg_color": "Highlighted column background",
+          "badge_bg_color": "Badge background",
+          "badge_text_color": "Badge text color",
+          "cta_bg_color": "Button background",
+          "cta_text_color": "Button text color",
+          "check_color": "Check icon color",
+          "cross_color": "Cross icon color",
+          "table_radius": "Table corner radius",
+          "border_weight": "Table border weight",
+          "border_color": "Table border color",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large"
+            }
+          }
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Entrance duration"
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width",
+          "paragraph": "The table scrolls horizontally on narrow screens, the feature column stays pinned so it's always readable"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-comparison-table"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "countdown": {
+      "label": "Countdown",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "mode": {
+            "label": "Countdown type",
+            "options": {
+              "fixed_date": "Fixed date",
+              "evergreen": "Evergreen (per visitor)"
+            }
+          },
+          "target_date": {
+            "label": "Target date",
+            "placeholder": "2026-12-31"
+          },
+          "target_time": {
+            "label": "Target time",
+            "placeholder": "23:59:59"
+          },
+          "utc_offset": {
+            "label": "UTC offset (optional)",
+            "placeholder": "+01:00"
+          },
+          "paragraph": "Leave blank to use each visitor's local time, set an offset so everyone sees the same deadline regardless of timezone",
+          "evergreen_hours": "Duration",
+          "paragraph_2": "Resets per visitor when their browser storage clears",
+          "expire_behavior": {
+            "label": "When it ends",
+            "options": {
+              "zeros": "Freeze at 00:00:00:00",
+              "message": "Show a message",
+              "hide": "Hide the block",
+              "redirect": "Redirect"
+            }
+          },
+          "expire_message": "Expiry message",
+          "expire_redirect_url": {
+            "label": "Redirect URL",
+            "placeholder": "/collections/all"
+          }
+        },
+        "labels": {
+          "label": "Labels",
+          "show_days": "Show days unit",
+          "show_labels": "Show unit labels",
+          "label_days": "Days label",
+          "label_hours": "Hours label",
+          "label_minutes": "Minutes label",
+          "label_seconds": "Seconds label"
+        },
+        "style": {
+          "label": "Style",
+          "style": {
+            "label": "Layout",
+            "options": {
+              "inline": "Inline",
+              "boxes": "Boxes",
+              "grouped": "Grouped",
+              "flip": "Flip clock"
+            }
+          },
+          "separator": {
+            "label": "Separator",
+            "options": {
+              "section": "Colon (:)",
+              "section_2": "Dot (·)",
+              "section_3": "None"
+            }
+          },
+          "separator_blink": "Blink separator every second",
+          "digit_size": "Digit size",
+          "label_size": "Label size",
+          "gap": "Gap between units",
+          "digit_color": "Digit color",
+          "unit_bg_color": "Unit background",
+          "unit_corner_radius": "Unit corner radius"
+        },
+        "urgency": {
+          "label": "Urgency",
+          "paragraph": "Highlight the countdown once it drops below a threshold, good for last-hour FOMO",
+          "urgency_threshold_minutes": "Urgency threshold",
+          "paragraph_2": "0 = disabled",
+          "urgency_color": "Urgency color",
+          "urgency_pulse": "Pulse when urgent"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "flex_start": "Left",
+              "center": "Center",
+              "flex_end": "Right"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "auto": "Auto",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted",
+              "double": "Double"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effect",
+          "hover_opacity": "Hover opacity",
+          "hover_scale": "Hover scale"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-countdown"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "dynamic_image": {
+      "label": "Dynamic image",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "source": {
+            "label": "Source",
+            "options": {
+              "product_image": "Product image",
+              "product_image_2": "Product image #2",
+              "product_image_3": "Product image #3",
+              "category_image": "Category image",
+              "store_logo": "Store logo"
+            }
+          },
+          "product": "Product",
+          "paragraph": "Required for product/category sources ,nothing renders without one selected (falls to the fallback image instead).",
+          "fallback_image": "Fallback image (shown if empty)"
+        },
+        "layout": {
+          "label": "Layout",
+          "aspect_ratio": {
+            "label": "Aspect ratio",
+            "options": {
+              "auto": "Auto",
+              "1_1": "Square (1:1)",
+              "4_5": "Portrait (4:5)",
+              "16_9": "Landscape (16:9)"
+            }
+          },
+          "object_fit": {
+            "label": "Object fit",
+            "options": {
+              "cover": "Cover",
+              "contain": "Contain"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "filters": {
+          "label": "Filters",
+          "grayscale": "Grayscale",
+          "blur": "Blur",
+          "brightness": "Brightness",
+          "contrast": "Contrast",
+          "saturate": "Saturation"
+        },
+        "background": {
+          "label": "Background",
+          "paragraph": "Shows behind transparent images (e.g. PNG logos)",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effect",
+          "hover_scale": "Hover zoom",
+          "hover_grayscale": "Grayscale on hover"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-dynamic-image"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "dynamic_value": {
+      "label": "Dynamic value",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "source": {
+            "label": "Source",
+            "options": {
+              "product_name": "Product name",
+              "product_price": "Product price",
+              "product_compare_price": "Product compare-at price",
+              "product_description": "Product description",
+              "product_sku": "Product SKU",
+              "product_rating": "Product rating",
+              "category_name": "Category name",
+              "store_name": "Store name"
+            }
+          },
+          "product": "Product",
+          "paragraph": "Required for any product-related source above, nothing renders without one selected (falls to the fallback text instead).",
+          "prefix": "Prefix",
+          "suffix": "Suffix",
+          "fallback_text": "Fallback text (shown if empty)"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          }
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "'Poppins', sans-serif"
+          },
+          "size": {
+            "label": "Font size",
+            "options": {
+              "12": "12px",
+              "14": "14px",
+              "16": "16px",
+              "18": "18px",
+              "22": "22px",
+              "28": "28px",
+              "36": "36px",
+              "custom": "Custom"
+            }
+          },
+          "custom_size": "Custom font size",
+          "weight": {
+            "label": "Font weight",
+            "options": {
+              "300": "300",
+              "400": "400",
+              "500": "500",
+              "600": "600",
+              "700": "700",
+              "800": "800"
+            }
+          },
+          "line_height": "Line height",
+          "letter_spacing": "Letter spacing",
+          "transform": {
+            "label": "Text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "decoration": {
+            "label": "Text decoration",
+            "options": {
+              "none": "None",
+              "underline": "Underline",
+              "line_through": "Line-through"
+            }
+          },
+          "color": "Color"
+        },
+        "text_shadow": {
+          "label": "Text shadow",
+          "text_shadow_enabled": "Enable text shadow",
+          "text_shadow_color": "Shadow color",
+          "text_shadow_offset_x": "Offset X",
+          "text_shadow_offset_y": "Offset Y",
+          "text_shadow_blur": "Blur"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effect",
+          "hover_color": "Hover color",
+          "hover_opacity": "Hover opacity",
+          "hover_scale": "Hover scale"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-dynamic-value"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "express_checkout": {
+      "label": "Express checkout",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page.",
+          "product": "Product",
+          "paragraph_2": "Pick a product"
+        },
+        "layout": {
+          "label": "Layout",
+          "display_style": {
+            "label": "Display style",
+            "options": {
+              "inline": "Inline",
+              "drawer": "Drawer",
+              "modal": "Modal"
+            }
+          },
+          "trigger_button_text": "Trigger button text",
+          "trigger_align": {
+            "label": "Trigger button alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          },
+          "trigger_sticky": "Stick trigger button to bottom of page",
+          "box_max_width": "Box max width",
+          "header_align": {
+            "label": "Header alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center"
+            }
+          },
+          "section_gap": "Gap between sections",
+          "fields_layout": {
+            "label": "Fields layout",
+            "options": {
+              "stacked": "Stacked (one per row)",
+              "two_column": "Two columns where possible"
+            }
+          },
+          "half_width_field_names": {
+            "label": "Fields to pair up (two-column layout)",
+            "placeholder": "first_name,last_name"
+          },
+          "sticky_submit_mobile": "Sticky submit button on mobile"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "info": "Google Fonts family name, e.g. Poppins or DM+Sans",
+            "placeholder": "Poppins"
+          },
+          "heading": "Heading",
+          "heading_size": "Heading size",
+          "heading_weight": {
+            "label": "Heading weight",
+            "options": {
+              "600": "600",
+              "700": "700",
+              "800": "800"
+            }
+          },
+          "heading_color": "Heading color",
+          "subheading": "Subheading",
+          "subheading_size": "Subheading size",
+          "subheading_color": "Subheading color",
+          "product_title_size": "Product title size",
+          "product_title_color": "Product title color",
+          "price_size": "Price size",
+          "price_color": "Price color",
+          "compare_price_color": "Compare-at price color",
+          "section_label_color": "Section label color"
+        },
+        "media": {
+          "label": "Media",
+          "show_media": "Show product media",
+          "media_aspect_ratio": {
+            "label": "Aspect ratio",
+            "options": {
+              "1_1": "Square (1:1)",
+              "3_4": "Portrait (3:4)",
+              "16_9": "Landscape (16:9)"
+            }
+          },
+          "media_radius": "Media corner radius",
+          "media_bg_color": "Media placeholder background"
+        },
+        "product_info": {
+          "label": "Product info",
+          "show_price": "Show price",
+          "show_compare_price": "Show compare-at price",
+          "quantity_label": "Quantity label"
+        },
+        "variants": {
+          "label": "Variants",
+          "variants_enabled": "Enable variants",
+          "control_corner_radius": "Option pill / stepper corner radius"
+        },
+        "bundles": {
+          "label": "Bundles",
+          "bundles_enabled": "Enable bundles",
+          "bundles_label": "Section label",
+          "bundle_display_style": {
+            "label": "Display",
+            "options": {
+              "list": "List",
+              "cards": "Cards"
+            }
+          },
+          "bundle_highlight_best_value": "Highlight best-value tier",
+          "bundle_highlight_label": "Highlight label",
+          "bundle_free_label": {
+            "label": "Free item label",
+            "info": "Shown on the free product(s) in buy X, get Y bundles"
+          },
+          "bundle_corner_radius": "Bundle card corner radius",
+          "bundle_bg_color": "Card background",
+          "bundle_active_bg_color": "Selected card background",
+          "bundle_border_color": "Card border color",
+          "bundle_text_color": "Bundle title/price color",
+          "bundle_meta_color": "Bundle meta text color"
+        },
+        "feature_list": {
+          "label": "Feature list",
+          "feature_list_enabled": "Show feature list",
+          "feature_list_orientation": {
+            "label": "Orientation",
+            "options": {
+              "horizontal": "Horizontal",
+              "vertical": "Vertical"
+            }
+          },
+          "feature_icon_color": "Icon color",
+          "feature_text_color": "Text color",
+          "feature_item_text_1": "Feature #1",
+          "feature_item_text_2": "Feature #2",
+          "feature_item_text_3": "Feature #3",
+          "feature_item_text_4": "Feature #4"
+        },
+        "fields": {
+          "label": "Fields",
+          "phone_invalid_message": "Invalid phone message",
+          "paragraph": "Country / region / city fields are linked automatically and follow the fields configured in your checkout settings.",
+          "field_label_color": "Field label color",
+          "field_text_color": "Field text color",
+          "field_bg_color": "Field background",
+          "field_border_color": "Field border color",
+          "field_corner_radius": "Field corner radius"
+        },
+        "summary": {
+          "label": "Summary",
+          "show_order_summary": "Show order summary",
+          "summary_label": "Summary title",
+          "subtotal_label": "Subtotal label",
+          "saved_label": "Saved label",
+          "total_label": "Total label",
+          "summary_corner_radius": "Summary corner radius",
+          "summary_bg_color": "Summary background",
+          "summary_text_color": "Summary text color",
+          "summary_saved_color": "'You save' color"
+        },
+        "submit_button": {
+          "label": "Submit button",
+          "cta_button_text": "Button text",
+          "out_of_stock_text": "Out of stock text",
+          "show_price_in_cta": "Show price in button",
+          "button_bg_color": "Button background",
+          "button_text_color": "Button text color",
+          "button_gradient_enabled": "Gradient background",
+          "button_gradient_angle": "Gradient angle",
+          "button_gradient_end": "Gradient end color",
+          "button_corner_radius": "Button corner radius",
+          "button_shadow": {
+            "label": "Button shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large"
+            }
+          }
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effects",
+          "hover_opacity": "Button hover opacity",
+          "hover_scale": "Bundle card hover scale"
+        },
+        "accent": {
+          "label": "Accent",
+          "accent_color": "Accent color"
+        },
+        "box_background": {
+          "label": "Box background",
+          "box_background": {
+            "label": "Background",
+            "options": {
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "box_bg_transparent": "Transparent background",
+          "box_bg_color": "Background color",
+          "box_gradient_angle": "Gradient angle",
+          "box_gradient_start": "Gradient start",
+          "box_gradient_end": "Gradient end",
+          "box_bg_image": "Background image"
+        },
+        "box_border": {
+          "label": "Box border",
+          "box_border_weight": "Border weight",
+          "box_border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "box_border_color": "Border color",
+          "box_radius_tl": "Radius top-left",
+          "box_radius_tr": "Radius top-right",
+          "box_radius_br": "Radius bottom-right",
+          "box_radius_bl": "Radius bottom-left"
+        },
+        "box_shadow": {
+          "label": "Box shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Block opacity",
+          "entrance": {
+            "label": "Section reveal animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          }
+        },
+        "box_spacing": {
+          "label": "Box spacing",
+          "box_padding_top": "Padding top",
+          "box_padding_right": "Padding right",
+          "box_padding_bottom": "Padding bottom",
+          "box_padding_left": "Padding left"
+        },
+        "block_spacing": {
+          "label": "Block spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left"
+        },
+        "after_order": {
+          "label": "After order",
+          "error_message": "Error message"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "abandoned_order_recovery": "Abandoned order recovery",
+          "recovery_message": "Recovery prompt text",
+          "recovery_dismiss_text": "Dismiss button text",
+          "recovery_restore_text": "Restore button text"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "custom": {
+          "label": "Custom",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-express-checkout"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "faq": {
+      "label": "FAQ",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "eyebrow": {
+            "label": "Eyebrow (optional)",
+            "placeholder": "Support"
+          },
+          "heading": {
+            "label": "Heading (optional)",
+            "placeholder": "Frequently asked questions"
+          },
+          "accordion_mode": {
+            "label": "Behavior",
+            "options": {
+              "single": "Only one open at a time",
+              "multi": "Multiple open at once"
+            }
+          },
+          "open_first": "Open first question by default",
+          "columns": {
+            "label": "Columns",
+            "options": {
+              "1": "1",
+              "2": "2"
+            }
+          },
+          "show_search": "Show search box",
+          "search_placeholder": "Search placeholder",
+          "no_results_text": "No results text"
+        },
+        "style": {
+          "label": "Style",
+          "icon_style": {
+            "label": "Expand icon",
+            "options": {
+              "chevron": "Chevron",
+              "plus": "Plus / minus"
+            }
+          },
+          "icon_color": "Icon color",
+          "accent_color": "Accent color (search focus)",
+          "item_padding": "Item vertical padding",
+          "divider_weight": "Divider weight",
+          "divider_style": {
+            "label": "Divider style",
+            "options": {
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "none": "None"
+            }
+          },
+          "divider_color": "Divider color"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "eyebrow_color": "Eyebrow color",
+          "heading_size": "Heading size",
+          "heading_color": "Heading color",
+          "question_size": "Question size",
+          "question_color": "Question color",
+          "answer_size": "Answer size",
+          "answer_color": "Answer color"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "entrance": {
+            "label": "Reveal animation",
+            "options": {
+              "none": "None",
+              "fade_up": "Fade up"
+            }
+          }
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "question_1": {
+          "label": "Question #1",
+          "question_1": "Question",
+          "answer_1": "Answer"
+        },
+        "question_2": {
+          "label": "Question #2",
+          "question_2": "Question",
+          "answer_2": "Answer"
+        },
+        "question_3": {
+          "label": "Question #3",
+          "question_3": "Question",
+          "answer_3": "Answer"
+        },
+        "question_4": {
+          "label": "Question #4",
+          "question_4": "Question",
+          "answer_4": "Answer"
+        },
+        "question_5": {
+          "label": "Question #5",
+          "question_5": "Question",
+          "answer_5": "Answer"
+        },
+        "question_6": {
+          "label": "Question #6",
+          "question_6": "Question",
+          "answer_6": "Answer"
+        },
+        "question_7": {
+          "label": "Question #7",
+          "question_7": "Question",
+          "answer_7": "Answer"
+        },
+        "question_8": {
+          "label": "Question #8",
+          "question_8": "Question",
+          "answer_8": "Answer"
+        },
+        "question_9": {
+          "label": "Question #9",
+          "question_9": "Question",
+          "answer_9": "Answer"
+        },
+        "question_10": {
+          "label": "Question #10",
+          "question_10": "Question",
+          "answer_10": "Answer"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-faq"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "feature_list": {
+      "label": "Feature list",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "eyebrow": {
+            "label": "Eyebrow (optional)",
+            "placeholder": "Why choose us"
+          },
+          "heading": {
+            "label": "Heading (optional)",
+            "placeholder": "Everything you need"
+          },
+          "columns": "Columns",
+          "icon_alignment": {
+            "label": "Icon alignment",
+            "options": {
+              "top": "Top",
+              "left": "Left"
+            }
+          },
+          "card_style": {
+            "label": "Card style",
+            "options": {
+              "plain": "Plain",
+              "card": "Card"
+            }
+          },
+          "card_bg_color": "Card background",
+          "card_padding": "Card padding",
+          "card_radius": "Card corner radius",
+          "card_border_weight": "Card border weight",
+          "card_border_color": "Card border color",
+          "show_link_text": "Show 'Learn more' link on items with a link",
+          "link_text": "Link text"
+        },
+        "icon": {
+          "label": "Icon",
+          "icon_shape": {
+            "label": "Icon background shape",
+            "options": {
+              "none": "None",
+              "circle": "Circle",
+              "square": "Square"
+            }
+          },
+          "icon_bg_color": "Icon background color",
+          "icon_radius": "Icon corner radius (square)",
+          "icon_size": "Icon size",
+          "icon_padding": "Icon padding",
+          "icon_sharp": {
+            "label": "Icon sharp",
+            "options": {
+              "stroke": "Stroke",
+              "solid": "Solid"
+            }
+          }
+        },
+        "effects": {
+          "label": "Effects",
+          "hover_enabled": "Enable hover effect",
+          "hover_opacity": "Hover opacity",
+          "hover_lift": "Hover lift",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "paragraph": "Items reveal one after another as they scroll into view"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Text alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          },
+          "gap": "Gap",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "eyebrow_color": "Eyebrow color",
+          "heading_size": "Heading size",
+          "heading_color": "Heading color",
+          "title_size": "Item title size",
+          "title_weight": {
+            "label": "Item title weight",
+            "options": {
+              "500": "500",
+              "600": "600",
+              "700": "700"
+            }
+          },
+          "title_color": "Item title color",
+          "description_size": "Description size",
+          "description_color": "Description color",
+          "link_color": "Link text color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "feature_1": {
+          "label": "Feature #1",
+          "icon_1": "Icon",
+          "icon_color_1": "Icon color",
+          "is_custom_img_1": "Use custom image",
+          "custom_img_1": "Custom image",
+          "title_1": "Title",
+          "description_1": "Description",
+          "link_1": {
+            "label": "Link (optional)",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_1": "Open in new window"
+        },
+        "feature_2": {
+          "label": "Feature #2",
+          "icon_2": "Icon",
+          "icon_color_2": "Icon color",
+          "is_custom_img_2": "Use custom image",
+          "custom_img_2": "Custom image",
+          "title_2": "Title",
+          "description_2": "Description",
+          "link_2": {
+            "label": "Link (optional)",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_2": "Open in new window"
+        },
+        "feature_3": {
+          "label": "Feature #3",
+          "icon_3": "Icon",
+          "icon_color_3": "Icon color",
+          "is_custom_img_3": "Use custom image",
+          "custom_img_3": "Custom image",
+          "title_3": "Title",
+          "description_3": "Description",
+          "link_3": {
+            "label": "Link (optional)",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_3": "Open in new window"
+        },
+        "feature_4": {
+          "label": "Feature #4",
+          "icon_4": "Icon",
+          "icon_color_4": "Icon color",
+          "is_custom_img_4": "Use custom image",
+          "custom_img_4": "Custom image",
+          "title_4": "Title",
+          "description_4": "Description",
+          "link_4": {
+            "label": "Link (optional)",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_4": "Open in new window"
+        },
+        "feature_5": {
+          "label": "Feature #5",
+          "icon_5": "Icon",
+          "icon_color_5": "Icon color",
+          "is_custom_img_5": "Use custom image",
+          "custom_img_5": "Custom image",
+          "title_5": "Title",
+          "description_5": "Description",
+          "link_5": {
+            "label": "Link (optional)",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_5": "Open in new window"
+        },
+        "feature_6": {
+          "label": "Feature #6",
+          "icon_6": "Icon",
+          "icon_color_6": "Icon color",
+          "is_custom_img_6": "Use custom image",
+          "custom_img_6": "Custom image",
+          "title_6": "Title",
+          "description_6": "Description",
+          "link_6": {
+            "label": "Link (optional)",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_6": "Open in new window"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller",
+          "opacity": "Opacity"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-feature-list"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "image": {
+      "label": "Image",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "source": {
+            "label": "Source",
+            "options": {
+              "static": "Static",
+              "dynamic": "Dynamic"
+            }
+          },
+          "image": "Image",
+          "dynamic_source": {
+            "label": "Image source",
+            "options": {
+              "product_image": "Product image",
+              "collection_image": "Collection image"
+            }
+          },
+          "product": "Product",
+          "image_index": "Image index",
+          "collection": "Collection",
+          "alt": "Alt",
+          "clickable": "Image is clickable",
+          "url": "URL",
+          "new_window": "Open in new window"
+        },
+        "layout": {
+          "label": "Layout",
+          "aspect_ratio": {
+            "label": "Aspect ratio",
+            "options": {
+              "auto": "Auto",
+              "1_1": "Square (1:1)",
+              "4_3": "Landscape (4:3)",
+              "3_4": "Portrait (3:4)",
+              "16_9": "Widescreen (16:9)",
+              "21_9": "Ultrawide (21:9)"
+            }
+          },
+          "object_fit": {
+            "label": "Object fit",
+            "options": {
+              "cover": "Cover",
+              "contain": "Contain",
+              "fill": "Fill"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "filters": {
+          "label": "Filters",
+          "blur": "Blur",
+          "grayscale": "Grayscale",
+          "brightness": "Brightness",
+          "contrast": "Contrast",
+          "saturate": "Saturation"
+        },
+        "overlay": {
+          "label": "Overlay",
+          "overlay_enabled": "Enable color overlay",
+          "overlay_color": "Overlay color",
+          "overlay_opacity": "Overlay opacity"
+        },
+        "background": {
+          "label": "Background",
+          "paragraph": "Shows behind transparent images (e.g. PNG logos)",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted",
+              "double": "Double"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "hover": {
+          "label": "Hover",
+          "hover_enabled": "Enable hover effect",
+          "hover_scale": "Hover zoom",
+          "hover_opacity": "Hover opacity",
+          "hover_grayscale": "Grayscale on hover"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "loading": {
+            "label": "Loading",
+            "options": {
+              "section": "Auto",
+              "eager": "Eager",
+              "lazy": "Lazy"
+            }
+          },
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-image"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "logo_wall": {
+      "label": "Logo wall",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "heading": {
+            "label": "Heading (optional)",
+            "placeholder": "As featured in"
+          },
+          "layout": {
+            "label": "Layout",
+            "options": {
+              "grid": "Grid",
+              "marquee": "Marquee (scrolling)"
+            }
+          },
+          "speed": "Scroll speed",
+          "pause_on_hover": "Pause on hover"
+        },
+        "style": {
+          "label": "Style",
+          "logo_height": "Logo height",
+          "gap": "Gap",
+          "grayscale": "Grayscale until hovered",
+          "dim_opacity": "Dim opacity (until hover)",
+          "align": {
+            "label": "Alignment (grid layout)",
+            "options": {
+              "flex_start": "Left",
+              "center": "Center",
+              "flex_end": "Right"
+            }
+          },
+          "heading_color": "Heading text color",
+          "heading_line_color": "Heading line color",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          }
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Block opacity",
+          "entrance": {
+            "label": "Reveal animation (grid layout only)",
+            "options": {
+              "none": "None",
+              "fade_up": "Fade up"
+            }
+          }
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "logo_1": {
+          "label": "Logo #1",
+          "image_1": "Image",
+          "alt_1": "Alt text",
+          "link_1": "Link (optional)",
+          "new_window_1": "Open in new window"
+        },
+        "logo_2": {
+          "label": "Logo #2",
+          "image_2": "Image",
+          "alt_2": "Alt text",
+          "link_2": "Link (optional)",
+          "new_window_2": "Open in new window"
+        },
+        "logo_3": {
+          "label": "Logo #3",
+          "image_3": "Image",
+          "alt_3": "Alt text",
+          "link_3": "Link (optional)",
+          "new_window_3": "Open in new window"
+        },
+        "logo_4": {
+          "label": "Logo #4",
+          "image_4": "Image",
+          "alt_4": "Alt text",
+          "link_4": "Link (optional)",
+          "new_window_4": "Open in new window"
+        },
+        "logo_5": {
+          "label": "Logo #5",
+          "image_5": "Image",
+          "alt_5": "Alt text",
+          "link_5": "Link (optional)",
+          "new_window_5": "Open in new window"
+        },
+        "logo_6": {
+          "label": "Logo #6",
+          "image_6": "Image",
+          "alt_6": "Alt text",
+          "link_6": "Link (optional)",
+          "new_window_6": "Open in new window"
+        },
+        "logo_7": {
+          "label": "Logo #7",
+          "image_7": "Image",
+          "alt_7": "Alt text",
+          "link_7": "Link (optional)",
+          "new_window_7": "Open in new window"
+        },
+        "logo_8": {
+          "label": "Logo #8",
+          "image_8": "Image",
+          "alt_8": "Alt text",
+          "link_8": "Link (optional)",
+          "new_window_8": "Open in new window"
+        },
+        "logo_9": {
+          "label": "Logo #9",
+          "image_9": "Image",
+          "alt_9": "Alt text",
+          "link_9": "Link (optional)",
+          "new_window_9": "Open in new window"
+        },
+        "logo_10": {
+          "label": "Logo #10",
+          "image_10": "Image",
+          "alt_10": "Alt text",
+          "link_10": "Link (optional)",
+          "new_window_10": "Open in new window"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-logo-wall"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "price": {
+      "label": "Price",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "product": {
+          "label": "Product",
+          "product": "Product",
+          "paragraph": "Pick a product, updates live if a Variant Picker block elsewhere on the page changes selection."
+        },
+        "content": {
+          "label": "Content",
+          "show_range": "Show price range for multi-price products",
+          "show_from_label": "Show 'From' label on ranges",
+          "from_label": "From label",
+          "range_separator": "Range separator"
+        },
+        "sale_badge": {
+          "label": "Sale badge",
+          "show_badge": "Show sale badge",
+          "badge_type": {
+            "label": "Badge content",
+            "options": {
+              "percentage": "Percentage off",
+              "fixed": "Amount off",
+              "custom": "Custom text"
+            }
+          },
+          "badge_custom_text": "Custom badge text"
+        },
+        "unit_price": {
+          "label": "Unit price",
+          "unit_price_enabled": "Show unit price",
+          "unit_price_label": {
+            "label": "Unit price text",
+            "placeholder": "$4.20 / 100ml"
+          },
+          "paragraph": "Typed manually, not auto-calculated from product weight/volume data"
+        },
+        "installments": {
+          "label": "Installments",
+          "show_installments": "Show installment message",
+          "installments_count": "Number of installments",
+          "installments_prefix": "Prefix text",
+          "installments_suffix": "Suffix text",
+          "installments_provider": {
+            "label": "Provider name",
+            "placeholder": "Tabby"
+          }
+        },
+        "tax_message": {
+          "label": "Tax message",
+          "show_tax_message": "Show tax/shipping message",
+          "tax_message": "Message"
+        },
+        "style": {
+          "label": "Style",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "flex_start": "Left",
+              "center": "Center",
+              "flex_end": "Right"
+            }
+          },
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "gap": "Gap",
+          "size": "Price size",
+          "weight": {
+            "label": "Price weight",
+            "options": {
+              "600": "600",
+              "700": "700",
+              "800": "800"
+            }
+          },
+          "color": "Price color",
+          "compare_size": "Compare price size",
+          "compare_color": "Compare price color",
+          "strikethrough_style": {
+            "label": "Strikethrough style",
+            "options": {
+              "line_through": "Solid",
+              "none": "None"
+            }
+          },
+          "strikethrough_weight": "Strikethrough thickness",
+          "strikethrough_color": "Strikethrough color",
+          "badge_bg_color": "Badge background",
+          "badge_text_color": "Badge text color",
+          "badge_radius": "Badge corner radius",
+          "unit_price_color": "Unit price color",
+          "installments_color": "Installments text color",
+          "tax_message_color": "Tax message color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-price"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "product_card": {
+      "label": "Product card",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "product": {
+          "label": "Product",
+          "product": "Product",
+          "paragraph": "Bound to one specific product, for a 'Featured item' spot, not a repeating grid. For a list of many products, use Collection Grid instead."
+        },
+        "content": {
+          "label": "Content",
+          "show_rating": "Show rating",
+          "show_price": "Show price",
+          "show_badge": "Show sale badge",
+          "sold_out_text": "Sold-out overlay text",
+          "show_quick_add": "Show quick-add button",
+          "quick_add_text": "Quick-add label (accessibility)",
+          "success_message": "Success message",
+          "error_message": "Error message"
+        },
+        "style": {
+          "label": "Style",
+          "card_width": "Max card width",
+          "aspect_ratio": {
+            "label": "Image aspect ratio",
+            "options": {
+              "1_1": "Square (1:1)",
+              "4_5": "Portrait (4:5)",
+              "16_9": "Landscape (16:9)"
+            }
+          },
+          "media_radius": "Image corner radius",
+          "media_bg_color": "Image placeholder background",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "title_size": "Title size",
+          "title_color": "Title color",
+          "star_color": "Star color",
+          "price_size": "Price size",
+          "price_color": "Price color",
+          "compare_color": "Compare price color",
+          "badge_bg_color": "Badge background",
+          "badge_text_color": "Badge text color",
+          "quick_add_bg_color": "Quick-add button background",
+          "quick_add_icon_color": "Quick-add icon color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-product-card"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "product_gallery": {
+      "label": "Product gallery",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "product": {
+          "label": "Product",
+          "product": "Product",
+          "paragraph": "Pick a product to pull images"
+        },
+        "content": {
+          "label": "Content",
+          "layout": {
+            "label": "Layout",
+            "options": {
+              "standard": "Standard (main + thumbnails)",
+              "grid": "Grid (stacked, no thumbnails)"
+            }
+          },
+          "thumbnail_position": {
+            "label": "Thumbnail position",
+            "options": {
+              "bottom": "Bottom",
+              "top": "Top",
+              "left": "Left",
+              "right": "Right"
+            }
+          },
+          "thumbnail_shape": {
+            "label": "Thumbnail shape",
+            "options": {
+              "square": "Square",
+              "circle": "Circle"
+            }
+          },
+          "max_images": "Max images shown",
+          "show_badge": "Show sale badge",
+          "badge_text": "Badge text"
+        },
+        "interaction": {
+          "label": "Interaction",
+          "hover_zoom_mode": {
+            "label": "Hover zoom",
+            "options": {
+              "none": "None",
+              "scale": "Simple scale",
+              "magnify": "Magnify (follow cursor)"
+            }
+          },
+          "magnify_level": "Magnify level",
+          "enable_lightbox": "Click to open fullscreen viewer",
+          "enable_swipe": "Swipe to change image (mobile)"
+        },
+        "style": {
+          "label": "Style",
+          "aspect_ratio": {
+            "label": "Aspect ratio",
+            "options": {
+              "auto": "Auto",
+              "1_1": "Square (1:1)",
+              "4_5": "Portrait (4:5)",
+              "16_9": "Landscape (16:9)"
+            }
+          },
+          "gap": "Gap",
+          "media_radius": "Main image corner radius",
+          "media_bg_color": "Media placeholder background",
+          "thumb_size": "Thumbnail size",
+          "thumb_radius": "Thumbnail corner radius",
+          "thumb_border_weight": "Active thumbnail border weight",
+          "active_thumb_color": "Active thumbnail border color",
+          "badge_bg_color": "Badge background",
+          "badge_text_color": "Badge text color",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          }
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          }
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-product-gallery"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "progress_bar": {
+      "label": "Progress bar",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "label_setting": "Label",
+          "icon": {
+            "label": "Icon (optional)",
+            "placeholder": "local_shipping"
+          },
+          "icon_sharp": {
+            "label": "Icon sharp",
+            "options": {
+              "stroke": "Stroke",
+              "solid": "Solid"
+            }
+          },
+          "value_type": {
+            "label": "Value type",
+            "options": {
+              "percentage": "Percentage",
+              "goal": "Goal (current / target)"
+            }
+          },
+          "value": "Value",
+          "show_percentage": "Show percentage label",
+          "current_value": "Current value",
+          "target_value": "Target value",
+          "value_prefix": {
+            "label": "Value prefix",
+            "placeholder": "$"
+          },
+          "value_suffix": {
+            "label": "Value suffix",
+            "placeholder": "sold"
+          },
+          "show_value": "Show 'current / target' label",
+          "label_position": {
+            "label": "Label position",
+            "options": {
+              "above": "Above bar",
+              "inside": "Hidden"
+            }
+          }
+        },
+        "milestones": {
+          "label": "Milestones",
+          "paragraph": "Mark points along the bar, e.g. 'Free shipping at $50'. Use the same scale as your value above.",
+          "milestone_value_1": "Milestone #1 value",
+          "milestone_label_1": {
+            "label": "Milestone #1 label",
+            "placeholder": "Free shipping"
+          },
+          "milestone_value_2": "Milestone #2 value",
+          "milestone_label_2": "Milestone #2 label",
+          "milestone_value_3": "Milestone #3 value",
+          "milestone_label_3": "Milestone #3 label",
+          "milestone_label_color": "Milestone label color"
+        },
+        "animation": {
+          "label": "Animation",
+          "animate_on_scroll": "Animate fill on scroll into view",
+          "count_duration": "Fill/count duration",
+          "striped": "Striped fill (moving)",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Entrance duration"
+        },
+        "style": {
+          "label": "Style",
+          "height": "Bar height",
+          "track_radius": "Bar corner radius",
+          "track_color": "Track color",
+          "fill_style": {
+            "label": "Fill style",
+            "options": {
+              "solid": "Solid color",
+              "gradient": "Gradient"
+            }
+          },
+          "fill_color": "Fill color",
+          "fill_gradient_angle": "Gradient angle",
+          "fill_gradient_start": "Gradient start",
+          "fill_gradient_end": "Gradient end",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "label_size": "Label size",
+          "label_color": "Label color",
+          "value_color": "Value text color"
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller",
+          "opacity": "Opacity"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-progress-bar"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "quantity": {
+      "label": "Quantity",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "product": {
+          "label": "Product",
+          "product": "Product",
+          "paragraph": "Pick a product, broadcasts changes for Add to Cart / Buy Box blocks placed elsewhere."
+        },
+        "content": {
+          "label": "Content",
+          "label_setting": "Label",
+          "label_position": {
+            "label": "Label position",
+            "options": {
+              "left": "Left of control",
+              "top": "Above control"
+            }
+          },
+          "style": {
+            "label": "Control style",
+            "options": {
+              "stepper": "Stepper (- value +)",
+              "input": "Plain number input",
+              "dropdown": "Dropdown"
+            }
+          },
+          "input_editable": "Allow typing a value directly"
+        },
+        "limits": {
+          "label": "Limits",
+          "min_value": "Minimum",
+          "max_value": "Maximum",
+          "step_value": "Step",
+          "respect_inventory": "Cap at available stock",
+          "show_max_message": "Show message at max",
+          "max_message": "Max message",
+          "max_message_color": "Max message color"
+        },
+        "style": {
+          "label": "Style",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "flex_start": "Left",
+              "center": "Center",
+              "flex_end": "Right"
+            }
+          },
+          "control_height": "Control height",
+          "input_width": "Value width",
+          "control_radius": "Control corner radius",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "text_color": "Text color",
+          "label_color": "Label color",
+          "border_control_color": "Control border color",
+          "hover_bg_color": "Button hover background"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-quantity"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "reviews": {
+      "label": "Reviews",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "summary": {
+          "label": "Summary",
+          "show_summary": "Show summary",
+          "reviews_label": "Count label",
+          "score_size": "Score number size"
+        },
+        "layout": {
+          "label": "Layout",
+          "layout": {
+            "label": "Review list layout",
+            "options": {
+              "list": "List",
+              "grid": "Grid"
+            }
+          },
+          "gap": "Grid gap",
+          "card_radius": "Grid card corner radius"
+        },
+        "style": {
+          "label": "Style",
+          "star_color": "Star color",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "text_size": "Review text size",
+          "text_color": "Text color",
+          "meta_color": "Meta text color",
+          "verified_color": "Verified badge color",
+          "divider_color": "Summary divider color",
+          "item_divider_color": "Review divider color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "review_1": {
+          "label": "Review #1",
+          "rating_1": "Rating",
+          "text_1": "Text",
+          "author_1": "Author",
+          "date_1": "Date",
+          "verified_1": "Verified badge"
+        },
+        "review_2": {
+          "label": "Review #2",
+          "rating_2": "Rating",
+          "text_2": "Text",
+          "author_2": "Author",
+          "date_2": "Date",
+          "verified_2": "Verified badge"
+        },
+        "review_3": {
+          "label": "Review #3",
+          "rating_3": "Rating",
+          "text_3": "Text",
+          "author_3": "Author",
+          "date_3": "Date",
+          "verified_3": "Verified badge"
+        },
+        "review_4": {
+          "label": "Review #4",
+          "rating_4": "Rating",
+          "text_4": "Text",
+          "author_4": "Author",
+          "date_4": "Date",
+          "verified_4": "Verified badge"
+        },
+        "review_5": {
+          "label": "Review #5",
+          "rating_5": "Rating",
+          "text_5": "Text",
+          "author_5": "Author",
+          "date_5": "Date",
+          "verified_5": "Verified badge"
+        },
+        "review_6": {
+          "label": "Review #6",
+          "rating_6": "Rating",
+          "text_6": "Text",
+          "author_6": "Author",
+          "date_6": "Date",
+          "verified_6": "Verified badge"
+        },
+        "review_7": {
+          "label": "Review #7",
+          "rating_7": "Rating",
+          "text_7": "Text",
+          "author_7": "Author",
+          "date_7": "Date",
+          "verified_7": "Verified badge"
+        },
+        "review_8": {
+          "label": "Review #8",
+          "rating_8": "Rating",
+          "text_8": "Text",
+          "author_8": "Author",
+          "date_8": "Date",
+          "verified_8": "Verified badge"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-reviews"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "testimonials": {
+      "label": "Testimonials",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "eyebrow": {
+            "label": "Eyebrow (optional)",
+            "placeholder": "Testimonials"
+          },
+          "heading": {
+            "label": "Heading (optional)",
+            "placeholder": "What our customers say"
+          },
+          "layout": {
+            "label": "Layout",
+            "options": {
+              "grid": "Grid",
+              "carousel": "Carousel (swipe)",
+              "slider": "Slider (one at a time)"
+            }
+          },
+          "columns": {
+            "label": "Columns (grid)",
+            "options": {
+              "2": "2",
+              "3": "3"
+            }
+          },
+          "slider_max_width": "Slider max width",
+          "show_dots": "Show dots",
+          "show_arrows": "Show arrows",
+          "autoplay": "Autoplay",
+          "autoplay_interval": "Autoplay interval",
+          "show_quote_icon": "Show quote mark icon",
+          "avatar_shape": {
+            "label": "Avatar shape",
+            "options": {
+              "circle": "Circle",
+              "square": "Square"
+            }
+          }
+        },
+        "style": {
+          "label": "Style",
+          "gap": "Gap",
+          "card_padding": "Card padding",
+          "card_radius": "Card corner radius",
+          "card_border_weight": "Card border weight",
+          "card_border_color": "Card border color",
+          "card_bg_color": "Card background",
+          "quote_icon_color": "Quote icon color",
+          "star_color": "Star color",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "quote_size": "Quote text size",
+          "quote_color": "Quote text color",
+          "author_color": "Author name color",
+          "role_color": "Author role color",
+          "verified_color": "Verified badge color",
+          "dot_color": "Dot color"
+        },
+        "typography": {
+          "label": "Typography",
+          "eyebrow_color": "Eyebrow color",
+          "heading_size": "Heading size",
+          "heading_color": "Heading color"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "entrance": {
+            "label": "Reveal animation",
+            "options": {
+              "none": "None",
+              "fade_up": "Fade up"
+            }
+          }
+        },
+        "layout": {
+          "label": "Layout",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "testimonial_1": {
+          "label": "Testimonial #1",
+          "quote_1": "Quote",
+          "author_1": "Author",
+          "role_1": "Role / company",
+          "avatar_1": "Avatar",
+          "rating_1": "Rating",
+          "verified_1": "Verified badge"
+        },
+        "testimonial_2": {
+          "label": "Testimonial #2",
+          "quote_2": "Quote",
+          "author_2": "Author",
+          "role_2": "Role / company",
+          "avatar_2": "Avatar",
+          "rating_2": "Rating",
+          "verified_2": "Verified badge"
+        },
+        "testimonial_3": {
+          "label": "Testimonial #3",
+          "quote_3": "Quote",
+          "author_3": "Author",
+          "role_3": "Role / company",
+          "avatar_3": "Avatar",
+          "rating_3": "Rating",
+          "verified_3": "Verified badge"
+        },
+        "testimonial_4": {
+          "label": "Testimonial #4",
+          "quote_4": "Quote",
+          "author_4": "Author",
+          "role_4": "Role / company",
+          "avatar_4": "Avatar",
+          "rating_4": "Rating",
+          "verified_4": "Verified badge"
+        },
+        "testimonial_5": {
+          "label": "Testimonial #5",
+          "quote_5": "Quote",
+          "author_5": "Author",
+          "role_5": "Role / company",
+          "avatar_5": "Avatar",
+          "rating_5": "Rating",
+          "verified_5": "Verified badge"
+        },
+        "testimonial_6": {
+          "label": "Testimonial #6",
+          "quote_6": "Quote",
+          "author_6": "Author",
+          "role_6": "Role / company",
+          "avatar_6": "Avatar",
+          "rating_6": "Rating",
+          "verified_6": "Verified badge"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-testimonials"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "timeline": {
+      "label": "Timeline",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "eyebrow": {
+            "label": "Eyebrow (optional)",
+            "placeholder": "How it works"
+          },
+          "heading": {
+            "label": "Heading (optional)",
+            "placeholder": "From order to doorstep"
+          },
+          "orientation": {
+            "label": "Orientation",
+            "options": {
+              "vertical": "Vertical",
+              "horizontal": "Horizontal"
+            }
+          },
+          "alternate": "Alternate sides (zig-zag)",
+          "marker_type": {
+            "label": "Marker",
+            "options": {
+              "number": "Number",
+              "icon": "Icon"
+            }
+          },
+          "icon_sharp": {
+            "label": "Icon sharp",
+            "options": {
+              "stroke": "Stroke",
+              "solid": "Solid"
+            }
+          }
+        },
+        "animation": {
+          "label": "Animation",
+          "animate_line": "Draw connector line on scroll",
+          "entrance": {
+            "label": "Step reveal animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          }
+        },
+        "layout": {
+          "label": "Layout",
+          "gap": "Gap between steps",
+          "marker_size": "Marker size",
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "typography": {
+          "label": "Typography",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "eyebrow_color": "Eyebrow color",
+          "heading_size": "Heading size",
+          "heading_color": "Heading color",
+          "date_color": "Date color",
+          "title_size": "Title size",
+          "title_color": "Title color",
+          "description_size": "Description size",
+          "description_color": "Description color"
+        },
+        "marker_and_line": {
+          "label": "Marker & line",
+          "marker_color": "Marker background",
+          "marker_icon_color": "Marker icon/number color",
+          "line_color": "Line color",
+          "line_fill_color": "Line fill color (on scroll)"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "step_1": {
+          "label": "Step #1",
+          "icon_1": "Icon",
+          "is_custom_img_1": "Use custom image instead",
+          "custom_img_1": "Custom image",
+          "date_1": "Date / eyebrow",
+          "title_1": "Title",
+          "description_1": "Description",
+          "link_1": "Link (optional)",
+          "new_window_1": "Open in new window"
+        },
+        "step_2": {
+          "label": "Step #2",
+          "icon_2": "Icon",
+          "is_custom_img_2": "Use custom image instead",
+          "custom_img_2": "Custom image",
+          "date_2": "Date / eyebrow",
+          "title_2": "Title",
+          "description_2": "Description",
+          "link_2": "Link (optional)",
+          "new_window_2": "Open in new window"
+        },
+        "step_3": {
+          "label": "Step #3",
+          "icon_3": "Icon",
+          "is_custom_img_3": "Use custom image instead",
+          "custom_img_3": "Custom image",
+          "date_3": "Date / eyebrow",
+          "title_3": "Title",
+          "description_3": "Description",
+          "link_3": "Link (optional)",
+          "new_window_3": "Open in new window"
+        },
+        "step_4": {
+          "label": "Step #4",
+          "icon_4": "Icon",
+          "is_custom_img_4": "Use custom image instead",
+          "custom_img_4": "Custom image",
+          "date_4": "Date / eyebrow",
+          "title_4": "Title",
+          "description_4": "Description",
+          "link_4": "Link (optional)",
+          "new_window_4": "Open in new window"
+        },
+        "step_5": {
+          "label": "Step #5",
+          "icon_5": "Icon",
+          "is_custom_img_5": "Use custom image instead",
+          "custom_img_5": "Custom image",
+          "date_5": "Date / eyebrow",
+          "title_5": "Title",
+          "description_5": "Description",
+          "link_5": "Link (optional)",
+          "new_window_5": "Open in new window"
+        },
+        "step_6": {
+          "label": "Step #6",
+          "icon_6": "Icon",
+          "is_custom_img_6": "Use custom image instead",
+          "custom_img_6": "Custom image",
+          "date_6": "Date / eyebrow",
+          "title_6": "Title",
+          "description_6": "Description",
+          "link_6": "Link (optional)",
+          "new_window_6": "Open in new window"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-timeline"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "trust_badges": {
+      "label": "Trust badges",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "layout": {
+            "label": "Layout",
+            "options": {
+              "grid": "Grid",
+              "list": "List",
+              "slide": "Slide"
+            }
+          },
+          "columns": "Columns",
+          "show_arrows": "Show nav arrows",
+          "gap": "Gap",
+          "badge_style": {
+            "label": "Badge style",
+            "options": {
+              "plain": "Plain",
+              "card": "Card"
+            }
+          },
+          "card_bg_color": "Card background",
+          "card_padding": "Card padding",
+          "card_radius": "Card corner radius",
+          "card_border_weight": "Card border weight",
+          "card_border_color": "Card border color",
+          "icon_position": {
+            "label": "Icon position",
+            "options": {
+              "left": "Left",
+              "right": "Right"
+            }
+          },
+          "icon_sharp": {
+            "label": "Icon sharp",
+            "options": {
+              "stroke": "Stroke",
+              "solid": "Solid"
+            }
+          },
+          "icon_size": "Icon size",
+          "clickable": "Entire badge clickable (not just text)",
+          "paragraph": "Only matters if a badge has a link set, badges left blank stay non-interactive"
+        },
+        "effects": {
+          "label": "Effects",
+          "hover_enabled": "Enable hover effect",
+          "hover_opacity": "Hover opacity",
+          "hover_scale": "Hover scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "paragraph": "Badges reveal one after another as they scroll into view"
+        },
+        "layout": {
+          "label": "Layout",
+          "align": {
+            "label": "Alignment",
+            "options": {
+              "flex_start": "Left",
+              "center": "Center",
+              "flex_end": "Right"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "design": {
+          "label": "Design",
+          "font_family": {
+            "label": "Font",
+            "options": {
+              "inherit": "Theme default",
+              "ui_sans_serif_system_ui_sans_serif": "Sans-serif",
+              "ui_serif_georgia_serif": "Serif",
+              "ui_monospace_monospace": "Monospace",
+              "custom": "Custom"
+            }
+          },
+          "custom_font_family": {
+            "label": "Custom font family",
+            "placeholder": "DM+Sans"
+          },
+          "title_size": {
+            "label": "Title size",
+            "options": {
+              "12": "12px",
+              "14": "14px",
+              "16": "16px",
+              "18": "18px",
+              "22": "22px"
+            }
+          },
+          "title_weight": {
+            "label": "Title font weight",
+            "options": {
+              "300": "300",
+              "400": "400",
+              "500": "500",
+              "600": "600",
+              "700": "700"
+            }
+          },
+          "title_transform": {
+            "label": "Title text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "title_color": "Title color",
+          "subtitle_size": {
+            "label": "Subtitle size",
+            "options": {
+              "12": "12px",
+              "14": "14px",
+              "16": "16px",
+              "18": "18px",
+              "22": "22px"
+            }
+          },
+          "subtitle_weight": {
+            "label": "Subtitle font weight",
+            "options": {
+              "300": "300",
+              "400": "400",
+              "500": "500",
+              "600": "600",
+              "700": "700"
+            }
+          },
+          "subtitle_transform": {
+            "label": "Subtitle text transform",
+            "options": {
+              "none": "Normal",
+              "capitalize": "Capitalize",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase"
+            }
+          },
+          "subtitle_color": "Subtitle color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient",
+              "image": "Image"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end",
+          "bg_img": "Background image"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "badge_1": {
+          "label": "Badge #1",
+          "icon_1": "Icon",
+          "icon_color_1": "Icon color",
+          "is_custom_img_1": "Use custom image",
+          "custom_img_1": "Custom image",
+          "title_1": "Title",
+          "subtitle_1": "Subtitle",
+          "link_1": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_1": "Open in new window"
+        },
+        "badge_2": {
+          "label": "Badge #2",
+          "icon_2": "Icon",
+          "icon_color_2": "Icon color",
+          "is_custom_img_2": "Use custom image",
+          "custom_img_2": "Custom image",
+          "title_2": "Title",
+          "subtitle_2": "Subtitle",
+          "link_2": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_2": "Open in new window"
+        },
+        "badge_3": {
+          "label": "Badge #3",
+          "icon_3": "Icon",
+          "icon_color_3": "Icon color",
+          "is_custom_img_3": "Use custom image",
+          "custom_img_3": "Custom image",
+          "title_3": "Title",
+          "subtitle_3": "Subtitle",
+          "link_3": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_3": "Open in new window"
+        },
+        "badge_4": {
+          "label": "Badge #4",
+          "icon_4": "Icon",
+          "icon_color_4": "Icon color",
+          "is_custom_img_4": "Use custom image",
+          "custom_img_4": "Custom image",
+          "title_4": "Title",
+          "subtitle_4": "Subtitle",
+          "link_4": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_4": "Open in new window"
+        },
+        "badge_5": {
+          "label": "Badge #5",
+          "icon_5": "Icon",
+          "icon_color_5": "Icon color",
+          "is_custom_img_5": "Use custom image",
+          "custom_img_5": "Custom image",
+          "title_5": "Title",
+          "subtitle_5": "Subtitle",
+          "link_5": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_5": "Open in new window"
+        },
+        "badge_6": {
+          "label": "Badge #6",
+          "icon_6": "Icon",
+          "icon_color_6": "Icon color",
+          "is_custom_img_6": "Use custom image",
+          "custom_img_6": "Custom image",
+          "title_6": "Title",
+          "subtitle_6": "Subtitle",
+          "link_6": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_6": "Open in new window"
+        },
+        "badge_7": {
+          "label": "Badge #7",
+          "icon_7": "Icon",
+          "icon_color_7": "Icon color",
+          "is_custom_img_7": "Use custom image",
+          "custom_img_7": "Custom image",
+          "title_7": "Title",
+          "subtitle_7": "Subtitle",
+          "link_7": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_7": "Open in new window"
+        },
+        "badge_8": {
+          "label": "Badge #8",
+          "icon_8": "Icon",
+          "icon_color_8": "Icon color",
+          "is_custom_img_8": "Use custom image",
+          "custom_img_8": "Custom image",
+          "title_8": "Title",
+          "subtitle_8": "Subtitle",
+          "link_8": {
+            "label": "Link",
+            "placeholder": "https://youcan.shop"
+          },
+          "new_window_8": "Open in new window"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller",
+          "opacity": "Opacity"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-trust-badges"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "variant_picker": {
+      "label": "Variant picker",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "product": {
+          "label": "Product",
+          "product": "Product",
+          "paragraph": "Pick a product, broadcasts selection changes for Price / Add to Cart blocks placed anywhere else on the page."
+        },
+        "behavior": {
+          "label": "Behavior",
+          "disable_unavailable_combinations": "Disable impossible combinations",
+          "show_low_stock_warning": "Show low-stock warning",
+          "low_stock_threshold": "Low-stock threshold",
+          "low_stock_color": "Low-stock text color",
+          "show_unavailable_message": "Show message when combination doesn't exist",
+          "unavailable_message": "Message",
+          "unavailable_message_color": "Message color",
+          "upload_label": "Upload zone label",
+          "upload_hint": "Upload zone hint"
+        },
+        "style": {
+          "label": "Style",
+          "group_gap": "Gap between option groups",
+          "label_color": "Option label color",
+          "value_display_color": "Selected value / pill text color",
+          "swatch_size": "Swatch size",
+          "swatch_shape": {
+            "label": "Swatch shape",
+            "options": {
+              "circle": "Circle",
+              "square": "Square"
+            }
+          },
+          "swatch_radius": "Swatch corner radius (square)",
+          "swatch_border_color": "Border color",
+          "active_color": "Selected color",
+          "active_text_color": "Selected text color (pills)",
+          "pill_radius": "Pill / dropdown corner radius",
+          "unavailable_line_color": "Unavailable strike color"
+        },
+        "background": {
+          "label": "Background",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-variant-picker"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    },
+    "video": {
+      "label": "Video",
+      "settings": {
+        "applies_to": {
+          "label": "Applies to",
+          "page": "Page",
+          "paragraph": "You can't see your block without selecting a specific page."
+        },
+        "content": {
+          "label": "Content",
+          "source": {
+            "label": "Source",
+            "options": {
+              "url": "URL",
+              "youtube": "YouTube",
+              "vimeo": "Vimeo"
+            }
+          },
+          "url": {
+            "label": "URL",
+            "placeholder": "https://example.com/video.mp4"
+          },
+          "poster": "Poster image",
+          "youtube_id": {
+            "label": "Video ID",
+            "placeholder": "dQw4w9WgXcQ"
+          },
+          "vimeo_id": {
+            "label": "Vimeo ID",
+            "placeholder": "783455878"
+          },
+          "caption": "Caption (optional)"
+        },
+        "playback": {
+          "label": "Playback",
+          "loop": "Loop",
+          "autoplay": "Autoplay",
+          "paragraph": "Autoplay forces mute, most browsers block audible autoplay",
+          "mute": "Mute audio",
+          "controls": "Show controls",
+          "related_videos": "Related video from other channels",
+          "start_video_at": {
+            "label": "Start video at (seconds)",
+            "placeholder": "90"
+          },
+          "end_video_at": {
+            "label": "End video at (seconds)",
+            "placeholder": "150"
+          }
+        },
+        "layout": {
+          "label": "Layout",
+          "aspect_ratio": {
+            "label": "Aspect ratio",
+            "options": {
+              "16_9": "Widescreen (16:9)",
+              "4_3": "Landscape (4:3)",
+              "1_1": "Square (1:1)",
+              "9_16": "Portrait / Reels (9:16)",
+              "21_9": "Ultrawide (21:9)"
+            }
+          },
+          "width": {
+            "label": "Width",
+            "options": {
+              "full": "Full width",
+              "custom": "Custom"
+            }
+          },
+          "custom_width": "Custom width",
+          "caption_align": {
+            "label": "Caption alignment",
+            "options": {
+              "left": "Left",
+              "center": "Center",
+              "right": "Right"
+            }
+          },
+          "caption_color": "Caption color"
+        },
+        "spacing": {
+          "label": "Spacing",
+          "margin_top": "Margin top",
+          "margin_right": "Margin right",
+          "margin_bottom": "Margin bottom",
+          "margin_left": "Margin left",
+          "padding_top": "Padding top",
+          "padding_right": "Padding right",
+          "padding_bottom": "Padding bottom",
+          "padding_left": "Padding left"
+        },
+        "background": {
+          "label": "Background",
+          "paragraph": "Shows behind the player while it loads, or around it if not full width",
+          "background": {
+            "label": "Background",
+            "options": {
+              "none": "None",
+              "single_color": "Single color",
+              "gradient": "Gradient"
+            }
+          },
+          "bg_transparent": "Transparent background",
+          "bg_color": "Background color",
+          "gradient_angle_degree": "Angle degree",
+          "gradient_start": "Gradient start",
+          "gradient_end": "Gradient end"
+        },
+        "border": {
+          "label": "Border",
+          "border_weight": "Border weight",
+          "border_style": {
+            "label": "Border style",
+            "options": {
+              "none": "None",
+              "solid": "Solid",
+              "dashed": "Dashed",
+              "dotted": "Dotted",
+              "double": "Double"
+            }
+          },
+          "border_color": "Border color",
+          "border_radius_tl": "Radius top-left",
+          "border_radius_tr": "Radius top-right",
+          "border_radius_br": "Radius bottom-right",
+          "border_radius_bl": "Radius bottom-left"
+        },
+        "shadow": {
+          "label": "Shadow",
+          "box_shadow": {
+            "label": "Box shadow",
+            "options": {
+              "none": "None",
+              "sm": "Small",
+              "md": "Medium",
+              "lg": "Large",
+              "custom": "Custom"
+            }
+          },
+          "box_shadow_color": "Shadow color",
+          "box_shadow_x": "Offset X",
+          "box_shadow_y": "Offset Y",
+          "box_shadow_blur": "Blur",
+          "box_shadow_spread": "Spread"
+        },
+        "effects": {
+          "label": "Effects",
+          "opacity": "Opacity",
+          "rotate": "Rotate",
+          "scale": "Scale",
+          "entrance": {
+            "label": "Entrance animation",
+            "options": {
+              "none": "None",
+              "fade": "Fade in",
+              "fade_up": "Fade up",
+              "zoom": "Zoom in"
+            }
+          },
+          "entrance_duration": "Animation duration"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "lg_screens": "Show on large screens",
+          "paragraph": "1200px and wider",
+          "md_screens": "Show on medium screens",
+          "paragraph_2": "992px - 1199px",
+          "sm_screens": "Show on small screens",
+          "paragraph_3": "768px - 991px",
+          "xs_screens": "Show on extra small screens",
+          "paragraph_4": "767px and smaller"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "loading": {
+            "label": "Loading",
+            "options": {
+              "section": "Auto",
+              "eager": "Eager",
+              "lazy": "Lazy"
+            }
+          },
+          "anchor": {
+            "label": "Anchor ID",
+            "placeholder": "my-video"
+          },
+          "custom_css": {
+            "label": "Custom CSS",
+            "placeholder": "transform: scale(2); backdrop-filter: blur(2px);"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "general": {
+    "loading": "جارٍ التحميل...",
+    "checkout_unavailable": "الدفع غير متاح بعد على هذه الصفحة.",
+    "combination_unavailable": "هذا الخيار غير متاح",
+    "only_x_left": "بقي %count% فقط في المخزون"
+  }
+}
