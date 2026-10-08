@@ -6,7 +6,7 @@
       constructor() {
         super();
 
-        this.STORAGE_KEY = 'dv_products'
+        this.STORAGE_KEY = 'dv_products_{{ store.slug }}'
         
         this.currentProduct = null
         this.viewedProducts = new Map()
