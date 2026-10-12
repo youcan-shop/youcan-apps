@@ -5,7 +5,6 @@
       "settings": {
         "widget": {
           "label": "Widget",
-          "info": "ℹ️ Add this block once, then add as many [AskMe] Q & A blocks as you need.",
           "position": {
             "label": "Position",
             "options": {
