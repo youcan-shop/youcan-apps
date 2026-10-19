@@ -106,7 +106,7 @@ async function save() {
   <header class="flex flex-wrap gap-4 col-span-full items-end justify-between">
     <div class="space-y-1">
       <h1 class="title-h5 text-text-strong-950">
-        Ad pixels
+        Pixly
       </h1>
       <p class="text-text-sub-600 paragraph-sm">
         Connect your ad platforms to measure visits, carts and sales from your store.
@@ -203,7 +203,7 @@ async function save() {
         </h2>
       </div>
       <p class="text-text-sub-600 paragraph-sm">
-        Pixels only load on themes where the "Ad pixels" embed is switched on. Do this once per theme.
+        Pixels only load on themes where the "Pixly" embed is switched on. Do this once per theme.
       </p>
       <LinkButton
         href="youcan://admin/themes/manage-app-extensions"

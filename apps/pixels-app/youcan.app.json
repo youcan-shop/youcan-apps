@@ -1,6 +1,6 @@
 {
     "app_url": "https://pixels-app-2.youcan.app",
-    "name": "Pixels App",
+    "name": "Pixly",
     "webhooks": [
         {
             "topic": "order.created",
