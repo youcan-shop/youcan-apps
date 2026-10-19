@@ -1,0 +1,25 @@
+{
+    "app_url": "https://pixels-app-2.youcan.app",
+    "name": "Pixels App",
+    "webhooks": [
+        {
+            "topic": "order.created",
+            "address": "/webhooks/order.created"
+        },
+        {
+            "topic": "app.uninstalled",
+            "address": "/webhooks/app.uninstalled"
+        }
+    ],
+    "id": "app_FEU8hSWcq64VmJNatafzOTsiOOn",
+    "handle": "pixels-app-2",
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "cl_FEU8hQLOa74CGVFmK4gMlDDwTPH"
+    },
+    "extension_ids": {
+        "pixel": "ext_FEU97lBAAATA8KvFKVDcJ174aRn"
+    }
+}
