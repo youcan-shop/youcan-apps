@@ -1,0 +1,29 @@
+{% schema %}
+{
+  "label": "Star Rating (deprecated, remove me)",
+  "target": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "autofill": true
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#ffb400"
+    },
+    {
+      "type": "range",
+      "id": "preview_rating",
+      "label": "Rating shown until your app writes one",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}
