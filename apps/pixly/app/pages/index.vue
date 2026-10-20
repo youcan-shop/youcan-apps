@@ -2,10 +2,13 @@
 import type { PixelErrors, PixelSettings } from '~~/shared/utils/pixels';
 import { Alert, Button, FancyButton, LinkButton } from '@youcan/celeste';
 import { emptyPixelSettings, isProviderActive, isProviderConfigured, PIXEL_PROVIDERS, PIXEL_SETTING_KEYS, validatePixelSettings } from '~~/shared/utils/pixels';
+import youcanApp from '~~/youcan.app.json';
 import PixelProviderCard from '~/components/PixelProviderCard.vue';
 
 const { $api } = useNuxtApp();
 const qantra = useQantra();
+
+const appEmbedsUrl = `https://seller-area.youcan.shop/admin/themes/current/edit?app=${youcanApp.id}/pixels`;
 
 const { data: saved, pending: fetching, error: loadError, execute: loadSettings } = useApi<PixelSettings>('/api/pixels/settings', { server: false, immediate: false });
 
@@ -206,7 +209,7 @@ async function save() {
         Pixels only load on themes where the "Pixly" embed is switched on. Do this once per theme.
       </p>
       <LinkButton
-        href="youcan://admin/themes/manage-app-extensions"
+        :href="appEmbedsUrl"
         target="_blank"
         intent="black"
         size="sm"
