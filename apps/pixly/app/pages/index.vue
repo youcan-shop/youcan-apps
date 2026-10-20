@@ -231,7 +231,7 @@ async function save() {
       <ul class="text-text-sub-600 pl-4 list-disc paragraph-sm space-y-1.5">
         <li>Turn off ad blockers when testing, they block most pixels.</li>
         <li>Each platform's pixel helper extension shows events instantly.</li>
-        <li>Dashboards can take 15 minutes or more to show new events.</li>
+        <li>Depending on the platform, dashboards may take 24 hours or more to show new events.</li>
       </ul>
     </div>
   </aside>
