@@ -1,0 +1,81 @@
+{
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": "^9.0.0"
+  },
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "youcan app dev",
+    "web:dev": "prisma generate && prisma migrate deploy && nuxt dev",
+    "generate": "youcan app generate",
+    "youcan": "youcan",
+    "nuxt": "nuxt",
+    "eslint": "eslint . --cache",
+    "prepare": "pnpm simple-git-hooks",
+    "eslint:fix": "eslint . --cache --fix",
+    "stylelint": "stylelint ./app/**/*.vue --cache",
+    "stylelint:fix": "stylelint ./app/**/*.vue --cache --fix",
+    "lint": "pnpm run eslint && pnpm run stylelint",
+    "lint:fix": "pnpm run eslint:fix && pnpm run stylelint:fix"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "@prisma/nuxt": "0.3.0",
+    "@youcan/celeste": "latest",
+    "@youcan/celeste-icons": "latest",
+    "@youcan/celeste-tokens": "latest",
+    "@youcan/qantra": "latest",
+    "baseline-browser-mapping": "^2.9.11",
+    "isbot": "^5.1.30",
+    "jsonwebtoken": "^9.0.2",
+    "nuxt": "^4.1.2",
+    "prisma": "^6.16.2",
+    "vue": "^3.5.21",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "1.12.1",
+    "@nuxt/eslint-config": "^1.12.1",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@unocss/eslint-plugin": "^66.5.1",
+    "@unocss/nuxt": "66.5.1",
+    "@youcan/app": "^2.16.1",
+    "@youcan/cli": "^2.16.1",
+    "@youcan/lint": "^3.1.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-format": "^1.0.1",
+    "lint-staged": "^16.1.6",
+    "simple-git-hooks": "^2.13.1",
+    "stylelint": "^16.24.0",
+    "stylelint-config-property-sort-order-smacss": "^10.0.0",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "stylelint-config-standard-vue": "^1.0.0",
+    "unocss": "^66.5.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "mmap-io",
+      "prisma",
+      "shmmap",
+      "simple-git-hooks",
+      "unrs-resolver",
+      "vue-demi",
+      "yarn"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,json,yaml,yml,md}": "pnpm run eslint:fix",
+    "*.vue": "pnpm run stylelint:fix"
+  }
+}
