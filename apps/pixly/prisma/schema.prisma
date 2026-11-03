@@ -15,4 +15,61 @@ model Session {
   store              String
   scope              String?
   accessToken        String?
+  registeredWebhooks String?
+}
+
+model MetaConnection {
+  store        String          @id
+  accessToken  String
+  tokenType    String
+  expiresAt    DateTime?
+  metaUserId   String
+  metaUserName String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  adAccounts   MetaAdAccount[]
+}
+
+model MetaAdAccount {
+  store        String
+  id           String
+  name         String
+  currency     String
+  timezone     String?
+  businessName String?
+  status       Int
+  selected     Boolean        @default(false)
+  connection   MetaConnection @relation(fields: [store], references: [store], onDelete: Cascade)
+
+  @@id([store, id])
+}
+
+// The ad click that led to an order, captured by the theme embed on the thank-you page
+model OrderAttribution {
+  store       String
+  orderId     String
+  // Derived from the click: meta, tiktok, google, snapchat, x, microsoft or other
+  platform    String?
+  campaignId  String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
+  utmId       String?
+  fbclid      String?
+  ttclid      String?
+  gclid       String?
+  sccid       String?
+  twclid      String?
+  msclkid     String?
+  landingUrl  String?
+  referrer    String?
+  clickedAt   DateTime?
+  // false when the order could not be checked against the YouCan API
+  verified    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@id([store, orderId])
+  @@index([store, platform, campaignId])
 }

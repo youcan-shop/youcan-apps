@@ -21,5 +21,8 @@ export default defineNitroPlugin(() => {
       where: { store: data.store_slug },
       data: { accessToken: null },
     });
+
+    await prisma.metaConnection.deleteMany({ where: { store: data.store_slug } });
+    await prisma.orderAttribution.deleteMany({ where: { store: data.store_slug } });
   });
 });

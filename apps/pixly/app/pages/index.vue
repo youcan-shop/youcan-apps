@@ -64,10 +64,10 @@ const activeCount = computed(() => PIXEL_PROVIDERS.filter(provider => isProvider
 
 function providerStatus(provider: typeof PIXEL_PROVIDERS[number]) {
   if (isProviderActive(provider, saved.value)) {
-    return { label: 'Active', dot: 'bg-success-base' };
+    return { label: 'Active', dot: 'bg-state-success-base' };
   }
   if (isProviderConfigured(provider, saved.value)) {
-    return { label: 'Off', dot: 'bg-faded-base' };
+    return { label: 'Off', dot: 'bg-state-faded-base' };
   }
 
   return { label: 'Not set up', dot: 'bg-stroke-sub-300' };
@@ -108,8 +108,8 @@ async function save() {
 <template>
   <header class="flex flex-wrap gap-4 col-span-full items-end justify-between">
     <div class="space-y-1">
-      <h1 class="title-h5 text-text-strong-950">
-        Pixly
+      <h1 class="text-text-strong-950 title-h5-title">
+        Pixels
       </h1>
       <p class="text-text-sub-600 paragraph-sm">
         Connect your ad platforms to measure visits, carts and sales from your store.
@@ -248,7 +248,7 @@ async function save() {
     >
       <div class="mx-auto container flex gap-3 items-center justify-between">
         <span class="text-text-strong-950 flex gap-2 paragraph-sm items-center">
-          <span class="bg-warning-base rounded-full size-2" />
+          <span class="rounded-full bg-state-warning-base size-2" />
           You have unsaved changes
         </span>
         <div class="flex gap-2">

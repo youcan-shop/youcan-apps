@@ -1,3 +1,7 @@
 export default defineEventHandler(async () => {
-  return readPixelSettings(await getStoreId());
+  const storeId = await getStoreId();
+
+  await syncCollectorUrlQuietly(storeId);
+
+  return readPixelSettings(storeId);
 });
