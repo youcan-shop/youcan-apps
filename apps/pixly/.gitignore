@@ -25,4 +25,4 @@ logs
 
 .stylelintcache
 .eslintcache
-.env
+!.env

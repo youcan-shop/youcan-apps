@@ -81,7 +81,7 @@ const sample = [
           v-if="waiting"
           class="p-4 border border-stroke-soft-200 rounded-12px bg-bg-weak-50 flex gap-3 items-start"
         >
-          <i class="i-celeste-loader-4-line text-20px text-[#0866FF] mt-0.5 shrink-0 animate-spin" />
+          <i class="i-celeste-loader-4-line text-[#0866FF] text-20px mt-0.5 shrink-0 animate-spin" />
           <div class="flex-1 space-y-1">
             <p class="text-text-strong-950 label-sm">
               Waiting for Facebook

@@ -11,6 +11,8 @@ export default defineEventHandler(async (event) => {
   await prisma.$transaction([
     prisma.metaAdAccount.updateMany({ where: { store }, data: { selected: false } }),
     prisma.metaAdAccount.updateMany({ where: { store, id: { in: selected } }, data: { selected: true } }),
+    // Newly tracked accounts get their spend on the next load instead of after the sync interval
+    prisma.metaConnection.update({ where: { store }, data: { spendSyncedAt: null } }),
   ]);
 
   return metaConnectionView(store);

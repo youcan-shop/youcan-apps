@@ -19,15 +19,18 @@ model Session {
 }
 
 model MetaConnection {
-  store        String          @id
-  accessToken  String
-  tokenType    String
-  expiresAt    DateTime?
-  metaUserId   String
-  metaUserName String?
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  adAccounts   MetaAdAccount[]
+  store         String              @id
+  accessToken   String
+  tokenType     String
+  expiresAt     DateTime?
+  metaUserId    String
+  metaUserName  String?
+  // Last time daily campaign spend was pulled from the Marketing API
+  spendSyncedAt DateTime?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  adAccounts    MetaAdAccount[]
+  spend         MetaCampaignSpend[]
 }
 
 model MetaAdAccount {
@@ -44,32 +47,58 @@ model MetaAdAccount {
   @@id([store, id])
 }
 
-// The ad click that led to an order, captured by the theme embed on the thank-you page
+// One campaign's spend on one day, in the ad account's currency and timezone
+model MetaCampaignSpend {
+  store        String
+  accountId    String
+  campaignId   String
+  // YYYY-MM-DD in the ad account's timezone
+  date         String
+  campaignName String
+  spend        Float
+  impressions  Int
+  clicks       Int
+  currency     String
+  connection   MetaConnection @relation(fields: [store], references: [store], onDelete: Cascade)
+
+  @@id([store, campaignId, date])
+  @@index([store, date])
+}
+
+// The ad an order came from, parsed from the landing URL in the order's client details
 model OrderAttribution {
-  store       String
-  orderId     String
-  // Derived from the click: meta, tiktok, google, snapchat, x, microsoft or other
-  platform    String?
-  campaignId  String?
-  utmSource   String?
-  utmMedium   String?
-  utmCampaign String?
-  utmTerm     String?
-  utmContent  String?
-  utmId       String?
-  fbclid      String?
-  ttclid      String?
-  gclid       String?
-  sccid       String?
-  twclid      String?
-  msclkid     String?
-  landingUrl  String?
-  referrer    String?
-  clickedAt   DateTime?
-  // false when the order could not be checked against the YouCan API
-  verified    Boolean   @default(false)
-  createdAt   DateTime  @default(now())
+  store              String
+  orderId            String
+  orderRef           String
+  // meta, tiktok, google, snapchat, x, microsoft or other
+  platform           String
+  campaignId         String?
+  clickId            String?
+  utmSource          String?
+  utmMedium          String?
+  utmCampaign        String?
+  utmTerm            String?
+  utmContent         String?
+  utmId              String?
+  landingUrl         String
+  referrer           String?
+  orderedAt          DateTime
+  total              Float     @default(0)
+  currency           String?
+  confirmationStatus String?
+  shippingStatus     String?
+  // Statuses change after the order is placed, so open orders are checked again
+  statusCheckedAt    DateTime?
+  createdAt          DateTime  @default(now())
 
   @@id([store, orderId])
   @@index([store, platform, campaignId])
+  @@index([store, orderedAt])
+}
+
+// How far the order sync got for each store, so only new orders are fetched
+model OrderSync {
+  store       String   @id
+  lastOrderAt DateTime
+  syncedAt    DateTime
 }

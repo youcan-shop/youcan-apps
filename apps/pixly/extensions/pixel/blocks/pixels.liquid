@@ -7,117 +7,6 @@
 {%- if px.pinterest_enabled.value == '0' -%}{%- assign px_pinterest_id = '' -%}{%- endif -%}
 {%- if px.openai_enabled.value == '0' -%}{%- assign px_openai_id = '' -%}{%- endif -%}
 {%- if px.microsoft_enabled.value == '0' -%}{%- assign px_microsoft_id = '' -%}{%- endif -%}
-{%- assign px_collector_url = px.collector_url.value | default: 'https://pixels-app-2.youcan.app' | strip -%}
-
-{%- comment -%} Ad click attribution: runs with or without pixels, so every order can be linked to its campaign {%- endcomment -%}
-<script>
-  (function () {
-    if (window.__pixlyAttribution) {
-      return;
-    }
-    window.__pixlyAttribution = true;
-
-    var CLICK_KEY = 'pixlyClick';
-    var SENT_KEY = 'pixlySentOrders';
-    // Meta's default click attribution window
-    var CLICK_TTL = 7 * 24 * 60 * 60 * 1000;
-    var PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id', 'fbclid', 'ttclid', 'gclid', 'sccid', 'twclid', 'msclkid'];
-
-    function read(key, fallback) {
-      try {
-        return JSON.parse(window.localStorage.getItem(key)) || fallback;
-      }
-      catch (e) {
-        return fallback;
-      }
-    }
-
-    function write(key, value) {
-      try {
-        window.localStorage.setItem(key, JSON.stringify(value));
-      }
-      catch (e) {}
-    }
-
-    function externalReferrer() {
-      try {
-        var referrer = document.referrer && new URL(document.referrer);
-
-        return referrer && referrer.hostname !== location.hostname ? referrer.href : null;
-      }
-      catch (e) {
-        return null;
-      }
-    }
-
-    var click = read(CLICK_KEY, null);
-
-    if (click && !(Date.now() - click.at < CLICK_TTL)) {
-      click = null;
-      try {
-        window.localStorage.removeItem(CLICK_KEY);
-      }
-      catch (e) {}
-    }
-
-    var order = {%- if template.name == 'thankyou' and order -%}{{ order.id | json }}{%- else -%}null{%- endif -%};
-
-    if (!order) {
-      var params = {};
-      var found = false;
-
-      try {
-        var search = new URLSearchParams(location.search);
-
-        // ScCid is the casing Snapchat uses
-        search.forEach(function (value, name) {
-          var key = name.toLowerCase();
-
-          if (PARAMS.indexOf(key) !== -1 && value && !params[key]) {
-            params[key] = value.slice(0, 500);
-            found = true;
-          }
-        });
-      }
-      catch (e) {}
-
-      var referrer = externalReferrer();
-
-      // A new ad click replaces the previous one (last click wins). A plain external
-      // visit is only kept when there's no ad click to keep.
-      if (found) {
-        write(CLICK_KEY, { at: Date.now(), params: params, landing: location.href.slice(0, 2000), referrer: referrer });
-      }
-      else if (!click && referrer) {
-        write(CLICK_KEY, { at: Date.now(), params: {}, landing: location.href.slice(0, 2000), referrer: referrer });
-      }
-
-      return;
-    }
-
-    var sent = read(SENT_KEY, []);
-
-    if (!Array.isArray(sent) || sent.indexOf(order) !== -1) {
-      return;
-    }
-
-    var body = JSON.stringify({ store: {{ store.slug | json }}, order_id: order, click: click });
-    var url = {{ px_collector_url | json }}.replace(/\/$/, '') + '/collect/attribution';
-    var queued = false;
-
-    try {
-      queued = !!(navigator.sendBeacon && navigator.sendBeacon(url, new Blob([body], { type: 'text/plain' })));
-    }
-    catch (e) {}
-
-    if (!queued && window.fetch) {
-      window.fetch(url, { method: 'POST', body: body, headers: { 'Content-Type': 'text/plain' }, keepalive: true, mode: 'no-cors' }).catch(function () {});
-    }
-
-    sent.push(order);
-    write(SENT_KEY, sent.slice(-50));
-  })();
-</script>
 
 {%- if px_x_id != blank or px_pinterest_id != blank or px_openai_id != blank or px_microsoft_id != blank -%}
   {%- assign px_on_thankyou = false -%}
@@ -889,7 +778,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Tracks X (Twitter), Pinterest, OpenAI Ads and Microsoft Ads, and records which ad campaign brought each order. Set your pixel and tag IDs in the Pixly app settings in your seller area. This embed only needs to be switched on."
+      "content": "Tracks X (Twitter), Pinterest, OpenAI Ads and Microsoft Ads. Set your pixel and tag IDs in the Pixly app settings in your seller area. This embed only needs to be switched on."
     }
   ]
 }

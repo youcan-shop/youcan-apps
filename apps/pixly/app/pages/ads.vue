@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { Alert } from '@youcan/celeste';
+import { emptyMetrics, PERFORMANCE_RANGES } from '~~/shared/utils/performance';
 import AdAccountsCard from '~/components/ads/AdAccountsCard.vue';
+import CampaignTable from '~/components/ads/CampaignTable.vue';
+import DailyChart from '~/components/ads/DailyChart.vue';
 import MetaConnectHero from '~/components/ads/MetaConnectHero.vue';
 import MetaConnectionCard from '~/components/ads/MetaConnectionCard.vue';
+import PerformanceKpis from '~/components/ads/PerformanceKpis.vue';
+import RecentAdOrders from '~/components/ads/RecentAdOrders.vue';
 
 const {
   connection,
@@ -19,9 +24,31 @@ const {
   saveSelection,
 } = useMetaConnection();
 
+const { days, performance, loading: performanceLoading, error: performanceError, load: loadPerformance } = useAdPerformance();
+
 onMounted(load);
 
 const trackedCount = computed(() => connection.value?.adAccounts.filter(account => account.selected).length ?? 0);
+const trackedIds = computed(() => connection.value?.adAccounts.filter(account => account.selected).map(account => account.id).join(',') ?? '');
+
+// Loads once connected, and again when the tracked accounts change since their spend comes with them
+watch([() => connection.value?.connected, trackedIds], ([connected]) => {
+  if (connected) {
+    loadPerformance();
+  }
+});
+
+const syncNote = computed(() => {
+  const sync = performance.value?.sync;
+
+  if (!sync?.spendSyncedAt) {
+    return null;
+  }
+
+  const minutes = Math.max(0, Math.round((Date.now() - new Date(sync.spendSyncedAt).getTime()) / 60000));
+
+  return minutes < 1 ? 'Updated just now' : `Updated ${minutes} min ago`;
+});
 
 const steps = [
   { icon: 'i-celeste-meta-fill', title: 'Connect your ad accounts', text: 'Pixly reads daily spend for each campaign.' },
@@ -91,47 +118,95 @@ const steps = [
           Your real cost per order, from the ad click to the delivered package.
         </p>
       </div>
-      <div class="text-text-sub-600 px-3 py-1.5 border border-stroke-soft-200 rounded-full bg-bg-white-0 paragraph-sm">
-        <span class="text-text-strong-950 label-sm">{{ trackedCount }}</span>
-        {{ trackedCount === 1 ? 'ad account' : 'ad accounts' }} tracked
+      <div class="flex flex-wrap gap-3 items-center">
+        <span v-if="syncNote" class="text-text-soft-400 flex gap-1 paragraph-xs items-center">
+          <i
+            class="text-14px"
+            :class="performanceLoading ? 'i-celeste-loader-4-line animate-spin' : 'i-celeste-time-line'"
+          />
+          {{ syncNote }}
+        </span>
+        <div
+          class="p-1 border border-stroke-soft-200 rounded-12px bg-bg-white-0 inline-flex gap-1 shadow-regular-xs"
+          role="radiogroup"
+          aria-label="Period"
+        >
+          <button
+            v-for="range in PERFORMANCE_RANGES"
+            :key="range"
+            type="button"
+            role="radio"
+            :aria-checked="days === range"
+            class="px-3 py-1 rounded-8px transition-colors label-sm"
+            :class="days === range ? 'bg-bg-weak-50 text-text-strong-950 shadow-regular-xs' : 'text-text-sub-600 hover:text-text-strong-950'"
+            @click="days = range"
+          >
+            {{ range }} days
+          </button>
+        </div>
       </div>
     </header>
 
+    <div class="col-span-full space-y-3">
+      <Alert
+        v-if="performanceError"
+        state="error"
+        variant="lighter"
+        size="xs"
+      >
+        <template #title>
+          Could not load ad performance: {{ performanceError }}
+        </template>
+      </Alert>
+      <Alert
+        v-else-if="performance?.sync.spendError === 'expired'"
+        state="warning"
+        variant="lighter"
+        size="xs"
+      >
+        <template #title>
+          Your Facebook access expired, so spend stopped updating. Reconnect Facebook to resume.
+        </template>
+      </Alert>
+      <Alert
+        v-else-if="performance?.sync.spendError || performance?.sync.ordersError"
+        state="warning"
+        variant="lighter"
+        size="xs"
+      >
+        <template #title>
+          {{ performance?.sync.spendError ? 'Facebook' : 'Your store' }} didn't answer this time, so some numbers may be a few minutes old.
+        </template>
+      </Alert>
+      <Alert
+        v-if="performance && !performance.spendCurrency"
+        state="information"
+        variant="lighter"
+        size="xs"
+      >
+        <template #title>
+          Your tracked ad accounts use different currencies, so spend totals add them up as plain numbers.
+        </template>
+      </Alert>
+
+      <PerformanceKpis :performance="performance" :loading="performanceLoading" />
+    </div>
+
     <div class="col-span-8 space-y-4">
-      <section class="border border-stroke-soft-200 rounded-16px bg-bg-white-0 shadow-regular-xs overflow-hidden">
-        <header class="px-5 py-4 border-b border-stroke-soft-200">
-          <h2 class="text-text-strong-950 label-md">
-            Campaigns
-          </h2>
-          <p class="text-text-sub-600 paragraph-sm">
-            Spend, orders and cost per delivered order for each campaign.
-          </p>
-        </header>
+      <DailyChart
+        v-if="performance"
+        :daily="performance.daily"
+        :spend-currency="performance.spendCurrency"
+      />
 
-        <div class="text-text-soft-400 px-5 py-2.5 border-b border-stroke-soft-200 bg-bg-weak-50 gap-4 grid-cols-[2fr_1fr_1fr_1fr_1fr] hidden uppercase subheading-xxs sm:grid">
-          <span>Campaign</span>
-          <span class="text-right">Spend</span>
-          <span class="text-right">Orders</span>
-          <span class="text-right">Delivered</span>
-          <span class="text-right">Cost / delivered</span>
-        </div>
-
-        <div class="px-5 py-12 text-center flex flex-col gap-3 items-center">
-          <span class="text-primary-base rounded-full bg-primary-alpha-10 flex size-11 items-center justify-center">
-            <i class="i-celeste-bar-chart-box-line text-20px" />
-          </span>
-          <div class="max-w-400px space-y-1">
-            <p class="text-text-strong-950 label-sm">
-              Your campaigns will show up here
-            </p>
-            <p class="text-text-sub-600 paragraph-sm">
-              {{ trackedCount
-                ? 'Pixly is getting ready to pull daily spend from your tracked ad accounts. Campaigns appear here once the first sync runs.'
-                : 'Select at least one ad account below so Pixly knows where to pull spend from.' }}
-            </p>
-          </div>
-        </div>
-      </section>
+      <CampaignTable
+        :campaigns="performance?.campaigns ?? []"
+        :unmatched="performance?.unmatched ?? emptyMetrics()"
+        :spend-currency="performance?.spendCurrency ?? null"
+        :loading="performanceLoading"
+        :tracked-accounts="trackedCount"
+        :store-url="performance?.storeUrl ?? null"
+      />
 
       <AdAccountsCard
         :accounts="connection!.adAccounts"
@@ -151,6 +226,8 @@ const steps = [
         @disconnect="disconnect"
         @reconnect="connect"
       />
+
+      <RecentAdOrders v-if="performance" :orders="performance.recentOrders" />
 
       <p
         v-if="waiting"

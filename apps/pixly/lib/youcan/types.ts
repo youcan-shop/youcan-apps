@@ -153,9 +153,19 @@ export interface Order {
   links: {
     show: string;
   };
+  client_details?: OrderClientDetails | null;
 }
 
-export type OrderInclude = 'customer' | 'variants' | 'referenced_order' | 'comments' | 'payment' | 'shipping' | 'discount' | 'coupon' | 'refunds';
+export interface OrderClientDetails {
+  client_id: string;
+  ip: string | null;
+  user_agent: string | null;
+  accept_language: string | null;
+  landing_url: string | null;
+  referrer: string | null;
+}
+
+export type OrderInclude = 'customer' | 'variants' | 'referenced_order' | 'comments' | 'payment' | 'shipping' | 'discount' | 'coupon' | 'refunds' | 'client_details';
 
 export interface OrderListOptions {
   include?: OrderInclude[];

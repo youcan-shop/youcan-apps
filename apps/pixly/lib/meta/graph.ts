@@ -28,6 +28,17 @@ export interface MetaAdAccountNode {
   business?: { id: string; name: string };
 }
 
+// Insights return numbers as strings
+export interface MetaCampaignInsight {
+  campaign_id: string;
+  campaign_name: string;
+  spend?: string;
+  impressions?: string;
+  clicks?: string;
+  date_start: string;
+  date_stop: string;
+}
+
 interface MetaPage<T> {
   data: T[];
   paging?: { next?: string };
@@ -139,6 +150,32 @@ export function metaGraph(options: MetaGraphOptions) {
       }
 
       return accounts;
+    },
+
+    // https://developers.facebook.com/docs/marketing-api/insights — one row per campaign per day
+    async campaignInsights(token: string, accountId: string, range: { since: string; until: string }): Promise<MetaCampaignInsight[]> {
+      const rows: MetaCampaignInsight[] = [];
+      let page = await request<MetaPage<MetaCampaignInsight>>(`/${accountId}/insights`, {
+        token,
+        query: {
+          level: 'campaign',
+          fields: 'campaign_id,campaign_name,spend,impressions,clicks',
+          time_increment: '1',
+          time_range: JSON.stringify(range),
+          limit: '500',
+        },
+      });
+
+      for (let i = 0; i < MAX_PAGES; i++) {
+        rows.push(...page.data);
+
+        if (!page.paging?.next) {
+          break;
+        }
+        page = await request<MetaPage<MetaCampaignInsight>>(page.paging.next);
+      }
+
+      return rows;
     },
 
     async revoke(token: string): Promise<void> {
