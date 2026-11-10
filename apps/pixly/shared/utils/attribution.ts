@@ -112,21 +112,25 @@ export type OrderOutcome = 'pending' | 'confirmed' | 'delivered' | 'returned' | 
 
 export const CANCELED_CONFIRMATIONS = ['canceled-by-seller', 'cancelled', 'invalid', 'rejected', 'expired', 'blocked'];
 // Shipping statuses after which the order doesn't move anymore
-export const FINAL_SHIPPING_STATUSES = ['delivered', 'returned', 'canceled'];
+export const FINAL_SHIPPING_STATUSES = ['delivered', 'fulfilled', 'returned', 'lost', 'canceled'];
+// "delivered" only comes from YouCan Shipping tracking. Sellers who ship on their own end at "fulfilled".
+const DELIVERED_STATUSES = ['delivered', 'fulfilled'];
+// A lost package cost the seller like a return did
+const RETURNED_STATUSES = ['returned', 'lost'];
 
 // Shipping statuses that mean the order left the confirmation stage
-const SHIPPED_STATUSES = new Set(['fulfilled', 'shipped', 'processing', 'created', 'confirmed', 'pending-pickup', 'picked-up', 'in-company-hub', 'to-customer', 'delivery-failed']);
+const SHIPPED_STATUSES = new Set(['shipped', 'processing', 'created', 'confirmed', 'pending-pickup', 'picked-up', 'in-company-hub', 'to-customer', 'delivery-failed']);
 
 /**
  * Where an order ended up, from the confirmation_status and shipping_status slugs
- * of the YouCan order. Delivered and returned come from the shipping company,
- * so they win over whatever the confirmation status says.
+ * of the YouCan order. Delivered and returned come after confirmation, so they
+ * win over whatever the confirmation status says.
  */
 export function orderOutcome(confirmationStatus: string | null | undefined, shippingStatus: string | null | undefined): OrderOutcome {
-  if (shippingStatus === 'delivered') {
+  if (shippingStatus && DELIVERED_STATUSES.includes(shippingStatus)) {
     return 'delivered';
   }
-  if (shippingStatus === 'returned') {
+  if (shippingStatus && RETURNED_STATUSES.includes(shippingStatus)) {
     return 'returned';
   }
   if (shippingStatus === 'canceled' || (confirmationStatus && CANCELED_CONFIRMATIONS.includes(confirmationStatus))) {

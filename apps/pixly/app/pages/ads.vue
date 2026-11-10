@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Alert } from '@youcan/celeste';
-import { emptyMetrics, PERFORMANCE_RANGES } from '~~/shared/utils/performance';
+import { Alert, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@youcan/celeste';
+import { emptyMetrics, PERFORMANCE_PERIODS } from '~~/shared/utils/performance';
 import AdAccountsCard from '~/components/ads/AdAccountsCard.vue';
 import CampaignTable from '~/components/ads/CampaignTable.vue';
 import DailyChart from '~/components/ads/DailyChart.vue';
@@ -24,7 +24,7 @@ const {
   saveSelection,
 } = useMetaConnection();
 
-const { days, performance, loading: performanceLoading, error: performanceError, load: loadPerformance } = useAdPerformance();
+const { period, performance, loading: performanceLoading, error: performanceError, load: loadPerformance } = useAdPerformance();
 
 onMounted(load);
 
@@ -35,6 +35,15 @@ const trackedIds = computed(() => connection.value?.adAccounts.filter(account =>
 watch([() => connection.value?.connected, trackedIds], ([connected]) => {
   if (connected) {
     loadPerformance();
+  }
+});
+
+// Shared by the chart and the campaign table: selecting a row shows that campaign in the chart
+const focusedCampaign = ref('all');
+
+watch(performance, (view) => {
+  if (view && focusedCampaign.value !== 'all' && !view.campaigns.some(campaign => campaign.id === focusedCampaign.value)) {
+    focusedCampaign.value = 'all';
   }
 });
 
@@ -53,7 +62,7 @@ const syncNote = computed(() => {
 const steps = [
   { icon: 'i-celeste-meta-fill', title: 'Connect your ad accounts', text: 'Pixly reads daily spend for each campaign.' },
   { icon: 'i-celeste-links-line', title: 'Match orders to campaigns', text: 'Each order keeps the campaign the shopper clicked.' },
-  { icon: 'i-celeste-truck-line', title: 'Follow every order', text: 'Confirmed, delivered or returned, straight from your store.' },
+  { icon: 'i-celeste-shopping-bag-3-line', title: 'Count real orders', text: 'Canceled and fake orders are left out of the cost per order.' },
 ];
 </script>
 
@@ -115,7 +124,7 @@ const steps = [
           Ad performance
         </h1>
         <p class="text-text-sub-600 paragraph-sm">
-          Your real cost per order, from the ad click to the delivered package.
+          What each order really costs you in ads, day by day and campaign by campaign.
         </p>
       </div>
       <div class="flex flex-wrap gap-3 items-center">
@@ -126,24 +135,24 @@ const steps = [
           />
           {{ syncNote }}
         </span>
-        <div
-          class="p-1 border border-stroke-soft-200 rounded-12px bg-bg-white-0 inline-flex gap-1 shadow-regular-xs"
-          role="radiogroup"
-          aria-label="Period"
-        >
-          <button
-            v-for="range in PERFORMANCE_RANGES"
-            :key="range"
-            type="button"
-            role="radio"
-            :aria-checked="days === range"
-            class="px-3 py-1 rounded-8px transition-colors label-sm"
-            :class="days === range ? 'bg-bg-weak-50 text-text-strong-950 shadow-regular-xs' : 'text-text-sub-600 hover:text-text-strong-950'"
-            @click="days = range"
+        <Select v-model="period">
+          <SelectTrigger
+            size="sm"
+            class="w-44"
+            aria-label="Period"
           >
-            {{ range }} days
-          </button>
-        </div>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem
+              v-for="item in PERFORMANCE_PERIODS"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.label }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </header>
 
@@ -193,16 +202,19 @@ const steps = [
     </div>
 
     <div class="col-span-8 space-y-4">
+      <!-- A single day has nothing to chart -->
       <DailyChart
-        v-if="performance"
-        :daily="performance.daily"
-        :spend-currency="performance.spendCurrency"
+        v-if="performance && performance.dates.length > 1"
+        v-model:campaign="focusedCampaign"
+        :performance="performance"
       />
 
       <CampaignTable
+        v-model:campaign="focusedCampaign"
         :campaigns="performance?.campaigns ?? []"
         :unmatched="performance?.unmatched ?? emptyMetrics()"
         :spend-currency="performance?.spendCurrency ?? null"
+        :order-currency="performance?.orderCurrency ?? null"
         :loading="performanceLoading"
         :tracked-accounts="trackedCount"
         :store-url="performance?.storeUrl ?? null"

@@ -1,13 +1,13 @@
-import type { PerformanceRange, PerformanceView } from '~~/shared/utils/performance';
+import type { PerformanceView } from '~~/shared/utils/performance';
 import { MetaGraphError } from '~~/lib/meta/graph';
-import { PERFORMANCE_RANGES } from '~~/shared/utils/performance';
+import { isPerformancePeriod, PERFORMANCE_PERIODS } from '~~/shared/utils/performance';
 
 export default defineEventHandler(async (event): Promise<PerformanceView> => {
   const store = requireStore(event);
-  const days = Number(getQuery(event).days ?? 30) as PerformanceRange;
+  const period = getQuery(event).period ?? 'last_30';
 
-  if (!PERFORMANCE_RANGES.includes(days)) {
-    throw createError({ statusCode: 422, statusMessage: `days must be one of ${PERFORMANCE_RANGES.join(', ')}` });
+  if (!isPerformancePeriod(period)) {
+    throw createError({ statusCode: 422, statusMessage: `period must be one of ${PERFORMANCE_PERIODS.map(item => item.id).join(', ')}` });
   }
 
   // Both syncs are throttled and best effort: what's already saved is served when they fail
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event): Promise<PerformanceView> => {
   }
 
   const [performance, connection, orderSync, storeUrl] = await Promise.all([
-    buildPerformance(store, days),
+    buildPerformance(store, period),
     prisma.metaConnection.findUnique({ where: { store }, select: { spendSyncedAt: true } }),
     prisma.orderSync.findUnique({ where: { store } }),
     youcan.store.info().then(info => (info.domain ? (/^https?:\/\//.test(info.domain) ? info.domain : `https://${info.domain}`) : null), () => null),

@@ -69,7 +69,14 @@ export async function syncOrderAttributions(store: string): Promise<void> {
   let newest = since;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const { data, meta } = await youcan.store.orders.list({ include: ['client_details'], limit: PAGE_SIZE, page });
+    const { data, meta } = await youcan.store.orders.list({
+      'include': ['client_details'],
+      'limit': PAGE_SIZE,
+      page,
+      // Orders YouCan Radar flagged as fake at checkout aren't real sales
+      'filters[0][field]': 'exclude_fake_orders',
+      'filters[0][value]': 1,
+    });
     const fresh = data.filter(order => new Date(order.created_at) >= since);
 
     for (const order of fresh) {

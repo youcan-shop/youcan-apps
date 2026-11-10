@@ -15,33 +15,32 @@ const tiles = computed(() => {
   }
 
   const { totals, spendCurrency } = view;
-  const costPerDelivered = costPer(totals.spend, totals.delivered);
 
   return [
     {
       label: 'Ad spend',
       icon: 'i-celeste-wallet-3-line',
-      value: spendCurrency ? formatMoney(totals.spend, spendCurrency) : formatMoney(totals.spend, null),
+      value: formatMoney(totals.spend, spendCurrency),
       detail: `${view.campaigns.filter(campaign => campaign.spend > 0).length} campaigns with spend`,
     },
     {
       label: 'Orders from Facebook',
       icon: 'i-celeste-shopping-bag-3-line',
       value: formatCount(totals.orders),
-      detail: `${formatCount(totals.confirmed)} confirmed · ${formatPercent(totals.confirmed, totals.orders)}`,
+      detail: totals.canceled ? `${formatCount(totals.canceled)} canceled, not counted` : 'Canceled and fake orders aren\'t counted',
     },
     {
-      label: 'Delivered',
-      icon: 'i-celeste-truck-line',
-      value: formatCount(totals.delivered),
-      detail: `${formatPercent(totals.delivered, totals.orders)} of orders · ${formatCount(totals.returned)} returned`,
-    },
-    {
-      label: 'Cost per delivered order',
+      label: 'Cost per order',
       icon: 'i-celeste-price-tag-3-line',
-      value: formatMoney(costPerDelivered, spendCurrency),
-      detail: `${formatMoney(costPer(totals.spend, totals.orders), spendCurrency)} per order placed`,
+      value: formatMoney(costPer(totals.spend, totals.orders), spendCurrency),
+      detail: 'Ad spend ÷ orders',
       highlight: true,
+    },
+    {
+      label: 'Order value',
+      icon: 'i-celeste-money-dollar-circle-line',
+      value: formatMoney(totals.revenue, view.orderCurrency),
+      detail: `${formatMoney(totals.orders ? totals.revenue / totals.orders : null, view.orderCurrency)} per order`,
     },
   ];
 });
