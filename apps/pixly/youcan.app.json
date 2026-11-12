@@ -20,6 +20,7 @@
         "client_id": "cl_FEU8hQLOa74CGVFmK4gMlDDwTPH"
     },
     "extension_ids": {
-        "pixel": "ext_FEU97lBAAATA8KvFKVDcJ174aRn"
+        "pixel": "ext_FEU97lBAAATA8KvFKVDcJ174aRn",
+        "tiktok-events": "ext_FGA40C3y2xQB2bn8MXTXRG6z1DY"
     }
 }

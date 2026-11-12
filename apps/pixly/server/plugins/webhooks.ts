@@ -10,6 +10,11 @@ export default defineNitroPlugin(() => {
       Reference: order.ref,
       Total: `${order.total} ${order.currency}`,
     });
+
+    // Waits for the order's client details, so it runs after the webhook is answered
+    sendTikTokPurchase(order).catch((error) => {
+      console.error('[tiktok] purchase failed', order.id, error?.response?.status ?? error?.message);
+    });
   });
 
   defineWebhookHandler('app.uninstalled', async (payload) => {
@@ -25,5 +30,7 @@ export default defineNitroPlugin(() => {
     await prisma.metaConnection.deleteMany({ where: { store: data.store_slug } });
     await prisma.orderAttribution.deleteMany({ where: { store: data.store_slug } });
     await prisma.orderSync.deleteMany({ where: { store: data.store_slug } });
+    // The store already dropped the web pixel along with the app
+    await deleteTikTokConnection(data.store_slug, false);
   });
 });

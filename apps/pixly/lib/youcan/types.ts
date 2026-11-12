@@ -154,6 +154,16 @@ export interface Order {
     show: string;
   };
   client_details?: OrderClientDetails | null;
+  customer?: OrderCustomer | null;
+}
+
+export interface OrderCustomer {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
 }
 
 export interface OrderClientDetails {
@@ -163,6 +173,11 @@ export interface OrderClientDetails {
   accept_language: string | null;
   landing_url: string | null;
   referrer: string | null;
+}
+
+export interface WebPixel {
+  id: string;
+  settings: Record<string, string>;
 }
 
 export type OrderInclude = 'customer' | 'variants' | 'referenced_order' | 'comments' | 'payment' | 'shipping' | 'discount' | 'coupon' | 'refunds' | 'client_details';

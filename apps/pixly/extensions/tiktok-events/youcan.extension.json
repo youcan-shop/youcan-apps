@@ -1,0 +1,24 @@
+{
+  "name": "tiktok-events",
+  "type": "web_pixel",
+  "runtime_context": "strict",
+  "customer_privacy": {
+    "analytics": true,
+    "marketing": true,
+    "preferences": false,
+    "sale_of_data": "enabled"
+  },
+  "settings": {
+    "type": "object",
+    "fields": {
+      "endpoint": {
+        "name": "Collect URL",
+        "description": "Where the pixel sends events. Pixly sets it when TikTok tracking is turned on.",
+        "type": "single_line_text_field",
+        "validations": [
+          { "name": "regex", "value": "^https://\\S+$" }
+        ]
+      }
+    }
+  }
+}

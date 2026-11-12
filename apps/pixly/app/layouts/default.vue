@@ -3,6 +3,7 @@ import { Sonner } from '@youcan/celeste';
 
 const tabs = [
   { to: '/', label: 'Pixels', icon: 'i-celeste-focus-3-line' },
+  { to: '/tiktok', label: 'TikTok Events API', icon: 'i-celeste-tiktok-fill' },
   { to: '/ads', label: 'Ad performance', icon: 'i-celeste-line-chart-line' },
 ];
 </script>

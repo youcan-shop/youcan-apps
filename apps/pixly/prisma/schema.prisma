@@ -102,3 +102,40 @@ model OrderSync {
   lastOrderAt DateTime
   syncedAt    DateTime
 }
+
+// A store's TikTok pixel, whose events Pixly sends to the TikTok Events API
+model TikTokConnection {
+  store         String    @id
+  storeId       String    @unique
+  storeDomain   String?
+  pixelCode     String
+  // Sealed with sealSecret, never sent to the storefront
+  accessToken   String
+  testEventCode String?
+  enabled       Boolean   @default(true)
+  // Public, random. Identifies the store in the web pixel's collect URL
+  collectKey    String    @unique
+  webPixelId    String?
+  lastEventAt   DateTime?
+  lastError     String?
+  lastErrorAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// What the web pixel last saw about a shopper, so the Purchase sent from the
+// order webhook carries the same TikTok cookie, click ID and contact details
+model TikTokVisitor {
+  store     String
+  // The storefront's yvid, same as client_id in the order's client details
+  clientId  String
+  ttp       String?
+  ttclid    String?
+  // SHA-256, normalized before hashing
+  email     String?
+  phone     String?
+  updatedAt DateTime @updatedAt
+
+  @@id([store, clientId])
+  @@index([updatedAt])
+}

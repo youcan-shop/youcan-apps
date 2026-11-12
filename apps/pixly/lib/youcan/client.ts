@@ -5,6 +5,7 @@ import { BillingResource } from './resources/billing';
 import { MetafieldResource } from './resources/metafield';
 import { OrderResource } from './resources/order';
 import { ProductResource } from './resources/product';
+import { WebPixelResource } from './resources/web-pixel';
 import { WebhookResource } from './resources/webhook';
 
 export interface YouCanClientOptions {
@@ -18,6 +19,7 @@ export class StoreContext {
   public billing: BillingResource;
   public webhooks: WebhookResource;
   public metafields: MetafieldResource;
+  public webPixels: WebPixelResource;
 
   constructor(private request: <T>(endpoint: string, options?: any) => Promise<T>) {
     this.products = new ProductResource(request);
@@ -25,6 +27,7 @@ export class StoreContext {
     this.billing = new BillingResource(request);
     this.webhooks = new WebhookResource(request);
     this.metafields = new MetafieldResource(request);
+    this.webPixels = new WebPixelResource(request);
   }
 
   public async info(): Promise<Store> {
