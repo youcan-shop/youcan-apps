@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Session {
+  id                 String  @id
+  store              String
+  scope              String?
+  accessToken        String?
+  registeredWebhooks String?
+}
+
+model MetaConnection {
+  store         String              @id
+  accessToken   String
+  tokenType     String
+  expiresAt     DateTime?
+  metaUserId    String
+  metaUserName  String?
+  // Last time daily campaign spend was pulled from the Marketing API
+  spendSyncedAt DateTime?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  adAccounts    MetaAdAccount[]
+  spend         MetaCampaignSpend[]
+}
+
+model MetaAdAccount {
+  store        String
+  id           String
+  name         String
+  currency     String
+  timezone     String?
+  businessName String?
+  status       Int
+  selected     Boolean        @default(false)
+  connection   MetaConnection @relation(fields: [store], references: [store], onDelete: Cascade)
+
+  @@id([store, id])
+}
+
+// One campaign's spend on one day, in the ad account's currency and timezone
+model MetaCampaignSpend {
+  store        String
+  accountId    String
+  campaignId   String
+  // YYYY-MM-DD in the ad account's timezone
+  date         String
+  campaignName String
+  spend        Float
+  impressions  Int
+  clicks       Int
+  currency     String
+  connection   MetaConnection @relation(fields: [store], references: [store], onDelete: Cascade)
+
+  @@id([store, campaignId, date])
+  @@index([store, date])
+}
+
+// The ad an order came from, parsed from the landing URL in the order's client details
+model OrderAttribution {
+  store              String
+  orderId            String
+  orderRef           String
+  // meta, tiktok, google, snapchat, x, microsoft or other
+  platform           String
+  campaignId         String?
+  clickId            String?
+  utmSource          String?
+  utmMedium          String?
+  utmCampaign        String?
+  utmTerm            String?
+  utmContent         String?
+  utmId              String?
+  landingUrl         String
+  referrer           String?
+  orderedAt          DateTime
+  total              Float     @default(0)
+  currency           String?
+  confirmationStatus String?
+  shippingStatus     String?
+  // Statuses change after the order is placed, so open orders are checked again
+  statusCheckedAt    DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@id([store, orderId])
+  @@index([store, platform, campaignId])
+  @@index([store, orderedAt])
+}
+
+// How far the order sync got for each store, so only new orders are fetched
+model OrderSync {
+  store       String   @id
+  lastOrderAt DateTime
+  syncedAt    DateTime
+}
+
+// A store's TikTok pixel, whose events Pixly sends to the TikTok Events API
+model TikTokConnection {
+  store         String    @id
+  storeId       String    @unique
+  storeDomain   String?
+  pixelCode     String
+  // Sealed with sealSecret, never sent to the storefront
+  accessToken   String
+  testEventCode String?
+  enabled       Boolean   @default(true)
+  // Public, random. Identifies the store in the web pixel's collect URL
+  collectKey    String    @unique
+  webPixelId    String?
+  lastEventAt   DateTime?
+  lastError     String?
+  lastErrorAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// What the web pixel last saw about a shopper, so the Purchase sent from the
+// order webhook carries the same TikTok cookie, click ID and contact details
+model TikTokVisitor {
+  store     String
+  // The storefront's yvid, same as client_id in the order's client details
+  clientId  String
+  ttp       String?
+  ttclid    String?
+  // SHA-256, normalized before hashing
+  email     String?
+  phone     String?
+  updatedAt DateTime @updatedAt
+
+  @@id([store, clientId])
+  @@index([updatedAt])
+}
